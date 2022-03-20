@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 <div class="flex-col">
-                    <img src="storage/images/face.png"
+                    <img src="storage/images/webp/face.webp"
                          alt="..."
                          class="ring-mint shadow rounded-full h-12 align-middle border-none transition duration-1000 transform hover:scale-150"
                          v-on:click="toggleContactMenu"

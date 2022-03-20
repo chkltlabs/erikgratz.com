@@ -21,7 +21,7 @@ class CreateBlogPostsTable extends Migration
             $table->dateTime('edited')->nullable();
             $table->string('subtitle')->nullable();
             $table->longText('body')->nullable();
-            $table->string('imageUrl')->default('storage/images/purp-code.png');
+            $table->string('imageUrl')->default('storage/images/webp/purp-code.webp');
             $table->boolean('is_public')->default(false);
             $table->timestamps();
         });

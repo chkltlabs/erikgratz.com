@@ -3,7 +3,7 @@
 return [
     'Black Lives Matter' => [
         'donateLink' => 'https://blacklivesmatter.com/',
-        'imageLink' => 'storage/images/blm-defund.jpg',
+        'imageLink' => 'storage/images/webp/blm-defund.webp',
         'blurb' => 'Black Americans built this country against their will. They are routinely killed without recourse by the police. That ends now.',
     ],
     'National Bail Fund' => [

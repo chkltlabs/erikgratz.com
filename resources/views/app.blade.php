@@ -16,6 +16,10 @@
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <script>
+            window._asset = '{{ asset('') }}';
+        </script>
     </head>
     <body class="font-sans antialiased">
     @if (\Session::has('success'))

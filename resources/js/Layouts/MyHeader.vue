@@ -57,7 +57,14 @@
                     </ul>
                     <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:ml-auto md:mt-0 md:pt-0 md:border-0">
                         <li>
-                            <img src="storage/images/face.png"
+                            <button class="mx-8 px-7 py-3 md:px-9 md:py-4
+                            bg-black font-medium md:font-semibold
+                            text-gray-300 text-md rounded-md
+                            hover:bg-purple-600 hover:text-white
+                            transition ease-linear duration-300">Get my CV</button>
+                        </li>
+                        <li>
+                            <img src="storage/images/webp/face.webp"
                                  alt="..."
                                  class="ring-mint shadow rounded-full h-12 align-middle border-none transition duration-1000 transform hover:scale-150"
                                  v-on:click="toggleContactMenu"
@@ -110,8 +117,8 @@ export default {
     },
     data() {
         return {
-            selectedColor: 'text-mint',
-            unselectedColor: 'text-purple-600',
+            selectedColor: 'text-purple-600',
+            unselectedColor: 'text-gray-300',
             isMenuOpen: false,
             isNavOpen: true,
             menuYPos: false,

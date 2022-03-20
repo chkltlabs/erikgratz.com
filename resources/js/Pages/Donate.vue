@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row justify-center items-center">
-        <img src="storage/images/face.png"
+        <img src="storage/images/webp/face.webp"
              class="shadow rounded-full h-32 align-middle border-none transition duration-1000 transform hover:scale-150"/>
         <div class="flex flex-col justify-center items-center mt-16 md:mt-8 m-8 p-4 border border-purple-600 text-center">
             <p> Hey, no pressure, but if you like what you see here, or you use what I built, </p>
