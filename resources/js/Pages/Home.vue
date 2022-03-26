@@ -1,87 +1,64 @@
 <template>
-
-    <section class="py-10 md:py-16">
-
-        <div class="container max-w-screen-xl mx-auto px-4">
-
-<!--            <nav class="flex items-center justify-between mb-40">-->
-<!--                <img src="" alt="Logo">-->
-
-<!--                <button class="px-7 py-3 md:px-9 md:py-4 bg-white font-medium md:font-semibold text-gray-700 text-md rounded-md hover:bg-gray-700 hover:text-white transition ease-linear duration-500">Get my CV</button>-->
-<!--            </nav>-->
-
-            <div class="text-center">
-                <div class="flex justify-center mb-16">
-                    <img class="w-64 h-64 rounded-full" src="storage/images/webp/suit-up.webp" alt="Image">
+    <div>
+        <section class="py-5 md:py-8">
+            <div class="container max-w-screen-xl mx-auto px-4">
+                <div class="text-center">
+                    <div class="flex justify-center mb-16">
+                        <img class="w-64 h-64 rounded-full" src="storage/images/webp/suit-up.webp" alt="Image">
+                    </div>
+                    <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase mb-8">Erik Virgil Gratz</h6>
+                    <title-box/>
+                    <p class="font-normal text-gray-600 text-md md:text-xl mb-16">I have a passion for computers. I create solutions to modern web problems.</p>
+                    <div class="container max-w-screen-xl mx-auto px-4 my-10">
+                        <div class="text-center">
+                            <div class="flex items-center justify-center space-x-8">
+                                <a href="https://www.twitter.com/chkltlabs"
+                                   class="w-16 h-16 flex items-center justify-center rounded-full hover:bg-gray-200 transition ease-in-out duration-500">
+                                    <i class="text-gray-500 hover:text-gray-800 transition ease-in-out duration-500 fab fa-twitter"></i>
+                                </a>
+                                <a href="https://laracasts.com/@chkltlabs"
+                                   class="w-16 h-16 flex items-center justify-center rounded-full hover:bg-gray-200 transition ease-in-out duration-500">
+                                    <i class="text-gray-500 hover:text-gray-700 transition ease-in-out duration-500 fab fa-laravel"></i>
+                                </a>
+                                <a href="https://www.facebook.com/Sarcastic.Badger"
+                                   class="w-16 h-16 flex items-center justify-center rounded-full hover:bg-gray-200 transition ease-in-out duration-500">
+                                    <i class="text-gray-500 hover:text-gray-700 transition ease-in-out duration-500 fab fa-facebook"></i>
+                                </a>
+                                <a href="mailto:erikgratz110@gmail.com"
+                                   class="w-16 h-16 flex items-center justify-center rounded-full hover:bg-gray-200 transition ease-in-out duration-500">
+                                    <i class="text-gray-500 hover:text-gray-700 transition ease-in-out duration-500 fas fa-at"></i>
+                                </a>
+                                <a href="http://https://www.instagram.com/grotz110/tagged"
+                                   class="w-16 h-16 flex items-center justify-center rounded-full hover:bg-gray-200 transition ease-in-out duration-500">
+                                    <i class="text-gray-500 hover:text-gray-700 transition ease-in-out duration-500 fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://calendly.com/erikgratz/30min"
+                       class="px-7 py-3 md:px-9 md:py-4
+                       font-medium md:font-semibold
+                       bg-gray-700 text-gray-50 text-sm rounded-md
+                       hover:bg-purple-600 hover:text-white
+                       transition ease-linear duration-500">Schedule a Call</a>
                 </div>
-
-                <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase mb-8">Erik Virgil Gratz</h6>
-
-                <h1 class="font-normal text-gray-300 text-4xl md:text-7xl leading-none mb-8">Senior Backend Developer</h1>
-
-                <p class="font-normal text-gray-600 text-md md:text-xl mb-16">I have a passion for software. I enjoy creating tools that make life easier for people.</p>
-
-                <a href="#" class="px-7 py-3 md:px-9 md:py-4 font-medium md:font-semibold bg-gray-700 text-gray-50 text-sm rounded-md hover:bg-gray-50 hover:text-gray-700 transition ease-linear duration-500">Hire me</a>
             </div>
-
-        </div>
-
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--    &lt;!&ndash;        <h1 class="text-5xl h-44">{{ $page.component }}</h1>&ndash;&gt;-->
-<!--        <div id="banner-one" class="flex items-end justify-center w-full h-64 bg-mint text-black text-right">-->
-<!--            <div class="bg-kid-face bg-cover bg-no-repeat w-1/2">-->
-<!--                <div class="flex items-end justify-center w-full h-64 from-mint bg-gradient-to-l" />-->
-<!--            </div>-->
-<!--            <h1 class="ml-auto mr-4 my-auto text-4xl">Hello. I'm Erik. I love you.</h1>-->
-<!--        </div>-->
-<!--        <div id="banner-two" class="flex items-end justify-center w-full h-64 bg-black text-purple-600 text-left">-->
-<!--            <h1 class="mr-auto ml-4 my-auto text-4xl">I'm a full-stack developer. I love laravel and vue.</h1>-->
-<!--            <div class="ml-auto mr-0 bg-code-wall bg-right bg-cover bg-no-repeat w-1/2">-->
-<!--                <div class="flex h-64 from-black bg-gradient-to-r"/>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div v-if="this.useRealHomepage" id="banner-three" class="flex items-end justify-center w-full h-64 bg-purple-900 text-mint text-right">-->
-<!--            <div class="bg-bread-roses bg-cover bg-no-repeat w-1/2">-->
-<!--                <div class="flex items-end justify-center w-full h-64 from-purple-900 bg-gradient-to-l" />-->
-<!--            </div>-->
-<!--            <h1 class="ml-auto mr-4 my-auto text-4xl">I write about Socialism and Labor Rights.<br> I love workers.</h1>-->
-<!--    </div>-->
-<!--    <div v-else id="banner-three1" class="flex items-end justify-center w-full h-64 bg-purple-900 text-mint text-right">-->
-<!--        <div class="bg-amy-erik bg-cover bg-no-repeat w-1/2">-->
-<!--            <div class="flex items-end justify-center w-full h-64 from-purple-900 bg-gradient-to-l" />-->
-<!--        </div>-->
-<!--        <h1 class="ml-auto mr-4 my-auto text-4xl">I recently became a Husband.<br> I love her.</h1>-->
-<!--    </div>-->
-<!--    <div id="banner-four" class="flex items-center justify-center text-center text-gray-400 w-full  bg-black">-->
-<!--        <h1 class="m-auto py-8 px-2 text-4xl">The world is <span class="text-red-600">broken</span> right now, but it can be healed.-->
-<!--            <br>I believe that healing must start with love and understanding.-->
-<!--           <div v-if="this.useRealHomepage"> <br><br>If you have a project that increases equality or worker power that you think I would be interested in, I encourage you to leave me a note.</div>-->
-<!--            <br><br>Thank you for visiting. I love you.-->
-<!--        </h1>-->
-<!--        <br><br>-->
-<!--    </div>-->
+        </section>
+        <HomeAboutSection />
+        <HomeExperienceSection />
+    </div>
 </template>
 <script>
 
+import TitleBox from "@/Components/TitleBox";
+import HomeExperienceSection from "@/Components/HomeExperienceSection";
+import HomeAboutSection from "@/Components/HomeAboutSection";
+
 export default {
-    components: {},
-    props: ['useRealHomepage','errors', 'auth', 'canLogin', 'canRegister', 'laravelVersion', 'phpVersion', 'messages'],
+    components: {HomeAboutSection, HomeExperienceSection, TitleBox},
+    props: ['useRealHomepage', 'errors', 'auth', 'canLogin', 'canRegister', 'laravelVersion', 'phpVersion', 'messages'],
     mounted() {
     }
 }
 </script>
+

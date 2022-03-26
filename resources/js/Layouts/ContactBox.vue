@@ -8,7 +8,7 @@
         leave-to-class="transform opacity-0 scale-95"
     >
         <div
-            class="origin-top-right absolute right-0 mt-2 mx-2 w-56 rounded-md shadow-lg text-sm overflow-hidden border border-mint text-mint z-20"
+            class="origin-top-right absolute right-0 mt-2 mx-2 w-56 rounded-md shadow-lg text-sm overflow-hidden border border-purple-600 text-white z-20"
         >
             <div
                 class="rounded-md bg-black shadow-xs"
@@ -17,18 +17,18 @@
                 aria-labelledby="options-menu"
             >
                 <div>
-                    <div class="bg-mint p-4 flex items-center text-black">
+                    <div class="bg-purple-600 p-4 flex items-center text-white">
                         <div class="w-full">
                             <p class="font-semibold text-base">Erik V Gratz</p>
                             <button
                                 class="flex items-center justify-between w-full focus:outline-none"
                             >
-                                <p class="text-gray-600">chkltlabs@gmail.com</p>
+                                <p class="text-gray-300">erikgratz110@gmail.com</p>
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-mint"></div>
+                <div class="border-t border-purple-600"></div>
                 <div class="py-1">
                     <inertia-link
                         href="/donate"
@@ -58,7 +58,7 @@
                         <span> Leave a note </span>
                     </inertia-link>
                 </div>
-                <div class="border-t border-mint"></div>
+                <div class="border-t border-purple-600"></div>
                 <div class="py-1">
                     <a
                         href="http://www.github.com"
