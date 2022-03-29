@@ -6,10 +6,8 @@
 </template>
 <script>
 
-import { useRemember } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia'
 export default {
-    data(){
+    data() {
         return {
             text: "LAMP Artisan",
             textOptions: [
@@ -26,31 +24,32 @@ export default {
         async typeSentence(sentence, delay = 100) {
             const letters = sentence.split("")
             let i = this.text.length;
-            while(i < letters.length) {
+            while (i < letters.length) {
                 await this.waitForMs(delay)
                 this.text += letters[i]
                 i++
             }
         },
-        async deleteSentence(delay = 100){
-            while(this.text.length > 0){
+        async deleteSentence(delay = 100) {
+            while (this.text.length > 0) {
                 this.text = this.text.slice(0, -1)
                 await this.waitForMs(delay)
             }
         },
-        waitForMs(ms){
+        waitForMs(ms) {
             return new Promise(resolve => setTimeout(resolve, ms))
         },
-    async mounted(){
+    },
+    async mounted() {
         let i = 0
         await this.waitForMs(4000)
-        while(i < this.textOptions.length){
+        while (i < this.textOptions.length) {
             await this.deleteSentence()
             await this.waitForMs(1500)
             await this.typeSentence(this.textOptions[i])
             await this.waitForMs(4000)
             i++
-            if(i === this.textOptions.length){
+            if (i === this.textOptions.length) {
                 i = 0
             }
         }
@@ -61,10 +60,18 @@ export default {
 <style>
 
 @keyframes blink {
-    0% {opacity: 1;}
-    45% {opacity: 1;}
-    55% {opacity: 0;}
-    100% {opacity: 0;}
+    0% {
+        opacity: 1;
+    }
+    45% {
+        opacity: 1;
+    }
+    55% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 .input-cursor {
