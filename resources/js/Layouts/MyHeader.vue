@@ -57,11 +57,14 @@
                     </ul>
                     <ul class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:ml-auto md:mt-0 md:pt-0 md:border-0">
                         <li>
-                            <button class="mx-8 px-7 py-3 md:px-9 md:py-4
+                            <a href="https://docs.google.com/document/d/1Ow6s1QOBQPHEGn06V042dchp2wSQ8XfkAA4gcKqa_lg/edit?usp=sharing">
+                                <button class="mx-8 px-7 py-3 md:px-9 md:py-4
                             bg-black font-medium md:font-semibold
                             text-gray-300 text-md rounded-md
                             hover:bg-purple-600 hover:text-white
-                            transition ease-linear duration-300">Get my CV</button>
+                            transition ease-linear duration-300"
+                                >Get my CV</button>
+                            </a>
                         </li>
                         <li>
                             <img src="storage/images/webp/face.webp"
