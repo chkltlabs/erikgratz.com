@@ -53,3 +53,8 @@ Echo.channel('contacts').listen('ContactReqCreated', (e) => {
 window.Echo.connector.pusher.connection.bind('connected', (payload) => {
     app.$toast.success("Websocket Connected!")
 })
+
+Number.prototype.countDecimals = function () {
+    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+    return this.toString().split(".")[1].length || 0;
+}
