@@ -8,9 +8,9 @@
                     <h6 class="font-medium text-gray-400 text-base uppercase">Company</h6>
                     <p v-for="jerb, key in jerbs" 
                         v-bind:key="key" 
-                        class="font-semibold text-gray-600 text-base"
+                        class="font-semibold text-gray-300 text-base"
                         >{{jerb.company}}
-                        <span class="font-normal text-gray-300">/ {{jerb.location}}</span>
+                        <span class="font-normal text-gray-400"> / {{jerb.location}}</span>
                     </p>
                     <!-- <p class="font-semibold text-gray-600 text-base">Pocketnest
                         <span class="font-normal text-gray-300">/ Detroit, MI -> Fully Remote</span>
@@ -44,10 +44,10 @@
                     <p v-for="jerb, key in jerbs" 
                         v-bind:key="key"
                         class="font-semibold text-gray-300 text-base">{{jerb.company}}
-                        <span class="font-normal text-gray-500">/ {{jerb.location}} </span>
+                        <span class="font-normal text-gray-400"> / {{jerb.location}} </span>
                         <br class="md:hidden"/>
-                        <span class="font-normal text-gray-300">/ {{jerb.title}} </span>
-                        <span class="font-normal text-gray-500">/ {{jerb.timeframe}}</span>
+                        <span class="font-normal text-gray-400"> / {{jerb.title}} </span>
+                        <span class="font-normal text-gray-400"> / {{jerb.timeframe}}</span>
                     </p>
                 </div>
             </div>
