@@ -4,7 +4,7 @@
             <div class="container max-w-screen-xl mx-auto px-4">
                 <div class="text-center">
                     <div class="flex justify-center mb-16">
-                        <img class="w-64 h-64 rounded-full" src="storage/images/webp/suit-up.webp" alt="Image">
+                        <img class="w-64 h-64 rounded-full" :src="heroImage" alt="Image">
                     </div>
                     <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase mb-8">Erik Virgil Gratz</h6>
                     <title-box/>
@@ -57,6 +57,11 @@ import HomeAboutSection from "@/Components/HomeAboutSection";
 export default {
     components: {HomeAboutSection, HomeExperienceSection, TitleBox},
     props: ['useRealHomepage', 'errors', 'auth', 'canLogin', 'canRegister', 'laravelVersion', 'phpVersion', 'messages'],
+    data(){
+        return {
+            heroImage: 'storage/images/webp/suit-up.webp',
+        }
+    },
     mounted() {
     }
 }
