@@ -1,4 +1,5 @@
 <?php
+
 return [
     [
         'imgUrl' => '/storage/images/webp/bingo-cli.webp',

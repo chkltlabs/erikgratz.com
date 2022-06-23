@@ -20,5 +20,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('contacts', \App\Http\Controllers\ContactApiController::class);
 Route::apiResource('friendRecs', \App\Http\Controllers\FriendPlaceRecommendationController::class);
-
-

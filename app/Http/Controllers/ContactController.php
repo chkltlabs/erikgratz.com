@@ -32,6 +32,7 @@ class ContactController extends Controller
     public function store(ContactStoreRequest $request)
     {
         Contact::create($request->validated());
+
         return Redirect::back()->with('success', 'contact request sent!')->setStatusCode(303);
     }
 
@@ -67,6 +68,7 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
+
         return Redirect::route('contacts.index')->setStatusCode(303);
     }
 }

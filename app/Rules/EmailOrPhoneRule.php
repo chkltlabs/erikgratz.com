@@ -27,11 +27,11 @@ class EmailOrPhoneRule implements Rule
     public function passes($attribute, $value)
     {
         //must be an email...
-        return (!Validator::make([$attribute => $value],[
+        return (! Validator::make([$attribute => $value], [
             $attribute => 'required|email',
-            ])->fails())
+        ])->fails())
             // ...or phone
-            || (!Validator::make([$attribute => $value],[
+            || (! Validator::make([$attribute => $value], [
                 $attribute => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             ])->fails());
     }

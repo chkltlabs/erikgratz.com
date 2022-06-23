@@ -82,6 +82,7 @@ class ContactApiController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
+
         return Redirect::route('contacts.index')->setStatusCode(303);
     }
 }
