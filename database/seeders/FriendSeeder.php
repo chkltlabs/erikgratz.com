@@ -38,7 +38,7 @@ class FriendSeeder extends Seeder
                 'latitude' => 32.7157,
                 'longitude' => -117.1611,
             ],
-            'color' => '#9d384b'
+            'color' => '#9d384b',
         ]);
     }
 }

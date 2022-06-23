@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Foundation\Application;
 
 class InertiaPageController extends Controller
 {
@@ -47,8 +47,9 @@ class InertiaPageController extends Controller
         $imageUrls = array_map(function ($i) {
             return \Illuminate\Support\Facades\Storage::url($i);
         }, $files);
+
         return Inertia::render('Wedding', [
-            'images' => $imageUrls
+            'images' => $imageUrls,
         ]);
     }
 
@@ -63,7 +64,7 @@ class InertiaPageController extends Controller
     public function getPortfolio()
     {
         return Inertia::render('Portfolio', [
-            'portfolioThings' => config('portfolio')
+            'portfolioThings' => config('portfolio'),
         ]);
     }
 
