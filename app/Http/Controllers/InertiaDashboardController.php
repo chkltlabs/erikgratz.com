@@ -32,10 +32,11 @@ class InertiaDashboardController extends Controller
         }
         $tags = array_unique($tags);
         $tags = array_combine(array_values($tags), array_values($tags));
+
         return Inertia::render('BlogEdit', [
             'BlogPost' => \App\Models\BlogPost::with('author')->find($blog_post_id),
             'mode' => 'edit',
-            'multiOptions' => $tags
+            'multiOptions' => $tags,
         ]);
     }
 
@@ -43,8 +44,10 @@ class InertiaDashboardController extends Controller
     {
         if ($blog_post_id == $request->get('id')) {
             $post = \App\Models\BlogPost::find($blog_post_id)->update($request->all());
+
             return redirect('/blog/listing')->with('success', 'BlogPost saved!');
         }
+
         return redirect()->back()->with('error', 'Post not saved! ID Mismatch!');
     }
 
@@ -59,6 +62,7 @@ class InertiaDashboardController extends Controller
     public function postBlogNew(Request $request)
     {
         \App\Models\BlogPost::create($request->all());
+
         return redirect('/blog/listing')->with('success', 'BlogPost saved!');
     }
 }

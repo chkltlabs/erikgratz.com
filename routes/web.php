@@ -14,7 +14,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-$exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', [] );
+$exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
 //echo $exitCode; // 0 exit code for no errors.
 
 Route::get('/', 'InertiaPageController@getIndex')->name('home');
@@ -27,7 +27,7 @@ Route::get('/contact', 'InertiaPageController@getContact')->name('contact');
 
 Route::get('/wedding', 'InertiaPageController@getWedding');
 
-Route::resource('contacts', \App\Http\Controllers\ContactController::class)->except('update','delete');
+Route::resource('contacts', \App\Http\Controllers\ContactController::class)->except('update', 'delete');
 
 Route::get('/blog', 'InertiaPageController@getBlog');
 
@@ -35,8 +35,7 @@ Route::get('/portfolio', 'InertiaPageController@getPortfolio');
 
 Route::get('/donate', 'InertiaPageController@getDonate');
 
-Route::middleware(['auth', 'verified'])->group(function (){
-
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only('update', 'delete');
 
     Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard');
@@ -50,8 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::get('/blog/new', 'InertiaDashboardController@getBlogNew');
 
     Route::post('/blog/new', 'InertiaDashboardController@postBlogNew');
-
 });
-
 
 require __DIR__.'/auth.php';

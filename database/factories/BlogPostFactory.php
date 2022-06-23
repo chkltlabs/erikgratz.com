@@ -29,7 +29,7 @@ class BlogPostFactory extends Factory
             'subtitle' => $this->faker->bs,
             'body' => $this->faker->bs,
             'is_public' => $this->faker->boolean,
-            'tags' => [$this->faker->word,$this->faker->word,$this->faker->word,$this->faker->word,]
+            'tags' => [$this->faker->word, $this->faker->word, $this->faker->word, $this->faker->word],
         ];
     }
 }

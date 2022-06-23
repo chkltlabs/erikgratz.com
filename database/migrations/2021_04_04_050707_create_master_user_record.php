@@ -19,7 +19,7 @@ class CreateMasterUserRecord extends Migration
             'name' => 'Erik G',
             'email' => 'erik@erikgratz.com',
             'password' => Hash::make(env('MASTER_PASSWORD')),
-            'imageUrl' => 'storage/images/webp/face.webp'
+            'imageUrl' => 'storage/images/webp/face.webp',
         ]);
     }
 
