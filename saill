@@ -30,7 +30,7 @@ fi
 
 # Function that prints the available commands...
 function display_help {
-    echo "Laravel Sail"
+    echo "Laravel Saillllllllll"
     echo
     echo "${YELLOW}Usage:${NC}" >&2
     echo "  sail COMMAND [options] [arguments]"
