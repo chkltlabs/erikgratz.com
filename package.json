@@ -34,7 +34,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-brands-svg-icons": "^5.15.3",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
-        "@fortawesome/vue-fontawesome": "^2.0.6",
+        "@fortawesome/vue-fontawesome": "^3.0.1",
         "@meforma/vue-toaster": "^1.2.2",
         "@tailwindcss/typography": "^0.4.0",
         "@tiptap/starter-kit": "^2.0.0-beta.82",
@@ -52,7 +52,6 @@
         "vue-gallery-slideshow": "^1.5.2",
         "vue-google-charts": "^0.3.3",
         "vue-masonry-gallery": "^1.1.1",
-        "vue-tailwind": "^2.2.1",
         "vue3-charts": "^1.1.28",
         "vue3-click-away": "^1.2.1",
         "vuex": "^4.0.0"
