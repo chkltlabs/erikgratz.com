@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contact;
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ContactSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +15,7 @@ class ContactSeeder extends Seeder
      */
     public function run()
     {
-        Contact::truncate();
-        Contact::factory()
-            ->count(10)
-            ->create();
+        User::truncate();
+        User::factory(3)->create();
     }
 }

@@ -24,7 +24,7 @@ class ContactFactory extends Factory
         return [
             'contact' => $this->faker->phoneNumber,
             'name' => $this->faker->name,
-            'message' => $this->faker->text,
+            'message' => $this->faker->bs(),
         ];
     }
 }

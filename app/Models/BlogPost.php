@@ -54,6 +54,6 @@ class BlogPost extends Model
     //relations
     public function author()
     {
-        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

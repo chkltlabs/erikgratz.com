@@ -24,7 +24,7 @@ let app = createApp({
             resolveComponent: name => import(`./Pages/${name}`)
                 .then(({default: page}) => {
                     if (page.layout === undefined) {
-                        console.log(page)
+                        // console.log(page)
                         if (page.components && !Object.keys(page.components)
                             .includes('BreezeAuthenticatedLayout')){
                             page.layout = Headers

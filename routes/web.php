@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,7 +28,8 @@ Route::get('/contact', 'InertiaPageController@getContact')->name('contact');
 
 Route::get('/wedding', 'InertiaPageController@getWedding');
 
-Route::resource('contacts', \App\Http\Controllers\ContactController::class)->except('update', 'delete');
+Route::resource('contacts', ContactController::class)
+        ->except('update', 'destroy');
 
 Route::get('/blog', 'InertiaPageController@getBlog');
 
@@ -36,7 +38,10 @@ Route::get('/portfolio', 'InertiaPageController@getPortfolio');
 Route::get('/donate', 'InertiaPageController@getDonate');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only('update', 'delete');
+    Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only(
+        //'update', 
+        'destroy'
+    );
 
     Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard');
 
