@@ -15,74 +15,78 @@ class ContactApiController extends Controller
      */
     public function index()
     {
-        return response(Contact::all()->toJson(JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Contact $contact)
-    {
-        //
+        return response()->json(Contact::all()->toArray());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Contact  $contact
+     * @param  int $contact_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Contact $contact)
+    public function destroy($contact_id)
     {
-        $contact->delete();
+        $contact = Contact::findOrFail($contact_id);
+        
+        $contact->deleteOrFail();
 
-        return Redirect::route('contacts.index')->setStatusCode(303);
+        return response(null, 204);
     }
+
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  int $contact_id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show($contact_id)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int $contact_id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit(Contact $contact_id)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \App\Models\Contact  $contact
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, Contact $contact)
+    // {
+    //     //
+    // }
+
+
 }

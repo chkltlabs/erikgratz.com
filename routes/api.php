@@ -18,5 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('contacts', \App\Http\Controllers\ContactApiController::class);
-Route::apiResource('friendRecs', \App\Http\Controllers\FriendPlaceRecommendationController::class);
+Route::apiResource('contactapi', \App\Http\Controllers\ContactApiController::class)->except('update','edit','show','store','create');
