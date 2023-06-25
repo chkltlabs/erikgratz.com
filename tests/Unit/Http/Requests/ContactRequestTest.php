@@ -17,11 +17,11 @@ beforeEach(function () {
 test('authorize', function () {
     $actual = $this->subject->authorize();
 
-    $this->assertFalse($actual);
+    expect($actual)->toBeFalse();
 });
 
 test('rules', function () {
     $actual = $this->subject->rules();
 
-    $this->assertEquals([], $actual);
+    expect($actual)->toEqual([]);
 });

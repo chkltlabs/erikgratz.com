@@ -17,7 +17,7 @@ beforeEach(function () {
 test('authorize', function () {
     $actual = $this->subject->authorize();
 
-    $this->assertTrue($actual);
+    expect($actual)->toBeTrue();
 });
 
 test('rules', function () {
