@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
-uses(TestCase::class);
 
 test('200 response', function () {
     $res = $this->json('GET', 'api/contactapi');
