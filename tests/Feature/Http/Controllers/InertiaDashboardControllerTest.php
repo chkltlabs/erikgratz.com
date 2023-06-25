@@ -63,7 +63,9 @@ class InertiaDashboardControllerTest extends TestCase
         $this->actingAs($user);
         $response = $this->get(route('dashboard'));
 
-        $response->assertOk();
+        // $response->assertOk();
+        // 2023-06-24 : Filament replaces breeze dashboard
+        $response->assertRedirectToRoute('filament.pages.dashboard');
 
     }
 

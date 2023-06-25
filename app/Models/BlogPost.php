@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -12,11 +13,18 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'user_id', 'posted', 'edited', 'subtitle', 'body', 'is_public', 'tags'];
+    protected $fillable = [
+        'title', 'user_id', 'posted', 
+        'edited', 'subtitle', 'body', 
+        'is_public', 'tags', 'imageUrl'
+    ];
 
-    protected $dates = ['posted', 'edited'];
-
-    protected $casts = ['is_public' => 'bool', 'tags' => AsArrayObject::class];
+    protected $casts = [
+        'posted' => 'datetime:Y-m-d H:i:s',
+        'edited' => 'datetime:Y-m-d H:i:s',
+        'is_public' => 'bool', 
+        'tags' => 'array',
+    ];
 
     const NOT_POSTED = 'not posted';
 
@@ -35,14 +43,24 @@ class BlogPost extends Model
     }
 
     //accessors & mutators
-    public function getPostedAttribute($value)
+    public function getPostedForHumansAttribute(): Attribute
     {
-        return $value !== null ? Carbon::parse($value)->diffForHumans(Carbon::now()).' now' : self::NOT_POSTED;
+        return Attribute::make(get: 
+            fn () => 
+                $this->posted !== null 
+                    ? $this->posted->diffForHumans(Carbon::now()).' now' 
+                    : self::NOT_EDITED
+        );
     }
 
-    public function getEditedAttribute($value)
+    public function getEditedForHumansAttribute(): Attribute
     {
-        return $value !== null ? Carbon::parse($value)->diffForHumans(Carbon::now()).' now' : self::NOT_EDITED;
+        return Attribute::make(get: 
+            fn () => 
+                $this->edited !== null 
+                    ? $this->edited->diffForHumans(Carbon::now()).' now' 
+                    : self::NOT_EDITED
+        );
     }
 
     //scopes

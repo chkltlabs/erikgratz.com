@@ -23,7 +23,6 @@ class BlogPostSeeder extends Seeder
         foreach($allExistingUsers as $user){
             $rtn[] = ['user_id' => $user->id];
         }
-        var_dump(...$rtn);
         BlogPost::factory(35)
             ->state(new Sequence(...$rtn))
             ->create()

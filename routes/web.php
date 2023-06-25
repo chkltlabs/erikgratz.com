@@ -43,7 +43,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'destroy'
     );
 
-    Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard');
+    // 2023-06-24 : Filament dashboard replaces breeze
+    Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard')
+        // ->redirect(route('filament.pages.dashboard'))
+        ;
 
     Route::get('/blog/listing', 'InertiaDashboardController@getBlogListing')->name('posts');
 

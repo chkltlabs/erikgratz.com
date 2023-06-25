@@ -12,6 +12,12 @@ module.exports = {
     theme: {
         colors: colors,
         extend: {
+            colors: {
+                danger: colors.rose,
+                primary: colors.blue,
+                success: colors.green,
+                warning: colors.yellow,
+            },
             typography: (theme) => ({
                 dark: {
                     css: {
@@ -96,6 +102,11 @@ module.exports = {
             typography: ['dark', 'responsive'],
         },
     },
+
+    content: [
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php', 
+    ],
 
     plugins: [
         require('@tailwindcss/forms'),
