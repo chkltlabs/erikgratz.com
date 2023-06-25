@@ -1,69 +1,49 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Auth;
-
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+uses(TestCase::class);
+
 /**
  * @see \App\Http\Controllers\Auth\AuthenticatedSessionController
  */
-class AuthenticatedSessionControllerTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function create_returns_an_ok_response()
-    {
-        $response = $this->get(route('login'));
 
-        $response->assertOk();
+test('create returns an ok response', function () {
+    $response = $this->get(route('login'));
 
-        // TODO: perform additional assertions
-    }
+    $response->assertOk();
 
-    /**
-     * @test
-     */
-    public function destroy_returns_an_ok_response()
-    {
+    // TODO: perform additional assertions
+});
 
-        $response = $this->post(route('logout'), [
-            // TODO: send request data
-        ]);
+test('destroy returns an ok response', function () {
 
-        $response->assertRedirect('/login');
+    $response = $this->post(route('logout'), [
+        // TODO: send request data
+    ]);
 
-        // TODO: perform additional assertions
-    }
+    $response->assertRedirect('/login');
 
-    /**
-     * @test
-     */
-    public function store_returns_an_ok_response()
-    {
-        $response = $this->post('login', [
-            // TODO: send request data
-        ]);
-        
-        $response->assertRedirect();
+    // TODO: perform additional assertions
+});
 
-        // TODO: perform additional assertions
-    }
+test('store returns an ok response', function () {
+    $response = $this->post('login', [
+        // TODO: send request data
+    ]);
+    
+    $response->assertRedirect();
 
-    /**
-     * @test
-     */
-    public function store_validates_with_a_form_request()
-    {
-        $this->assertActionUsesFormRequest(
-            \App\Http\Controllers\Auth\AuthenticatedSessionController::class,
-            'store',
-            \App\Http\Requests\Auth\LoginRequest::class
-        );
-    }
+    // TODO: perform additional assertions
+});
 
-    // test cases...
-}
+test('store validates with a form request', function () {
+    $this->assertActionUsesFormRequest(
+        \App\Http\Controllers\Auth\AuthenticatedSessionController::class,
+        'store',
+        \App\Http\Requests\Auth\LoginRequest::class
+    );
+});
