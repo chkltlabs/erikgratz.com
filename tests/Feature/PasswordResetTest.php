@@ -5,12 +5,8 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 
-uses(RefreshDatabase::class);
-
 test('reset password link screen can be rendered', function () {
-    $response = $this->get('/forgot-password');
-
-    $response->assertStatus(200);
+    $this->get('/forgot-password')->assertStatus(200);
 });
 
 test('reset password link can be requested', function () {
@@ -31,9 +27,8 @@ test('reset password screen can be rendered', function () {
     $this->post('/forgot-password', ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-        $response = $this->get('/reset-password/'.$notification->token);
-
-        $response->assertStatus(200);
+        $this->get('/reset-password/'.$notification->token)
+        ->assertStatus(200);
 
         return true;
     });

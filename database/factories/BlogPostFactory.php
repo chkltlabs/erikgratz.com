@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\BlogPost;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Auth;
 
 class BlogPostFactory extends Factory
 {
@@ -24,7 +25,7 @@ class BlogPostFactory extends Factory
     {
         return [
             'title' => $this->faker->bs,
-            'user_id' => User::factory(),
+            'user_id' => Auth::user()?->id ?? User::factory(),
             'posted' => now(),
             'edited' => now(),
             'subtitle' => $this->faker->bs,

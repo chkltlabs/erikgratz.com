@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BlogPostResource\Pages;
-use App\Filament\Resources\BlogPostResource\RelationManagers;
 use App\Models\BlogPost;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BlogPostResource extends Resource
 {
@@ -27,6 +24,8 @@ class BlogPostResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('user_id')
+                    ->disabledOn('edit')
+                    ->hiddenOn('create')
                     ->required(),
                 Forms\Components\DateTimePicker::make('posted'),
                 Forms\Components\DateTimePicker::make('edited'),
@@ -47,7 +46,7 @@ class BlogPostResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('user_id'),
+                Tables\Columns\TextColumn::make('author.name'),
                 Tables\Columns\TextColumn::make('posted')->dateTime(),
                 Tables\Columns\TextColumn::make('edited')->dateTime(),
                 Tables\Columns\TextColumn::make('subtitle'),
