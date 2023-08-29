@@ -1,48 +1,28 @@
 <?php
 
-namespace Tests\Unit\Http\Requests\Auth;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
+uses(TestCase::class);
 
 /**
  * @see \App\Http\Requests\Auth\LoginRequest
  */
-class LoginRequestTest extends TestCase
-{
-    /** @var \App\Http\Requests\Auth\LoginRequest */
-    private $subject;
+beforeEach(function () {
+    $this->subject = new \App\Http\Requests\Auth\LoginRequest();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
 
-        $this->subject = new \App\Http\Requests\Auth\LoginRequest();
-    }
+test('authorize', function () {
+    $actual = $this->subject->authorize();
 
-    /**
-     * @test
-     */
-    public function authorize()
-    {
-        $actual = $this->subject->authorize();
+    expect($actual)->toBeTrue();
+});
 
-        $this->assertTrue($actual);
-    }
+test('rules', function () {
+    $actual = $this->subject->rules();
 
-    /**
-     * @test
-     */
-    public function rules()
-    {
-        $actual = $this->subject->rules();
-
-        $this->assertValidationRules([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ], $actual);
-    }
-
-    // test cases...
-}
+    $this->assertValidationRules([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ], $actual);
+});

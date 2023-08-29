@@ -1,45 +1,25 @@
 <?php
 
-namespace Tests\Unit\Http\Requests;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
+uses(TestCase::class);
 
 /**
  * @see \App\Http\Requests\ContactRequest
  */
-class ContactRequestTest extends TestCase
-{
-    /** @var \App\Http\Requests\ContactRequest */
-    private $subject;
+beforeEach(function () {
+    $this->subject = new \App\Http\Requests\ContactRequest();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
 
-        $this->subject = new \App\Http\Requests\ContactRequest();
-    }
+test('authorize', function () {
+    $actual = $this->subject->authorize();
 
-    /**
-     * @test
-     */
-    public function authorize()
-    {
-        $actual = $this->subject->authorize();
+    expect($actual)->toBeFalse();
+});
 
-        $this->assertFalse($actual);
-    }
+test('rules', function () {
+    $actual = $this->subject->rules();
 
-    /**
-     * @test
-     */
-    public function rules()
-    {
-        $actual = $this->subject->rules();
-
-        $this->assertEquals([], $actual);
-    }
-
-    // test cases...
-}
+    expect($actual)->toEqual([]);
+});
