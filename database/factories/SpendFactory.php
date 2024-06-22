@@ -13,7 +13,7 @@ class SpendFactory extends Factory
     public function definition(): array
     {
         return [
-            'spend_on' => Carbon::now(),
+            'spend_for' => Carbon::now(),
             'spend_at' => Carbon::now(),
             'name' => $this->faker->name(),
             'amount' => $this->faker->randomFloat(),
@@ -23,4 +23,6 @@ class SpendFactory extends Factory
             'updated_at' => Carbon::now(),
         ];
     }
+
+
 }

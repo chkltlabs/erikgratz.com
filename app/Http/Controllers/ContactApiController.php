@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 class ContactApiController extends Controller
 {
@@ -21,13 +20,13 @@ class ContactApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $contact_id
+     * @param  int  $contact_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($contact_id)
     {
         $contact = Contact::findOrFail($contact_id);
-        
+
         $contact->deleteOrFail();
 
         return response(null, 204);
@@ -87,6 +86,5 @@ class ContactApiController extends Controller
     // {
     //     //
     // }
-
 
 }

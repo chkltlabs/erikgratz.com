@@ -3,7 +3,6 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -38,7 +37,7 @@ class ContactApiControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonStructure([
             // TODO: compare expected response data
-            '*'=>['id','created_at','updated_at','contact','name','message','ab_message']
+            '*' => ['id', 'created_at', 'updated_at', 'contact', 'name', 'message', 'ab_message'],
         ]);
 
         // TODO: perform additional assertions

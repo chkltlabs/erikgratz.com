@@ -4,8 +4,6 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\BlogPost;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -13,7 +11,6 @@ use Tests\TestCase;
  */
 class InertiaDashboardControllerTest extends TestCase
 {
-
     /**
      * @test
      */
@@ -65,7 +62,7 @@ class InertiaDashboardControllerTest extends TestCase
 
         // $response->assertOk();
         // 2023-06-24 : Filament replaces breeze dashboard
-        $response->assertRedirectToRoute('filament.pages.dashboard');
+        $response->assertRedirectToRoute('filament.admin.pages.dashboard');
 
     }
 
@@ -73,7 +70,7 @@ class InertiaDashboardControllerTest extends TestCase
      * @test
      */
     public function post_blog_edit_returns_an_ok_response()
-    {   
+    {
         $user = User::whereHas('blogPosts')->first() ?? User::factory()->has(BlogPost::factory()->count(3))->create();
         $this->actingAs($user);
         $blogPost = $user->blogPosts->random();
@@ -106,7 +103,7 @@ class InertiaDashboardControllerTest extends TestCase
             'subtitle' => 'spoodily',
             'body' => 'The quick brown fox jumps over the lazy dog.',
             'is_public' => false,
-            'tags' => ['foo','bar'],
+            'tags' => ['foo', 'bar'],
         ]);
         $response->assertRedirect('/blog/listing');
         $this->assertDatabaseHas('blog_posts', [

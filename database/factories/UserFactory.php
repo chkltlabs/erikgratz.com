@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -43,5 +44,22 @@ class UserFactory extends Factory
                 'email_verified_at' => null,
             ];
         });
+    }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function root()
+    {
+        $returnArr = app()->environment('local') ? [
+            'name' => 'Bossman',
+            'email' => 'erik@erikgratz.com',
+            'password' => Hash::make('15Characters!!!'),
+        ] : [
+            //This array intentionally empty to stop root user being created in non-local
+        ] ;
+        return $this->state(fn (array $attrs) => $returnArr);
     }
 }

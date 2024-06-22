@@ -3,7 +3,6 @@
 use App\Http\Controllers\ContactController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +28,7 @@ Route::get('/contact', 'InertiaPageController@getContact')->name('contact');
 Route::get('/wedding', 'InertiaPageController@getWedding');
 
 Route::resource('contacts', ContactController::class)
-        ->except('update', 'destroy');
+    ->except('update', 'destroy');
 
 Route::get('/blog', 'InertiaPageController@getBlog');
 
@@ -39,14 +38,13 @@ Route::get('/donate', 'InertiaPageController@getDonate');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only(
-        //'update', 
+        //'update',
         'destroy'
     );
 
     // 2023-06-24 : Filament dashboard replaces breeze
-    Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard')
-        // ->redirect(route('filament.pages.dashboard'))
-        ;
+    Route::get('/dashboard', 'InertiaDashboardController@getDashboard')->name('dashboard');
+    // ->redirect(route('filament.admin.pages.dashboard'))
 
     Route::get('/blog/listing', 'InertiaDashboardController@getBlogListing')->name('posts');
 

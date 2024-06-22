@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('spends', function (Blueprint $table) {
             $table->id();
-            $table->date('spend_on');
+            $table->date('spend_for');
             $table->date('spend_at');
             $table->tinyText('name');
             $table->double('amount');
             $table->tinytext('type');
             $table->tinyText('subtype')
                 ->nullable();
-            $table->string('month_on')
-                ->storedAs('DATE_FORMAT(spend_on, "%M")');
+            $table->string('month_for')
+                ->storedAs('DATE_FORMAT(spend_for, "%M")');
             $table->string('month_at')
                 ->storedAs('DATE_FORMAT(spend_at, "%M")');
             $table->timestamps();

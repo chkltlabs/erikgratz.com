@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers\Auth;
 
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -47,7 +44,7 @@ class AuthenticatedSessionControllerTest extends TestCase
         $response = $this->post('login', [
             // TODO: send request data
         ]);
-        
+
         $response->assertRedirect();
 
         // TODO: perform additional assertions

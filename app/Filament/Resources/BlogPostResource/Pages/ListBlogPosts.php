@@ -10,7 +10,7 @@ class ListBlogPosts extends ListRecords
 {
     protected static string $resource = BlogPostResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

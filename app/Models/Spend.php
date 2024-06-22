@@ -10,18 +10,17 @@ class Spend extends Model
     use HasFactory;
 
     protected $fillable = [
-        'spend_on',
+        'spend_for',
         'spend_at',
         'name',
         'amount',
         'type',
-	    'subtype',
+        'subtype',
     ];
 
-    protected $casts = [
-        'type' => '',
-        'subtype' => ''
-    ];
-
+    //    protected $casts = [
+    //        'type' => '',
+    //        'subtype' => ''
+    //    ];
 
 }

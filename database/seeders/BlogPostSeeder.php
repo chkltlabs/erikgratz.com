@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\BlogPost;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
@@ -20,12 +19,11 @@ class BlogPostSeeder extends Seeder
         BlogPost::truncate();
         $allExistingUsers = User::all('id');
         $rtn = [];
-        foreach($allExistingUsers as $user){
+        foreach ($allExistingUsers as $user) {
             $rtn[] = ['user_id' => $user->id];
         }
         BlogPost::factory(35)
             ->state(new Sequence(...$rtn))
-            ->create()
-            ;
+            ->create();
     }
 }

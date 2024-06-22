@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Events\ContactReqCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class Contact extends Model
 {

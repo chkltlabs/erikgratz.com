@@ -3,10 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Redirect;
 use Tests\TestCase;
 
 /**
@@ -68,7 +65,7 @@ class ContactControllerTest extends TestCase
         $data = [
             'contact' => 'spoot@benis.fart',
             'name' => 'Dr. Spoot',
-            'message' => 'Spoodleedeeee'
+            'message' => 'Spoodleedeeee',
         ];
         $response = $this->post(route('contacts.store'), $data);
 
