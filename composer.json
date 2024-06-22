@@ -21,6 +21,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
         "fakerphp/faker": "^1.9.1",
+        "filament/upgrade": "^3.2",
         "jasonmccreary/laravel-test-assertions": "^2.0",
         "laravel-shift/factory-generator": "dev-master",
         "laravel/breeze": "^1.1",
@@ -63,7 +64,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
