@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Activity;
 use App\Models\Spend;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(BlogPostSeeder::class);
         $this->callSilent(ContactSeeder::class);
-        Spend::factory(4)->create();
+        Activity::factory(4)->create();
         // $this->call(FriendSeeder::class);
         // $this->call(FriendPlaceRecommendationSeeder::class);
     }

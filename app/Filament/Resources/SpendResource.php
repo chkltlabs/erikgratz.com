@@ -2,11 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\SpendSubtype;
+use App\Enums\SpendType;
 use App\Filament\Resources;
 use App\Models\Spend;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -25,9 +28,20 @@ class SpendResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function formSchema(): array
+    const AT_TOOLTIP = 'The time period the spend occurs';
+    const FOR_TOOLTIP = 'The time period the spend is useful for';
+    public static function formSchema($includeActivity = false): array
     {
+        $activity = $includeActivity
+            ? [
+                Select::make('activity_id')
+                    ->relationship('activity')
+            ]
+            : [
+                //intentionally blank
+            ];
         return [
+            ...$activity,
             TextInput::make('name')
                 ->required(),
 
@@ -35,16 +49,32 @@ class SpendResource extends Resource
                 ->required()
                 ->numeric(),
 
-            TextInput::make('type')
+            Select::make('type')
+                ->options(SpendType::asSelectArray())
+                ->afterStateUpdated(
+                    function (?string $state, $get, $set) {
+                        if (!in_array($get('subtype'),
+                            SpendSubtype::getFilteredSet($state)) ){
+                            $set('subtype', null);
+                        }
+                    })
+                ->reactive()
                 ->required(),
 
-            TextInput::make('subtype'),
+            Select::make('subtype')
+                ->options(
+                    fn ($get) => SpendSubtype::getFilteredSet($get('type'))
+                )
+                ->reactive()
+                ->required(),
             Toggle::make('is_income'),
             DatePicker::make('spend_for')
-                ->label('Spend Month'),
+                ->label('Spend Month')
+                ->hint(self::FOR_TOOLTIP),
 
             DatePicker::make('spend_at')
-                ->label('Spend Date'),
+                ->label('Spend Date')
+                ->hint(self::AT_TOOLTIP),
 
             Placeholder::make('created_at')
                 ->label('Created Date')
@@ -56,38 +86,51 @@ class SpendResource extends Resource
         ];
     }
 
-    public static function form(Form $form): Form
+    public static function tableSchema($includeActivity = false)
     {
-        return $form->schema(self::formSchema());
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table->columns([
-            //            TextColumn::make('spend_for')
-            //                ->date(),
-            //
-            //            TextColumn::make('spend_at')
-            //                ->label('Spend Date')
-            //                ->date(),
-
+        $activity = $includeActivity
+            ? [
+                TextColumn::make('activity.name'),
+            ]
+            : [
+                //intentionally blank
+            ];
+        return [
+            ...$activity,
             TextColumn::make('name')
                 ->searchable()
                 ->sortable()
                 ->action(EditAction::make()),
 
-            TextColumn::make('amount')->action(EditAction::make()),
+            TextColumn::make('amount')
+                ->action(EditAction::make()),
 
-            TextColumn::make('type')->action(EditAction::make()),
+            TextColumn::make('type')
+                ->action(EditAction::make()),
 
-            TextColumn::make('subtype')->action(EditAction::make()),
+            TextColumn::make('subtype')
+                ->action(EditAction::make()),
 
-            TextColumn::make('month_for')->description('The time period the spend is useful for'),
+            TextColumn::make('month_for')
+                ->tooltip(self::FOR_TOOLTIP),
 
-            TextColumn::make('month_at')->label('Month Spent'),
-        ])->headerActions([
-            CreateAction::make()->form(self::formSchema()),
-        ]);
+            TextColumn::make('month_at')
+                ->label('Month Spent')
+                ->tooltip(self::AT_TOOLTIP),
+        ];
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form->schema(self::formSchema(true));
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns(self::tableSchema(true))
+            ->headerActions([
+                CreateAction::make()->form(self::formSchema(true)),
+            ]);
     }
 
     public static function getPages(): array

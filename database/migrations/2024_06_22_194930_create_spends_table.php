@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('spend_at');
             $table->tinyText('name');
             $table->double('amount');
+            $table->boolean('is_income')->default(false);
             $table->tinytext('type');
             $table->tinyText('subtype')
                 ->nullable();
@@ -26,6 +27,11 @@ return new class extends Migration
                 ->storedAs('DATE_FORMAT(spend_for, "%M")');
             $table->string('month_at')
                 ->storedAs('DATE_FORMAT(spend_at, "%M")');
+            $table->unsignedBigInteger('activity_id')->nullable();
+            $table->foreign('activity_id')
+                ->references('id')
+                ->on('activities')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
