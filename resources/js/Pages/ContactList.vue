@@ -75,8 +75,8 @@
     </breeze-authenticated-layout>
 </template>
 <script>
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated'
-import { Inertia } from '@inertiajs/inertia'
+import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
+import { router as Inertia } from '@inertiajs/vue3'
 
 export default {
     components: {

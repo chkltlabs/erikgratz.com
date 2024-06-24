@@ -188,8 +188,8 @@
 
 <script>
 
-import Button from "@/Components/Button";
-import BlogPostFull from "@/Components/BlogPostFull";
+import Button from "@/Components/Button.vue";
+import BlogPostFull from "@/Components/BlogPostFull.vue";
 export default {
     components: {BlogPostFull, Button},
     methods: {

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-$exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
+//$exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
 //echo $exitCode; // 0 exit code for no errors.
 
 Route::get('/', 'InertiaPageController@getIndex')->name('home');

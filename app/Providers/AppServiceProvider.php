@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Foundation\Mix;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        FilamentAsset::register([
+            Js::make('chart-js-plugins', __DIR__ . '/../../public/js/filament-chart-plugins.js')->module(),
+        ]);
     }
 }

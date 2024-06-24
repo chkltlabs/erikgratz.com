@@ -44,9 +44,9 @@
     </div>
 </template>
 <script>
-import QRCodeElement from '../Components/QRCodeElement'
-import SocialButton from "@/Components/SocialButton";
-import CharityButton from "@/Components/CharityButton";
+import QRCodeElement from '../Components/QRCodeElement.vue'
+import SocialButton from "@/Components/SocialButton.vue";
+import CharityButton from "@/Components/CharityButton.vue";
 
 export default {
     components: {CharityButton, SocialButton, QRCodeElement},

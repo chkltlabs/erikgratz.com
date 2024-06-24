@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 <div class="flex-col">
-                    <img src="storage/images/webp/face.webp"
+                    <img :src="this.imgUrl"
                          alt="..."
                          class="ring-mint shadow rounded-full h-12 align-middle border-none transition duration-1000 transform hover:scale-150"
                          v-on:click="toggleContactMenu"
@@ -86,15 +86,16 @@
 </template>
 <script>
 
-import ContactBox from "@/Layouts/ContactBox"
-import Dropdown from "@/Components/Dropdown";
+import ContactBox from "@/Layouts/ContactBox.vue"
+import Dropdown from "@/Components/Dropdown.vue";
 import {mixin as VueClickAway} from 'vue3-click-away'
-import FadeTransition from "@/Components/FadeTransition";
-import SlideTransition from "../Components/SlideTransition";
+import FadeTransition from "@/Components/FadeTransition.vue";
+import SlideTransition from "../Components/SlideTransition.vue";
+import { Link as InertiaLink} from "@inertiajs/vue3";
 
 export default {
     mixins: [VueClickAway],
-    components: {SlideTransition, FadeTransition, Dropdown, ContactBox},
+    components: {InertiaLink, SlideTransition, FadeTransition, Dropdown, ContactBox},
     props: {
         noteCount: Number,
     },
@@ -108,7 +109,8 @@ export default {
             view: {
                 atTopOfPage: true,
                 width: 0,
-            }
+            },
+            imgUrl: new URL('../../../storage/app/public/images/webp/face.webp', import.meta.url).href
         }
     },
     beforeMount() {

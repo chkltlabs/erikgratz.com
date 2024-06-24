@@ -14,7 +14,7 @@
                 </p>
                 <div class="flex items-center mt-4">
                     <a href="#" class="block relative">
-                        <img alt="" :src="post.author.imageUrl" class="mx-auto object-cover rounded-full h-10 w-10 "/>
+<!--                        <img alt="" :src="post.author.imageUrl" class="mx-auto object-cover rounded-full h-10 w-10 "/>-->
                     </a>
                     <div class="flex flex-col justify-between ml-4 text-sm">
                         <p class="text-gray-800 dark:text-white">

@@ -10,8 +10,9 @@
     </article>
 </template>
 <script>
-import MyHeader from "./MyHeader";
-import MobileHeader from "./MobileHeader";
+import MyHeader from "./MyHeader.vue";
+import MobileHeader from "./MobileHeader.vue";
+
 export default {
     components: {MobileHeader, MyHeader},
     data() {

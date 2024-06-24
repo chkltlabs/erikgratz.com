@@ -50,16 +50,21 @@
 </template>
 <script>
 
-import TitleBox from "@/Components/TitleBox";
-import HomeExperienceSection from "@/Components/HomeExperienceSection";
-import HomeAboutSection from "@/Components/HomeAboutSection";
+import TitleBox from "@/Components/TitleBox.vue";
+import HomeExperienceSection from "@/Components/HomeExperienceSection.vue";
+import HomeAboutSection from "@/Components/HomeAboutSection.vue";
+import Headers from "@/Layouts/Headers.vue"
+
+
 
 export default {
     components: {HomeAboutSection, HomeExperienceSection, TitleBox},
+    layout: Headers,
     props: ['useRealHomepage', 'errors', 'auth', 'canLogin', 'canRegister', 'laravelVersion', 'phpVersion', 'messages'],
     data(){
         return {
-            heroImage: 'storage/images/webp/suit-up.webp',
+            // heroImage: import('../../../storage/app/public/images/webp/suit-up.webp'),
+            heroImage: new URL('../../../storage/app/public/images/webp/suit-up.webp', import.meta.url).href
         }
     },
     mounted() {

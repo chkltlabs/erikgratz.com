@@ -60,13 +60,15 @@
 </template>
 <script>
 
-import BlogPostPreview from "@/Components/BlogPostPreview";
-import BlogPostFull from "@/Components/BlogPostFull";
-import FadeTransition from "@/Components/FadeTransition";
+import BlogPostPreview from "@/Components/BlogPostPreview.vue";
+import BlogPostFull from "@/Components/BlogPostFull.vue";
+import FadeTransition from "@/Components/FadeTransition.vue";
 import { ArrowLeftIcon } from "@vue-hero-icons/solid"
-import Button from "@/Components/Button";
+import Button from "@/Components/Button.vue";
+import Headers from "@/Layouts/Headers.vue"
 
 export default {
+    layout: Headers,
     components: {Button, ArrowLeftIcon, FadeTransition, BlogPostFull, BlogPostPreview},
     props: ['posts', 'inspire'],
     data() {
@@ -80,6 +82,7 @@ export default {
     computed: {
         filtered_posts() {
             if (!this.filters.searchBoxValue) {
+                console.log(this.posts)
                 return this.posts
             }
             return this.posts.filter(post => {

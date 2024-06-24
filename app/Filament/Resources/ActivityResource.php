@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
+use App\Filament\Resources\ActivityResource\Widgets\ActivityBarChart;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
