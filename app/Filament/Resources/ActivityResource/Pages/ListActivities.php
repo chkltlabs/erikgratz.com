@@ -21,7 +21,7 @@ class ListActivities extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            ActivityBarChart::class,
+            ActivityResource\Widgets\ActivityTimelineChart::class,
         ];
     }
 }

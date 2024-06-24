@@ -13,7 +13,13 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/sass/app.scss'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/sass/app.scss',
+                'public/css/filament/filament/app.css',
+                'resources/js/Filament/filament-chart-plugins.js'
+            ],
             refresh: true,
         }),
         // react(),

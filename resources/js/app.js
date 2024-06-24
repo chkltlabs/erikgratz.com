@@ -9,10 +9,10 @@ import {fas} from "@fortawesome/free-solid-svg-icons";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import Headers from './Layouts/Headers.vue';
 // import('./Filament/filament-chart-plugins');
-import ChartDataLabels from 'chartjs-plugin-datalabels'
-
-window.filamentChartJsPlugins ??= []
-window.filamentChartJsPlugins.push(ChartDataLabels)
+// import ChartDataLabels from 'chartjs-plugin-datalabels'
+//
+// window.filamentChartJsPlugins ??= []
+// window.filamentChartJsPlugins.push(ChartDataLabels)
 // window.getImageUrl ??= name => new URL(`/${name}`, import.meta.url).href
 
 

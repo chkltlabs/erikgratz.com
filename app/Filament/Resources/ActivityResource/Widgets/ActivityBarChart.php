@@ -14,7 +14,7 @@ class ActivityBarChart extends ChartWidget
         return [
             'indexAxis' => 'y',
             'borderSkipped' => false,
-            'borderRadius' => 25,
+            'borderRadius' => 12,
             'responsive' => true,
             'ticks.source' => 'data',
             'grid' => [
@@ -26,14 +26,20 @@ class ActivityBarChart extends ChartWidget
                     'time' => [
                         'unit' => 'month'
                     ],
-                    'min' => '2023-01-01',
+                    'min' => '2021-01-01',
+                    'max' => '2025-01-01',
                 ]
             ],
             'plugins' => [
                 'datalabels' => [
                     'labels' => [
                         'label' => [
-                            'color' => 'green'
+//                            'anchor' => 'left',
+//                            'align' => 'left',
+                            'font' => [
+                                'weight' => 'bold'
+                            ],
+                            'color' => 'grey'
                         ]
                     ]
                 ]
@@ -52,14 +58,14 @@ class ActivityBarChart extends ChartWidget
                     'borderColor' => ['#add8e6','#ffcccb'],
                     'data' => [
                         [
-                            'x' => ['2024-06-06','2024-07-07'],
+                            'x' => ['2022-06-06','2022-07-07'],
                             'y' => 1,
-                            'name' => 'spoot'
+                            'label' => 'Example'
 
                         ],[
                             'x' => ['2023-05-06','2023-08-07'],
                             'y' => 4,
-                            'label' => 'spoot'
+                            'label' => 'example'
 
                         ]
                     ],
