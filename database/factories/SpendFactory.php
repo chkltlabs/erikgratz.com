@@ -16,10 +16,10 @@ class SpendFactory extends Factory
     public function definition(): array
     {
         return [
-            'spend_for' => Carbon::now(),
-            'spend_at' => Carbon::now(),
+            'spend_for' => Carbon::now()->addDays(rand(1,30)),
+            'spend_at' => Carbon::now()->subDays(rand(1,7)),
             'name' => $this->faker->name(),
-            'amount' => $this->faker->randomFloat(),
+            'amount' => $this->faker->randomFloat(max:1000),
             'is_income' => $this->faker->boolean,
             'type' => SpendType::getRandomValue(),
             'subtype' => SpendSubtype::getRandomValue(),
