@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ActivityResource\Widgets;
 use App\Models\Activity;
 use App\Models\Spend;
 use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
@@ -32,6 +33,23 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected int | string | array $columnSpan = 4;
 
+    protected function getFormSchema(): array
+    {
+        return [
+            DatePicker::make('date_start')
+                ->default('2024-01-01')
+                ->live()
+                ->afterStateUpdated(function () {
+                    $this->updateOptions();
+                }),
+            DatePicker::make('date_end')
+                ->default('2024-12-31')
+                ->live()
+                ->afterStateUpdated(function () {
+                    $this->updateOptions();
+                })
+        ];
+    }
 
     protected static function formatForDataArray(Collection $models): array
     {
@@ -125,9 +143,20 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
+        $dateStart = $this->filterFormData['date_start'];
+        $dateEnd = $this->filterFormData['date_end'];
+
         $data = [
-            ...self::formatForDataArray(Activity::all()),
-            ...self::formatForDataArray(Spend::whereActivityId(null)->get()),
+            ...self::formatForDataArray(
+                Activity::where('start_date', '<=', $dateEnd)
+                    ->where('end_date', '>=', $dateStart)
+                    ->get()
+            ),
+            ...self::formatForDataArray(
+                Spend::whereActivityId(null)
+                    ->whereBetween('spend_for', [$dateStart, $dateEnd])
+                    ->get()
+            ),
         ];
         $data = self::setX($data);
         return [

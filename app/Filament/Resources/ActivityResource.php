@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ActivityResource extends Resource
 {
@@ -53,7 +54,8 @@ class ActivityResource extends Resource
 
             TextColumn::make('description')->limit(25),
 
-            TextColumn::make('total_spend'),
+            TextColumn::make('total_spend')
+                ->color(fn ($state) => $state < 0 ? 'success' : 'danger'),
 
             TextColumn::make('start_date')
                 ->date(),

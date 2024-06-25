@@ -19,6 +19,7 @@ use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class SpendResource extends Resource
 {
@@ -103,6 +104,7 @@ class SpendResource extends Resource
                 ->action(EditAction::make()),
 
             TextColumn::make('amount')
+                ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
                 ->action(EditAction::make()),
 
             TextColumn::make('type')
