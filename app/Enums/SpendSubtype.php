@@ -33,8 +33,11 @@ final class SpendSubtype extends Enum
 
     const Other = 'other';
 
-    public static function getFilteredSet(SpendType|string $filterFor)
+    public static function getFilteredSet(SpendType|string|null $filterFor)
     {
+        if (is_null($filterFor)){
+            return self::asSelectArray();
+        }
         if ($filterFor instanceOf SpendType)
         {
             $filterFor = $filterFor->value();
