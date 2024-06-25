@@ -8,9 +8,7 @@ use App\Filament\Resources;
 use App\Models\Spend;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -30,17 +28,20 @@ class SpendResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     const AT_TOOLTIP = 'The time period the spend occurs';
+
     const FOR_TOOLTIP = 'The time period the spend is useful for';
+
     public static function formSchema($includeActivity = false): array
     {
         $activity = $includeActivity
             ? [
                 Select::make('activity_id')
-                    ->relationship('activity')
+                    ->relationship('activity'),
             ]
             : [
                 //intentionally blank
             ];
+
         return [
             ...$activity,
             TextInput::make('name')
@@ -54,8 +55,8 @@ class SpendResource extends Resource
                 ->options(SpendType::asSelectArray())
                 ->afterStateUpdated(
                     function (?string $state, $get, $set) {
-                        if (!in_array($get('subtype'),
-                            SpendSubtype::getFilteredSet($state)) ){
+                        if (! in_array($get('subtype'),
+                            SpendSubtype::getFilteredSet($state))) {
                             $set('subtype', null);
                         }
                     })
@@ -96,6 +97,7 @@ class SpendResource extends Resource
             : [
                 //intentionally blank
             ];
+
         return [
             ...$activity,
             TextColumn::make('name')

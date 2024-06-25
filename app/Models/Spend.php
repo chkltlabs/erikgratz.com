@@ -20,15 +20,13 @@ class Spend extends Model
         'subtype',
     ];
 
-        protected $casts = [
-            'type' => SpendType::class,
-            'subtype' => SpendSubtype::class,
-        ];
-
+    protected $casts = [
+        'type' => SpendType::class,
+        'subtype' => SpendSubtype::class,
+    ];
 
     public function activity()
     {
         return $this->belongsTo(Activity::class);
     }
-
 }

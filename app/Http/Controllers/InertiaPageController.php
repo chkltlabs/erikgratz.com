@@ -67,7 +67,8 @@ class InertiaPageController extends Controller
         $portfolio = config('portfolio');
         array_walk($portfolio,
             fn ($arr) => $arr['imgUrl'] = asset(Storage::url($arr['imgUrl'])));
-//        var_dump($portfolio);
+
+        //        var_dump($portfolio);
         return Inertia::render('Portfolio', [
             'portfolioThings' => $portfolio,
         ]);

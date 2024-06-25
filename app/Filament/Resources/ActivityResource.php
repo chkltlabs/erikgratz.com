@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
-use App\Filament\Resources\ActivityResource\Widgets\ActivityBarChart;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
@@ -12,8 +10,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class ActivityResource extends Resource
 {
@@ -37,11 +36,11 @@ class ActivityResource extends Resource
 
             Placeholder::make('created_at')
                 ->label('Created Date')
-                ->content(fn(?Activity $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                ->content(fn (?Activity $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
             Placeholder::make('updated_at')
                 ->label('Last Modified Date')
-                ->content(fn(?Activity $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                ->content(fn (?Activity $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
         ]);
     }
 
@@ -62,7 +61,24 @@ class ActivityResource extends Resource
 
             TextColumn::make('end_date')
                 ->date(),
-        ]);
+        ])->filters([
+            Filter::make('date_range')
+                ->form([
+                    DatePicker::make('start_date')->default(now()->startOfYear()),
+                    DatePicker::make('end_date')->default(now()->endOfYear()),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['start_date'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
+                        )
+                        ->when(
+                            $data['end_date'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
+                        );
+                }),
+        ])->persistFiltersInSession()->deselectAllRecordsWhenFiltered();
     }
 
     public static function getPages(): array
@@ -77,7 +93,7 @@ class ActivityResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SpendsRelationManager::class
+            SpendsRelationManager::class,
         ];
     }
 

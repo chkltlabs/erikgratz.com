@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Activity;
-use App\Models\Spend;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

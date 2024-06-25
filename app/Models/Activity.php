@@ -11,7 +11,7 @@ class Activity extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','description','start_date','end_date',
+        'name', 'description', 'start_date', 'end_date',
     ];
 
     public function spends()
@@ -22,8 +22,7 @@ class Activity extends Model
     public function totalSpend(): Attribute
     {
         return Attribute::make(
-            get: fn () =>
-                $this->spends()->whereIsIncome(false)->sum('amount')
+            get: fn () => $this->spends()->whereIsIncome(false)->sum('amount')
                 - $this->spends()->whereIsIncome(true)->sum('amount')
         );
     }

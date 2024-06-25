@@ -59,7 +59,8 @@ class UserFactory extends Factory
             'password' => Hash::make('15Characters!!!'),
         ] : [
             //This array intentionally empty to stop root user being created in non-local
-        ] ;
+        ];
+
         return $this->state(fn (array $attrs) => $returnArr);
     }
 }
