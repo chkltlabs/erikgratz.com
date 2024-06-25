@@ -2,20 +2,18 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "beyondcode/laravel-websockets": "^1.14",
-        "filament/filament": "^2.0",
+        "bensampo/laravel-enum": "^6.11",
+        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.3",
-        "inertiajs/inertia-laravel": "^0.6.9",
+        "inertiajs/inertia-laravel": "^v1.3.0",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.5",
+        "leandrocfe/filament-apex-charts": "^3.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
@@ -46,7 +44,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -63,7 +62,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true,

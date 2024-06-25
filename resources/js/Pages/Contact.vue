@@ -114,9 +114,9 @@
 <script>
 
 import {reactive} from 'vue'
-import {Inertia} from '@inertiajs/inertia'
-import QRCodeElement from "../Components/QRCodeElement";
-import SocialButton from "../Components/SocialButton";
+import { router as Inertia } from '@inertiajs/vue3'
+import QRCodeElement from "../Components/QRCodeElement.vue";
+import SocialButton from "../Components/SocialButton.vue";
 
 
 export default {

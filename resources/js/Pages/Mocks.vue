@@ -4,8 +4,8 @@
     </div>
 </template>
 <script>
-import Apple from "@/Mocks/Apple";
-import NoHeader from "@/Layouts/NoHeader";
+import Apple from "@/Mocks/Apple.vue";
+import NoHeader from "@/Layouts/NoHeader.vue";
 export default {
     components: {
         Apple

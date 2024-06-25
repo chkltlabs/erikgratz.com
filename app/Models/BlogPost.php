@@ -3,26 +3,24 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class BlogPost extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title', 'user_id', 'posted', 
-        'edited', 'subtitle', 'body', 
-        'is_public', 'tags', 'imageUrl'
+        'title', 'user_id', 'posted',
+        'edited', 'subtitle', 'body',
+        'is_public', 'tags', 'imageUrl',
     ];
 
     protected $casts = [
         'posted' => 'datetime:Y-m-d H:i:s',
         'edited' => 'datetime:Y-m-d H:i:s',
-        'is_public' => 'bool', 
+        'is_public' => 'bool',
         'tags' => 'array',
     ];
 
@@ -45,20 +43,16 @@ class BlogPost extends Model
     //accessors & mutators
     public function getPostedForHumansAttribute(): Attribute
     {
-        return Attribute::make(get: 
-            fn () => 
-                $this->posted !== null 
-                    ? $this->posted->diffForHumans(Carbon::now()).' now' 
+        return Attribute::make(get: fn () => $this->posted !== null
+                    ? $this->posted->diffForHumans(Carbon::now()).' now'
                     : self::NOT_EDITED
         );
     }
 
     public function getEditedForHumansAttribute(): Attribute
     {
-        return Attribute::make(get: 
-            fn () => 
-                $this->edited !== null 
-                    ? $this->edited->diffForHumans(Carbon::now()).' now' 
+        return Attribute::make(get: fn () => $this->edited !== null
+                    ? $this->edited->diffForHumans(Carbon::now()).' now'
                     : self::NOT_EDITED
         );
     }
@@ -72,6 +66,6 @@ class BlogPost extends Model
     //relations
     public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

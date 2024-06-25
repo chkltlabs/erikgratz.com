@@ -26,7 +26,7 @@
 </template>
 <script>
 
-import NoHeader from "@/Layouts/NoHeader";
+import NoHeader from "@/Layouts/NoHeader.vue";
 
 export default {
     props: ['images'],

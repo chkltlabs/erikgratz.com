@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class InertiaPageController extends Controller
@@ -63,8 +64,12 @@ class InertiaPageController extends Controller
 
     public function getPortfolio()
     {
+        $portfolio = config('portfolio');
+        array_walk($portfolio,
+            fn ($arr) => $arr['imgUrl'] = asset(Storage::url($arr['imgUrl'])));
+//        var_dump($portfolio);
         return Inertia::render('Portfolio', [
-            'portfolioThings' => config('portfolio'),
+            'portfolioThings' => $portfolio,
         ]);
     }
 

@@ -11,7 +11,7 @@ class InertiaDashboardController extends Controller
     {
         // return Inertia::render('Dashboard');
         // 2023-06-24 : Filament replaces Breeze Dash
-        return redirect(route('filament.pages.dashboard'));
+        return redirect(route('filament.admin.pages.dashboard'));
     }
 
     public function getBlogListing()

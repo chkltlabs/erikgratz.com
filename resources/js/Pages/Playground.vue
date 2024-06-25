@@ -14,7 +14,7 @@
     </FadeTransition>
 </template>
 <script>
-import FadeTransition from "@/Components/FadeTransition";
+import FadeTransition from "@/Components/FadeTransition.vue";
 export default {
     components: {FadeTransition},
     data() {

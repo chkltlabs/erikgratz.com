@@ -218,7 +218,7 @@
 
 import {Editor, EditorContent, BubbleMenu, FloatingMenu} from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated'
+import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import Multiselect from '@vueform/multiselect'
 
 

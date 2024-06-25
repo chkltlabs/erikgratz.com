@@ -23,7 +23,7 @@
 </template>
 <script>
 
-import PortfolioEntry from "../Components/PortfolioEntry";
+import PortfolioEntry from "../Components/PortfolioEntry.vue";
 
 export default {
     components: {PortfolioEntry},

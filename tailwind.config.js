@@ -1,7 +1,10 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-const colors = require('tailwindcss/colors');
+import defaultTheme from 'tailwindcss/defaultTheme';
+import colors from 'tailwindcss/colors';
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
 colors.black = '#12151F';
-module.exports = {
+export default {
+    darkMode: 'class',
     purge: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -12,12 +15,6 @@ module.exports = {
     theme: {
         colors: colors,
         extend: {
-            colors: {
-                danger: colors.rose,
-                primary: colors.blue,
-                success: colors.green,
-                warning: colors.yellow,
-            },
             typography: (theme) => ({
                 dark: {
                     css: {
@@ -84,6 +81,10 @@ module.exports = {
                 'pale-gold': '#e6c792',
                 'forest-green': '#25372f',
                 'dopegray' : '#515159',
+                danger: colors.rose,
+                primary: colors.blue,
+                success: colors.green,
+                warning: colors.yellow,
             },
             backgroundImage: theme => ({
                 'kid-face': "url('/storage/images/webp/kid-face.webp')",
@@ -105,12 +106,12 @@ module.exports = {
 
     content: [
         './resources/**/*.blade.php',
-        './vendor/filament/**/*.blade.php', 
+        './vendor/filament/**/*.blade.php',
     ],
 
     plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
+        [forms],
+        [typography],
 
     ],
 };
