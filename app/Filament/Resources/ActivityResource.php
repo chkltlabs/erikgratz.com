@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
-use App\Filament\Resources\ActivityResource\Widgets\ActivityBarChart;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
@@ -15,7 +13,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class ActivityResource extends Resource
 {
@@ -39,11 +36,11 @@ class ActivityResource extends Resource
 
             Placeholder::make('created_at')
                 ->label('Created Date')
-                ->content(fn(?Activity $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                ->content(fn (?Activity $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
             Placeholder::make('updated_at')
                 ->label('Last Modified Date')
-                ->content(fn(?Activity $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                ->content(fn (?Activity $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
         ]);
     }
 
@@ -80,7 +77,7 @@ class ActivityResource extends Resource
                             $data['end_date'],
                             fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
                         );
-                })
+                }),
         ])->persistFiltersInSession()->deselectAllRecordsWhenFiltered();
     }
 
@@ -96,7 +93,7 @@ class ActivityResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SpendsRelationManager::class
+            SpendsRelationManager::class,
         ];
     }
 

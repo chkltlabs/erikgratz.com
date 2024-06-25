@@ -16,14 +16,14 @@ class SpendFactory extends Factory
     public function definition(): array
     {
         return [
-            'spend_for' => Carbon::now()->addDays(rand(1,30)),
-            'spend_at' => Carbon::now()->subDays(rand(1,7)),
+            'spend_for' => Carbon::now()->addDays(rand(1, 30)),
+            'spend_at' => Carbon::now()->subDays(rand(1, 7)),
             'name' => $this->faker->name(),
-            'amount' => $this->faker->randomFloat(max:1000),
+            'amount' => $this->faker->randomFloat(max: 1000),
             'is_income' => $this->faker->boolean,
             'type' => SpendType::getRandomValue(),
             'subtype' => SpendSubtype::getRandomValue(),
-            'activity_id' => Activity::factory()
+            'activity_id' => Activity::factory(),
         ];
     }
 
@@ -31,9 +31,7 @@ class SpendFactory extends Factory
     {
         return $this->state(
             fn (array $attributes) => [
-                'activity_id' => null
+                'activity_id' => null,
             ]);
     }
-
-
 }

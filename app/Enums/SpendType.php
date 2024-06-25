@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Enums;
 
@@ -12,10 +14,16 @@ use BenSampo\Enum\Enum;
 final class SpendType extends Enum
 {
     const Income = 'income';
+
     const Housing = 'housing';
+
     const Transport = 'transport';
+
     const Living = 'living';
+
     const Cats = 'cats';
+
     const Experience = 'experience';
+
     const Other = 'other';
 }

@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 /**
@@ -19,19 +18,15 @@ class ActivityTimelineChart extends ApexChartWidget
 {
     /**
      * Chart Id
-     *
-     * @var string
      */
     protected static ?string $chartId = 'activityTimelineChart';
 
     /**
      * Widget Title
-     *
-     * @var string|null
      */
     protected static ?string $heading = 'ActivityTimelineChart';
 
-    protected int | string | array $columnSpan = 4;
+    protected int|string|array $columnSpan = 4;
 
     protected function getFormSchema(): array
     {
@@ -47,44 +42,44 @@ class ActivityTimelineChart extends ApexChartWidget
                 ->live()
                 ->afterStateUpdated(function () {
                     $this->updateOptions();
-                })
+                }),
         ];
     }
 
     protected static function formatForDataArray(Collection $models): array
     {
-//        [
-//                        [
-//                            'x' => '1',
-//                            'y' => [
-//                                Carbon::parse('2024-05-04')->valueOf(),
-//                                Carbon::parse('2024-05-12')->valueOf()
-//                            ],
-//                            'amount' => 1500,
-//                            'name' => 'Barcelona',
-//                        ],
-//                        [
-//                            'x' => '2',
-//                            'name' => 'Spain',
-//                            'y' => [
-//                                Carbon::parse('2023-01-04')->valueOf(),
-//                                Carbon::parse('2023-09-05')->valueOf()
-//                            ],
-//                            'amount' => 6000
-//                        ],
-//                    ],
+        //        [
+        //                        [
+        //                            'x' => '1',
+        //                            'y' => [
+        //                                Carbon::parse('2024-05-04')->valueOf(),
+        //                                Carbon::parse('2024-05-12')->valueOf()
+        //                            ],
+        //                            'amount' => 1500,
+        //                            'name' => 'Barcelona',
+        //                        ],
+        //                        [
+        //                            'x' => '2',
+        //                            'name' => 'Spain',
+        //                            'y' => [
+        //                                Carbon::parse('2023-01-04')->valueOf(),
+        //                                Carbon::parse('2023-09-05')->valueOf()
+        //                            ],
+        //                            'amount' => 6000
+        //                        ],
+        //                    ],
         return $models->map(fn ($model) => [
-                'x' => null,
-                'y' => [
-                    Carbon::parse($model->start_date ?? $model->spend_for)->valueOf(),
-                    Carbon::parse($model->end_date ?? $model->spend_for)->valueOf()
-                ],
-                'name' => $model->name,
-                'amount' => $model->total_spend ?? $model->amount,
-                'class' => get_class($model),
-                'lo' => $model->start_date ?? $model->spend_for,
-                'hi' => $model->end_date ?? $model->spend_for,
-            ])->toArray();
+            'x' => null,
+            'y' => [
+                Carbon::parse($model->start_date ?? $model->spend_for)->valueOf(),
+                Carbon::parse($model->end_date ?? $model->spend_for)->valueOf(),
+            ],
+            'name' => $model->name,
+            'amount' => $model->total_spend ?? $model->amount,
+            'class' => get_class($model),
+            'lo' => $model->start_date ?? $model->spend_for,
+            'hi' => $model->end_date ?? $model->spend_for,
+        ])->toArray();
     }
 
     protected static function setX(array $data): array
@@ -94,52 +89,54 @@ class ActivityTimelineChart extends ApexChartWidget
         //and continue to give not one shit.
         // its O(n)^2 though
 
-        $graphTracker = [[], [], [], [], [], [], [], [], [], [], [], ];
-//        dump($graphTracker[1]);
+        $graphTracker = [[], [], [], [], [], [], [], [], [], [], []];
+        //        dump($graphTracker[1]);
         foreach ($data as $index => $bar) {
             $lo = Carbon::parse($bar['lo']);
             $hi = Carbon::parse($bar['hi']);
             foreach ($graphTracker as $x => $existingSets) {
-                if(empty($existingSets)) {
-//                    dump('Row '.$x.' is empty, '.$bar['name'].' is first entry in row.');
+                if (empty($existingSets)) {
+                    //                    dump('Row '.$x.' is empty, '.$bar['name'].' is first entry in row.');
                     $data[$index]['x'] = "$x";
                     $graphTracker[$x][] = [$lo, $hi];
+
                     continue 2;
                 }
-                foreach($existingSets as $existing) {
+                foreach ($existingSets as $existing) {
 
-//                    dump($bar['name'] . ' for row ' . $x);
-//                    dump('testing if date range ' . $lo->toDateString() . " to " . $hi->toDateString() . " conflicts with " . $existing[0]->toDateString() . ' to ' . $existing[1]->toDateString());
-////                    dump('the current $existing '.(empty($existing) ? 'is' : 'is not').' empty');
-//                    dump('the current $lo ' . ($lo->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
-//                    dump('the current $hi ' . ($hi->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
-//                    dump('the current $exlo ' . ($existing[0]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
-//                    dump('the current $exhi ' . ($existing[1]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
+                    //                    dump($bar['name'] . ' for row ' . $x);
+                    //                    dump('testing if date range ' . $lo->toDateString() . " to " . $hi->toDateString() . " conflicts with " . $existing[0]->toDateString() . ' to ' . $existing[1]->toDateString());
+                    ////                    dump('the current $existing '.(empty($existing) ? 'is' : 'is not').' empty');
+                    //                    dump('the current $lo ' . ($lo->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
+                    //                    dump('the current $hi ' . ($hi->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
+                    //                    dump('the current $exlo ' . ($existing[0]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
+                    //                    dump('the current $exhi ' . ($existing[1]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
                     if (
-                            $lo->betweenExcluded($existing[0], $existing[1]) ||
-                            $hi->betweenExcluded($existing[0], $existing[1]) ||
-                            $existing[0]->betweenExcluded($lo, $hi) ||
-                            $existing[1]->betweenExcluded($lo, $hi)
+                        $lo->betweenExcluded($existing[0], $existing[1]) ||
+                        $hi->betweenExcluded($existing[0], $existing[1]) ||
+                        $existing[0]->betweenExcluded($lo, $hi) ||
+                        $existing[1]->betweenExcluded($lo, $hi)
                     ) {
-//                        dump('A conflict is found in row '.$x.', testing next row');
+                        //                        dump('A conflict is found in row '.$x.', testing next row');
                         continue 2;
                     }
                 }
-//                dump('The '.$bar['class']. ' named '. $bar['name']. ' will be added to row '. $x);
+                //                dump('The '.$bar['class']. ' named '. $bar['name']. ' will be added to row '. $x);
                 $data[$index]['x'] = "$x";
                 $graphTracker[$x][] = [$lo, $hi];
+
                 continue 2;
 
             }
 
         }
+
         return $data;
     }
+
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -159,17 +156,18 @@ class ActivityTimelineChart extends ApexChartWidget
             ),
         ];
         $data = self::setX($data);
+
         return [
             'datalabels' => [
                 'enabled' => false,
                 'style' => [
-                    'colors' => 'black'
+                    'colors' => 'black',
                 ],
                 'formatter' => 'theFormatFunc',
             ],
-//            'tooltip' => [
-//                'enabled' => false,
-//            ],
+            //            'tooltip' => [
+            //                'enabled' => false,
+            //            ],
             'chart' => [
                 'type' => 'rangeBar',
                 'height' => 300,
@@ -208,7 +206,7 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected function extraJsOptions(): ?RawJs
     {
-        return RawJs::make(<<<JS
+        return RawJs::make(<<<'JS'
     {
         // xaxis: {
         //     labels: {
