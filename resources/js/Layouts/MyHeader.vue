@@ -84,13 +84,6 @@
                 </div>
             </div>
         </nav>
-<!--        <article>-->
-<!--            <div class="bg-black h-full flex flex-col min-h-screen text-purple-600 font-sans">-->
-<!--                <div class="pt-20"/>-->
-<!--                <slot/>-->
-<!--                <p class="text-center text-sm">Copyright&copy; 2021 Erik V Gratz</p>-->
-<!--            </div>-->
-<!--        </article>-->
     </main>
 </template>
 <script>
@@ -102,19 +95,6 @@ import FadeTransition from "@/Components/FadeTransition.vue";
 import { Link as InertiaLink } from '@inertiajs/vue3'
 import NavLink from "../Components/NavLink.vue";
 import ResponsiveNavLink from "../Components/ResponsiveNavLink.vue";
-const imgUrl = new URL('../../../storage/images/webp/face.webp', import.meta.url).href
-// import Echo from 'laravel-echo'
-//
-// Echo.channel('contacts').listen('ContactReqCreated', (e) => {
-//     // console.log(e)
-//     // toast()
-//     //     .success(e.name, " just made contact!")
-//     //     .as('pill')
-//     //     .from('bottom','center')
-//     //     .for(5000).show()
-//     //this.$toasted.show(e.name + " just made contact!")
-//
-// })
 
 export default {
     mixins: [VueClickAway],

@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -33,14 +32,6 @@ class ActivityResource extends Resource
             DatePicker::make('start_date'),
 
             DatePicker::make('end_date'),
-
-            Placeholder::make('created_at')
-                ->label('Created Date')
-                ->content(fn (?Activity $record): string => $record?->created_at?->diffForHumans() ?? '-'),
-
-            Placeholder::make('updated_at')
-                ->label('Last Modified Date')
-                ->content(fn (?Activity $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
         ]);
     }
 
@@ -57,28 +48,34 @@ class ActivityResource extends Resource
                 ->color(fn ($state) => $state < 0 ? 'success' : 'danger'),
 
             TextColumn::make('start_date')
-                ->date(),
+                ->date()
+                ->sortable(),
 
             TextColumn::make('end_date')
                 ->date(),
-        ])->filters([
-            Filter::make('date_range')
-                ->form([
-                    DatePicker::make('start_date')->default(now()->startOfYear()),
-                    DatePicker::make('end_date')->default(now()->endOfYear()),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['start_date'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
-                        )
-                        ->when(
-                            $data['end_date'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
-                        );
-                }),
-        ])->persistFiltersInSession()->deselectAllRecordsWhenFiltered();
+        ])
+            ->persistSortInSession()
+            ->defaultSort('start_date')
+            ->filters([
+            //            Filter::make('date_range')
+            //                ->form([
+            //                    DatePicker::make('start_date')->default(now()->startOfYear()),
+            //                    DatePicker::make('end_date')->default(now()->endOfYear()),
+            //                ])
+            //                ->query(function (Builder $query, array $data): Builder {
+            //                    return $query
+            //                        ->when(
+            //                            $data['start_date'],
+            //                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
+            //                        )
+            //                        ->when(
+            //                            $data['end_date'],
+            //                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
+            //                        );
+            //                }),
+        ])
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered();
     }
 
     public static function getPages(): array

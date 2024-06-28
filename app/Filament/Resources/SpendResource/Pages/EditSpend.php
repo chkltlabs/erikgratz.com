@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\SpendResource\Pages;
 
 use App\Filament\Resources\SpendResource;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditSpend extends EditRecord

@@ -22,8 +22,30 @@ class Activity extends Model
     public function totalSpend(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->spends()->whereIsIncome(false)->sum('amount')
-                - $this->spends()->whereIsIncome(true)->sum('amount')
+            get: fn () => $this->spends()->whereIsIncome(false)
+                ->joinRelation('payments')->sum('amount')
+                - $this->spends()->whereIsIncome(true)
+                    ->joinRelation('payments')->sum('amount')
+        );
+    }
+
+    public function paid(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->spends()->whereIsIncome(false)
+                ->joinRelation('payments')
+                ->where('payments.is_paid', true)
+                ->sum('amount')
+        );
+    }
+
+    public function unpaid(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->spends()->whereIsIncome(false)
+                ->joinRelation('payments')
+                ->where('payments.is_paid', false)
+                ->sum('amount')
         );
     }
 }
