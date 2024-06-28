@@ -15,7 +15,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->randomFloat(),
+            'amount' => rand(10, 4000),
             'is_paid' => $this->faker->boolean(),
             'paid_on' => Carbon::now(),
             'spend_id' => Spend::factory(),

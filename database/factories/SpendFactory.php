@@ -17,7 +17,7 @@ class SpendFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'is_income' => $this->faker->boolean,
+            'is_income' => false,
             'type' => SpendType::getRandomValue(),
             'subtype' => SpendSubtype::getRandomValue(),
             'activity_id' => Activity::factory(),
@@ -34,6 +34,10 @@ class SpendFactory extends Factory
 
     public function configure()
     {
-        return $this->afterCreating(fn ($model) => Payment::factory(4)->recycle($model)->create());
+        return $this->afterCreating(
+            fn ($model) => Payment::factory(4)
+                            ->recycle($model)
+                            ->create()
+        );
     }
 }

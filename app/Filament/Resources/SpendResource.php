@@ -17,8 +17,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SpendResource extends Resource
@@ -91,8 +94,7 @@ class SpendResource extends Resource
         $activity = $includeActivity
             ? [
                 TextColumn::make('activity.name'),
-            ]
-            : [
+            ] : [
                 //intentionally blank
             ];
 
@@ -104,9 +106,17 @@ class SpendResource extends Resource
                 ->action(EditAction::make()),
 
             TextColumn::make('amount')
+                ->money('USD')
                 ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
-                ->action(EditAction::make()),
-
+                ->action(EditAction::make())
+                ->summarize(Summarizer::make()
+                    ->money('USD')
+                    ->using(
+                        fn (Builder $query) =>
+                        $query->join('payments', 'spends.id','payments.spend_id')
+                            ->sum('payments.amount')
+                    )
+                ),
             TextColumn::make('type')
                 ->action(EditAction::make()),
 

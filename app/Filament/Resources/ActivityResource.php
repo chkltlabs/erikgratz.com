@@ -12,6 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ActivityResource extends Resource
 {
@@ -46,8 +47,19 @@ class ActivityResource extends Resource
 
             TextColumn::make('description')->limit(25),
 
+            TextColumn::make('spent_upcoming')
+                ->label('Spent / Upcoming')
+                ->state(fn (Model $record) =>
+                    '<span>$'
+                    .$record->paid
+                    .'</span> / <span class="text-danger-600">$'
+                    . $record->unpaid
+                    .'</span>')
+                ->html(),
+
             TextColumn::make('total_spend')
-                ->color(fn ($state) => $state < 0 ? 'success' : 'danger'),
+                ->color(fn ($state) => $state < 0 ? 'success' : 'danger')
+                ->money('USD'),
 
             TextColumn::make('start_date')
                 ->date()
@@ -59,25 +71,8 @@ class ActivityResource extends Resource
             ->persistSortInSession()
             ->defaultSort('start_date')
             ->filters([
-                //            Filter::make('date_range')
-                //                ->form([
-                //                    DatePicker::make('start_date')->default(now()->startOfYear()),
-                //                    DatePicker::make('end_date')->default(now()->endOfYear()),
-                //                ])
-                //                ->query(function (Builder $query, array $data): Builder {
-                //                    return $query
-                //                        ->when(
-                //                            $data['start_date'],
-                //                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
-                //                        )
-                //                        ->when(
-                //                            $data['end_date'],
-                //                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
-                //                        );
-                //                }),
-            ])
-            ->persistFiltersInSession()
-            ->deselectAllRecordsWhenFiltered();
+                //
+            ]);
     }
 
     public static function getPages(): array
