@@ -21,6 +21,8 @@ class ActivityResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
+
     public static function form(Form $form): Form
     {
         return $form->schema([

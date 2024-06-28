@@ -29,6 +29,10 @@ class SpendResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+
+    protected static ?string $navigationParentItem = 'Activities';
+
     public static function formSchema($includeActivity = false): array
     {
         $activity = $includeActivity
