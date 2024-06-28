@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\ActivityResource\Widgets;
 
 use App\Filament\Resources\ActivityResource;
-use App\Filament\Resources\SpendResource;
 use App\Models\Activity;
-use App\Models\Spend;
 use Carbon\Carbon;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
@@ -57,7 +55,7 @@ class ActivityTimelineChart extends ApexChartWidget
             'total_spend' => $model->total_spend,
             'link' => ActivityResource::getUrl('edit', [
                 'record' => $model,
-            ])
+            ]),
         ])->toArray();
     }
 
