@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ActivityResource\Widgets;
 
+use App\Filament\Resources\ActivityResource;
 use App\Models\Activity;
 use Carbon\Carbon;
 use Filament\Support\RawJs;
@@ -52,6 +53,9 @@ class ActivityTimelineChart extends ApexChartWidget
             'paid' => $model->paid,
             'unpaid' => $model->unpaid,
             'total_spend' => $model->total_spend,
+            'link' => ActivityResource::getUrl('edit', [
+                'record' => $model,
+            ]),
         ])->toArray();
     }
 
@@ -201,6 +205,16 @@ class ActivityTimelineChart extends ApexChartWidget
         //         }
         //     }
         // },
+        chart: {
+            events: {
+                  dataPointSelection: function(event, chartContext, config) {
+                    let dpIndex = config.dataPointIndex
+                    let sIndex = config.seriesIndex
+                    let clickedEl = config.w.globals.initialSeries[sIndex].data[dpIndex]
+                    window.open(clickedEl.link,"_self")
+                  }
+            }
+        },
         tooltip: {
             style: {
                 fontSize: '12px',
@@ -211,6 +225,7 @@ class ActivityTimelineChart extends ApexChartWidget
               },
             custom: function({ series, seriesIndex, dataPointIndex, w }) {
                 var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                let name = data.name
                 let paid = data.paid.toFixed(2);
                 let unpaid = data.unpaid.toFixed(2);
                 let totalSpend = data.paid + data.unpaid
@@ -219,11 +234,17 @@ class ActivityTimelineChart extends ApexChartWidget
                 return (
                     '<div class="">' +
                         "<span>" +
-                            '<span style="color: #32cd32;">' +
+                            '<span style="color: white;">' +
+                                name +
+                            "</span>" +
+                        "</span>" +
+                        "<br>" +
+                        "<span>" +
+                            '<span style="color: #32cd32;">$' +
                                 paid +
                             "</span>" +
                             " / " +
-                            '<span style="color: red">' +
+                            '<span style="color: red">$' +
                                 unpaid +
                             "</span>" +
                         "</span>" +
