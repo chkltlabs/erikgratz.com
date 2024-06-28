@@ -3,12 +3,11 @@
 namespace App\Filament\Resources\ActivityResource\Widgets;
 
 use App\Models\Activity;
-use App\Models\Spend;
 use Carbon\Carbon;
-use Filament\Forms\Components\DatePicker;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
+use PhpParser\Node\Expr\Cast\Double;
 
 /**
  * Uses Apex Charts: https://apexcharts.com/docs/
@@ -26,48 +25,18 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected static ?string $heading = 'ActivityTimelineChart';
 
+    protected static ?string $loadingIndicator = 'Loading...';
+
     protected int|string|array $columnSpan = 4;
 
     protected function getFormSchema(): array
     {
         return [
-            DatePicker::make('date_start')
-                ->default('2024-01-01')
-                ->live()
-                ->afterStateUpdated(function () {
-                    $this->updateOptions();
-                }),
-            DatePicker::make('date_end')
-                ->default('2024-12-31')
-                ->live()
-                ->afterStateUpdated(function () {
-                    $this->updateOptions();
-                }),
         ];
     }
 
     protected static function formatForDataArray(Collection $models): array
     {
-        //        [
-        //                        [
-        //                            'x' => '1',
-        //                            'y' => [
-        //                                Carbon::parse('2024-05-04')->valueOf(),
-        //                                Carbon::parse('2024-05-12')->valueOf()
-        //                            ],
-        //                            'amount' => 1500,
-        //                            'name' => 'Barcelona',
-        //                        ],
-        //                        [
-        //                            'x' => '2',
-        //                            'name' => 'Spain',
-        //                            'y' => [
-        //                                Carbon::parse('2023-01-04')->valueOf(),
-        //                                Carbon::parse('2023-09-05')->valueOf()
-        //                            ],
-        //                            'amount' => 6000
-        //                        ],
-        //                    ],
         return $models->map(fn ($model) => [
             'x' => null,
             'y' => [
@@ -79,6 +48,9 @@ class ActivityTimelineChart extends ApexChartWidget
             'class' => get_class($model),
             'lo' => $model->start_date ?? $model->spend_for,
             'hi' => $model->end_date ?? $model->spend_for,
+            'paid' => $model->paid,
+            'unpaid' => $model->unpaid,
+            'total_spend' => $model->total_spend,
         ])->toArray();
     }
 
@@ -88,50 +60,58 @@ class ActivityTimelineChart extends ApexChartWidget
         //i stand upon the crest of the hill
         //and continue to give not one shit.
         // its O(n)^2 though
-
         $graphTracker = [[], [], [], [], [], [], [], [], [], [], []];
-        //        dump($graphTracker[1]);
         foreach ($data as $index => $bar) {
             $lo = Carbon::parse($bar['lo']);
             $hi = Carbon::parse($bar['hi']);
             foreach ($graphTracker as $x => $existingSets) {
                 if (empty($existingSets)) {
-                    //                    dump('Row '.$x.' is empty, '.$bar['name'].' is first entry in row.');
                     $data[$index]['x'] = "$x";
                     $graphTracker[$x][] = [$lo, $hi];
 
                     continue 2;
                 }
                 foreach ($existingSets as $existing) {
-
-                    //                    dump($bar['name'] . ' for row ' . $x);
-                    //                    dump('testing if date range ' . $lo->toDateString() . " to " . $hi->toDateString() . " conflicts with " . $existing[0]->toDateString() . ' to ' . $existing[1]->toDateString());
-                    ////                    dump('the current $existing '.(empty($existing) ? 'is' : 'is not').' empty');
-                    //                    dump('the current $lo ' . ($lo->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
-                    //                    dump('the current $hi ' . ($hi->betweenExcluded($existing[0], $existing[1]) ? 'is' : 'is not') . ' between $existing');
-                    //                    dump('the current $exlo ' . ($existing[0]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
-                    //                    dump('the current $exhi ' . ($existing[1]->betweenExcluded($lo, $hi) ? 'is' : 'is not') . ' between $hi n $lo');
                     if (
                         $lo->betweenExcluded($existing[0], $existing[1]) ||
                         $hi->betweenExcluded($existing[0], $existing[1]) ||
                         $existing[0]->betweenExcluded($lo, $hi) ||
                         $existing[1]->betweenExcluded($lo, $hi)
                     ) {
-                        //                        dump('A conflict is found in row '.$x.', testing next row');
                         continue 2;
                     }
                 }
-                //                dump('The '.$bar['class']. ' named '. $bar['name']. ' will be added to row '. $x);
                 $data[$index]['x'] = "$x";
                 $graphTracker[$x][] = [$lo, $hi];
-
                 continue 2;
-
             }
-
         }
-
         return $data;
+    }
+
+    private static function calcSplit(array $entry): int
+    {
+        $startMS = $entry['y'][0];
+        $endMS = $entry['y'][1];
+        $span = $endMS - $startMS;
+        $total = $entry['paid'] + $entry['unpaid'];
+        $percent = $total === 0 ? 0 : ($entry['paid'] / $total);
+        $spanPaidPercent = $span * $percent;
+        return $startMS + $spanPaidPercent;
+    }
+    protected static function splitPaidUnpaid(array $data): array
+    {
+        $dataCopy = $data;
+        return [
+            array_map(function ($entry) {
+                $entry['y'][1] = self::calcSplit($entry);
+                return $entry;
+            },$data),
+            array_map(function ($entry) {
+                $entry['y'][0] = self::calcSplit($entry) + 10000000;
+                return $entry;
+            },$dataCopy),
+        ];
     }
 
     /**
@@ -140,22 +120,7 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        $dateStart = $this->filterFormData['date_start'];
-        $dateEnd = $this->filterFormData['date_end'];
-
-        $data = [
-            ...self::formatForDataArray(
-                Activity::where('start_date', '<=', $dateEnd)
-                    ->where('end_date', '>=', $dateStart)
-                    ->get()
-            ),
-            ...self::formatForDataArray(
-                Spend::whereActivityId(null)
-                    ->whereBetween('spend_for', [$dateStart, $dateEnd])
-                    ->get()
-            ),
-        ];
-        $data = self::setX($data);
+        list($paid, $unpaid) = self::splitPaidUnpaid(self::setX(self::formatForDataArray(Activity::all())));
 
         return [
             'datalabels' => [
@@ -163,18 +128,20 @@ class ActivityTimelineChart extends ApexChartWidget
                 'style' => [
                     'colors' => 'black',
                 ],
-                'formatter' => 'theFormatFunc',
             ],
-            //            'tooltip' => [
-            //                'enabled' => false,
-            //            ],
             'chart' => [
                 'type' => 'rangeBar',
                 'height' => 300,
+//                'stacked' => true,
             ],
             'series' => [
                 [
-                    'data' => $data,
+                    'name' => 'Paid',
+                    'data' => $paid,
+                ],
+                [
+                    'name' => 'Unpaid',
+                    'data' => $unpaid,
                 ],
             ],
             'xaxis' => [
@@ -194,11 +161,15 @@ class ActivityTimelineChart extends ApexChartWidget
 
                 ],
             ],
-            'colors' => ['#f59e0b', '#371BB1'],
+            'colors' => [
+                '#32cd32',
+                '#b22222'
+            ],
             'plotOptions' => [
                 'bar' => [
-                    'borderRadius' => 15,
+//                    'borderRadius' => 5, // split data sets get borders between, doesnt look great
                     'horizontal' => true,
+                    'rangeBarGroupRows' => true,
                 ],
             ],
         ];
@@ -223,13 +194,43 @@ class ActivityTimelineChart extends ApexChartWidget
         //     }
         // },
         tooltip: {
-            y: {
-                formatter: function (val, opt) {
-                    console.log(val)
-                    const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-                    let date = new Date(val)
-                    return date.getDate() + ' ' + month[date.getMonth()]
-                }
+            style: {
+                fontSize: '12px',
+                fontFamily: undefined
+              },
+              onDatasetHover: {
+                  highlightDataSeries: false,
+              },
+            custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                let paid = data.paid.toFixed(2);
+                let unpaid = data.unpaid.toFixed(2);
+                let totalSpend = data.paid + data.unpaid
+                let paidPercent = (totalSpend === 0 ? 0 : (paid / totalSpend * 100)).toFixed(2);
+                let unpaidPercent = (totalSpend === 0 ? 0 : (unpaid / totalSpend * 100)).toFixed(2);
+                return (
+                    '<div class="">' +
+                        "<span>" +
+                            '<span style="color: #32cd32;">' +
+                                paid +
+                            "</span>" +
+                            " / " +
+                            '<span style="color: red">' +
+                                unpaid +
+                            "</span>" +
+                        "</span>" +
+                        "<br>" +
+                        "<span>" +
+                            '<span style="color: #32cd32;">' +
+                                paidPercent +
+                            "% </span>" +
+                            " / " +
+                            '<span style="color: red">' +
+                                unpaidPercent +
+                            "%</span>" +
+                        "</span>" +
+                    "</div>"
+                );
             }
         },
         dataLabels: {
@@ -237,10 +238,11 @@ class ActivityTimelineChart extends ApexChartWidget
             formatter: function (val, opt) {
                 let index = opt.dataPointIndex
                 let data = opt.w.globals.initialSeries[0].data[index]
-                return data.name + ': $' + data.amount.toFixed(2);
+                return data.name;
             },
         }
     }
-    JS);
+    JS
+        );
     }
 }

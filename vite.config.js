@@ -5,6 +5,9 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from 'tailwindcss'
 
 export default defineConfig({
+    server: {
+        // port: 51731
+    },
     css: {
         postcss: {
             map: true,

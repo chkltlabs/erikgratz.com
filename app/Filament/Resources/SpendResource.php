@@ -5,9 +5,11 @@ namespace App\Filament\Resources;
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
 use App\Filament\Resources;
+use App\Models\Card;
 use App\Models\Spend;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -27,16 +29,12 @@ class SpendResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    const AT_TOOLTIP = 'The time period the spend occurs';
-
-    const FOR_TOOLTIP = 'The time period the spend is useful for';
-
     public static function formSchema($includeActivity = false): array
     {
         $activity = $includeActivity
             ? [
                 Select::make('activity_id')
-                    ->relationship('activity'),
+                    ->relationship('activity', 'name'),
             ]
             : [
                 //intentionally blank
@@ -44,47 +42,43 @@ class SpendResource extends Resource
 
         return [
             ...$activity,
-            TextInput::make('name')
-                ->required(),
+            Grid::make(4)->schema([
+                TextInput::make('name')
+                    ->required(),
+                Select::make('type')
+                    ->options(SpendType::asSelectArray())
+                    ->afterStateUpdated(
+                        function (?string $state, $get, $set) {
+                            if (! in_array($get('subtype'),
+                                SpendSubtype::getFilteredSet($state))) {
+                                $set('subtype', null);
+                            }
+                        })
+                    ->reactive()
+                    ->required(),
 
-            TextInput::make('amount')
-                ->required()
-                ->numeric(),
-
-            Select::make('type')
-                ->options(SpendType::asSelectArray())
-                ->afterStateUpdated(
-                    function (?string $state, $get, $set) {
-                        if (! in_array($get('subtype'),
-                            SpendSubtype::getFilteredSet($state))) {
-                            $set('subtype', null);
-                        }
-                    })
-                ->reactive()
-                ->required(),
-
-            Select::make('subtype')
-                ->options(
-                    fn ($get) => SpendSubtype::getFilteredSet($get('type'))
-                )
-                ->reactive()
-                ->required(),
-            Toggle::make('is_income'),
-            DatePicker::make('spend_for')
-                ->label('Spend Month')
-                ->hint(self::FOR_TOOLTIP),
-
-            DatePicker::make('spend_at')
-                ->label('Spend Date')
-                ->hint(self::AT_TOOLTIP),
-
-            Placeholder::make('created_at')
-                ->label('Created Date')
-                ->content(fn (?Spend $record): string => $record?->created_at?->diffForHumans() ?? '-'),
-
-            Placeholder::make('updated_at')
-                ->label('Last Modified Date')
-                ->content(fn (?Spend $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                Select::make('subtype')
+                    ->options(
+                        fn ($get) => SpendSubtype::getFilteredSet($get('type'))
+                    )
+                    ->reactive()
+                    ->required(),
+                Toggle::make('is_income'),
+            ]),
+            Grid::make(1)->schema([
+                Repeater::make('payments')
+                    ->columns(4)
+                    ->relationship()
+                    ->schema([
+                        TextInput::make('amount')->numeric()->required(),
+                        Toggle::make('is_paid'),
+                        DatePicker::make('paid_on')->nullable(),
+                        Select::make('card_id')
+                            ->label('Card')
+                            ->options(Card::all()->pluck('name', 'id'))
+                            ->nullable(),
+                    ])->defaultItems(0)->addActionLabel('Add Payment'),
+            ]),
         ];
     }
 
@@ -114,13 +108,6 @@ class SpendResource extends Resource
 
             TextColumn::make('subtype')
                 ->action(EditAction::make()),
-
-            TextColumn::make('month_for')
-                ->tooltip(self::FOR_TOOLTIP),
-
-            TextColumn::make('month_at')
-                ->label('Month Spent')
-                ->tooltip(self::AT_TOOLTIP),
         ];
     }
 

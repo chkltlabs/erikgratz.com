@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,10 +13,8 @@ class Spend extends Model
     use HasFactory;
 
     protected $fillable = [
-        'spend_for',
-        'spend_at',
         'name',
-        'amount',
+        'is_income',
         'type',
         'subtype',
     ];
@@ -28,5 +27,17 @@ class Spend extends Model
     public function activity()
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->payments()->sum('amount')
+        );
     }
 }
