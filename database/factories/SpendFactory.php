@@ -36,8 +36,8 @@ class SpendFactory extends Factory
     {
         return $this->afterCreating(
             fn ($model) => Payment::factory(4)
-                            ->recycle($model)
-                            ->create()
+                ->recycle($model)
+                ->create()
         );
     }
 }
