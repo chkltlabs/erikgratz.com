@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-use PhpParser\Node\Expr\Cast\Double;
 
 /**
  * Uses Apex Charts: https://apexcharts.com/docs/
@@ -19,6 +18,8 @@ class ActivityTimelineChart extends ApexChartWidget
      * Chart Id
      */
     protected static ?string $chartId = 'activityTimelineChart';
+
+    protected static ?string $pollingInterval = null;
 
     /**
      * Widget Title
@@ -83,9 +84,11 @@ class ActivityTimelineChart extends ApexChartWidget
                 }
                 $data[$index]['x'] = "$x";
                 $graphTracker[$x][] = [$lo, $hi];
+
                 continue 2;
             }
         }
+
         return $data;
     }
 
@@ -97,20 +100,25 @@ class ActivityTimelineChart extends ApexChartWidget
         $total = $entry['paid'] + $entry['unpaid'];
         $percent = $total === 0 ? 0 : ($entry['paid'] / $total);
         $spanPaidPercent = $span * $percent;
+
         return $startMS + $spanPaidPercent;
     }
+
     protected static function splitPaidUnpaid(array $data): array
     {
         $dataCopy = $data;
+
         return [
             array_map(function ($entry) {
                 $entry['y'][1] = self::calcSplit($entry);
+
                 return $entry;
-            },$data),
+            }, $data),
             array_map(function ($entry) {
                 $entry['y'][0] = self::calcSplit($entry) + 10000000;
+
                 return $entry;
-            },$dataCopy),
+            }, $dataCopy),
         ];
     }
 
@@ -120,7 +128,7 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        list($paid, $unpaid) = self::splitPaidUnpaid(self::setX(self::formatForDataArray(Activity::all())));
+        [$paid, $unpaid] = self::splitPaidUnpaid(self::setX(self::formatForDataArray(Activity::all())));
 
         return [
             'datalabels' => [
@@ -132,7 +140,7 @@ class ActivityTimelineChart extends ApexChartWidget
             'chart' => [
                 'type' => 'rangeBar',
                 'height' => 300,
-//                'stacked' => true,
+                //                'stacked' => true,
             ],
             'series' => [
                 [
@@ -163,11 +171,11 @@ class ActivityTimelineChart extends ApexChartWidget
             ],
             'colors' => [
                 '#32cd32',
-                '#b22222'
+                '#b22222',
             ],
             'plotOptions' => [
                 'bar' => [
-//                    'borderRadius' => 5, // split data sets get borders between, doesnt look great
+                    //                    'borderRadius' => 5, // split data sets get borders between, doesnt look great
                     'horizontal' => true,
                     'rangeBarGroupRows' => true,
                 ],

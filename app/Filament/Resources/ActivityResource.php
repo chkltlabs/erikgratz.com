@@ -57,23 +57,23 @@ class ActivityResource extends Resource
             ->persistSortInSession()
             ->defaultSort('start_date')
             ->filters([
-            //            Filter::make('date_range')
-            //                ->form([
-            //                    DatePicker::make('start_date')->default(now()->startOfYear()),
-            //                    DatePicker::make('end_date')->default(now()->endOfYear()),
-            //                ])
-            //                ->query(function (Builder $query, array $data): Builder {
-            //                    return $query
-            //                        ->when(
-            //                            $data['start_date'],
-            //                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
-            //                        )
-            //                        ->when(
-            //                            $data['end_date'],
-            //                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
-            //                        );
-            //                }),
-        ])
+                //            Filter::make('date_range')
+                //                ->form([
+                //                    DatePicker::make('start_date')->default(now()->startOfYear()),
+                //                    DatePicker::make('end_date')->default(now()->endOfYear()),
+                //                ])
+                //                ->query(function (Builder $query, array $data): Builder {
+                //                    return $query
+                //                        ->when(
+                //                            $data['start_date'],
+                //                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '>=', $date),
+                //                        )
+                //                        ->when(
+                //                            $data['end_date'],
+                //                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '<=', $date),
+                //                        );
+                //                }),
+            ])
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered();
     }
