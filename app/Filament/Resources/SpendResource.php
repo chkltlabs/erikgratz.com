@@ -17,12 +17,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class SpendResource extends Resource
 {
@@ -112,8 +111,7 @@ class SpendResource extends Resource
                 ->summarize(Summarizer::make()
                     ->money('USD')
                     ->using(
-                        fn (Builder $query) =>
-                        $query->join('payments', 'spends.id','payments.spend_id')
+                        fn (Builder $query) => $query->join('payments', 'spends.id', 'payments.spend_id')
                             ->sum('payments.amount')
                     )
                 ),

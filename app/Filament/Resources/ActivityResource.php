@@ -9,9 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityResource extends Resource
@@ -49,11 +47,10 @@ class ActivityResource extends Resource
 
             TextColumn::make('spent_upcoming')
                 ->label('Spent / Upcoming')
-                ->state(fn (Model $record) =>
-                    '<span>$'
+                ->state(fn (Model $record) => '<span>$'
                     .$record->paid
                     .'</span> / <span class="text-danger-600">$'
-                    . $record->unpaid
+                    .$record->unpaid
                     .'</span>')
                 ->html(),
 
