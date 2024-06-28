@@ -35,10 +35,10 @@ class StatsOverview extends BaseWidget
             ->sum('amount');
 
         return [
-            Stat::make('Current Month Unpaid', $curM),
-            Stat::make('Next Month Unpaid', $nexM),
-            Stat::make('90 Days Unpaid', $day90),
-            Stat::make('180 Days Unpaid', $day180)
+            Stat::make('Current Month Unpaid', '$'.$curM),
+            Stat::make('Next Month Unpaid', '$'.$nexM),
+            Stat::make('90 Days Unpaid', '$'.$day90),
+            Stat::make('180 Days Unpaid', '$'.$day180)
         ];
     }
 }
