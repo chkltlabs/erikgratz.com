@@ -10,9 +10,9 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Scripts -->
+        <!-- Scripts (Vue Frontend) -->
         @routes
-        @vite(['resources/css/app.css', 'resources/js/app.js','resources/sass/app.scss', 'resources/css/filament/admin/theme.css',])
+        @vite(['resources/css/app.css', 'resources/js/app.js','resources/sass/app.scss',])
 
         <script>
             window._asset = '{{ asset('') }}';
