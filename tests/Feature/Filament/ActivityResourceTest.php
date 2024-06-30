@@ -7,7 +7,9 @@ use App\Filament\Resources\SpendResource;
 use App\Models\Activity;
 use App\Models\Spend;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Livewire\Livewire;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 use Tests\TestCase;
 
 class ActivityResourceTest extends TestCase
@@ -49,11 +51,16 @@ class ActivityResourceTest extends TestCase
             ->assertCanSeeTableRecords($model);
     }
 
+    private static function filler(array $data): array
+    {
+        return (new ActivityResource\Pages\EditActivity())->mutateFormDataBeforeFill($data);
+    }
+
     public function test_activity_can_create()
     {
         $model = Activity::factory()->make();
         Livewire::test(ActivityResource\Pages\CreateActivity::class)
-            ->fillForm($model->toArray())
+            ->fillForm(self::filler($model->toArray()))
             ->call('create')
             ->assertHasNoFormErrors();
         $this->assertDatabaseHas($model->getTable(), $model->toArray());
@@ -75,9 +82,10 @@ class ActivityResourceTest extends TestCase
         Livewire::test(ActivityResource\Pages\EditActivity::class, [
             'record' => $model->id,
         ])
-            ->fillForm($new->toArray())
+            ->fillForm(self::filler($new->toArray()) )
             ->call('save')
-            ->assertHasNoFormErrors();
+            ->assertHasNoFormErrors()
+        ;
         $arr = $new->toArray();
         $this->assertDatabaseHas($new->getTable(), $arr);
     }

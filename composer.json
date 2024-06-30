@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.1",
         "bensampo/laravel-enum": "^6.11",
-        "filament/filament": "^3.2",
+        "filament/filament": "^3",
         "guzzlehttp/guzzle": "^7.3",
         "inertiajs/inertia-laravel": "^v1.3.0",
         "laravel/framework": "^10.0",
@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "leandrocfe/filament-apex-charts": "^3.1",
         "livewire/livewire": "^3.5",
+        "malzariey/filament-daterangepicker-filter": "^2.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
