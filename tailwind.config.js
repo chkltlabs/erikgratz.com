@@ -65,9 +65,9 @@ export default {
                         //     color: theme('colors.gray.300'),
                         // },
 
-                        figcaption: {
-                            color: theme('colors.gray.500'),
-                        },
+                        // figcaption: {
+                        //     color: theme('colors.gray.500'),
+                        // },
                     },
                 }
             }),
@@ -82,7 +82,7 @@ export default {
                 'forest-green': '#25372f',
                 'dopegray' : '#515159',
                 danger: colors.rose,
-                primary: colors.blue,
+                primary: colors.violet,
                 success: colors.green,
                 warning: colors.yellow,
             },

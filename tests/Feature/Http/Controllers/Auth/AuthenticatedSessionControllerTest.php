@@ -31,7 +31,7 @@ class AuthenticatedSessionControllerTest extends TestCase
             // TODO: send request data
         ]);
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/admin/login');
 
         // TODO: perform additional assertions
     }

@@ -12,7 +12,7 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/css/app.css', 'resources/js/app.js','resources/sass/app.scss'])
+        @vite(['resources/css/app.css', 'resources/js/app.js','resources/sass/app.scss', 'resources/css/filament/admin/theme.css',])
 
         <script>
             window._asset = '{{ asset('') }}';

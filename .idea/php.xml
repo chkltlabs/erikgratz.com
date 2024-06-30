@@ -171,6 +171,7 @@
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
       <path value="$PROJECT_DIR$/vendor/bensampo/laravel-enum" />
       <path value="$PROJECT_DIR$/vendor/leandrocfe/filament-apex-charts" />
+      <path value="$PROJECT_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

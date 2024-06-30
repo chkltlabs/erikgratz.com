@@ -15,4 +15,9 @@ class CreateActivity extends CreateRecord
 
         ];
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        return ActivityResource::splitStartEndDate($data);
+    }
 }

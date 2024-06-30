@@ -4,13 +4,17 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
 use App\Models\Activity;
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class ActivityResource extends Resource
 {
@@ -27,13 +31,35 @@ class ActivityResource extends Resource
         return $form->schema([
             TextInput::make('name')
                 ->required(),
+            DateRangePicker::make('start_end_date')
+                ->alwaysShowCalendar()
+                ->required(),
+            Grid::make(1)->schema([
+                Textarea::make('description')
+                    ->rows(5),
+            ]),
 
-            TextInput::make('description'),
-
-            DatePicker::make('start_date'),
-
-            DatePicker::make('end_date'),
+//            DatePicker::make('start_date'),
+//
+//            DatePicker::make('end_date'),
         ]);
+    }
+
+    public static function splitStartEndDate(array $data): array
+    {
+        list($data['start_date'], $data['end_date']) = explode(' - ', $data['start_end_date']);
+        unset($data['start_end_date']);
+        $data['start_date'] = Carbon::createFromFormat('d/m/Y',$data['start_date'])->toDateString();
+        $data['end_date'] = Carbon::createFromFormat('d/m/Y',$data['end_date'])->toDateString();
+        return $data;
+    }
+
+    public static function combineStartEndDate(array $data): array
+    {
+        $start_date = Carbon::parse($data['start_date'])->format('d/m/Y');
+        $end_date = Carbon::parse($data['end_date'])->format('d/m/Y');
+        $data['start_end_date'] = $start_date.' - '.$end_date;
+        return $data;
     }
 
     public static function table(Table $table): Table
