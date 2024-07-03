@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,21 @@ class Activity extends Model
                 ->joinRelation('payments')->sum('amount')
                 - $this->spends()->whereIsIncome(true)
                     ->joinRelation('payments')->sum('amount')
+        );
+    }
+
+    public function totalDays(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 //add 1, otherwise the first day doesn't count
+        );
+    }
+
+    //normalized spend per day, for estimating proportional living expense
+    public function normalizedTotalSpend(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->totalSpend / $this->totalDays)
         );
     }
 
