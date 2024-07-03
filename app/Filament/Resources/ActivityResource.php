@@ -103,6 +103,7 @@ class ActivityResource extends Resource
             TextColumn::make('end_date')
                 ->date(),
         ])
+            ->defaultPaginationPageOption('all')
             ->persistSortInSession()
             ->defaultPaginationPageOption('all')
             ->defaultSort('start_date')
