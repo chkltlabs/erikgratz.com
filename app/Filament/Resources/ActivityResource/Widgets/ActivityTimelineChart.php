@@ -116,10 +116,20 @@ class ActivityTimelineChart extends ApexChartWidget
             array_map(function ($entry) {
                 $entry['y'][1] = self::calcSplit($entry);
 
+                if ($entry['y'][1] === $entry['y'][0]) { //removes entry when should be invisible
+                    return [];
+                }
+
                 return $entry;
             }, $data),
             array_map(function ($entry) {
-                $entry['y'][0] = self::calcSplit($entry) + 10000000;
+                $entry['y'][0] = self::calcSplit($entry);
+
+                if ($entry['y'][1] === $entry['y'][0]) { //removes entry when should be invisible
+                    return [];
+                }
+
+                $entry['y'][0] += 10000000; //avoids visual collisions, 166.667 minutes
 
                 return $entry;
             }, $dataCopy),

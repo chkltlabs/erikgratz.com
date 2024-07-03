@@ -84,6 +84,10 @@ class ActivityResource extends Resource
                 ->color(fn ($state) => $state < 0 ? 'success' : 'danger')
                 ->money('USD'),
 
+            TextColumn::make('normalized_total_spend')
+                ->label('Spend per day')
+                ->money('USD'),
+
             TextColumn::make('start_date')
                 ->date()
                 ->sortable(),
