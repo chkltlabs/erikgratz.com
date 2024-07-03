@@ -1,0 +1,55 @@
+{
+  "public/css/filament/filament/app.css": {
+    "file": "assets/app-CvpdflDn.css",
+    "src": "public/css/filament/filament/app.css",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CeDyCVwB.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/filament.css": {
+    "file": "assets/filament-D8Er5S3n.css",
+    "src": "resources/css/filament.css",
+    "isEntry": true
+  },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-TWYXcKm1.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
+  "resources/js/Filament/filament-chart-plugins.js": {
+    "file": "assets/filament-chart-plugins-DB0LGnSJ.js",
+    "name": "filament-chart-plugins",
+    "src": "resources/js/Filament/filament-chart-plugins.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Bn2wq412.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app-Bu1A4Afm.css",
+      "assets/app-CeDyCVwB.css"
+    ],
+    "assets": [
+      "assets/face-DpAfdnxj.webp",
+      "assets/suit-up-CVqUPZFF.webp"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-s9pkDPSy.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  },
+  "storage/app/public/images/webp/face.webp": {
+    "file": "assets/face-DpAfdnxj.webp",
+    "src": "storage/app/public/images/webp/face.webp"
+  },
+  "storage/app/public/images/webp/suit-up.webp": {
+    "file": "assets/suit-up-CVqUPZFF.webp",
+    "src": "storage/app/public/images/webp/suit-up.webp"
+  }
+}
