@@ -96,6 +96,7 @@ class ActivityResource extends Resource
                 ->date(),
         ])
             ->persistSortInSession()
+            ->defaultPaginationPageOption('all')
             ->defaultSort('start_date')
             ->filters([
                 //
