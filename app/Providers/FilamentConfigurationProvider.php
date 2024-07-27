@@ -51,11 +51,11 @@ class FilamentConfigurationProvider extends ServiceProvider
 
         FilamentAsset::register([
             Js::make('chart-js-plugins', Vite::asset('resources/js/Filament/filament-chart-plugins.js'))->module(),
-//        ]);
+            //        ]);
 
-//            Theme::make('theme', Vite::asset('resources/css/filament/admin/theme.css')),
+            //            Theme::make('theme', Vite::asset('resources/css/filament/admin/theme.css')),
 
-//            Css::make('build-css', Vite::asset('resources/sass/app.scss','build'))
+            //            Css::make('build-css', Vite::asset('resources/sass/app.scss','build'))
         ]);
 
         //try fully switching to this method of theme customization

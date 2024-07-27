@@ -39,18 +39,19 @@ class ActivityResource extends Resource
                     ->rows(5),
             ]),
 
-//            DatePicker::make('start_date'),
-//
-//            DatePicker::make('end_date'),
+            //            DatePicker::make('start_date'),
+            //
+            //            DatePicker::make('end_date'),
         ]);
     }
 
     public static function splitStartEndDate(array $data): array
     {
-        list($data['start_date'], $data['end_date']) = explode(' - ', $data['start_end_date']);
+        [$data['start_date'], $data['end_date']] = explode(' - ', $data['start_end_date']);
         unset($data['start_end_date']);
-        $data['start_date'] = Carbon::createFromFormat('d/m/Y',$data['start_date'])->toDateString();
-        $data['end_date'] = Carbon::createFromFormat('d/m/Y',$data['end_date'])->toDateString();
+        $data['start_date'] = Carbon::createFromFormat('d/m/Y', $data['start_date'])->toDateString();
+        $data['end_date'] = Carbon::createFromFormat('d/m/Y', $data['end_date'])->toDateString();
+
         return $data;
     }
 
@@ -59,6 +60,7 @@ class ActivityResource extends Resource
         $start_date = Carbon::parse($data['start_date'])->format('d/m/Y');
         $end_date = Carbon::parse($data['end_date'])->format('d/m/Y');
         $data['start_end_date'] = $start_date.' - '.$end_date;
+
         return $data;
     }
 
@@ -96,6 +98,7 @@ class ActivityResource extends Resource
                 ->date(),
         ])
             ->persistSortInSession()
+            ->defaultPaginationPageOption('all')
             ->defaultSort('start_date')
             ->filters([
                 //
