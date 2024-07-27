@@ -26,7 +26,7 @@ class Card extends Model
     public function amountDue(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->interest_saving_balance !== 0
+            get: fn () => $this->interest_saving_balance != 0
                 ? $this->interest_saving_balance
                 : ($this->balance
                     + $this->pending
