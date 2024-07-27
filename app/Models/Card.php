@@ -28,7 +28,10 @@ class Card extends Model
         return Attribute::make(
             get: fn () => $this->interest_saving_balance !== 0
                 ? $this->interest_saving_balance
-                : ($this->balance + $this->pending - $this->interest_free_balance)
+                : ($this->balance
+                    + $this->pending
+                    + $this->interest_free_balance_payment
+                    - $this->interest_free_balance)
         );
     }
 }
