@@ -37,7 +37,15 @@ class CardResource extends Resource
                         ->default(0),
                     Select::make('due_date')
                         ->label('Due on')
-                        ->options(array_combine(range(1, 31), range(1, 31)))
+                        ->options(
+                            array_combine(
+                                range(1, 31),
+                                array_map(
+                                    fn ($num) => now()->day($num)->format('jS'),
+                                    range(1, 31)
+                                )
+                            )
+                        )
                         ->required(),
                 ]),
                 Grid::make(5)->schema([
