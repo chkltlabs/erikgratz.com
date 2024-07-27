@@ -11,11 +11,11 @@ class Card extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'limit','due_date',
-        'balance','pending',
+        'name', 'limit', 'due_date',
+        'balance', 'pending',
         'interest_saving_balance',
         'interest_free_balance',
-        'interest_free_balance_payment'
+        'interest_free_balance_payment',
     ];
 
     public function payments()

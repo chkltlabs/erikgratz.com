@@ -23,31 +23,31 @@ return new class extends Migration
 
         Account::create([
             'name' => 'Amy Checking',
-            'balance' => 187.88
+            'balance' => 187.88,
         ]);
 
         Account::create([
             'name' => 'Amy Savings',
-            'balance' => 94.13
+            'balance' => 94.13,
         ]);
 
         Account::create([
             'name' => 'Amy Money Market',
-            'balance' =>  23259.68
+            'balance' => 23259.68,
         ]);
         Account::create([
             'name' => 'Erik Checking',
-            'balance' => 565.60
+            'balance' => 565.60,
         ]);
 
         Account::create([
             'name' => 'Erik Savings',
-            'balance' => 466.00
+            'balance' => 466.00,
         ]);
 
         Account::create([
             'name' => 'Erik Money Market',
-            'balance' => 30.32
+            'balance' => 30.32,
         ]);
     }
 };

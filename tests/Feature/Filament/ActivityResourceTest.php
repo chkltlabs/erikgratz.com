@@ -7,9 +7,7 @@ use App\Filament\Resources\SpendResource;
 use App\Models\Activity;
 use App\Models\Spend;
 use App\Models\User;
-use Filament\Facades\Filament;
 use Livewire\Livewire;
-use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 use Tests\TestCase;
 
 class ActivityResourceTest extends TestCase
@@ -82,10 +80,9 @@ class ActivityResourceTest extends TestCase
         Livewire::test(ActivityResource\Pages\EditActivity::class, [
             'record' => $model->id,
         ])
-            ->fillForm(self::filler($new->toArray()) )
+            ->fillForm(self::filler($new->toArray()))
             ->call('save')
-            ->assertHasNoFormErrors()
-        ;
+            ->assertHasNoFormErrors();
         $arr = $new->toArray();
         $this->assertDatabaseHas($new->getTable(), $arr);
     }

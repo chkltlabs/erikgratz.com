@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CardResource\Pages;
-use App\Filament\Resources\CardResource\RelationManagers;
 use App\Models\Card;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,8 +16,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CardResource extends Resource
 {
@@ -41,7 +37,7 @@ class CardResource extends Resource
                         ->default(0),
                     Select::make('due_date')
                         ->label('Due on')
-                        ->options(array_combine(range(1,31),range(1,31)))
+                        ->options(array_combine(range(1, 31), range(1, 31)))
                         ->required(),
                 ]),
                 Grid::make(5)->schema([
