@@ -23,7 +23,7 @@ class Card extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function amount_due(): Attribute
+    public function amountDue(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->interest_saving_balance !== 0
