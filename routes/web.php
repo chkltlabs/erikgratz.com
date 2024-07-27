@@ -7,6 +7,7 @@ use App\Livewire\Counter;
 use App\Livewire\Page\Home;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,10 +65,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Livewire Redo
     //-------------------
 
-    Route::get('/counter', Counter::class); //example
-
+//    Route::get('/counter', Counter::class); //example
     Route::prefix('redo')->group(function () {
-        Route::get('/', Home::class);
+        Volt::route('/home', 'page.home');
+
     });
 });
 
