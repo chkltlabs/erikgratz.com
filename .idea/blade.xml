@@ -71,6 +71,7 @@
       <data directive="@endteleport" />
       <data directive="@endunless" />
       <data directive="@endverbatim" />
+      <data directive="@endvolt" />
       <data directive="@endwhile" />
       <data directive="@entangle" injection="true" prefix="&lt;?php \print_r(" suffix="); ?&gt;" />
       <data directive="@env" injection="true" prefix="&lt;?php&#10;if(app()-&gt;environment(" suffix=")): ?&gt;" />
@@ -137,6 +138,7 @@
       <data directive="@vite" injection="true" prefix="&lt;?php echo vite_func(" suffix="); ?&gt;" />
       <data directive="@viteReactRefresh" />
       <data directive="@vitereactrefresh" />
+      <data directive="@volt" injection="true" prefix="&lt;?php echo e(" suffix="); ?&gt;" />
       <data directive="@while" injection="true" prefix="&lt;?php&#10;while(" suffix="): ?&gt;" />
       <data directive="@yield" injection="true" prefix="&lt;?php&#10;echo $__env-&gt;yieldContent(" suffix="); ?&gt;" />
     </directives>

@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\ActivityResource\Widgets;
 
 use App\Filament\Resources\ActivityResource;
+use App\Filament\Resources\CardResource;
 use App\Models\Activity;
+use App\Models\Card;
 use Carbon\Carbon;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,7 +27,7 @@ class ActivityTimelineChart extends ApexChartWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'ActivityTimelineChart';
+    protected static ?string $heading = 'Timeline';
 
     protected static ?string $loadingIndicator = 'Loading...';
 
@@ -35,6 +37,28 @@ class ActivityTimelineChart extends ApexChartWidget
     {
         return [
         ];
+    }
+
+    protected static function formatCardsForDataArray(Collection $models): array
+    {
+        return $models->map(fn ($model) => [
+            'x' => 'card',
+            'y' => [
+                Carbon::parse($model->date_opened)->valueOf(),
+                Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf()
+            ],
+            'name' => $model->name,
+            'amount' => $model->points_bonus_spend,
+            'class' => get_class($model),
+            'lo' => Carbon::parse($model->date_opened)->valueOf(),
+            'hi' => Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
+            'paid' => $model->balance + $model->pending + $model->paidPaymentTotal,
+            'unpaid' => $model->plannedPaymentTotal,
+            'total_spend' => $model->points_bonus_spend,
+            'link' => CardResource::getUrl('index', [
+                'record' => $model,
+            ]),
+        ])->toArray();
     }
 
     protected static function formatForDataArray(Collection $models): array
@@ -102,7 +126,7 @@ class ActivityTimelineChart extends ApexChartWidget
         $endMS = $entry['y'][1];
         $span = $endMS - $startMS;
         $total = $entry['paid'] + $entry['unpaid'];
-        $percent = $total === 0 ? 0 : ($entry['paid'] / $total);
+        $percent = $total == 0 ? 0 : ($entry['paid'] / $total);
         $spanPaidPercent = $span * $percent;
 
         return $startMS + $spanPaidPercent;
@@ -142,7 +166,10 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        [$paid, $unpaid] = self::splitPaidUnpaid(self::setX(self::formatForDataArray(Activity::all())));
+        [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
+            ...self::formatForDataArray(Activity::all()),
+            ...self::formatCardsForDataArray(Card::all())
+            ]));
 
         return [
             'datalabels' => [
@@ -153,7 +180,7 @@ class ActivityTimelineChart extends ApexChartWidget
             ],
             'chart' => [
                 'type' => 'rangeBar',
-                'height' => 300,
+                'height' => 250,
                 //                'stacked' => true,
             ],
             'series' => [
@@ -165,6 +192,10 @@ class ActivityTimelineChart extends ApexChartWidget
                     'name' => 'Unpaid',
                     'data' => $unpaid,
                 ],
+//                [
+//                    'name' => 'Cards',
+//                    'data' => $cards,
+//                ],
             ],
             'xaxis' => [
                 'type' => 'datetime',

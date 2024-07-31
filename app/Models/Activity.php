@@ -45,6 +45,60 @@ class Activity extends Model
         );
     }
 
+    public function spendTypePercentages(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => $this->percentages('type')
+        );
+    }
+
+    public function spendSubtypePercentages(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): array => $this->percentages('subtype')
+        );
+    }
+
+    private function percentages($typeCol): array
+    {
+        $percentages = [];
+        if ($this->total_spend == 0) {
+            return $percentages;
+        }
+        foreach ($this->spends()->whereIsIncome(false)->get() as $spend) {
+            $perc = (float) ($spend->amount / $this->total_spend) * 100;
+            $type = $spend->$typeCol->value;
+            if (!isset($percentages[$type])) {
+                $percentages[$type] = 0;
+            }
+            $percentages[$type] += $perc;
+        }
+        return $percentages;
+    }
+
+    public function daysByMonth(): Attribute
+    {
+        return Attribute::make(
+            get: function (): array {
+                $start = Carbon::parse($this->start_date);
+                $end = Carbon::parse($this->end_date);
+
+                if ($start->month == $end->month) {
+                    return [
+                        $start->format('M') => $start->diffInDays($end)
+                    ];
+                }
+                $rtn = [];
+                while ($start->lte($end)) {
+                    $endThisMonth = $start->clone()->endOfMonth();
+                    $rtn[$start->format('M')] = $start->diffInDays($endThisMonth);
+                    $start->addMonth()->startOfMonth();
+                }
+                return $rtn;
+            }
+        );
+    }
+
     public function paid(): Attribute
     {
         return Attribute::make(

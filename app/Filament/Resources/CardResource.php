@@ -3,12 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CardResource\Pages;
+use App\Filament\Resources\CardResource\RelationManagers\PlannedPaymentsRelationManager;
 use App\Models\Card;
-use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -27,49 +32,70 @@ class CardResource extends Resource
     {
         return $form
             ->schema([
-                Grid::make(3)->schema([
-                    TextInput::make('name')
-                        ->required()
-                        ->maxLength(191),
-                    TextInput::make('limit')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                    Select::make('due_date')
-                        ->label('Due on')
-                        ->options(
-                            array_combine(
-                                range(1, 31),
-                                array_map(
-                                    fn ($num) => now()->day($num)->format('jS'),
-                                    range(1, 31)
+                Fieldset::make('Basic Info')
+                    ->columns(3)
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(191),
+                        TextInput::make('limit')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        ColorPicker::make('color'),
+                        DatePicker::make('date_opened'),
+                        Select::make('due_date')
+                            ->label('Due on')
+                            ->options(
+                                array_combine(
+                                    range(1, 31),
+                                    array_map(
+                                        fn ($num) => now()->day($num)->format('jS'),
+                                        range(1, 31)
+                                    )
                                 )
                             )
-                        )
-                        ->required(),
-                ]),
-                Grid::make(5)->schema([
-                    TextInput::make('balance')
+                            ->required(),
+                    ]),
+                Fieldset::make('Balance and Interest')
+                    ->columns(5)
+                    ->schema([
+                        TextInput::make('balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('pending')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('interest_saving_balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('interest_free_balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('interest_free_balance_payment')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                    ]),
+                Fieldset::make('Points and Bonus')->columns(4)->schema([
+                    TextInput::make('points_balance')
                         ->required()
                         ->numeric()
                         ->default(0),
-                    TextInput::make('pending')
+                    TextInput::make('points_bonus')
                         ->required()
                         ->numeric()
                         ->default(0),
-                    TextInput::make('interest_saving_balance')
+                    TextInput::make('points_bonus_spend')
                         ->required()
                         ->numeric()
                         ->default(0),
-                    TextInput::make('interest_free_balance')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                    TextInput::make('interest_free_balance_payment')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                ]),
+                    TextInput::make('points_bonus_period')
+                ])
             ]);
     }
 
@@ -93,15 +119,21 @@ class CardResource extends Resource
                     ->summarize(Sum::make()->money()->label(''))
                     ->sortable(),
                 TextColumn::make('interest_saving_balance')
+                    ->label('ISB')
                     ->money()
                     ->summarize(Sum::make()->money()->label(''))
                     ->sortable(),
                 TextColumn::make('interest_free_balance')
+                    ->label('0% Bal')
                     ->money()
                     ->summarize(Sum::make()->money()->label(''))
                     ->sortable(),
                 TextColumn::make('due_date')
+                    ->label('Due')
                     ->formatStateUsing(fn ($state): string => now()->day($state)->format('jS'))
+                    ->sortable(),
+                TextColumn::make('plannedPaymentTotal')
+                    ->money()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -110,7 +142,7 @@ class CardResource extends Resource
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

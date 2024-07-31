@@ -16,11 +16,32 @@ class Card extends Model
         'interest_saving_balance',
         'interest_free_balance',
         'interest_free_balance_payment',
+        'points_balance', 'points_bonus',
+        'points_bonus_spend','date_opened',
+        'points_bonus_period','color'
+    ];
+
+    protected $casts = [
+        'date_opened' => 'date',
     ];
 
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function paid_payments()
+    {
+        return $this->payments()
+            ->where('is_paid', true)
+            ->orWhere('paid_on', '<', now()->toDateString());
+    }
+
+    public function planned_payments()
+    {
+        return $this->payments()
+            ->where('is_paid', false)
+            ->orWhere('paid_on', '>=', now()->toDateString());
     }
 
     public function amountDue(): Attribute
@@ -32,6 +53,20 @@ class Card extends Model
                     + $this->pending
                     + $this->interest_free_balance_payment
                     - $this->interest_free_balance)
+        );
+    }
+
+    public function plannedPaymentTotal(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->planned_payments()->sum('amount')
+        );
+    }
+
+    public function paidPaymentTotal(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->paid_payments()->sum('amount')
         );
     }
 }
