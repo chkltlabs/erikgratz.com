@@ -33,15 +33,13 @@ class Card extends Model
     public function paid_payments()
     {
         return $this->payments()
-            ->where('is_paid', true)
-            ->orWhere('paid_on', '<', now()->toDateString());
+            ->where('is_paid', true);
     }
 
     public function planned_payments()
     {
         return $this->payments()
-            ->where('is_paid', false)
-            ->orWhere('paid_on', '>=', now()->toDateString());
+            ->where('is_paid', false);
     }
 
     public function amountDue(): Attribute
