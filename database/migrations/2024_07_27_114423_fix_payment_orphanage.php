@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         foreach (Payment::all() as $payment) {
-            if ($payment?->spend == null) {
+            if ($payment->spend == null) {
                 $payment->delete();
             }
         }
