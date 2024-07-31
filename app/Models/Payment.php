@@ -15,11 +15,11 @@ class Payment extends Model
 
     public function spend()
     {
-        $this->belongsTo(Spend::class);
+        return $this->belongsTo(Spend::class);
     }
 
     public function card()
     {
-        $this->belongsTo(Card::class);
+        return $this->belongsTo(Card::class);
     }
 }
