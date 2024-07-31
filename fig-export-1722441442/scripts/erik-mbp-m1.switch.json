@@ -1,0 +1,75 @@
+{
+  "uuid": "b33a0f90-8cc7-4f2b-924f-4c7bb8fe5bef",
+  "name": "switch",
+  "displayName": null,
+  "description": "Changes branch, pulls from remote, then installs composer and runs migrations",
+  "templateVersion": 4,
+  "tags": [
+    "development",
+    "git",
+    "sail"
+  ],
+  "rules": [],
+  "steps": [
+    {
+      "name": null,
+      "parameters": [
+        {
+          "name": "branch",
+          "displayName": null,
+          "description": null,
+          "dependsOn": [],
+          "required": null,
+          "type": "selector",
+          "typeData": {
+            "placeholder": null,
+            "suggestions": null,
+            "generators": [
+              {
+                "type": "script",
+                "script": "# fig:\ngit branch --all --no-color --no-column | cut -c3- | cut -d' ' -f1 | sed 's#remotes/[^/]*/##g' | sort -u",
+                "tree": [
+                  "# fig:\ngit branch --all --no-color --no-column | cut -c3- | cut -d' ' -f1 | sed 's#remotes/[^/]*/##g' | sort -u"
+                ]
+              }
+            ],
+            "allowRawTextInput": null,
+            "multi": null
+          },
+          "cli": {
+            "short": null,
+            "long": "branch",
+            "required": true,
+            "require_equals": false,
+            "type": {
+              "String": {
+                "default": null
+              }
+            },
+            "raw": false
+          }
+        }
+      ]
+    },
+    {
+      "name": null,
+      "runtime": "BASH",
+      "tree": [
+        "git checkout ",
+        {
+          "name": "branch"
+        },
+        "\ngit pull\nvendor/bin/sail composer install\nvendor/bin/sail artisan migrate:fresh\nvendor/bin/sail npm install\nvendor/bin/sail npm run build"
+      ]
+    }
+  ],
+  "namespace": "erik-mbp-m1",
+  "isOwnedByUser": true,
+  "lastInvokedAt": "2024-07-17T14:52:25.571Z",
+  "lastInvokedAtByUser": "2024-07-17T14:52:25.571Z",
+  "invocationTrackStderr": false,
+  "invocationTrackStdout": false,
+  "invocationTrackInputs": false,
+  "invocationDisableTrack": false,
+  "shouldCache": true
+}
