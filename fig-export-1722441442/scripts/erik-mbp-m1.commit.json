@@ -1,0 +1,100 @@
+{
+  "uuid": "76e8c1a6-279c-4ec3-9a8c-78836bfcfe8b",
+  "name": "commit",
+  "displayName": null,
+  "description": "Add all changed files, commit, and push",
+  "templateVersion": 4,
+  "tags": [
+    "git",
+    "deployment"
+  ],
+  "rules": [],
+  "steps": [
+    {
+      "name": null,
+      "parameters": [
+        {
+          "name": "msg",
+          "displayName": null,
+          "description": null,
+          "dependsOn": [],
+          "required": null,
+          "type": "text",
+          "typeData": {
+            "placeholder": ""
+          },
+          "cli": {
+            "short": null,
+            "long": "msg",
+            "required": true,
+            "require_equals": false,
+            "type": {
+              "String": {
+                "default": null
+              }
+            },
+            "raw": false
+          }
+        },
+        {
+          "name": "type",
+          "displayName": null,
+          "description": null,
+          "dependsOn": [],
+          "required": null,
+          "type": "selector",
+          "typeData": {
+            "placeholder": null,
+            "suggestions": [
+              "bugfix",
+              "feature",
+              "chore",
+              "hotfix",
+              "wip",
+              "merge"
+            ],
+            "generators": null,
+            "allowRawTextInput": true,
+            "multi": null
+          },
+          "cli": {
+            "short": null,
+            "long": "type",
+            "required": true,
+            "require_equals": false,
+            "type": {
+              "String": {
+                "default": "wip"
+              }
+            },
+            "raw": false
+          }
+        }
+      ]
+    },
+    {
+      "name": null,
+      "runtime": "BASH",
+      "tree": [
+        "git push\n\ngit add .\n\ngit commit -m \"",
+        {
+          "name": "type"
+        },
+        ": ",
+        {
+          "name": "msg"
+        },
+        "\"\n\ngit push\n\nif [ $? -ne 0 ]; then\n  echo \"Push rejected. Performing pull and merge...\"\n\n  git pull\n\n  if [ $? -ne 0 ]; then\n    echo \"Merge conflict detected. Please resolve the conflict manually.\"\n    else\n    git push\n  fi\nfi\n"
+      ]
+    }
+  ],
+  "namespace": "erik-mbp-m1",
+  "isOwnedByUser": true,
+  "lastInvokedAt": "2024-07-31T13:33:13.586Z",
+  "lastInvokedAtByUser": "2024-07-31T13:33:13.586Z",
+  "invocationTrackStderr": false,
+  "invocationTrackStdout": false,
+  "invocationTrackInputs": false,
+  "invocationDisableTrack": false,
+  "shouldCache": true
+}
