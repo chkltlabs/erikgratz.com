@@ -16,4 +16,11 @@ class ManageCards extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            CardResource\Widgets\SpentPayingSaving::class
+        ];
+    }
 }
