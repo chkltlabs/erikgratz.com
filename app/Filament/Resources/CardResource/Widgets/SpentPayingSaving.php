@@ -21,7 +21,7 @@ class SpentPayingSaving extends BaseWidget
         );
         $potentialSave = User::sum('monthly_pay') - $nextMonth;
         return [
-            Stat::make('This Month Spend', $thisMonth),
+            Stat::make('This Month Unpaid', $thisMonth),
             Stat::make('Next Month Spend', $nextMonth),
             Stat::make('Next Month Save', $potentialSave),
         ];
