@@ -18,6 +18,8 @@ class SpentPayingSaving extends BaseWidget
             - $thisMonth
             + $reusedQuery->sum('balance')
             + $reusedQuery->sum('pending')
+            - $reusedQuery->sum('interest_free_balance')
+            + $reusedQuery->sum('interest_free_balance_payment')
         );
         $potentialSave = User::sum('monthly_pay') - $nextMonth;
         return [
