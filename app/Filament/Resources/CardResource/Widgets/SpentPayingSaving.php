@@ -22,10 +22,12 @@ class SpentPayingSaving extends BaseWidget
             + $reusedQuery->sum('interest_free_balance_payment')
         );
         $potentialSave = User::sum('monthly_pay') - $nextMonth;
+        $totalPoints = Card::sum('points_balance');
         return [
             Stat::make('This Month Unpaid', $thisMonth),
             Stat::make('Next Month Spend', $nextMonth),
             Stat::make('Next Month Save', $potentialSave),
+            Stat::make('Total Points', $totalPoints),
         ];
     }
 }
