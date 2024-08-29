@@ -24,7 +24,7 @@ class AccountResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->options(User::all()->pluck('id', 'name'))
+                    ->options(User::all()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('type')
                     ->options(AccountType::asSelectArray())
