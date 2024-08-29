@@ -37,8 +37,9 @@ class AccountResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('balance')
-                    ->money()
+                Tables\Columns\TextInputColumn::make('balance')
+                    ->rules(['numeric'])
+//                    ->money()
                     ->summarize(Sum::make()->money()->label(''))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -61,7 +62,8 @@ class AccountResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordAction(null); //disables click-to-open behavior, can still edit with edit button
     }
 
     public static function getPages(): array
