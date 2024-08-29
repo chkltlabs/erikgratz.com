@@ -14,7 +14,7 @@ class SpentPayingSaving extends BaseWidget
     {
         $futureDueDateCards = Card::where('due_date', '>=', now()->day);
         $pastDueDateCards = Card::where('due_date', '<', now()->day);
-        $noISBYetCards = $pastDueDateCards->where('interest_saving_balance', 0);
+        $noISBYetCards = Card::where('due_date', '<', now()->day)->where('interest_saving_balance', 0);
         $thisMonth = $futureDueDateCards->sum('interest_saving_balance');
         $nextMonth = (
             $pastDueDateCards->sum('interest_saving_balance')
