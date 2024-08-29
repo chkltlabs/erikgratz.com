@@ -20,6 +20,13 @@ class Activity extends Model
         return $this->hasMany(Spend::class);
     }
 
+    public function archived(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->end_date)->lt(now()->subDays(15))
+        );
+    }
+
     public function totalSpend(): Attribute
     {
         return Attribute::make(

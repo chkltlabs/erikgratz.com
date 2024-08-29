@@ -167,7 +167,7 @@ class ActivityTimelineChart extends ApexChartWidget
     protected function getOptions(): array
     {
         [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
-            ...self::formatForDataArray(Activity::all()),
+            ...self::formatForDataArray(Activity::all()->filter(fn ($act) => !$act->archived)),
 //            ...self::formatCardsForDataArray(Card::all())
             ]));
 

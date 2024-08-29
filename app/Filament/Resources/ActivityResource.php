@@ -16,6 +16,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
@@ -110,7 +111,7 @@ class ActivityResource extends Resource
                 ]),
             ])
             ->filters([
-                //
+                Filter::make('archived')->toggle(),
             ]);
     }
 
