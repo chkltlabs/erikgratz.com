@@ -21,13 +21,17 @@ class CardWidget extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextInputColumn::make('balance')
+                    ->rules(['numeric'])
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('pending')
+                    ->rules(['numeric'])
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('interest_saving_balance')
+                    ->rules(['numeric'])
                     ->label('ISB')
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('interest_free_balance')
+                    ->rules(['numeric'])
                     ->label('0% Bal')
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextColumn::make('updated_at')
