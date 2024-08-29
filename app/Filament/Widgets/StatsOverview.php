@@ -20,19 +20,38 @@ class StatsOverview extends BaseWidget
 
         $curM = (string) Payment::whereBetween('paid_on', [$curMStart, $curMEnd])
             ->whereIsPaid(false)
-            ->sum('amount');
+            ->whereRelation('spend', 'is_income','=',false)
+            ->sum('amount') - Payment::whereBetween('paid_on', [$curMStart, $curMEnd])
+                ->whereIsPaid(false)
+                ->whereRelation('spend', 'is_income','=',true)
+                ->sum('amount');
 
         $nexM = (string) Payment::whereBetween('paid_on', [$nexMStart, $nexMEnd])
             ->whereIsPaid(false)
-            ->sum('amount');
+            ->whereRelation('spend', 'is_income','=',false)
+            ->sum('amount')
+            - Payment::whereBetween('paid_on', [$nexMStart, $nexMEnd])
+                ->whereIsPaid(false)
+                ->whereRelation('spend', 'is_income','=',true)
+                ->sum('amount');
 
         $day90 = (string) Payment::whereBetween('paid_on', [now(), $day90End])
             ->whereIsPaid(false)
-            ->sum('amount');
+            ->whereRelation('spend', 'is_income','=',false)
+            ->sum('amount')
+            - Payment::whereBetween('paid_on', [now(), $day90End])
+                ->whereIsPaid(false)
+                ->whereRelation('spend', 'is_income','=',true)
+                ->sum('amount');
 
         $day180 = (string) Payment::whereBetween('paid_on', [now(), $day180End])
             ->whereIsPaid(false)
-            ->sum('amount');
+            ->whereRelation('spend', 'is_income','=',false)
+            ->sum('amount')
+            - Payment::whereBetween('paid_on', [now(), $day180End])
+                ->whereIsPaid(false)
+                ->whereRelation('spend', 'is_income','=',true)
+                ->sum('amount');
 
         return [
             Stat::make('Current Month Unpaid', '$'.$curM),

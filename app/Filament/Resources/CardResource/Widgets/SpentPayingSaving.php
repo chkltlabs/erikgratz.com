@@ -34,9 +34,9 @@ class SpentPayingSaving extends BaseWidget
             - $nextMonth;
         $totalPoints = Card::sum('points_balance');
         return [
-            Stat::make('This Month Unpaid', $thisMonth),
-            Stat::make('Next Month Spend', $nextMonth),
-            Stat::make('Next Month Save', $potentialSave),
+            Stat::make('This Month Unpaid', '$'.$thisMonth),
+            Stat::make('Next Month Spend', '$'.$nextMonth),
+            Stat::make('Next Month Save', '$'.$potentialSave),
             Stat::make('Total Points', $totalPoints),
         ];
     }
