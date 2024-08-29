@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AccountType;
 use App\Filament\Resources\AccountResource\Pages;
 use App\Models\Account;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,9 +23,12 @@ class AccountResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(191),
+                Forms\Components\Select::make('user_id')
+                    ->options(User::all()->pluck('id', 'name'))
+                    ->required(),
+                Forms\Components\Select::make('type')
+                    ->options(AccountType::asSelectArray())
+                    ->required(),
                 Forms\Components\TextInput::make('balance')
                     ->required()
                     ->numeric()

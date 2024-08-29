@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\AccountType;
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccountFactory extends Factory
@@ -12,7 +14,8 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'user_id' => User::factory(),
+            'type' => AccountType::getRandomValue(),
             'balance' => $this->faker->randomFloat(),
         ];
     }

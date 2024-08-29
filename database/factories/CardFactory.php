@@ -13,6 +13,7 @@ class CardFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'color' => $this->faker->hexColor(),
             'balance' => $this->faker->randomFloat(),
             'limit' => $this->faker->randomFloat(),
             'due_date' => $this->faker->randomNumber(),

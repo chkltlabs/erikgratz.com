@@ -46,6 +46,7 @@ class ActivityResourceTest extends TestCase
         $model = Activity::factory()->count(2)->create();
 
         Livewire::test(ActivityResource\Pages\ListActivities::class)
+            ->filterTable('archived', null)
             ->assertCanSeeTableRecords($model);
     }
 

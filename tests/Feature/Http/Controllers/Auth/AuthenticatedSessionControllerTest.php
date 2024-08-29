@@ -14,7 +14,7 @@ class AuthenticatedSessionControllerTest extends TestCase
      */
     public function create_returns_an_ok_response()
     {
-        $response = $this->get(route('login'));
+        $response = $this->get(route('filament.admin.auth.login'));
 
         $response->assertOk();
 

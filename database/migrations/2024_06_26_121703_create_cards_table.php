@@ -31,7 +31,8 @@ return new class extends Migration
 
         Card::create(['name' => 'CS Reserve']);
         Card::create(['name' => 'CS Preferred']);
-        Card::create(['name' => 'Cap1 Venture X']);
+        Card::create(['name' => 'C1 V X (Erik)']);
+        Card::create(['name' => 'C1 V X (Amy)']);
     }
 
     /**

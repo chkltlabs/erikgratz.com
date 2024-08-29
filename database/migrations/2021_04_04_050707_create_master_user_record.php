@@ -19,6 +19,12 @@ class CreateMasterUserRecord extends Migration
             'password' => Hash::make(env('MASTER_PASSWORD')),
             'imageUrl' => 'storage/images/webp/face.webp',
         ]);
+        \App\Models\User::create([
+            'name' => 'Amy G',
+            'email' => 'hudgins.a8@gmail.com',
+            'password' => Hash::make(env('MASTER_PASSWORD_2')),
+            'imageUrl' => 'storage/images/webp/face.webp',
+        ]);
     }
 
     /**

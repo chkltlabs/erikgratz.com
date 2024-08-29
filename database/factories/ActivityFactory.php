@@ -18,7 +18,7 @@ class ActivityFactory extends Factory
             'description' => $this->faker->text(),
             'start_date' => Carbon::now()
                 ->subMonths(rand(1, 40))
-                ->subDays(rand(4, 23))
+                ->subDays(rand(4, 10))
                 ->toDateString(),
             'end_date' => fn ($attrs) => Carbon::parse($attrs['start_date'])->addMonths(rand(0, 2))->addDays(rand(0, 15))->toDateString(),
         ];

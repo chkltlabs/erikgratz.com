@@ -66,6 +66,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->sidebarWidth('12%')
             ->plugins([
                 FilamentApexChartsPlugin::make(),
             ])->viteTheme('resources/css/filament/admin/theme.css');
