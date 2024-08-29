@@ -87,7 +87,7 @@ class BlogPostResourceTest extends TestCase
         Livewire::test(EditBlogPost::class, [
             'record' => $post->id,
         ])
-            ->call('delete')
+            ->callAction('delete')
             ->assertHasNoFormErrors();
         $this->assertDatabaseMissing($post->getTable(), $post->toArray());
     }

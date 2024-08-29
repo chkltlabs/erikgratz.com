@@ -21,14 +21,22 @@ class AccountWidget extends BaseWidget
         return $table->query(Account::query())
             ->paginated(false)
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->description(fn (Model $record)
-                    => $record->updated_at->shortRelativeDiffForHumans(),
-                        'below'),
-                Tables\Columns\TextInputColumn::make('balance')
-                    ->rules(['numeric'])
-                    ->summarize(Sum::make()->money()->label(''))
-                    ->sortable()
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\TextColumn::make('name')
+                        ->description(fn (Model $record)
+                        => $record->updated_at->shortRelativeDiffForHumans(),
+                            'below'),
+                    Tables\Columns\TextInputColumn::make('balance')
+                        ->rules(['numeric'])
+                        ->summarize(Sum::make()->money()->label(''))
+//                        ->sortable()
+                ])
+            ])->contentGrid(fn () => [
+                'xs' => 3,
+                'sm' => 3,
+                'md' => 3,
+                'lg' => 3,
+                'xl' => 3,
             ])
             ;
     }

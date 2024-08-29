@@ -14,25 +14,7 @@ class SpentPayingSaving extends BaseWidget
 {
     protected function getStats(): array
     {
-        $futureDueDateCards = Card::where('due_date', '>=', now()->day);
-        $pastDueDateCards = Card::where('due_date', '<', now()->day);
-        $noISBYetCards = Card::where('due_date', '<', now()->day)->where('interest_saving_balance', 0);
-        $thisMonth = $futureDueDateCards->sum('interest_saving_balance');
-        $nextMonth = (
-            $pastDueDateCards->sum('interest_saving_balance')
-            - $thisMonth
-            + $this->sumTheStuff($futureDueDateCards)
-            + $this->sumTheStuff($noISBYetCards)
-        );
-        $potentialSave = User::sum('monthly_pay')
-            + Payment::where('is_paid', false)
-                ->whereBetween('paid_on', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
-                ->whereRelation('spend','is_income', '=', true)
-                ->sum('amount')
-            + Account::whereName('Erik Checking')->sum('balance')
-            + (now()->day <= 15 ? User::sum('monthly_pay') / 2 : 0) //if its before the halfway point in the month, we get another paycheck before next month
-            - $nextMonth;
-        $totalPoints = Card::sum('points_balance');
+        list($thisMonth, $nextMonth, $potentialSave, $totalPoints) = self::getData();
         return [
             Stat::make('This Month Unpaid', '$'.$thisMonth),
             Stat::make('Next Month Spend', '$'.$nextMonth),
@@ -41,7 +23,34 @@ class SpentPayingSaving extends BaseWidget
         ];
     }
 
-    private function sumTheStuff(Builder $query): int|float
+    public static function getData(): array
+    {
+        $futureDueDateCards = Card::where('due_date', '>=', now()->day);
+        $pastDueDateCards = Card::where('due_date', '<', now()->day);
+        $noISBYetCards = Card::where('due_date', '<', now()->day)->where('interest_saving_balance', 0);
+        $thisMonth = $futureDueDateCards->sum('interest_saving_balance');
+        $nextMonth = (
+            $pastDueDateCards->sum('interest_saving_balance')
+            - $thisMonth
+            + self::sumTheStuff($futureDueDateCards)
+            + self::sumTheStuff($noISBYetCards)
+        );
+        $potentialSave = User::sum('monthly_pay')
+            + Payment::where('is_paid', false)
+                ->whereBetween('paid_on', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
+                ->whereRelation('spend','is_income', '=', true)
+                ->sum('amount')
+            + Account::whereType('Checking')
+                ->forUser('Erik')
+                ->sum('balance')
+            + (now()->day <= 15 ? User::sum('monthly_pay') / 2 : 0) //if its before the halfway point in the month, we get another paycheck before next month
+            - $nextMonth;
+        $totalPoints = Card::sum('points_balance');
+
+        return [$thisMonth, $nextMonth, $potentialSave, $totalPoints];
+    }
+
+    private static function sumTheStuff(Builder $query): int|float
     {
         return $query->sum('balance')
             + $query->sum('pending')

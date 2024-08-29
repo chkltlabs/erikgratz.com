@@ -56,7 +56,7 @@ class BlogPostResource extends Resource
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
-                Tables\Columns\TagsColumn::make('tags'),
+                Tables\Columns\TextColumn::make('tags')->badge(),
             ])
             ->filters([
                 //
