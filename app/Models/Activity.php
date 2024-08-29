@@ -20,10 +20,11 @@ class Activity extends Model
         return $this->hasMany(Spend::class);
     }
 
+    const ARCHIVE_DAY_GRACE = 15;
     public function archived(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::parse($this->end_date)->lt(now()->subDays(15))
+            get: fn () => Carbon::parse($this->end_date)->lt(now()->subDays(self::ARCHIVE_DAY_GRACE))
         );
     }
 

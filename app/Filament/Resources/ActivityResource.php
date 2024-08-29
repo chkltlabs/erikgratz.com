@@ -17,7 +17,9 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
@@ -111,7 +113,16 @@ class ActivityResource extends Resource
                 ]),
             ])
             ->filters([
-                Filter::make('archived')->toggle(),
+                TernaryFilter::make('archived')
+                    ->label('Archived')
+                    ->placeholder('All')
+                    ->trueLabel('Archived Only')
+                    ->falseLabel('Not Archived')
+                    ->queries(
+                        true: fn (Builder $query) => $query->where('end_date', '<', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
+                        false: fn (Builder $query) => $query->where('end_date', '>=', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
+                        blank: fn (Builder $query) => $query, // we do not want to filter the query when it is blank.
+                    ),
             ]);
     }
 
