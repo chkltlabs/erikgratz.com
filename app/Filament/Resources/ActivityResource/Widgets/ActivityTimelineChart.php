@@ -168,7 +168,7 @@ class ActivityTimelineChart extends ApexChartWidget
     {
         [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
             ...self::formatForDataArray(Activity::all()),
-            ...self::formatCardsForDataArray(Card::all())
+//            ...self::formatCardsForDataArray(Card::all())
             ]));
 
         return [
