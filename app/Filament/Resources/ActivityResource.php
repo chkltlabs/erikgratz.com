@@ -118,12 +118,15 @@ class ActivityResource extends Resource
                     ->placeholder('All')
                     ->trueLabel('Archived Only')
                     ->falseLabel('Not Archived')
+                    ->default(false)
                     ->queries(
                         true: fn (Builder $query) => $query->where('end_date', '<', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
                         false: fn (Builder $query) => $query->where('end_date', '>=', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
                         blank: fn (Builder $query) => $query, // we do not want to filter the query when it is blank.
                     ),
-            ]);
+            ])
+            ->persistFiltersInSession()
+            ;
     }
 
     public static function getPages(): array
