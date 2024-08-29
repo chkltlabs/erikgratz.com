@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\CardResource\Widgets;
 
+use App\Models\Account;
 use App\Models\Card;
+use App\Models\Payment;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -22,7 +24,14 @@ class SpentPayingSaving extends BaseWidget
             + $this->sumTheStuff($futureDueDateCards)
             + $this->sumTheStuff($noISBYetCards)
         );
-        $potentialSave = User::sum('monthly_pay') - $nextMonth;
+        $potentialSave = User::sum('monthly_pay')
+            + Payment::where('is_paid', false)
+                ->whereBetween('paid_on', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
+                ->whereRelation('spend','is_income', '=', true)
+                ->sum('amount')
+            + Account::whereName('Erik Checking')->sum('balance')
+            + (now()->day <= 15 ? User::sum('monthly_pay') / 2 : 0) //if its before the halfway point in the month, we get another paycheck before next month
+            - $nextMonth;
         $totalPoints = Card::sum('points_balance');
         return [
             Stat::make('This Month Unpaid', $thisMonth),
