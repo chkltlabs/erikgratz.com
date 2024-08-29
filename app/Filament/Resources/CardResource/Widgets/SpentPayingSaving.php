@@ -6,20 +6,21 @@ use App\Models\Card;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Builder;
 
 class SpentPayingSaving extends BaseWidget
 {
     protected function getStats(): array
     {
-        $reusedQuery = Card::where('due_date', '>=', now()->day);
-        $thisMonth = $reusedQuery->sum('interest_saving_balance');
+        $futureDueDateCards = Card::where('due_date', '>=', now()->day);
+        $pastDueDateCards = Card::where('due_date', '<', now()->day);
+        $noISBYetCards = $pastDueDateCards->where('interest_saving_balance', 0);
+        $thisMonth = $futureDueDateCards->sum('interest_saving_balance');
         $nextMonth = (
-            Card::where('due_date', '<', now()->day)->sum('interest_saving_balance')
+            $pastDueDateCards->sum('interest_saving_balance')
             - $thisMonth
-            + $reusedQuery->sum('balance')
-            + $reusedQuery->sum('pending')
-            - $reusedQuery->sum('interest_free_balance')
-            + $reusedQuery->sum('interest_free_balance_payment')
+            + $this->sumTheStuff($futureDueDateCards)
+            + $this->sumTheStuff($noISBYetCards)
         );
         $potentialSave = User::sum('monthly_pay') - $nextMonth;
         $totalPoints = Card::sum('points_balance');
@@ -29,5 +30,13 @@ class SpentPayingSaving extends BaseWidget
             Stat::make('Next Month Save', $potentialSave),
             Stat::make('Total Points', $totalPoints),
         ];
+    }
+
+    private function sumTheStuff(Builder $query): int|float
+    {
+        return $query->sum('balance')
+            + $query->sum('pending')
+            - $query->sum('interest_free_balance')
+            + $query->sum('interest_free_balance_payment');
     }
 }
