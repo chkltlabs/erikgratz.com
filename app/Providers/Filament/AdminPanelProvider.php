@@ -44,9 +44,9 @@ class AdminPanelProvider extends PanelProvider
 //            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 SpentPayingSaving::class,
+                AccountWidget::class,
                 CardWidget::class,
                 NetWorthStats::class,
-                AccountWidget::class,
                 StatsOverview::class,
 //                \Filament\Widgets\AccountWidget::class,
 //                FilamentInfoWidget::class,

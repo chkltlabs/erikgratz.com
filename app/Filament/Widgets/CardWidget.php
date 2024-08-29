@@ -8,18 +8,23 @@ use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Model;
 
 class CardWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = '1.5';
 
     protected static ?string $heading = 'Cards';
     public function table(Table $table): Table
     {
         return $table
             ->query(Card::query())
+            ->paginated(false)
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                    Tables\Columns\TextColumn::make('name')
+                        ->description(fn (Model $record)
+                        => $record->updated_at->shortRelativeDiffForHumans(),
+                            'below'),
                 Tables\Columns\TextInputColumn::make('balance')
                     ->rules(['numeric'])
                     ->summarize(Sum::make()->money()->label('')),
@@ -34,12 +39,7 @@ class CardWidget extends BaseWidget
                     ->rules(['numeric'])
                     ->label('0% Bal')
                     ->summarize(Sum::make()->money()->label('')),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
             ])
-            ->paginated(false)
             ;
     }
 }
