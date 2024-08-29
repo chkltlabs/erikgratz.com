@@ -20,7 +20,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
 //Route::get('/login', [AuthenticatedSessionController::class, 'create'])
 //    ->middleware('guest')
 //    ->name('login');
-Route::get('login', fn () => redirect(route('filament.admin.auth.login')));
+Route::get('login', fn () => redirect(route('filament.admin.auth.login')))->name('login');
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest');

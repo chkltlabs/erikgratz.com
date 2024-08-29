@@ -5,12 +5,12 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-2z2iasvX.css",
+    "file": "assets/app-sEpCBi0m.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-B6UQriaU.css",
+    "file": "assets/filament-BdLc_XAC.css",
     "src": "resources/css/filament.css",
     "isEntry": true
   },
@@ -26,13 +26,13 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BOD5kj5u.js",
+    "file": "assets/app-BeG-znNE.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
       "assets/app-Bu1A4Afm.css",
-      "assets/app-2z2iasvX.css"
+      "assets/app-sEpCBi0m.css"
     ],
     "assets": [
       "assets/face-DpAfdnxj.webp",
