@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Card;
 use App\Models\Payment;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,16 +36,7 @@ class SpentPayingSaving extends BaseWidget
             + self::sumTheStuff($futureDueDateCards)
             + self::sumTheStuff($noISBYetCards)
         );
-        $potentialSave = User::sum('monthly_pay')
-            + Payment::where('is_paid', false)
-                ->whereBetween('paid_on', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
-                ->whereRelation('spend','is_income', '=', true)
-                ->sum('amount')
-            + Account::whereType('Checking')
-                ->forUser('Erik')
-                ->sum('balance')
-            + (now()->day <= 15 ? User::sum('monthly_pay') / 2 : 0) //if its before the halfway point in the month, we get another paycheck before next month
-            - $nextMonth;
+        $potentialSave = self::calculatePotentialSave($nextMonth, $thisMonth);
         $totalPoints = Card::sum('points_balance');
 
         return [$thisMonth, $nextMonth, $potentialSave, $totalPoints];
@@ -56,5 +48,59 @@ class SpentPayingSaving extends BaseWidget
             + $query->sum('pending')
             - $query->sum('interest_free_balance')
             + $query->sum('interest_free_balance_payment');
+    }
+
+    private static function fixforWeekends(int $day): Carbon
+    {
+        $exact = now()->setDay($day);
+        return $exact->isSunday()
+            ? $exact->subDays(2)
+            : ( $exact->isSaturday()
+                ? $exact->subDay()
+                : $exact
+            );
+    }
+
+    private static function calculatePotentialSave(int|float $nextMonth, int|float $thisMonthYTBPaid): int|float
+    {
+        /**
+         * Let's think this through
+         *
+         * we have $nextMonth, representing the spend we owe in the month after now()
+         * and $thisMonthYTBPaid, representing payments for the current month that have not been debited
+         *
+         * we need to add:
+         * my current account bal,
+         * any payments marked as income with dates between start of this month & end of next month,
+         * total pay for next month ( Aug 30 + Sep 15 = whole month ),
+         * any paychecks ytb paid this month,
+         *      (add 15th pmt if before 15th [or preceding fri],
+         *       sub 30th pmt if after 30th [or preceding fri] and month is not over)
+         *
+         * then subtract:
+         * this month,
+         * next month
+         *
+         * return result
+         */
+        $firstPaymentDate = self::fixforWeekends(15)->day;
+        $secondPaymentDate = self::fixforWeekends(now()->endOfMonth()->day)->day;
+        $today = now()->day;
+        $totalPayForNextMonth = User::sum('monthly_pay');
+        if($today >= $secondPaymentDate) {
+            $totalPayForNextMonth /= 2;
+        }elseif ($today < $firstPaymentDate) {
+            $totalPayForNextMonth *= 1.5;
+        }
+
+        $erikAccountBal = Account::whereType('Checking')
+            ->forUser('Erik')
+            ->sum('balance');
+        $incomePaymentsInRange = Payment::where('is_paid', false)
+            ->whereBetween('paid_on', [now()->startOfMonth(), now()->addMonth()->endOfMonth()])
+            ->whereRelation('spend','is_income', '=', true)
+            ->sum('amount');
+
+        return $erikAccountBal + $incomePaymentsInRange + $totalPayForNextMonth - $thisMonthYTBPaid - $nextMonth;
     }
 }
