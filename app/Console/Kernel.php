@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\DebitIFBOnFirst;
 use App\Jobs\GuessISB;
 use App\Jobs\ZeroISBOnDueDate;
+use App\Models\StateDump;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(DebitIFBOnFirst::class)->monthlyOn(1, '20:00');
         $schedule->job(GuessISB::class)->monthlyOn(1, '20:10');
         $schedule->job(GuessISB::class)->monthlyOn(15, '20:10');
+        $schedule->call(fn () => StateDump::checkShouldDump())->dailyAt('23:50');
     }
 
     /**

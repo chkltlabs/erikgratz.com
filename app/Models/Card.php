@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\GetsDumped;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Card extends Model
 {
-    use HasFactory;
+    use HasFactory, GetsDumped;
 
     protected $fillable = [
         'name', 'limit', 'due_date',

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class StateDump extends Model
 {
@@ -17,6 +18,7 @@ class StateDump extends Model
 
     protected $casts = ['data' => 'array'];
 
+    // be sure each class in this array implements the GetsDumped trait
     public static $dumpables = [
         Account::class,
         Activity::class,
@@ -29,15 +31,22 @@ class StateDump extends Model
     {
         $data = [];
         foreach (self::$dumpables as $class) {
-            $data[$class] = self::getDump($class);
+            $data[$class] = $class::getDump();
         }
         return self::create(['data' => $data]);
     }
 
-    public static function getDump(string $class): array
+    const SHOULD_DUMP = 'data_will_dump_tonight';
+    public static function setShouldDumpFlag(): void
     {
-        $dump = $class::all();
-        $dump->each->toArray();
-        return $dump->toArray();
+        Cache::put(self::SHOULD_DUMP, true);
+    }
+
+    public static function checkShouldDump(): void
+    {
+        if (Cache::has(self::SHOULD_DUMP)) {
+            Cache::forget(self::SHOULD_DUMP);
+            self::dump();
+        }
     }
 }

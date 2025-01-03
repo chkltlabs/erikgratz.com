@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
-    use HasFactory;
+    use HasFactory, GetsDumped;
 
     protected $fillable = [
         'name', 'description', 'start_date', 'end_date',

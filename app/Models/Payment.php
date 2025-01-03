@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\GetsDumped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    use HasFactory;
+    use HasFactory, GetsDumped;
 
     protected $fillable = ['spend_id', 'amount', 'is_paid', 'paid_on', 'card_id'];
 

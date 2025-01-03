@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
+use App\Models\Traits\GetsDumped;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Spend extends Model
 {
-    use HasFactory;
+    use HasFactory, GetsDumped;
 
     protected $fillable = [
         'name',
