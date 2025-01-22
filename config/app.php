@@ -154,6 +154,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FilamentConfigurationProvider::class,
 
+        App\Providers\HelperServiceProvider::class,
     ])->toArray(),
 
     /*

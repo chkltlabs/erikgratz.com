@@ -111,7 +111,9 @@ class SpendResource extends Resource
                 ->summarize(Summarizer::make()
                     ->money('USD')
                     ->using(
-                        fn (Builder $query) => $query->join('payments', 'spends.id', 'payments.spend_id')
+                        fn (Builder $query) => $query
+                            ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
+                            ->join('payments', 'spends.id', 'payments.spend_id')
                             ->sum('payments.amount')
                     )
                 ),

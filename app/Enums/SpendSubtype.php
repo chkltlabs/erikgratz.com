@@ -31,6 +31,16 @@ final class SpendSubtype extends Enum
 
     const TransportCarRent = 'transport_car_rent';
 
+    const LivingBillPhone = 'living_bill_phone';
+
+    const LivingBillHealth = 'living_bill_health';
+
+    const LivingBillStudentDebt = 'living_bill_student_debt';
+
+    const LivingBillInsurance = 'living_bill_insurance';
+
+    const LivingBillCreditCardFee = 'living_bill_credit_card_fee';
+
     const LivingFoodGroceries = 'living_food_groceries';
 
     const LivingFoodRestaurant = 'living_food_restaurant';
@@ -42,6 +52,18 @@ final class SpendSubtype extends Enum
     const CatsOther = 'cats_other';
 
     const Experience = 'experience';
+
+    const ExperienceOther = 'experience_other';
+
+    const ExperienceDiving = 'experience_diving';
+
+    const SubscriptionMedia = 'subscription_media';
+
+    const SubscriptionTech = 'subscription_tech';
+
+    const SubscriptionCreative = 'subscription_creative';
+
+    const SubscriptionBusiness = 'subscription_business';
 
     const Other = 'other';
 
