@@ -25,5 +25,7 @@ final class SpendType extends Enum
 
     const Experience = 'experience';
 
+    const Subscription = 'subscription';
+
     const Other = 'other';
 }

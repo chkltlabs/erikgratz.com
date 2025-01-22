@@ -2,32 +2,23 @@
 
 namespace App\Models;
 
-use App\Enums\SpendSubtype;
-use App\Enums\SpendType;
+use App\Enums\Period;
 use App\Models\Traits\GetsDumped;
 use App\Models\Traits\HasPayments;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Spend extends Model
+class PeriodicSpend extends Model
 {
     use HasFactory, GetsDumped, HasPayments;
 
     protected $fillable = [
-        'name',
-        'is_income',
-        'type',
-        'subtype',
+        'period', 'name', 'start_date', 'end_date',
+        'is_income','type','subtype'
     ];
 
     protected $casts = [
-        'type' => SpendType::class,
-        'subtype' => SpendSubtype::class,
+        'period' => Period::class,
     ];
-
-    public function activity()
-    {
-        return $this->belongsTo(Activity::class);
-    }
 }
