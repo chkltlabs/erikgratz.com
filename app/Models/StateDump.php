@@ -25,6 +25,7 @@ class StateDump extends Model
         Card::class,
         Payment::class,
         Spend::class,
+        PeriodicSpend::class,
     ];
 
     public static function dump(): self
