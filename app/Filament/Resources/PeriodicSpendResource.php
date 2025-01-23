@@ -103,9 +103,10 @@ class PeriodicSpendResource extends Resource
                     ->money('USD')
                     ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
                     ->action(EditAction::make())
-                    ->sortable(fn (Builder $query) => $query
-                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                        ->avg('payments.amount'))
+//                    ->sortable(fn (Builder $query) => $query
+//                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+//                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+//                        ->avg('payments.amount'))
                     ->summarize(Summarizer::make()
                         ->money('USD')
                         ->using(
