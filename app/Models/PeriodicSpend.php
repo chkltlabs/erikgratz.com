@@ -25,6 +25,13 @@ class PeriodicSpend extends Model
         'end_date' => 'date',
     ];
 
+    public function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->payments()->avg('amount')
+        );
+    }
+
     public function totalSpend(): Attribute
     {
         return Attribute::make(
