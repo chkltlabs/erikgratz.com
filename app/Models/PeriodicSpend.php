@@ -120,6 +120,7 @@ class PeriodicSpend extends Model
             }
             $earliestDate->addDay();
         }
+        ksort($rtn);
         return $rtn;
     }
     public static function getDailyChartDataForAll(): array
