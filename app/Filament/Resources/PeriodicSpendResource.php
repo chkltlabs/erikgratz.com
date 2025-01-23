@@ -92,7 +92,8 @@ class PeriodicSpendResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('period')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
@@ -102,6 +103,7 @@ class PeriodicSpendResource extends Resource
                     ->money('USD')
                     ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
                     ->action(EditAction::make())
+                    ->sortable()
                     ->summarize(Summarizer::make()
                         ->money('USD')
                         ->using(
@@ -128,10 +130,10 @@ class PeriodicSpendResource extends Resource
                         )
                     ),
                 TextColumn::make('type')
-                    ->action(EditAction::make()),
+                    ->sortable(),
 
                 TextColumn::make('subtype')
-                    ->action(EditAction::make()),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
