@@ -106,9 +106,25 @@ class PeriodicSpendResource extends Resource
                         ->money('USD')
                         ->using(
                             fn (\Illuminate\Database\Query\Builder $query) => $query
-                                ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                ->sum('payments.amount')
+                                    ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                    ->where('periodic_spends.period', Period::Yearly)
+                                    ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount')
+                                + ($query
+                                    ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                    ->where('periodic_spends.period', Period::Monthly)
+                                    ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount') * 12)
+                                + ($query
+                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                        ->where('periodic_spends.period', Period::Weekly)
+                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                        ->sum('payments.amount') * 52)
+                                + ($query
+                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                        ->where('periodic_spends.period', Period::Daily)
+                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                        ->sum('payments.amount') * (now()->isLeapYear() ? 366 : 365))
                         )
                     ),
                 TextColumn::make('type')
