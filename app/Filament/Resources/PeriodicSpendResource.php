@@ -105,22 +105,22 @@ class PeriodicSpendResource extends Resource
                     ->summarize(Summarizer::make()
                         ->money('USD')
                         ->using(
-                            fn (\Illuminate\Database\Query\Builder $query) => $query
+                            fn (\Illuminate\Database\Query\Builder $query) => (clone $query)
                                     ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
                                     ->where('periodic_spends.period', Period::Yearly)
                                     ->join('payments', 'periodic_spends.id', 'payments.spend_id')
                                     ->sum('payments.amount')
-                                + ($query
+                                + ((clone $query)
                                     ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
                                     ->where('periodic_spends.period', Period::Monthly)
                                     ->join('payments', 'periodic_spends.id', 'payments.spend_id')
                                     ->sum('payments.amount') * 12)
-                                + ($query
+                                + ((clone $query)
                                         ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
                                         ->where('periodic_spends.period', Period::Weekly)
                                         ->join('payments', 'periodic_spends.id', 'payments.spend_id')
                                         ->sum('payments.amount') * 52)
-                                + ($query
+                                + ((clone $query)
                                         ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
                                         ->where('periodic_spends.period', Period::Daily)
                                         ->join('payments', 'periodic_spends.id', 'payments.spend_id')
