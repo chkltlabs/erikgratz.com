@@ -103,7 +103,7 @@ class PeriodicSpendResource extends Resource
                     ->money('USD')
                     ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
                     ->action(EditAction::make())
-                    ->sortable()
+                    ->sortable(fn ($query) => $query->payments()->avg('amount'))
                     ->summarize(Summarizer::make()
                         ->money('USD')
                         ->using(
