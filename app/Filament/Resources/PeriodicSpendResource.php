@@ -130,7 +130,9 @@ class PeriodicSpendResource extends Resource
                     ->options(Period::asSelectArray())
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateRecordDataUsing(fn (array $data): array => ActivityResource::combineStartEndDate($data))
+                    ->mutateFormDataUsing(fn (array $data): array => ActivityResource::splitStartEndDate($data))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
