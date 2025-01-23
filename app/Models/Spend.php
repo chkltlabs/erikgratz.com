@@ -37,7 +37,7 @@ class Spend extends Model
         $rtn = [];
         $payments = $this->payments()->orderBy('paid_on')->get();
         foreach ($payments as $first) {
-            $date = Carbon::parse($first->paid_on);
+            $date = Carbon::parse($first->paid_on ?? $this->activity->start_date);
             $k = $date->format('Y-m-d');
             if (isset($rtn[$k])) {
                 $amt = $rtn[$k]['y'] + $first->amount;
