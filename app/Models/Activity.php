@@ -140,7 +140,7 @@ class Activity extends Model
     public static function getDailyChartDataForAll(): array
     {
         $rtn = [];
-        $activities = Activity::all()->filter(fn ($act) => !$act->archived);
+        $activities = Activity::all();
         foreach ($activities as $activity) {
             $rtn = PeriodicSpend::combineDailyCharts($rtn, $activity->getDailyChartData());
         }
