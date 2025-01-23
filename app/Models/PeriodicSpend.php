@@ -114,7 +114,7 @@ class PeriodicSpend extends Model
             } else if (isset($rtn[$k])
                 && isset($data[$k])) {
                 $rtn[$k] = [
-                    'y' => $rtn[$k]['y'] + $data[$k]['y'],
+                    'y' => round($rtn[$k]['y'] + $data[$k]['y'], 2),
                     'x' => Carbon::parse($k),
                 ];
             }
