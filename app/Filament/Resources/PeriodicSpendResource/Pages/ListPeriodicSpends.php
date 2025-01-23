@@ -16,4 +16,11 @@ class ListPeriodicSpends extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PeriodicSpendResource\Widgets\SpendOverTimeChart::class
+        ];
+    }
 }

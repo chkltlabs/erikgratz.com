@@ -127,4 +127,23 @@ class Activity extends Model
                 ->sum('amount')
         );
     }
+
+    public function getDailyChartData(): array
+    {
+        $rtn = [];
+        foreach ($this->spends()->whereIsIncome(false)->get() as $spend) {
+            $rtn = PeriodicSpend::combineDailyCharts($rtn, $spend->getDailyChartData());
+        }
+        return $rtn;
+    }
+
+    public static function getDailyChartDataForAll(): array
+    {
+        $rtn = [];
+        $activities = Activity::all()->filter(fn ($act) => !$act->archived);
+        foreach ($activities as $activity) {
+            $rtn = PeriodicSpend::combineDailyCharts($rtn, $activity->getDailyChartData());
+        }
+        return $rtn;
+    }
 }
