@@ -5,7 +5,7 @@ services:
         # extra_hosts:
         #     - 'host.docker.internal:192.168.2.193'
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'

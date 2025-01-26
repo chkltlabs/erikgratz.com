@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('spend_id');
-            $table->unsignedDouble('amount');
+            $table->double('amount');
             $table->boolean('is_paid')->default(false);
             $table->date('paid_on')->nullable();
             $table->unsignedBigInteger('card_id')->nullable();

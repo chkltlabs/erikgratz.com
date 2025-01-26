@@ -163,14 +163,13 @@
       <path value="$PROJECT_DIR$/vendor/filament/widgets" />
       <path value="$PROJECT_DIR$/vendor/doctrine/deprecations" />
       <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
       <path value="$PROJECT_DIR$/vendor/symfony/html-sanitizer" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
       <path value="$PROJECT_DIR$/vendor/bensampo/laravel-enum" />
       <path value="$PROJECT_DIR$/vendor/leandrocfe/filament-apex-charts" />
       <path value="$PROJECT_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
       <path value="$PROJECT_DIR$/vendor/nette/schema" />
+      <path value="$PROJECT_DIR$/vendor/symfony/clock" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

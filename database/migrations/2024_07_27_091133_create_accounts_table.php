@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedDouble('balance')->default(0);
+            $table->double('balance')->default(0);
             $table->timestamps();
         });
     }
