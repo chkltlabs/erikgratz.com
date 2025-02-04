@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = '1.5';
+    protected int | string | array $columnSpan = 'full';
 
     protected static ?string $heading = 'Cards';
     public function table(Table $table): Table

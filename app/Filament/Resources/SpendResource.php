@@ -111,10 +111,19 @@ class SpendResource extends Resource
                 ->summarize(Summarizer::make()
                     ->money('USD')
                     ->using(
-                        fn (Builder $query) => $query
-                            ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
-                            ->join('payments', 'spends.id', 'payments.spend_id')
-                            ->sum('payments.amount')
+                        function (Builder $query) {
+                            $copy = $query->clone();
+                            return $query
+                                    ->where('spends.is_income', false)
+                                    ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
+                                    ->join('payments', 'spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount')
+                                - $copy
+                                    ->where('spends.is_income', true)
+                                    ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
+                                    ->join('payments', 'spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount');
+                        }
                     )
                 ),
             TextColumn::make('type')

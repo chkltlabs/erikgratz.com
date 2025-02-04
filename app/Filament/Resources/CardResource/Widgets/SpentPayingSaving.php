@@ -7,6 +7,7 @@ use App\Models\Card;
 use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
+use Filament\Forms\Components\Grid;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,12 +16,14 @@ class SpentPayingSaving extends BaseWidget
 {
     protected function getStats(): array
     {
-        list($thisMonth, $nextMonth, $potentialSave, $totalPoints) = self::getData();
+        list($thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints) = self::getData();
         return [
-            Stat::make('This Month Unpaid', '$'.$thisMonth),
-            Stat::make('Next Month Spend', '$'.$nextMonth),
-            Stat::make('Next Month Save', '$'.$potentialSave),
-            Stat::make('Total Points', $totalPoints),
+                Stat::make('This Month Unpaid', '$'.$thisMonth),
+                Stat::make('Next Month Spend', '$'.$nextMonth),
+//                Stat::make('This Month Planned', '$'.$planned),
+                Stat::make('Next Month Save', '$'.$potentialSave),
+                Stat::make('Total Points', $totalPoints),
+
         ];
     }
 
@@ -38,8 +41,12 @@ class SpentPayingSaving extends BaseWidget
         );
         $potentialSave = self::calculatePotentialSave($nextMonth, $thisMonth);
         $totalPoints = Card::sum('points_balance');
+        $planned = Payment::query()
+            ->whereMonth('paid_on', now()->month)
+            ->where('is_paid', false)
+            ->sum('amount');
 
-        return [$thisMonth, $nextMonth, $potentialSave, $totalPoints];
+        return [$thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints];
     }
 
     private static function sumTheStuff(Builder $query): int|float
