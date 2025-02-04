@@ -22,7 +22,9 @@ class SpendsThisMonth extends BaseWidget
     {
         return $table
             ->query(
-                fn (Builder $query) => Payment::query()->whereMonth('paid_on', now()->month)
+                fn (Builder $query) => Payment::query()
+                    ->whereMonth('paid_on', now()->month)
+                    ->whereYear('paid_on', now()->year)
             )
             ->columns([
                 TextColumn::make('spend.activity.name'),
@@ -31,9 +33,13 @@ class SpendsThisMonth extends BaseWidget
                 TextColumn::make('spend.name'),
                 TextColumn::make('amount')->money()
                     ->summarize([
-                        'unpaid' => Sum::make('unpaid')->label('Unpaid')->money()
-                            ->query(fn (Builder $query) => $query->where('is_paid', false)),
-                        'total' => Sum::make('total')->label('Total')->money()
+                        'unpaid' => Sum::make('unpaid')
+                            ->label('Unpaid')
+                            ->money()
+                            ->query(fn (Builder $query) =>
+                                $query->where('is_paid', false)
+                            ),
+//                        'total' => Sum::make('total')->label('Total')->money()
                     ]),
                 ToggleColumn::make('is_paid'),
                 TextColumn::make('paid_on')->date(),
