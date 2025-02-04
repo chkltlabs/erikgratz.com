@@ -6,6 +6,7 @@ use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Widgets\AccountWidget;
 use App\Filament\Widgets\CardWidget;
 use App\Filament\Widgets\NetWorthStats;
+use App\Filament\Widgets\SpendsThisMonth;
 use App\Filament\Widgets\StatsOverview;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -45,8 +46,9 @@ class AdminPanelProvider extends PanelProvider
 //            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 SpentPayingSaving::class,
-                AccountWidget::class,
                 CardWidget::class,
+                AccountWidget::class,
+                SpendsThisMonth::class,
                 NetWorthStats::class,
                 StatsOverview::class,
 //                \Filament\Widgets\AccountWidget::class,

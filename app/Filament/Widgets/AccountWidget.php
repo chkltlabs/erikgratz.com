@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccountWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = '0.5';
+    protected int | string | array $columnSpan = 'full';
 
     protected static ?string $heading = 'Accounts';
     public function table(Table $table): Table
@@ -34,9 +34,9 @@ class AccountWidget extends BaseWidget
             ])->contentGrid(fn () => [
                 'xs' => 3,
                 'sm' => 3,
-                'md' => 3,
-                'lg' => 3,
-                'xl' => 3,
+                'md' => 6,
+                'lg' => 6,
+                'xl' => 6,
             ])
             ;
     }
