@@ -43,6 +43,7 @@ class SpentPayingSaving extends BaseWidget
         $totalPoints = Card::sum('points_balance');
         $planned = Payment::query()
             ->whereMonth('paid_on', now()->month)
+            ->whereYear('paid_on', now()->year)
             ->where('is_paid', false)
             ->sum('amount');
 
