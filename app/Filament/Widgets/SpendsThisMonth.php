@@ -25,6 +25,7 @@ class SpendsThisMonth extends BaseWidget
                 fn (Builder $query) => Payment::query()
                     ->whereMonth('paid_on', now()->month)
                     ->whereYear('paid_on', now()->year)
+                    ->orderBy('paid_on')
             )
             ->columns([
                 TextColumn::make('spend.activity.name'),
