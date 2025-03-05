@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\GetsDumped;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +53,27 @@ class Card extends Model
                     + $this->pending
                     + $this->interest_free_balance_payment
                     - $this->interest_free_balance)
+        );
+    }
+
+    public function hasSatisfiedSub(): Attribute
+    {
+        return Attribute::make(
+            get: fn ():bool =>
+                now()->gt($this->points_bonus_deadline) ||
+                $this->balance
+                + $this->pending
+                + $this->planned_payments
+                    ->where('paid_on', '<=', $this->points_bonus_deadline)
+                    ->sum('amount')
+                > $this->points_bonus_spend,
+        );
+    }
+
+    public function pointsBonusDeadline(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->date_opened)->add($this->points_bonus_period ?? '3 months')
         );
     }
 
