@@ -18,6 +18,7 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -135,6 +136,7 @@ class CardResource extends Resource
                 TextColumn::make('plannedPaymentTotal')
                     ->money()
                     ->sortable(),
+                IconColumn::make('has_satisfied_sub'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -144,6 +146,7 @@ class CardResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('balance', 'desc')
             ->filters([
                 //
             ])

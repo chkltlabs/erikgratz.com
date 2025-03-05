@@ -14,7 +14,13 @@ class Payment extends Model
 
     protected $fillable = ['spend_id', 'spend_type', 'amount', 'is_paid', 'paid_on', 'card_id'];
 
-    protected $casts = ['paid_on' => 'date', 'is_paid' => 'bool'];
+    public function casts()
+    {
+        return [
+            'paid_on' => 'date',
+            'is_paid' => 'boolean'
+        ];
+    }
 
     public function spend(): MorphTo
     {
