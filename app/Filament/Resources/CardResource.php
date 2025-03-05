@@ -136,7 +136,7 @@ class CardResource extends Resource
                 TextColumn::make('plannedPaymentTotal')
                     ->money()
                     ->sortable(),
-                IconColumn::make('has_satisfied_sub'),
+                IconColumn::make('has_satisfied_sub')->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
