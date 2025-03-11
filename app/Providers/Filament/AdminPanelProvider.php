@@ -6,6 +6,7 @@ use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Widgets\AccountWidget;
 use App\Filament\Widgets\CardWidget;
 use App\Filament\Widgets\NetWorthStats;
+use App\Filament\Widgets\PastStatsChart;
 use App\Filament\Widgets\SpendsThisMonth;
 use App\Filament\Widgets\StatsOverview;
 use Filament\Http\Middleware\Authenticate;
@@ -51,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
                 SpendsThisMonth::class,
                 NetWorthStats::class,
                 StatsOverview::class,
+                PastStatsChart::class
 //                \Filament\Widgets\AccountWidget::class,
 //                FilamentInfoWidget::class,
 

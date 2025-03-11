@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Collections\StateDumpCollection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +15,8 @@ class StateDump extends Model
     // so that more sophisticated graphs and data may be collected and displayed
 
     use HasFactory;
+
+    protected static string $collectionClass = StateDumpCollection::class;
 
     protected $fillable = ['data'];
 
@@ -49,5 +53,16 @@ class StateDump extends Model
             Cache::forget(self::SHOULD_DUMP);
             self::dump();
         }
+    }
+
+    public function getStatForModel(Model $model, string $col) :int|float|string
+    {
+        $foundState = collect($this->data[$model::class])
+            ->first(
+                fn ($item) =>
+                    $item[$model->getKeyName()]
+                    === $model->getKey()
+            );
+        return is_null($foundState) ? 0 : $foundState[$col];
     }
 }

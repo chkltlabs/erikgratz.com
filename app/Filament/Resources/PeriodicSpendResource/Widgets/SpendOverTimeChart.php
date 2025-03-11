@@ -49,6 +49,9 @@ class SpendOverTimeChart extends ApexChartWidget
             'chart' => [
                 'type' => 'line',
                 'height' => 300,
+                'zoom' => [
+                    'allowMouseWheelZoom' => false,
+                ],
             ],
             'series' => [
 //                [

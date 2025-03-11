@@ -4,7 +4,9 @@ namespace App\Filament\Resources\CardResource\Widgets;
 
 use App\Models\Account;
 use App\Models\Card;
+use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\Payment;
+use App\Models\StateDump;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms\Components\Grid;
@@ -16,13 +18,18 @@ class SpentPayingSaving extends BaseWidget
 {
     protected function getStats(): array
     {
-        list($thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints) = self::getData();
+        list($thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints, $pointsChart, $netWorth, $netWorthChart) = self::getData();
         return [
-                Stat::make('This Month Unpaid', '$'.$thisMonth),
-                Stat::make('Next Month Spend', '$'.$nextMonth),
-//                Stat::make('This Month Planned', '$'.$planned),
-                Stat::make('Next Month Save', '$'.$potentialSave),
-                Stat::make('Total Points', $totalPoints),
+            Stat::make('This Month Unpaid', '$'.$thisMonth),
+            Stat::make('Next Month Spend', '$'.$nextMonth),
+            Stat::make('This Month Planned Unspent', '$'.$planned),
+            Stat::make('Next Month Save', '$'.$potentialSave),
+            Stat::make('Total Points', $totalPoints)
+                ->chart($pointsChart)
+                ->chartColor('danger'),
+            Stat::make('Net Worth', '$'.$netWorth)
+                ->chart($netWorthChart)
+                ->chartColor('success'),
 
         ];
     }
@@ -46,8 +53,29 @@ class SpentPayingSaving extends BaseWidget
             ->whereYear('paid_on', now()->year)
             ->where('is_paid', false)
             ->sum('amount');
+        $netWorth = Account::sum('balance') - Card::sum('balance') - Card::sum('pending');
 
-        return [$thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints];
+        list($netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart) = self::getStateDumpCharts();
+
+        return [$thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints, $pointsChart, $netWorth, $netWorthChart];
+    }
+
+    public static function getStateDumpCharts(): array
+    {
+        $stateDumps = StateDump::latest()->get();
+
+        $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance');
+
+        $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance');
+
+        $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance');
+        $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending');
+        $cardBalanceChartNeg = SDC::setArrayNegative($cardBalanceChart);
+        $cardPendingChartNeg = SDC::setArrayNegative($cardPendingChart);
+
+        $netWorthChart = SDC::combineArrs(SDC::combineArrs($cashPositionChart, $cardBalanceChartNeg), $cardPendingChartNeg);
+
+        return array($netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart);
     }
 
     private static function sumTheStuff(Builder $query): int|float
