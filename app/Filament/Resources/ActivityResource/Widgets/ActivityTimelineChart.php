@@ -179,6 +179,9 @@ class ActivityTimelineChart extends ApexChartWidget
                 ],
             ],
             'chart' => [
+                'zoom' => [
+                    'allowMouseWheelZoom' => false,
+                ],
                 'type' => 'rangeBar',
                 'height' => 250,
                 //                'stacked' => true,
