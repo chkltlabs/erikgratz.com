@@ -25,6 +25,8 @@ final class PointsProgram extends Enum
     const CapitalOneMiles = 'capitalOneMiles';
     #[Description('Avios')]
     const Avios = 'avios';
+    #[Description('Aeroplan')]
+    const Aeroplan = 'aeroplan';
 
     #[Description('CitiBank ThankYou Points')]
     const CitiThankYou = 'citiThankYou';
