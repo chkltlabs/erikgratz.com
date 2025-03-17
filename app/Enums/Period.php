@@ -4,6 +4,12 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
+/**
+ * @method static static Yearly()
+ * @method static static Monthly()
+ * @method static static Weekly()
+ * @method static static Daily()
+ */
 final class Period extends Enum
 {
     const Yearly = 'yearly';

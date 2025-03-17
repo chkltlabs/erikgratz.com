@@ -203,7 +203,7 @@ class PeriodicSpend extends Model
                 'x' => Carbon::parse($carbonCopy->toDateString()),
             ];
         }
-        dd($rtn);
+//        dd($rtn);
         return $rtn;
     }
 

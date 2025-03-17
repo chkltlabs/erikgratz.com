@@ -7,9 +7,33 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
+ * @method static static IncomeErikJob()
+ * @method static static IncomeOther()
+ * @method static static HousingRent()
+ * @method static static HousingHotel()
+ * @method static static HousingFree()
+ * @method static static TransportFlight()
+ * @method static static TransportTrain()
+ * @method static static TransportCarHire()
+ * @method static static TransportCarRent()
+ * @method static static LivingBillPhone()
+ * @method static static LivingBillHealth()
+ * @method static static LivingBillStudentDebt()
+ * @method static static LivingBillInsurance()
+ * @method static static LivingBillCreditCardFee()
+ * @method static static LivingFoodGroceries()
+ * @method static static LivingFoodRestaurant()
+ * @method static static LivingFoodMichelin()
+ * @method static static CatsGeneral()
+ * @method static static CatsOther()
+ * @method static static Experience()
+ * @method static static ExperienceOther()
+ * @method static static ExperienceDiving()
+ * @method static static SubscriptionMedia()
+ * @method static static SubscriptionTech()
+ * @method static static SubscriptionCreative()
+ * @method static static SubscriptionBusiness()
+ * @method static static Other()
  */
 final class SpendSubtype extends Enum
 {

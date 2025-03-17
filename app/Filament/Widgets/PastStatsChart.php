@@ -4,9 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Collections\StateDumpCollection;
-use App\Models\StateDump;
 use Carbon\Carbon;
-use Filament\Widgets\ChartWidget;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 /**
@@ -85,6 +83,7 @@ class PastStatsChart extends ApexChartWidget
             ],
             'yaxis' => [
                 [
+                    'min' => 0,
                     'title' => [
                         'text' => '$$$',
                         'style' => [
@@ -99,6 +98,7 @@ class PastStatsChart extends ApexChartWidget
                     ],
                 ],
                 [
+                    'min' => 0,
                     'opposite' => true,
                     'title' => [
                         'text' => 'Points Balance',

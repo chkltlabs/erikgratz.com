@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CardResource\Pages;
+use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
 use App\Filament\Resources\CardResource\RelationManagers\PlannedPaymentsRelationManager;
 use App\Models\Card;
 use Filament\Forms\Components\ColorPicker;
@@ -163,8 +164,20 @@ class CardResource extends Resource
 
     public static function getPages(): array
     {
+//        return [
+//            'index' => Pages\ManageCards::route('/'),
+//        ];
         return [
-            'index' => Pages\ManageCards::route('/'),
+            'index' => Pages\ListCards::route('/'),
+            'create' => Pages\CreateCard::route('/create'),
+            'edit' => Pages\EditCard::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            BenefitsRelationManager::class
         ];
     }
 }

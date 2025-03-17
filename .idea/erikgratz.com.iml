@@ -54,7 +54,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/mime-type-detection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/livewire/livewire" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/masterminds/html5" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/maximebf/debugbar" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mockery/mockery" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
@@ -162,6 +161,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/leandrocfe/filament-apex-charts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-debugbar/php-debugbar" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
