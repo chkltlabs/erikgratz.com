@@ -7,9 +7,14 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
+ * @method static static Income()
+ * @method static static Housing()
+ * @method static static Transport()
+ * @method static static Living()
+ * @method static static Cats()
+ * @method static static Experience()
+ * @method static static Subscription()
+ * @method static static Other()
  */
 final class SpendType extends Enum
 {

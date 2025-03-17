@@ -5,9 +5,10 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
+ * @method static static Checking()
+ * @method static static Savings()
+ * @method static static MoneyMarket()
+ * @method static static Investment()
  */
 final class AccountType extends Enum
 {

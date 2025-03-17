@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\PointsProgram;
 use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Card extends Model
 {
@@ -20,12 +22,19 @@ class Card extends Model
         'interest_free_balance_payment',
         'points_balance', 'points_bonus',
         'points_bonus_spend','date_opened',
-        'points_bonus_period','color'
+        'points_bonus_period','color',
+        'points_program'
     ];
 
     protected $casts = [
         'date_opened' => 'date',
+        'points_program' => PointsProgram::class,
     ];
+
+    public function benefits(): HasMany
+    {
+        return $this->hasMany(CardBenefit::class);
+    }
 
     public function payments()
     {
