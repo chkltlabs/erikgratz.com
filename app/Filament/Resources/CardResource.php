@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PointsProgram;
 use App\Filament\Resources\CardResource\Pages;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
 use App\Filament\Resources\CardResource\RelationManagers\PlannedPaymentsRelationManager;
@@ -83,7 +84,7 @@ class CardResource extends Resource
                             ->numeric()
                             ->default(0),
                     ]),
-                Fieldset::make('Points and Bonus')->columns(4)->schema([
+                Fieldset::make('Points and Bonus')->columns(5)->schema([
                     TextInput::make('points_balance')
                         ->required()
                         ->numeric()
@@ -96,7 +97,9 @@ class CardResource extends Resource
                         ->required()
                         ->numeric()
                         ->default(0),
-                    TextInput::make('points_bonus_period')
+                    TextInput::make('points_bonus_period'),
+                    Select::make('points_program')
+                        ->options(PointsProgram::asSelectArray())
                 ])
             ]);
     }
