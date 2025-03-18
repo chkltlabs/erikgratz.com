@@ -25,8 +25,8 @@ class CardWidget extends BaseWidget
                         ->description(fn (Model $record)
                         => 'Due: '
                             .(now()->setDay($record->due_date)->isPast()
-                                ? now()->addMonth()->setDay($record->due_date)->shortRelativeDiffForHumans()
-                                : now()->setDay($record->due_date)->shortRelativeDiffForHumans()
+                                ? now()->addMonth()->setDay($record->due_date)->shortAbsoluteDiffForHumans()
+                                : now()->setDay($record->due_date)->shortAbsoluteDiffForHumans()
                             )
                             .', Upd: '
                             .$record->updated_at->shortRelativeDiffForHumans(),
