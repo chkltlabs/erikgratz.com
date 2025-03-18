@@ -23,7 +23,7 @@ class CardWidget extends BaseWidget
             ->columns([
                     Tables\Columns\TextColumn::make('name')
                         ->description(fn (Model $record)
-                        => $record->updated_at->shortRelativeDiffForHumans(),
+                        => $record->updated_at->shortRelativeDiffForHumans().', Due on '.now()->setDay($record->due_date)->format('d'),
                             'below'),
                 Tables\Columns\TextInputColumn::make('balance')
                     ->rules(['numeric'])
