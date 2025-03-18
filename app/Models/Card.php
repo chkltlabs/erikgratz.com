@@ -16,7 +16,8 @@ class Card extends Model
     use HasFactory, GetsDumped, BelongsToUser;
 
     protected $fillable = [
-        'name', 'user_id', 'limit', 'due_date',
+        'name', 'user_id', 'limit',
+        'due_date', 'annual_fee',
         'balance', 'pending',
         'interest_saving_balance',
         'interest_free_balance',
