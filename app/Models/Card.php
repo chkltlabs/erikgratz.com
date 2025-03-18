@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PointsProgram;
+use App\Models\Traits\BelongsToUser;
 use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,10 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Card extends Model
 {
-    use HasFactory, GetsDumped;
+    use HasFactory, GetsDumped, BelongsToUser;
 
     protected $fillable = [
-        'name', 'limit', 'due_date',
+        'name', 'user_id', 'limit', 'due_date',
         'balance', 'pending',
         'interest_saving_balance',
         'interest_free_balance',

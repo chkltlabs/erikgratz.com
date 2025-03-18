@@ -7,6 +7,7 @@ use App\Filament\Resources\CardResource\Pages;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
 use App\Filament\Resources\CardResource\RelationManagers\PlannedPaymentsRelationManager;
 use App\Models\Card;
+use App\Models\User;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -41,6 +42,12 @@ class CardResource extends Resource
                         TextInput::make('name')
                             ->required()
                             ->maxLength(191),
+                        Select::make('user_id')
+                            ->label('Cardholder')
+                            ->options(
+                                User::all()
+                                ->pluck('name', 'id')
+                            ),
                         TextInput::make('limit')
                             ->required()
                             ->numeric()
@@ -110,6 +117,8 @@ class CardResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('user.name')
+                    ->sortable(),
                 TextColumn::make('limit')
                     ->money()
                     ->summarize(Sum::make()->money()->label(''))
