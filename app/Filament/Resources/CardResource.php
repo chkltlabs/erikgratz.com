@@ -66,6 +66,10 @@ class CardResource extends Resource
                                 )
                             )
                             ->required(),
+                        TextInput::make('annual_fee')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
                     ]),
                 Fieldset::make('Balance and Interest')
                     ->columns(5)
