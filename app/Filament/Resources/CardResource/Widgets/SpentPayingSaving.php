@@ -20,9 +20,9 @@ class SpentPayingSaving extends BaseWidget
     {
         list($thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints, $pointsChart, $netWorth, $netWorthChart) = self::getData();
         return [
-            Stat::make('This Month Unpaid', '$'.$thisMonth),
-            Stat::make('Next Month Spend', '$'.$nextMonth),
-            Stat::make('This Month Planned Unspent', '$'.$planned),
+            Stat::make('This Month CC Due', '$'.$thisMonth),
+            Stat::make('Next Month Spent', '$'.$nextMonth),
+            Stat::make('Next Month Planned Unspent', '$'.$planned),
             Stat::make('Next Month Save', '$'.$potentialSave),
             Stat::make('Total Points', $totalPoints)
                 ->chart($pointsChart)
@@ -46,13 +46,13 @@ class SpentPayingSaving extends BaseWidget
             + self::sumTheStuff($futureDueDateCards)
             + self::sumTheStuff($noISBYetCards)
         );
-        $potentialSave = self::calculatePotentialSave($nextMonth, $thisMonth);
-        $totalPoints = Card::sum('points_balance');
         $planned = Payment::query()
             ->whereMonth('paid_on', now()->month)
             ->whereYear('paid_on', now()->year)
             ->where('is_paid', false)
             ->sum('amount');
+        $potentialSave = self::calculatePotentialSave($nextMonth, $thisMonth, $planned);
+        $totalPoints = Card::sum('points_balance');
         $netWorth = Account::sum('balance') - Card::sum('balance') - Card::sum('pending');
 
         list($netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart) = self::getStateDumpCharts();
@@ -97,7 +97,7 @@ class SpentPayingSaving extends BaseWidget
             );
     }
 
-    private static function calculatePotentialSave(int|float $nextMonth, int|float $thisMonthYTBPaid): int|float
+    private static function calculatePotentialSave(int|float $nextMonth, int|float $thisMonthYTBPaid, int|float $planned): int|float
     {
         /**
          * Let's think this through
@@ -114,8 +114,9 @@ class SpentPayingSaving extends BaseWidget
          *       sub 30th pmt if after 30th [or preceding fri] and month is not over)
          *
          * then subtract:
-         * this month,
-         * next month
+         * this month unpaid cc bills,
+         * this month FINISHED spends,
+         * AND this month PLANNED spends
          *
          * return result
          */
@@ -137,6 +138,6 @@ class SpentPayingSaving extends BaseWidget
             ->whereRelation('spend','is_income', '=', true)
             ->sum('amount');
 
-        return $erikAccountBal + $incomePaymentsInRange + $totalPayForNextMonth - $thisMonthYTBPaid - $nextMonth;
+        return $erikAccountBal + $incomePaymentsInRange + $totalPayForNextMonth - $thisMonthYTBPaid - $nextMonth - $planned;
     }
 }
