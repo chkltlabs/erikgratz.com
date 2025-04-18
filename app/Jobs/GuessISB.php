@@ -21,14 +21,9 @@ class GuessISB implements ShouldQueue
      */
     public function handle()
     {
-        $runDate = now()->day;
-
-        $rangeDate = now()->subDays(15)->day;
-
-        $lesser = min($rangeDate, $runDate);
-        $greater = max($rangeDate, $runDate);
-
-        $cards = Card::whereBetween('due_date', [$lesser, $greater])->where('interest_saving_balance', 0)->get();
+        $cards = Card::where('interest_saving_balance', 0)
+            ->where('statement_date', now()->day)
+            ->get();
         foreach ($cards as $card) {
             $card->interest_saving_balance = $card->balance + $card->pending - $card->interest_free_balance;
             $card->save();

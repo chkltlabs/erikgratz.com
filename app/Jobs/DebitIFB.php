@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class DebitIFBOnFirst implements ShouldQueue
+class DebitIFB implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,7 +31,9 @@ class DebitIFBOnFirst implements ShouldQueue
      */
     public function handle()
     {
-        $cards = Card::where('interest_free_balance', '>', 0)->get();
+        $cards = Card::where('interest_free_balance', '>', 0)
+            ->where('statement_date', now()->day)
+            ->get();
         foreach ($cards as $card) {
             $card->interest_free_balance -= $card->interest_free_balance_payment;
             if ($card->interest_free_balance <= 0) {

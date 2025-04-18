@@ -17,8 +17,8 @@ class Card extends Model
 
     protected $fillable = [
         'name', 'user_id', 'limit',
-        'due_date', 'annual_fee',
-        'balance', 'pending',
+        'due_date', 'statement_date', 
+        'annual_fee', 'balance', 'pending',
         'interest_saving_balance',
         'interest_free_balance',
         'interest_free_balance_payment',

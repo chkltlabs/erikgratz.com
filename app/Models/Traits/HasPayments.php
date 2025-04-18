@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasPayments
 {
+    protected static function bootHasPayments()
+    {
+        static::deleting(function ($model) {
+            $model->payments()->delete();
+        });
+    }
     public function payments()
     {
         return $this->morphMany(Payment::class, 'spend');
