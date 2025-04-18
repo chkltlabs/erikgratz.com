@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\CardResource\Widgets;
 
+use App\Enums\Period;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\Payment;
+use App\Models\PeriodicSpend;
+use App\Models\Spend;
 use App\Models\StateDump;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,12 +21,14 @@ class SpentPayingSaving extends BaseWidget
 {
     protected function getStats(): array
     {
+        $thisMonthName = now()->format('M');
+        $nextMonthName = now()->addMonth()->format('M');
         list($thisMonth, $nextMonth, $planned, $potentialSave, $totalPoints, $pointsChart, $netWorth, $netWorthChart) = self::getData();
         return [
-            Stat::make('This Month CC Due', '$'.$thisMonth),
-            Stat::make('Next Month Spent', '$'.$nextMonth),
-            Stat::make('Next Month Planned Unspent', '$'.$planned),
-            Stat::make('Next Month Save', '$'.$potentialSave),
+            Stat::make($thisMonthName.' CC Due', '$'.$thisMonth),
+            Stat::make($nextMonthName.' CC Due', '$'.$nextMonth),
+            Stat::make($nextMonthName.' CC Due Unspent', '$'.$planned),
+            Stat::make($nextMonthName.' Save', '$'.$potentialSave),
             Stat::make('Total Points', $totalPoints)
                 ->chart($pointsChart)
                 ->chartColor('danger'),
@@ -46,11 +51,12 @@ class SpentPayingSaving extends BaseWidget
             + self::sumTheStuff($futureDueDateCards)
             + self::sumTheStuff($noISBYetCards)
         );
-        $planned = Payment::query()
-            ->whereMonth('paid_on', now()->month)
-            ->whereYear('paid_on', now()->year)
-            ->where('is_paid', false)
-            ->sum('amount');
+        //unique one-time spends ytb paid
+        $planned = Payment::oneTimeUnpaidDueThisMonth()->sum('amount');
+        // monthly spends ytb paid
+        $planned += Payment::monthlyUnpaid()->sum('amount');
+        // yearly spends due this month ytb paid
+        $planned += Payment::yearlyUnpaidDueThisMonth()->sum('amount');
         $potentialSave = self::calculatePotentialSave($nextMonth, $thisMonth, $planned);
         $totalPoints = Card::sum('points_balance');
         $netWorth = Account::sum('balance') - Card::sum('balance') - Card::sum('pending');
