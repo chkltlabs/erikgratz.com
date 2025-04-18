@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Period;
 use App\Models\Traits\GetsDumped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,5 +31,58 @@ class Payment extends Model
     public function card(): BelongsTo
     {
         return $this->belongsTo(Card::class);
+    }
+
+    public function scopeOneTimeDueThisMonth($query)
+    {
+        return $query
+            ->whereMorphedTo('spend', Spend::class)
+            ->whereMonth('paid_on', now()->month)
+            ->whereYear('paid_on', now()->year);
+    }
+
+    public function scopeOneTimeUnpaidDueThisMonth($query)
+    {
+        return $query
+            ->whereMorphedTo('spend', Spend::class)
+            ->whereMonth('paid_on', now()->month)
+            ->whereYear('paid_on', now()->year)
+            ->where('is_paid', false);
+    }
+
+    public function scopeMonthly($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period','=',Period::Monthly);
+    }
+
+    public function scopeMonthlyUnpaid($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period','=',Period::Monthly)
+            ->whereDay('paid_on', '>=', now()->day);
+    }
+
+    public function scopeYearlyUnpaid($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period','=',Period::Yearly)
+            ->whereDay('paid_on', '>=', now()->day)
+            ->whereMonth('paid_on', '>=', now()->month);
+    }
+
+    public function scopeYearlyUnpaidDueThisMonth($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period','=',Period::Yearly)
+            ->whereDay('paid_on', '>=', now()->day)
+            ->whereMonth('paid_on', '=', now()->month);
+    }
+
+    public function scopeYearlyDueThisMonth($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period','=',Period::Yearly)
+            ->whereMonth('paid_on', '=', now()->month);
     }
 }
