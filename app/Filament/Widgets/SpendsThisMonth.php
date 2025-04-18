@@ -40,7 +40,7 @@ class SpendsThisMonth extends BaseWidget
                             ->label('Unpaid')
                             ->money()
                             ->query(fn (\Illuminate\Database\Query\Builder $query) =>
-                                $query->whereRaw('DATE_FORMAT(paid_on, "%d") > '. now()->day)
+                                $query->whereRaw('DATE_FORMAT(paid_on, "%d") >= '. now()->day)
                             ),
 //                        'total' => Sum::make('total')->label('Total')->money()
                     ]),

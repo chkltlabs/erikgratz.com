@@ -48,14 +48,31 @@ class CardResource extends Resource
                                 User::all()
                                 ->pluck('name', 'id')
                             ),
+                        ColorPicker::make('color'),
+                    ]),
+                Fieldset::make('Important Numbers')
+                    ->columns(5)
+                    ->schema([
                         TextInput::make('limit')
                             ->required()
                             ->numeric()
                             ->default(0),
-                        ColorPicker::make('color'),
-                        DatePicker::make('date_opened'),
+                        DatePicker::make('date_opened')
+                            ->required(),
                         Select::make('due_date')
                             ->label('Due on')
+                            ->options(
+                                array_combine(
+                                    range(1, 31),
+                                    array_map(
+                                        fn ($num) => now()->day($num)->format('jS'),
+                                        range(1, 31)
+                                    )
+                                )
+                            )
+                            ->required(),
+                        Select::make('statement_date')
+                            ->label('Statement closes on')
                             ->options(
                                 array_combine(
                                     range(1, 31),
