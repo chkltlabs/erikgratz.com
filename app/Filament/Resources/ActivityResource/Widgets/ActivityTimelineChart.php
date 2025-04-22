@@ -171,7 +171,27 @@ class ActivityTimelineChart extends ApexChartWidget
 //            ...self::formatCardsForDataArray(Card::all())
             ]));
 
+        $todayColor = '#FFFFFF';
+
         return [
+            'annotations' => [
+                'xaxis' => [
+                    [
+                        'x' => now()->valueOf(),
+                        'borderColor' => $todayColor,
+                        'label' => [
+                            'orientation' => 'horizontal',
+                            'borderColor' => $todayColor,
+                            'text' => "Today",
+                            'style' => [
+                                'color' => '#000',
+                                'background' => $todayColor
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+
             'datalabels' => [
                 'enabled' => false,
                 'style' => [

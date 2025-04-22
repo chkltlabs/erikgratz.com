@@ -50,8 +50,8 @@ class AdminPanelProvider extends PanelProvider
                 CardWidget::class,
                 AccountWidget::class,
                 SpendsThisMonth::class,
-                NetWorthStats::class,
-                StatsOverview::class,
+//                NetWorthStats::class,
+//                StatsOverview::class,
                 PastStatsChart::class
 //                \Filament\Widgets\AccountWidget::class,
 //                FilamentInfoWidget::class,
