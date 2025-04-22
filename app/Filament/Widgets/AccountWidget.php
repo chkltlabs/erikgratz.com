@@ -31,13 +31,17 @@ class AccountWidget extends BaseWidget
                         ->summarize(Sum::make()->money()->label(''))
 //                        ->sortable()
                 ])
-            ])->contentGrid(fn () => [
-                'xs' => 3,
-                'sm' => 3,
-                'md' => 6,
-                'lg' => 6,
-                'xl' => 6,
-            ])
-            ;
+            ])->contentGrid(fn () => $this->gridSize());
+    }
+
+    public function gridSize(): array
+    {
+        return [
+            'xs' => 2,
+            'sm' => 2,
+            'md' => 4,
+            'lg' => 4,
+            'xl' => 4,
+        ];
     }
 }
