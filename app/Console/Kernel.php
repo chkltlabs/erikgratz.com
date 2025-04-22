@@ -2,9 +2,10 @@
 
 namespace App\Console;
 
+use App\Jobs\DailyUpkeep;
 use App\Jobs\DebitIFB;
 use App\Jobs\GuessISB;
-use App\Jobs\Upkeep;
+use App\Jobs\HourlyUpkeep;
 use App\Jobs\ZeroISB;
 use App\Models\StateDump;
 use Illuminate\Console\Scheduling\Schedule;
@@ -30,10 +31,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('cache:prune-stale-tags')->hourly();
-        $schedule->job(Upkeep::class)->hourly();
-        $schedule->job(ZeroISB::class)->dailyAt('20:00');
-        $schedule->job(DebitIFB::class)->dailyAt( '20:00');
-        $schedule->job(GuessISB::class)->dailyAt( '20:10');
+        $schedule->job(HourlyUpkeep::class)->hourly();
+        $schedule->job(DailyUpkeep::class)->dailyAt('20:00');
         $schedule->call(fn () => StateDump::checkShouldDump())->dailyAt('23:50');
     }
 

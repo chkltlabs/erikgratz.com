@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class Upkeep implements ShouldQueue
+class HourlyUpkeep implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -34,6 +34,6 @@ class Upkeep implements ShouldQueue
         //cleanup morphed tables
         DB::delete("DELETE FROM payments WHERE spend_type = 'spend' and spend_id not in (select id from spends)");
         DB::delete("DELETE FROM payments WHERE spend_type = 'periodic_spend' and spend_id not in (select id from periodic_spends)");
-        
+
     }
 }
