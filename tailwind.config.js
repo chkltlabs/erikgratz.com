@@ -107,6 +107,7 @@ export default {
     content: [
         './resources/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
+        './app/Filament/**/*.php'
     ],
 
     plugins: [
