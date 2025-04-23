@@ -39,12 +39,15 @@ class CardWidget extends BaseWidget
                     }),
                 Tables\Columns\TextInputColumn::make('balance')
                     ->rules(['numeric'])
+                    ->updateStateUsing(fn ($record, $state) => $record->update(['balance' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('pending')
                     ->rules(['numeric'])
+                    ->updateStateUsing(fn ($record, $state) => $record->update(['pending' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('interest_saving_balance')
                     ->rules(['numeric'])
+                    ->updateStateUsing(fn ($record, $state) => $record->update(['interest_saving_balance' => is_null($state) ? 0 : $state]))
                     ->label('ISB')
                     ->summarize([
                         Sum::make()->money()->label('Total'),
@@ -52,10 +55,11 @@ class CardWidget extends BaseWidget
                             ->query(fn (Builder $query) => $query->where('due_date', '>=', now()->day))
                             ->money()->label('Unpaid'),
                     ]),
-                Tables\Columns\TextInputColumn::make('interest_free_balance')
+                Tables\Columns\TextInputColumn::make('points_balance')
                     ->rules(['numeric'])
-                    ->label('0% Bal')
-                    ->summarize(Sum::make()->money()->label('')),
+                    ->updateStateUsing(fn ($record, $state) => $record->update(['points_balance' => is_null($state) ? 0 : $state]))
+                    ->label('Pts Bal')
+                    ->summarize(Sum::make()->numeric()->label('')),
             ]);
     }
 }

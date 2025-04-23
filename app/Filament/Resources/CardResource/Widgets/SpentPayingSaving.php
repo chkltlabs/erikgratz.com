@@ -9,7 +9,6 @@ use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\Payment;
 use App\Models\StateDump;
 use App\Models\User;
-use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
@@ -145,17 +144,5 @@ class SpentPayingSaving extends BaseWidget
             + $query->sum('pending')
             - $query->sum('interest_free_balance')
             + $query->sum('interest_free_balance_payment');
-    }
-
-    private static function fixforWeekends(int $day): Carbon
-    {
-        $exact = now()->setDay($day);
-
-        return $exact->isSunday()
-            ? $exact->subDays(2)
-            : ($exact->isSaturday()
-                ? $exact->subDay()
-                : $exact
-            );
     }
 }
