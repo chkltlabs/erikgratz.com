@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use App\Models\Collections\StateDumpCollection;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class StateDump extends Model
 {
-    //Dumps are not meant to be restored to their database tables
+    // Dumps are not meant to be restored to their database tables
     // rather, dumps are meant to record balance and planning state over time
     // so that more sophisticated graphs and data may be collected and displayed
 
@@ -38,10 +37,12 @@ class StateDump extends Model
         foreach (self::$dumpables as $class) {
             $data[$class] = $class::getDump();
         }
+
         return self::create(['data' => $data]);
     }
 
     const SHOULD_DUMP = 'data_will_dump_tonight';
+
     public static function setShouldDumpFlag(): void
     {
         Cache::put(self::SHOULD_DUMP, true);
@@ -55,14 +56,14 @@ class StateDump extends Model
         }
     }
 
-    public function getStatForModel(Model $model, string $col) :int|float|string
+    public function getStatForModel(Model $model, string $col): int|float|string
     {
         $foundState = collect($this->data[$model::class])
             ->first(
-                fn ($item) =>
-                    $item[$model->getKeyName()]
+                fn ($item) => $item[$model->getKeyName()]
                     === $model->getKey()
             );
+
         return is_null($foundState) ? 0 : $foundState[$col];
     }
 }

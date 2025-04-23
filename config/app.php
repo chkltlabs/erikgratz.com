@@ -172,7 +172,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    //hides Socialist homepage stuff
+    // hides Socialist homepage stuff
     'useRealHomepage' => false,
 
 ];

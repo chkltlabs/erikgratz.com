@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Enums;
 
@@ -16,22 +18,27 @@ use BenSampo\Enum\Enum;
  */
 final class PointsProgram extends Enum
 {
-
     #[Description('Unknown')]
     const Unknown = 'unknown';
+
     #[Description('Chase Ultimate Rewards')]
     const ChaseUltimateRewards = 'chaseUltimateRewards';
+
     #[Description('Capital One Miles')]
     const CapitalOneMiles = 'capitalOneMiles';
+
     #[Description('Avios')]
     const Avios = 'avios';
+
     #[Description('Aeroplan')]
     const Aeroplan = 'aeroplan';
 
     #[Description('CitiBank ThankYou Points')]
     const CitiThankYou = 'citiThankYou';
+
     #[Description('American Express Membership Rewards')]
     const AmExMemberRewards = 'amExMemberRewards';
+
     #[Description('Bilt Rewards')]
     const Bilt = 'bilt';
 }

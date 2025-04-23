@@ -21,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ContactReqCreated::class => [
-            //SendContactNotification::class,
+            // SendContactNotification::class,
         ],
     ];
 

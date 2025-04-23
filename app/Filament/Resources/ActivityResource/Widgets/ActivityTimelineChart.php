@@ -45,7 +45,7 @@ class ActivityTimelineChart extends ApexChartWidget
             'x' => 'card',
             'y' => [
                 Carbon::parse($model->date_opened)->valueOf(),
-                Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf()
+                Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
             ],
             'name' => $model->name,
             'amount' => $model->points_bonus_spend,
@@ -85,9 +85,9 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function setX(array $data): array
     {
-        //leetcode shivers at this ultra-brute-force solution
-        //i stand upon the crest of the hill
-        //and continue to give not one shit.
+        // leetcode shivers at this ultra-brute-force solution
+        // i stand upon the crest of the hill
+        // and continue to give not one shit.
         // its O(n)^2 though
         $graphTracker = [[], [], [], [], [], [], [], [], [], [], []];
         foreach ($data as $index => $bar) {
@@ -140,7 +140,7 @@ class ActivityTimelineChart extends ApexChartWidget
             array_map(function ($entry) {
                 $entry['y'][1] = self::calcSplit($entry);
 
-                if ($entry['y'][1] === $entry['y'][0]) { //removes entry when should be invisible
+                if ($entry['y'][1] === $entry['y'][0]) { // removes entry when should be invisible
                     return [];
                 }
 
@@ -149,11 +149,11 @@ class ActivityTimelineChart extends ApexChartWidget
             array_map(function ($entry) {
                 $entry['y'][0] = self::calcSplit($entry);
 
-                if ($entry['y'][1] === $entry['y'][0]) { //removes entry when should be invisible
+                if ($entry['y'][1] === $entry['y'][0]) { // removes entry when should be invisible
                     return [];
                 }
 
-                $entry['y'][0] += 10000000; //avoids visual collisions, 166.667 minutes
+                $entry['y'][0] += 10000000; // avoids visual collisions, 166.667 minutes
 
                 return $entry;
             }, $dataCopy),
@@ -167,9 +167,9 @@ class ActivityTimelineChart extends ApexChartWidget
     protected function getOptions(): array
     {
         [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
-            ...self::formatForDataArray(Activity::all()->filter(fn ($act) => !$act->archived)),
-//            ...self::formatCardsForDataArray(Card::all())
-            ]));
+            ...self::formatForDataArray(Activity::all()->filter(fn ($act) => ! $act->archived)),
+            //            ...self::formatCardsForDataArray(Card::all())
+        ]));
 
         $todayColor = '#FFFFFF';
 
@@ -182,14 +182,14 @@ class ActivityTimelineChart extends ApexChartWidget
                         'label' => [
                             'orientation' => 'horizontal',
                             'borderColor' => $todayColor,
-                            'text' => "Today",
+                            'text' => 'Today',
                             'style' => [
                                 'color' => '#000',
-                                'background' => $todayColor
+                                'background' => $todayColor,
                             ],
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
 
             'datalabels' => [
@@ -215,10 +215,10 @@ class ActivityTimelineChart extends ApexChartWidget
                     'name' => 'Unpaid',
                     'data' => $unpaid,
                 ],
-//                [
-//                    'name' => 'Cards',
-//                    'data' => $cards,
-//                ],
+                //                [
+                //                    'name' => 'Cards',
+                //                    'data' => $cards,
+                //                ],
             ],
             'xaxis' => [
                 'type' => 'datetime',

@@ -20,7 +20,7 @@ class ManageCards extends ManageRecords
     protected function getFooterWidgets(): array
     {
         return [
-            CardResource\Widgets\SpentPayingSaving::class
+            CardResource\Widgets\SpentPayingSaving::class,
         ];
     }
 }

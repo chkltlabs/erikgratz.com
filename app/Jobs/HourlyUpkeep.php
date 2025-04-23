@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,7 +30,7 @@ class HourlyUpkeep implements ShouldQueue
      */
     public function handle()
     {
-        //cleanup morphed tables
+        // cleanup morphed tables
         DB::delete("DELETE FROM payments WHERE spend_type = 'spend' and spend_id not in (select id from spends)");
         DB::delete("DELETE FROM payments WHERE spend_type = 'periodic_spend' and spend_id not in (select id from periodic_spends)");
 

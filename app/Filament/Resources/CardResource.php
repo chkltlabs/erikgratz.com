@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\PointsProgram;
 use App\Filament\Resources\CardResource\Pages;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
-use App\Filament\Resources\CardResource\RelationManagers\PlannedPaymentsRelationManager;
 use App\Models\Card;
 use App\Models\User;
 use Filament\Forms\Components\ColorPicker;
@@ -14,9 +13,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -46,7 +43,7 @@ class CardResource extends Resource
                             ->label('Cardholder')
                             ->options(
                                 User::all()
-                                ->pluck('name', 'id')
+                                    ->pluck('name', 'id')
                             ),
                         ColorPicker::make('color'),
                     ]),
@@ -127,8 +124,8 @@ class CardResource extends Resource
                         ->default(0),
                     TextInput::make('points_bonus_period'),
                     Select::make('points_program')
-                        ->options(PointsProgram::asSelectArray())
-                ])
+                        ->options(PointsProgram::asSelectArray()),
+                ]),
             ]);
     }
 
@@ -197,9 +194,9 @@ class CardResource extends Resource
 
     public static function getPages(): array
     {
-//        return [
-//            'index' => Pages\ManageCards::route('/'),
-//        ];
+        //        return [
+        //            'index' => Pages\ManageCards::route('/'),
+        //        ];
         return [
             'index' => Pages\ListCards::route('/'),
             'create' => Pages\CreateCard::route('/create'),
@@ -210,7 +207,7 @@ class CardResource extends Resource
     public static function getRelations(): array
     {
         return [
-            BenefitsRelationManager::class
+            BenefitsRelationManager::class,
         ];
     }
 }

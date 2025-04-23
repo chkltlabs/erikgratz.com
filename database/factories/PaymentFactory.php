@@ -6,7 +6,6 @@ use App\Models\Card;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
-use App\Models\V2\Question as NewQuestion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
@@ -25,8 +24,8 @@ class PaymentFactory extends Factory
             'spend_id' => function ($attrs) {
                 return Relation::getMorphedModel($attrs['spend_type'])::factory();
             },
-//            'spend_id' => Spend::factory(),
-//            'spend_type' => collect([PeriodicSpend::class, Spend::class])->random()::getMorphClass(),
+            //            'spend_id' => Spend::factory(),
+            //            'spend_type' => collect([PeriodicSpend::class, Spend::class])->random()::getMorphClass(),
             'card_id' => Card::factory(),
         ];
     }

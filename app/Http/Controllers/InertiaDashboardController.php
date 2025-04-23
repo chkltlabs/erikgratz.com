@@ -23,7 +23,7 @@ class InertiaDashboardController extends Controller
 
     public function getBlogEdit($blog_post_id)
     {
-        //getting existing tags
+        // getting existing tags
         $posts = \App\Models\BlogPost::all('tags')->toArray();
         $posts = array_column($posts, 'tags');
         $tags = [];
@@ -56,7 +56,7 @@ class InertiaDashboardController extends Controller
     public function getBlogNew()
     {
         return Inertia::render('BlogEdit', [
-            'BlogPost' => new \App\Models\BlogPost(),
+            'BlogPost' => new \App\Models\BlogPost,
             'mode' => 'new',
         ]);
     }

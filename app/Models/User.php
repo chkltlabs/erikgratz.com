@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser
 {
-        use HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'imageUrl',
-        'monthly_pay'
+        'monthly_pay',
     ];
 
     /**
@@ -51,5 +51,15 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return true;
+    }
+
+    public static function erik(): self
+    {
+        return User::whereEmail('erik@erikgratz.com')->first();
+    }
+
+    public static function amy(): self
+    {
+        return User::whereEmail('hudgins.a8@gmail.com')->first();
     }
 }

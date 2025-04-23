@@ -68,7 +68,7 @@ class AccountResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->recordAction(null); //disables click-to-open behavior, can still edit with edit button
+            ->recordAction(null); // disables click-to-open behavior, can still edit with edit button
     }
 
     public static function getPages(): array

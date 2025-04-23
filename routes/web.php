@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//$exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
-//echo $exitCode; // 0 exit code for no errors.
+// $exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
+// echo $exitCode; // 0 exit code for no errors.
 
 Route::get('/', [InertiaPageController::class, 'getIndex'])->name('home');
 
@@ -42,7 +42,7 @@ Route::get('/donate', [InertiaPageController::class, 'getDonate']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only(
-        //'update',
+        // 'update',
         'destroy'
     );
 
@@ -60,11 +60,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/blog/new', [InertiaDashboardController::class, 'postBlogNew']);
 
-    //-------------------
+    // -------------------
     // Livewire Redo
-    //-------------------
+    // -------------------
 
-    Route::get('/counter', Counter::class); //example
+    Route::get('/counter', Counter::class); // example
 
     Route::prefix('redo')->group(function () {
         Route::get('/', Home::class);

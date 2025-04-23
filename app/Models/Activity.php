@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
-    use HasFactory, GetsDumped;
+    use GetsDumped, HasFactory;
 
     protected $fillable = [
         'name', 'description', 'start_date', 'end_date',
@@ -22,6 +22,7 @@ class Activity extends Model
     }
 
     const ARCHIVE_DAY_GRACE = 15;
+
     public function archived(): Attribute
     {
         return Attribute::make(
@@ -42,11 +43,11 @@ class Activity extends Model
     public function totalDays(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 //add 1, otherwise the first day doesn't count
+            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 // add 1, otherwise the first day doesn't count
         );
     }
 
-    //normalized spend per day, for estimating proportional living expense
+    // normalized spend per day, for estimating proportional living expense
     public function normalizedTotalSpend(): Attribute
     {
         return Attribute::make(
@@ -77,11 +78,12 @@ class Activity extends Model
         foreach ($this->spends()->whereIsIncome(false)->get() as $spend) {
             $perc = (float) ($spend->amount / $this->total_spend) * 100;
             $type = $spend->$typeCol->value;
-            if (!isset($percentages[$type])) {
+            if (! isset($percentages[$type])) {
                 $percentages[$type] = 0;
             }
             $percentages[$type] += $perc;
         }
+
         return $percentages;
     }
 
@@ -94,7 +96,7 @@ class Activity extends Model
 
                 if ($start->month == $end->month) {
                     return [
-                        $start->format('M') => $start->diffInDays($end)
+                        $start->format('M') => $start->diffInDays($end),
                     ];
                 }
                 $rtn = [];
@@ -103,6 +105,7 @@ class Activity extends Model
                     $rtn[$start->format('M')] = $start->diffInDays($endThisMonth);
                     $start->addMonth()->startOfMonth();
                 }
+
                 return $rtn;
             }
         );
@@ -134,6 +137,7 @@ class Activity extends Model
         foreach ($this->spends()->whereIsIncome(false)->get() as $spend) {
             $rtn = PeriodicSpend::combineDailyCharts($rtn, $spend->getDailyChartData());
         }
+
         return $rtn;
     }
 
@@ -144,6 +148,7 @@ class Activity extends Model
         foreach ($activities as $activity) {
             $rtn = PeriodicSpend::combineDailyCharts($rtn, $activity->getDailyChartData());
         }
+
         return $rtn;
     }
 }

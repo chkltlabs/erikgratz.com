@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use HasFactory, BelongsToUser, GetsDumped;
+    use BelongsToUser, GetsDumped, HasFactory;
 
     protected $fillable = ['user_id', 'type', 'balance'];
 
@@ -22,7 +22,7 @@ class Account extends Model
     public function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->user->name . ' ' . $this->type,
+            get: fn () => $this->user->name.' '.$this->type,
         );
     }
 }

@@ -15,18 +15,13 @@ class PastStatsChart extends ApexChartWidget
 {
     /**
      * Chart Id
-     *
-     * @var string
      */
     protected static ?string $chartId = 'PastStatsChart';
 
     /**
      * Widget Title
-     *
-     * @var string|null
      */
     protected static ?string $heading = 'Past Stats';
-
 
     protected int|string|array $columnSpan = 4;
 
@@ -34,24 +29,25 @@ class PastStatsChart extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        list(
+        [
             $netWorthChart,
             $cardBalanceChart,
             $cardPendingChart,
             $cashPositionChart,
             $pointsChart
-            ) = SpentPayingSaving::getStateDumpCharts();
+        ] = SpentPayingSaving::getStateDumpCharts();
 
         $pointsColor = '#565ff5';
         $networthColor = '#56f5ec';
         $cashColor = '#56f570';
         $ccColor = '#f55656';
+
         return [
             'chart' => [
                 'type' => 'line',
                 'zoom' => [
                     'allowMouseWheelZoom' => false,
-                ]
+                ],
             ],
             'colors' => [$networthColor, $ccColor, $cashColor, $pointsColor],
             'series' => [
@@ -73,7 +69,7 @@ class PastStatsChart extends ApexChartWidget
                 ],
             ],
             'xaxis' => [
-//                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                //                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 'type' => 'datetime',
                 'labels' => [
                     'style' => [
@@ -87,10 +83,10 @@ class PastStatsChart extends ApexChartWidget
                     'title' => [
                         'text' => '$$$',
                         'style' => [
-                            'color' => $cashColor
-                        ]
+                            'color' => $cashColor,
+                        ],
                     ],
-                    'seriesName' => ['Cash Position','CC Debt','Net Worth'],
+                    'seriesName' => ['Cash Position', 'CC Debt', 'Net Worth'],
                     'labels' => [
                         'style' => [
                             'fontFamily' => 'inherit',
@@ -103,8 +99,8 @@ class PastStatsChart extends ApexChartWidget
                     'title' => [
                         'text' => 'Points Balance',
                         'style' => [
-                            'color' => $pointsColor
-                        ]
+                            'color' => $pointsColor,
+                        ],
                     ],
                     'labels' => [
                         'style' => [
@@ -125,7 +121,7 @@ class PastStatsChart extends ApexChartWidget
             'x' => Carbon::parse($key),
             'y' => round($val, 0),
         ])->toArray();
+
         return array_values($arr);
     }
-
 }

@@ -19,9 +19,9 @@ class ActivityResourceTest extends TestCase
         $this->actingAs(User::first() ?? User::factory()->create());
     }
 
-    //-------------------------------
-    //Activities - Resource
-    //-------------------------------
+    // -------------------------------
+    // Activities - Resource
+    // -------------------------------
 
     public function test_activity_index_renders()
     {
@@ -52,7 +52,7 @@ class ActivityResourceTest extends TestCase
 
     private static function filler(array $data): array
     {
-        return (new ActivityResource\Pages\EditCard())->mutateFormDataBeforeFill($data);
+        return (new ActivityResource\Pages\EditCard)->mutateFormDataBeforeFill($data);
     }
 
     public function test_activity_can_create()
@@ -99,9 +99,9 @@ class ActivityResourceTest extends TestCase
         $this->assertDatabaseMissing($model->getTable(), $model->toArray());
     }
 
-    //-------------------------------
-    //Spends - Resource
-    //-------------------------------
+    // -------------------------------
+    // Spends - Resource
+    // -------------------------------
 
     public function test_spend_index_renders()
     {

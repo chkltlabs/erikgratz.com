@@ -17,6 +17,7 @@ trait GetsDumped
     {
         $dump = static::all();
         $dump->each->toArray();
+
         return $dump->toArray();
     }
 }

@@ -42,7 +42,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        //return respond
+        // return respond
     }
 
     /**

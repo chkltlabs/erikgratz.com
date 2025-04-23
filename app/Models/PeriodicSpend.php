@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PeriodicSpend extends Model
 {
-    use HasFactory, GetsDumped, HasPayments;
+    use GetsDumped, HasFactory, HasPayments;
 
     protected $fillable = [
         'period', 'name', 'start_date', 'end_date',
-        'is_income','type','subtype'
+        'is_income', 'type', 'subtype',
     ];
 
     protected $casts = [
@@ -37,17 +37,17 @@ class PeriodicSpend extends Model
         return Attribute::make(
             get: function () {
                 $amount = 0;
-                list($add, $startOf, $endOf) = Period::getCarbonMethods($this->period);
+                [$add, $startOf, $endOf] = Period::getCarbonMethods($this->period);
                 $payments = $this->payments()->orderBy('paid_on')->get();
                 foreach ($payments as $first) {
                     $next = $payments->where('paid_on', '>', $first->paid_on)->first();
                     $date = Carbon::parse($first->paid_on);
 
-                    if (!is_null($next)) {
+                    if (! is_null($next)) {
                         $nextPaidOn = Carbon::parse($next->paid_on);
                     }
 
-                    while ((!isset($nextPaidOn) || $date->lt($nextPaidOn))
+                    while ((! isset($nextPaidOn) || $date->lt($nextPaidOn))
                         && $date->lte($this->end_date)) {
                         $amount += $first->amount;
                         $date->$add();
@@ -55,6 +55,7 @@ class PeriodicSpend extends Model
 
                     unset($nextPaidOn);
                 }
+
                 return $amount;
             }
         );
@@ -63,11 +64,11 @@ class PeriodicSpend extends Model
     public function totalDays(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 //add 1, otherwise the first day doesn't count
+            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 // add 1, otherwise the first day doesn't count
         );
     }
 
-    //normalized spend per day, for estimating proportional living expense
+    // normalized spend per day, for estimating proportional living expense
     public function normalizedTotalSpend(): Attribute
     {
         return Attribute::make(
@@ -110,15 +111,15 @@ class PeriodicSpend extends Model
             array_key_last($rtn) ?? '1900-01-01',
             array_key_last($data) ?? '1900-01-01'
         ));
-        while($earliestDate->lte($lastliestDate)) {
+        while ($earliestDate->lte($lastliestDate)) {
             $k = $earliestDate->format('Y-m-d');
             if (isset($rtn[$k])
-                && !isset($data[$k])) {
-                //leave rtn alone
-            } else if (!isset($rtn[$k])
-                && isset($data[$k])){
+                && ! isset($data[$k])) {
+                // leave rtn alone
+            } elseif (! isset($rtn[$k])
+                && isset($data[$k])) {
                 $rtn[$k] = $data[$k];
-            } else if (isset($rtn[$k])
+            } elseif (isset($rtn[$k])
                 && isset($data[$k])) {
                 $rtn[$k] = [
                     'y' => round($rtn[$k]['y'] + $data[$k]['y'], 2),
@@ -128,8 +129,10 @@ class PeriodicSpend extends Model
             $earliestDate->addDay();
         }
         ksort($rtn);
+
         return $rtn;
     }
+
     public static function getDailyChartDataForAll(): array
     {
         $pSpends = self::query()->orderBy('start_date')->get();
@@ -149,15 +152,15 @@ class PeriodicSpend extends Model
             $next = $payments->where('paid_on', '>', $first->paid_on)->first();
             $date = Carbon::parse($first->paid_on);
 
-            if (!is_null($next)) {
+            if (! is_null($next)) {
                 $nextPaidOn = Carbon::parse($next->paid_on);
             }
 
-            while ((!isset($nextPaidOn) || $date->lt($nextPaidOn))
+            while ((! isset($nextPaidOn) || $date->lt($nextPaidOn))
                 && $date->lte($this->end_date)) {
                 $dailyDivisor = self::getDailyDivisor($this->period, $date);
                 $rtn[$date->format('Y-m-d')] = [
-                    'y' => round($first->amount / $dailyDivisor,2),
+                    'y' => round($first->amount / $dailyDivisor, 2),
                     'x' => Carbon::parse($date->toDateString()),
                 ];
                 $date->addDay();
@@ -165,6 +168,7 @@ class PeriodicSpend extends Model
 
             unset($nextPaidOn);
         }
+
         return $rtn;
     }
 
@@ -180,10 +184,10 @@ class PeriodicSpend extends Model
 
     public static function collapseChartDataForPeriod(Period $period, array $data): array
     {
-        if ($period->value == Period::Daily){
+        if ($period->value == Period::Daily) {
             return $data;
         }
-        list($add, $startOf, $endOf) = Period::getCarbonMethods($period);
+        [$add, $startOf, $endOf] = Period::getCarbonMethods($period);
         $rtn = [];
         $firstDate = Carbon::parse(array_key_first($data))->$startOf();
         $lastDate = Carbon::parse(array_key_last($data))->$endOf();
@@ -199,12 +203,12 @@ class PeriodicSpend extends Model
                 $firstDate->addDay();
             }
             $rtn[$keyString] = [
-                'y' => round($amount,2),
+                'y' => round($amount, 2),
                 'x' => Carbon::parse($carbonCopy->toDateString()),
             ];
         }
-//        dd($rtn);
+
+        //        dd($rtn);
         return $rtn;
     }
-
 }

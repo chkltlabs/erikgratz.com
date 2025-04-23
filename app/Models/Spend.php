@@ -7,13 +7,12 @@ use App\Enums\SpendType;
 use App\Models\Traits\GetsDumped;
 use App\Models\Traits\HasPayments;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Spend extends Model
 {
-    use HasFactory, GetsDumped, HasPayments;
+    use GetsDumped, HasFactory, HasPayments;
 
     protected $fillable = [
         'name',
@@ -41,16 +40,17 @@ class Spend extends Model
             $k = $date->format('Y-m-d');
             if (isset($rtn[$k])) {
                 $amt = $rtn[$k]['y'] + $first->amount;
-            }else{
+            } else {
                 $amt = $first->amount;
             }
             $rtn[$k] = [
-                'y' => round($amt,2),
+                'y' => round($amt, 2),
                 'x' => Carbon::parse($date->toDateString()),
             ];
 
             unset($nextPaidOn);
         }
+
         return $rtn;
     }
 }
