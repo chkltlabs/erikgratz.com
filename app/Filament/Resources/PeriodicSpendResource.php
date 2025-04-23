@@ -6,7 +6,6 @@ use App\Enums\Period;
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
 use App\Filament\Resources\PeriodicSpendResource\Pages;
-use App\Filament\Resources\PeriodicSpendResource\RelationManagers;
 use App\Models\Card;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
@@ -26,7 +25,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class PeriodicSpendResource extends Resource
@@ -40,35 +38,35 @@ class PeriodicSpendResource extends Resource
         return $form
             ->schema([
                 Grid::make(3)->schema([
-                Forms\Components\Select::make('period')
-                    ->options(fn () => Period::asSelectArray())
-                    ->required(),
+                    Forms\Components\Select::make('period')
+                        ->options(fn () => Period::asSelectArray())
+                        ->required(),
 
-                DateRangePicker::make('start_end_date')
-                    ->alwaysShowCalendar()
-                    ->required(),
+                    DateRangePicker::make('start_end_date')
+                        ->alwaysShowCalendar()
+                        ->required(),
 
-                TextInput::make('name')
-                    ->required(),
-                Select::make('type')
-                    ->options(SpendType::asSelectArray())
-                    ->afterStateUpdated(
-                        function (?string $state, $get, $set) {
-                            if (! in_array($get('subtype'),
-                                SpendSubtype::getFilteredSet($state))) {
-                                $set('subtype', null);
-                            }
-                        })
-                    ->reactive()
-                    ->required(),
+                    TextInput::make('name')
+                        ->required(),
+                    Select::make('type')
+                        ->options(SpendType::asSelectArray())
+                        ->afterStateUpdated(
+                            function (?string $state, $get, $set) {
+                                if (! in_array($get('subtype'),
+                                    SpendSubtype::getFilteredSet($state))) {
+                                    $set('subtype', null);
+                                }
+                            })
+                        ->reactive()
+                        ->required(),
 
-                Select::make('subtype')
-                    ->options(
-                        fn ($get) => SpendSubtype::getFilteredSet($get('type'))
-                    )
-                    ->reactive()
-                    ->required(),
-                Toggle::make('is_income'),
+                    Select::make('subtype')
+                        ->options(
+                            fn ($get) => SpendSubtype::getFilteredSet($get('type'))
+                        )
+                        ->reactive()
+                        ->required(),
+                    Toggle::make('is_income'),
                 ]),
                 Grid::make(1)->schema([
                     Repeater::make('payments')
@@ -111,29 +109,29 @@ class PeriodicSpendResource extends Resource
                         ->money('USD')
                         ->using(
                             fn (\Illuminate\Database\Query\Builder $query) => (clone $query)
+                                ->where('periodic_spends.is_income', false)
+                                ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                ->where('periodic_spends.period', Period::Yearly)
+                                ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                ->sum('payments.amount')
+                                + ((clone $query)
                                     ->where('periodic_spends.is_income', false)
                                     ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                    ->where('periodic_spends.period', Period::Yearly)
+                                    ->where('periodic_spends.period', Period::Monthly)
                                     ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                    ->sum('payments.amount')
+                                    ->sum('payments.amount') * 12)
                                 + ((clone $query)
-                                        ->where('periodic_spends.is_income', false)
-                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                        ->where('periodic_spends.period', Period::Monthly)
-                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                        ->sum('payments.amount') * 12)
+                                    ->where('periodic_spends.is_income', false)
+                                    ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                    ->where('periodic_spends.period', Period::Weekly)
+                                    ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount') * 52)
                                 + ((clone $query)
-                                        ->where('periodic_spends.is_income', false)
-                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                        ->where('periodic_spends.period', Period::Weekly)
-                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                        ->sum('payments.amount') * 52)
-                                + ((clone $query)
-                                        ->where('periodic_spends.is_income', false)
-                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                        ->where('periodic_spends.period', Period::Daily)
-                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                        ->sum('payments.amount') * (now()->isLeapYear() ? 366 : 365))
+                                    ->where('periodic_spends.is_income', false)
+                                    ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                    ->where('periodic_spends.period', Period::Daily)
+                                    ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                    ->sum('payments.amount') * (now()->isLeapYear() ? 366 : 365))
                                 - (
                                     (clone $query)
                                         ->where('periodic_spends.is_income', true)
@@ -142,23 +140,23 @@ class PeriodicSpendResource extends Resource
                                         ->join('payments', 'periodic_spends.id', 'payments.spend_id')
                                         ->sum('payments.amount')
                                     + ((clone $query)
-                                            ->where('periodic_spends.is_income', true)
-                                            ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                            ->where('periodic_spends.period', Period::Monthly)
-                                            ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                            ->sum('payments.amount') * 12)
+                                        ->where('periodic_spends.is_income', true)
+                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                        ->where('periodic_spends.period', Period::Monthly)
+                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                        ->sum('payments.amount') * 12)
                                     + ((clone $query)
-                                            ->where('periodic_spends.is_income', true)
-                                            ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                            ->where('periodic_spends.period', Period::Weekly)
-                                            ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                            ->sum('payments.amount') * 52)
+                                        ->where('periodic_spends.is_income', true)
+                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                        ->where('periodic_spends.period', Period::Weekly)
+                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                        ->sum('payments.amount') * 52)
                                     + ((clone $query)
-                                            ->where('periodic_spends.is_income', true)
-                                            ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-                                            ->where('periodic_spends.period', Period::Daily)
-                                            ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-                                            ->sum('payments.amount') * (now()->isLeapYear() ? 366 : 365))
+                                        ->where('periodic_spends.is_income', true)
+                                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
+                                        ->where('periodic_spends.period', Period::Daily)
+                                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
+                                        ->sum('payments.amount') * (now()->isLeapYear() ? 366 : 365))
                                 )
                         )
                     ),
@@ -178,12 +176,12 @@ class PeriodicSpendResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('period')
-                    ->options(Period::asSelectArray())
+                    ->options(Period::asSelectArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->mutateRecordDataUsing(fn (array $data): array => ActivityResource::combineStartEndDate($data))
-                    ->mutateFormDataUsing(fn (array $data): array => ActivityResource::splitStartEndDate($data))
+                    ->mutateFormDataUsing(fn (array $data): array => ActivityResource::splitStartEndDate($data)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

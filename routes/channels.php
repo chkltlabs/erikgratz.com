@@ -18,5 +18,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('contacts', function ($user) {
-    return true; //$user->email === 'erik@erikgratz.com';
+    return true; // $user->email === 'erik@erikgratz.com';
 });

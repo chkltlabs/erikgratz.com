@@ -16,7 +16,7 @@ class ContactStoreRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = new \App\Http\Requests\ContactStoreRequest();
+        $this->subject = new \App\Http\Requests\ContactStoreRequest;
     }
 
     /**

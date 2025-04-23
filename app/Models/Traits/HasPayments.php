@@ -13,6 +13,7 @@ trait HasPayments
             $model->payments()->delete();
         });
     }
+
     public function payments()
     {
         return $this->morphMany(Payment::class, 'spend');

@@ -2,15 +2,10 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\Period;
 use App\Models\Payment;
-use App\Models\PeriodicSpend;
-use App\Models\Spend;
-use Carbon\Carbon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpendsThisMonth extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
+
     public function table(Table $table): Table
     {
         return $table
@@ -39,14 +35,13 @@ class SpendsThisMonth extends BaseWidget
                         'unpaid' => Sum::make('unpaid')
                             ->label('Unpaid')
                             ->money()
-                            ->query(fn (\Illuminate\Database\Query\Builder $query) =>
-                                $query->whereRaw('DATE_FORMAT(paid_on, "%d") >= '. now()->day)
+                            ->query(fn (\Illuminate\Database\Query\Builder $query) => $query->whereRaw('DATE_FORMAT(paid_on, "%d") >= '.now()->day)
                             ),
-//                        'total' => Sum::make('total')->label('Total')->money()
+                        //                        'total' => Sum::make('total')->label('Total')->money()
                     ]),
                 IconColumn::make('is_paid')
                     ->state(fn (Model $record) => now()->day > $record->paid_on->day)
-//                    ->updateStateUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => dd($query->toSql()))
+                //                    ->updateStateUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => dd($query->toSql()))
                 ,
                 TextColumn::make('paid_on')
                     ->dateTime('jS')

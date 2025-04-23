@@ -20,7 +20,7 @@ class ListPeriodicSpends extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            PeriodicSpendResource\Widgets\SpendOverTimeChart::class
+            PeriodicSpendResource\Widgets\SpendOverTimeChart::class,
         ];
     }
 }

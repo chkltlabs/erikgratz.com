@@ -26,7 +26,7 @@ class EmailOrPhoneRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //must be an email...
+        // must be an email...
         return (! Validator::make([$attribute => $value], [
             $attribute => 'required|email',
         ])->fails())

@@ -3,10 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\DailyUpkeep;
-use App\Jobs\DebitIFB;
-use App\Jobs\GuessISB;
 use App\Jobs\HourlyUpkeep;
-use App\Jobs\ZeroISB;
 use App\Models\StateDump;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

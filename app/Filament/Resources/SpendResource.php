@@ -43,7 +43,7 @@ class SpendResource extends Resource
                     ->relationship('activity', 'name'),
             ]
             : [
-                //intentionally blank
+                // intentionally blank
             ];
 
         return [
@@ -94,7 +94,7 @@ class SpendResource extends Resource
             ? [
                 TextColumn::make('activity.name'),
             ] : [
-                //intentionally blank
+                // intentionally blank
             ];
 
         return [
@@ -113,11 +113,12 @@ class SpendResource extends Resource
                     ->using(
                         function (Builder $query) {
                             $copy = $query->clone();
+
                             return $query
-                                    ->where('spends.is_income', false)
-                                    ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
-                                    ->join('payments', 'spends.id', 'payments.spend_id')
-                                    ->sum('payments.amount')
+                                ->where('spends.is_income', false)
+                                ->where('payments.spend_type', getMorphAliasForClass(Spend::class))
+                                ->join('payments', 'spends.id', 'payments.spend_id')
+                                ->sum('payments.amount')
                                 - $copy
                                     ->where('spends.is_income', true)
                                     ->where('payments.spend_type', getMorphAliasForClass(Spend::class))

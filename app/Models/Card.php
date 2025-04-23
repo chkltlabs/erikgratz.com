@@ -13,19 +13,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Card extends Model
 {
-    use HasFactory, GetsDumped, BelongsToUser;
+    use BelongsToUser, GetsDumped, HasFactory;
 
     protected $fillable = [
         'name', 'user_id', 'limit',
-        'due_date', 'statement_date', 
+        'due_date', 'statement_date',
         'annual_fee', 'balance', 'pending',
         'interest_saving_balance',
         'interest_free_balance',
         'interest_free_balance_payment',
         'points_balance', 'points_bonus',
-        'points_bonus_spend','date_opened',
-        'points_bonus_period','color',
-        'points_program'
+        'points_bonus_spend', 'date_opened',
+        'points_bonus_period', 'color',
+        'points_program',
     ];
 
     protected $casts = [
@@ -70,8 +70,7 @@ class Card extends Model
     public function hasSatisfiedSub(): Attribute
     {
         return Attribute::make(
-            get: fn ():bool =>
-                now()->gt($this->points_bonus_deadline) ||
+            get: fn (): bool => now()->gt($this->points_bonus_deadline) ||
                 $this->balance
                 + $this->pending
                 + $this->planned_payments
@@ -100,5 +99,21 @@ class Card extends Model
         return Attribute::make(
             get: fn () => $this->paid_payments()->sum('amount')
         );
+    }
+
+    public function scopeFutureDue($query)
+    {
+        return $query->where('due_date', '>=', now()->day);
+    }
+
+    public function scopePastDue($query)
+    {
+        return $query->where('due_date', '<', now()->day);
+    }
+
+    public function scopeNoISBYet($query)
+    {
+        return $query->where('balance', '>', 0)
+            ->where('interest_saving_balance', 0);
     }
 }

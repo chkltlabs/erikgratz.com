@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\CardResource\Pages;
 
-use App\Filament\Resources\ActivityResource;
 use App\Filament\Resources\CardResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;

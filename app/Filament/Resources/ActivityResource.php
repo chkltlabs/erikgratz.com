@@ -12,9 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -125,8 +123,7 @@ class ActivityResource extends Resource
                         blank: fn (Builder $query) => $query, // we do not want to filter the query when it is blank.
                     ),
             ])
-            ->persistFiltersInSession()
-            ;
+            ->persistFiltersInSession();
     }
 
     public static function getPages(): array

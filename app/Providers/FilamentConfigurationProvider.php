@@ -34,9 +34,9 @@ class FilamentConfigurationProvider extends ServiceProvider
      */
     public function boot()
     {
-        //--------------------------------
-        //Filament Validation Error reporting
-        //--------------------------------
+        // --------------------------------
+        // Filament Validation Error reporting
+        // --------------------------------
         Page::$reportValidationErrorUsing = function (ValidationException $exception) {
             Notification::make()
                 ->title($exception->getMessage())
@@ -58,9 +58,9 @@ class FilamentConfigurationProvider extends ServiceProvider
             //            Css::make('build-css', Vite::asset('resources/sass/app.scss','build'))
         ]);
 
-        //try fully switching to this method of theme customization
+        // try fully switching to this method of theme customization
         FilamentColor::register([
-            'purp' => Color::hex('#371BB1'), //heart-purple
+            'purp' => Color::hex('#371BB1'), // heart-purple
             'primary' => Color::hex('#371BB1'),
         ]);
     }

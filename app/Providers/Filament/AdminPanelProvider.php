@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->favicon(asset('images/favicon_io/favicon-32x32.png'))
 //            ->colors([
-////                'primary' => Color::Amber,
+// //                'primary' => Color::Amber,
 //            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -50,11 +50,11 @@ class AdminPanelProvider extends PanelProvider
                 CardWidget::class,
                 AccountWidget::class,
                 SpendsThisMonth::class,
-//                NetWorthStats::class,
-//                StatsOverview::class,
-                PastStatsChart::class
-//                \Filament\Widgets\AccountWidget::class,
-//                FilamentInfoWidget::class,
+                //                NetWorthStats::class,
+                //                StatsOverview::class,
+                PastStatsChart::class,
+                //                \Filament\Widgets\AccountWidget::class,
+                //                FilamentInfoWidget::class,
 
             ])
             ->middleware([

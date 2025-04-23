@@ -12,12 +12,13 @@ class StateDumpCollection extends Collection
     {
         $rtn = [];
         foreach ($this->items as $stateDump) {
-            if (!is_null($since) && $stateDump->created_at->lt($since)) {
+            if (! is_null($since) && $stateDump->created_at->lt($since)) {
                 continue;
             }
-//            $rtn[] = $stateDump->data[$model::class][$col] ?? 0;
+            //            $rtn[] = $stateDump->data[$model::class][$col] ?? 0;
             $rtn[$stateDump->created_at->timestamp] = $stateDump->getStatForModel($model, $col);
         }
+
         return $rtn;
     }
 
@@ -29,21 +30,24 @@ class StateDumpCollection extends Collection
             $modelRtn = $this->getStatArrayForModel($specificModel, $col, $since);
             $rtn = self::combineArrs($rtn, $modelRtn);
         }
+
         return $rtn;
     }
 
-    public static function combineArrs (array $one = [], array $two = []) : array
+    public static function combineArrs(array $one = [], array $two = []): array
     {
         foreach ($two as $timestamp => $stat) {
             $one[$timestamp] = ($one[$timestamp] ?? 0) + $stat;
         }
+
         return $one;
     }
 
-    public static function setArrayNegative (array $array) : array
+    public static function setArrayNegative(array $array): array
     {
-//        array_walk($array, fn ($val) => $val * -1);
+        //        array_walk($array, fn ($val) => $val * -1);
         $array = collect($array)->map(fn ($item) => $item * -1)->toArray();
+
         return $array;
     }
 }

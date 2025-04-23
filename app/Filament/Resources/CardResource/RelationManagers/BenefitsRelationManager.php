@@ -8,9 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BenefitsRelationManager extends RelationManager
 {
@@ -27,14 +25,14 @@ class BenefitsRelationManager extends RelationManager
                     Forms\Components\Toggle::make('is_useable'),
                     Forms\Components\Toggle::make('is_used'),
                 ]),
-                    Forms\Components\Grid::make(1)->schema([
+                Forms\Components\Grid::make(1)->schema([
                     Forms\Components\Textarea::make('description')
-                    ->maxLength(2048),
+                        ->maxLength(2048),
                 ]),
                 Forms\Components\TextInput::make('value')
                     ->numeric(),
                 Forms\Components\Select::make('reset_period')
-                    ->options(ResetPeriod::asSelectArray())
+                    ->options(ResetPeriod::asSelectArray()),
             ]);
     }
 
@@ -47,7 +45,7 @@ class BenefitsRelationManager extends RelationManager
                     ->tooltip(fn (Model $record): ?string => $record->description),
                 Tables\Columns\IconColumn::make('is_useable'),
                 Tables\Columns\ToggleColumn::make('is_used')
-                    ->disabled(fn (?Model $record) => !$record?->is_useable),
+                    ->disabled(fn (?Model $record) => ! $record?->is_useable),
                 Tables\Columns\TextColumn::make('value')->money(),
                 Tables\Columns\TextColumn::make('reset_period'),
             ])

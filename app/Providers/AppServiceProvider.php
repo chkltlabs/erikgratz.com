@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 

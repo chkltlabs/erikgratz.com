@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Enums;
 
@@ -15,9 +17,14 @@ use BenSampo\Enum\Enum;
 final class ResetPeriod extends Enum
 {
     const NoReset = 'no_reset';
+
     const Daily = 'daily';
+
     const Weekly = 'weekly';
+
     const Monthly = 'monthly';
+
     const CalendarYearly = 'calendar_yearly';
+
     const RenewalYearly = 'renewal_yearly';
 }

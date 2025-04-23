@@ -16,7 +16,7 @@ class NetWorthStats extends BaseWidget
         $ccDueNext = Card::get()->sum('amountDue');
 
         return [
-            //return [
+            // return [
             //            Stat::make('Current Month Unpaid', '$'.$curM),
             //            Stat::make('Next Month Unpaid', '$'.$nexM),
             //            Stat::make('90 Days Unpaid', '$'.$day90),

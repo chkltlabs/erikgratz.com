@@ -16,7 +16,7 @@ class LoginRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = new \App\Http\Requests\Auth\LoginRequest();
+        $this->subject = new \App\Http\Requests\Auth\LoginRequest;
     }
 
     /**
