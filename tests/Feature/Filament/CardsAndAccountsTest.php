@@ -27,9 +27,10 @@ class CardsAndAccountsTest extends TestCase
     public function test_card_can_create()
     {
         $model = Card::factory()->make();
-        Livewire::test(CardResource\Pages\ManageCards::class)
-            ->callAction('create', $model->toArray())
-            ->assertHasNoActionErrors();
+        Livewire::test(CardResource\Pages\CreateCard::class)
+            ->fillForm($model->toArray())
+            ->call('create')
+            ->assertHasNoFormErrors();
         $this->assertDatabaseHas($model->getTable(), $model->toArray());
     }
 
@@ -37,19 +38,20 @@ class CardsAndAccountsTest extends TestCase
     {
         $existing = Card::factory()->create();
         $model = Card::factory()->make();
-        Livewire::test(CardResource\Pages\ManageCards::class)
-            ->callTableAction('edit', $existing, $model->toArray())
-            ->assertHasNoTableActionErrors();
+        Livewire::test(CardResource\Pages\EditCard::class, ['record' => $existing->getKey()])
+            ->fillForm($model->toArray())
+            ->call('save')
+            ->assertHasNoFormErrors();
         $this->assertDatabaseHas($model->getTable(), $model->toArray());
     }
 
     public function test_card_can_delete()
     {
         $existing = Card::factory()->create();
-        Livewire::test(CardResource\Pages\ManageCards::class)
-            ->callTableAction('delete', $existing)
-            ->assertHasNoTableActionErrors();
-        $this->assertModelMissing($existing);
+        Livewire::test(CardResource\Pages\EditCard::class, ['record' => $existing->getKey()])
+            ->callAction('delete')
+            ->assertHasNoErrors();
+        $this->assertDatabaseMissing($existing->getTable(), $existing->toArray());
     }
 
     public function test_acct_manage_renders()
