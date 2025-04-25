@@ -96,7 +96,7 @@ class Payment extends Model
             ->whereMonth('paid_on', '=', now()->month);
     }
 
-    public function scopeYearlyUnpaidDueNextMonth($query)
+    public function scopeYearlyDueNextMonth($query)
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
@@ -109,4 +109,6 @@ class Payment extends Model
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
             ->whereMonth('paid_on', '=', now()->month);
     }
+
+
 }

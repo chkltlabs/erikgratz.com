@@ -78,7 +78,6 @@ class SpentPayingSaving extends BaseWidget
 
         $futureDueDateCards = Card::futureDue();
         $pastDueDateCards = Card::pastDue();
-        $noISBYetCards = Card::noISBYet();
 
         $thisMonthSpent = $futureDueDateCards->sum('interest_saving_balance');
         $pastDueISB = $pastDueDateCards->sum('interest_saving_balance');
@@ -87,16 +86,13 @@ class SpentPayingSaving extends BaseWidget
             + self::sumTheStuff($futureDueDateCards)
             - $thisMonthSpent;
 
-        // unique one-time spends ytb paid
         $planned = Payment::oneTimeUnpaidDueThisMonth()->sum('amount');
-        // monthly spends ytb paid
-        $planned += Payment::monthlyUnpaid()->sum('amount');
-        // yearly spends due this month ytb paid
         $planned += Payment::yearlyUnpaidDueThisMonth()->sum('amount');
+        $planned += Payment::monthlyUnpaid()->sum('amount');
 
         $thirdPlanned = Payment::oneTimeUnpaidDueNextMonth()->sum('amount');
+        $thirdPlanned += Payment::yearlyDueNextMonth()->sum('amount');
         $thirdPlanned += Payment::monthly()->sum('amount');
-        $thirdPlanned += Payment::yearlyUnpaidDueNextMonth()->sum('amount');
 
         $thirdMonthSpent = self::sumTheStuff(Card::pastDue()) - $pastDueISB;
 
