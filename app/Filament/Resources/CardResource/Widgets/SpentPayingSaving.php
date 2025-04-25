@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\Payment;
+use App\Models\Scopes\SumPayment;
 use App\Models\StateDump;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -86,13 +87,13 @@ class SpentPayingSaving extends BaseWidget
             + self::sumTheStuff($futureDueDateCards)
             - $thisMonthSpent;
 
-        $planned = Payment::oneTimeUnpaidDueThisMonth()->sum('amount');
-        $planned += Payment::yearlyUnpaidDueThisMonth()->sum('amount');
-        $planned += Payment::monthlyUnpaid()->sum('amount');
+        $planned = Payment::oneTimeUnpaidDueThisMonth()->pipe(new SumPayment);
+        $planned += Payment::yearlyUnpaidDueThisMonth()->pipe(new SumPayment);
+        $planned += Payment::monthlyUnpaid()->pipe(new SumPayment);
 
-        $thirdPlanned = Payment::oneTimeUnpaidDueNextMonth()->sum('amount');
-        $thirdPlanned += Payment::yearlyDueNextMonth()->sum('amount');
-        $thirdPlanned += Payment::monthly()->sum('amount');
+        $thirdPlanned = Payment::oneTimeUnpaidDueNextMonth()->pipe(new SumPayment);
+        $thirdPlanned += Payment::yearlyDueNextMonth()->pipe(new SumPayment);
+        $thirdPlanned += Payment::monthly()->pipe(new SumPayment);
 
         $thirdMonthSpent = self::sumTheStuff(Card::pastDue()) - $pastDueISB;
 
