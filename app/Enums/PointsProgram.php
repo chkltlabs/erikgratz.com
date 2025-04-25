@@ -12,6 +12,7 @@ use BenSampo\Enum\Enum;
  * @method static static ChaseUltimateRewards()
  * @method static static CapitalOneMiles()
  * @method static static Avios()
+ * @method static static Aeroplan()
  * @method static static CitiThankYou()
  * @method static static AmExMemberRewards()
  * @method static static Bilt()

@@ -45,14 +45,14 @@ class ActivityResourceTest extends TestCase
         Activity::all()->each->delete();
         $model = Activity::factory()->count(2)->create();
 
-        Livewire::test(ActivityResource\Pages\ListCards::class)
+        Livewire::test(ActivityResource\Pages\ListActivities::class)
             ->filterTable('archived', null)
             ->assertCanSeeTableRecords($model);
     }
 
     private static function filler(array $data): array
     {
-        return (new ActivityResource\Pages\EditCard)->mutateFormDataBeforeFill($data);
+        return (new ActivityResource\Pages\EditActivity)->mutateFormDataBeforeFill($data);
     }
 
     public function test_activity_can_create()
@@ -68,7 +68,7 @@ class ActivityResourceTest extends TestCase
     public function test_activity_edit_fills_form()
     {
         $model = Activity::factory()->create();
-        Livewire::test(ActivityResource\Pages\EditCard::class, [
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
             'record' => $model->id,
         ])
             ->assertFormSet($model->toArray());
@@ -78,7 +78,7 @@ class ActivityResourceTest extends TestCase
     {
         $model = Activity::factory()->create();
         $new = Activity::factory()->make();
-        Livewire::test(ActivityResource\Pages\EditCard::class, [
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
             'record' => $model->id,
         ])
             ->fillForm(self::filler($new->toArray()))
@@ -91,7 +91,7 @@ class ActivityResourceTest extends TestCase
     public function test_activity_can_delete()
     {
         $model = Activity::factory()->create();
-        Livewire::test(ActivityResource\Pages\EditCard::class, [
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
             'record' => $model->id,
         ])
             ->callAction('delete')
