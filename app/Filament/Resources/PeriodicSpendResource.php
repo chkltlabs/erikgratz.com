@@ -73,7 +73,10 @@ class PeriodicSpendResource extends Resource
                         ->columns(4)
                         ->relationship()
                         ->schema([
-                            TextInput::make('amount')->numeric()->required(),
+                            TextInput::make('amount')
+                                ->prefix('$')
+                                ->numeric()
+                                ->required(),
                             Toggle::make('is_paid'),
                             DatePicker::make('paid_on')->nullable(),
                             Select::make('card_id')
@@ -101,10 +104,6 @@ class PeriodicSpendResource extends Resource
                     ->money('USD')
                     ->color(fn (Model $record) => $record->is_income ? 'success' : 'danger')
                     ->action(EditAction::make())
-//                    ->sortable(fn (Builder $query) => $query
-//                        ->where('payments.spend_type', getMorphAliasForClass(PeriodicSpend::class))
-//                        ->join('payments', 'periodic_spends.id', 'payments.spend_id')
-//                        ->avg('payments.amount'))
                     ->summarize(Summarizer::make()
                         ->money('USD')
                         ->using(
@@ -187,7 +186,8 @@ class PeriodicSpendResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->paginated(false);
     }
 
     public static function getRelations(): array

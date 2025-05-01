@@ -52,6 +52,7 @@ class CardResource extends Resource
                     ->schema([
                         TextInput::make('limit')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                         DatePicker::make('date_opened')
@@ -82,6 +83,7 @@ class CardResource extends Resource
                             ->required(),
                         TextInput::make('annual_fee')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                     ]),
@@ -90,22 +92,27 @@ class CardResource extends Resource
                     ->schema([
                         TextInput::make('balance')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                         TextInput::make('pending')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                         TextInput::make('interest_saving_balance')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                         TextInput::make('interest_free_balance')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                         TextInput::make('interest_free_balance_payment')
                             ->required()
+                            ->prefix('$')
                             ->numeric()
                             ->default(0),
                     ]),

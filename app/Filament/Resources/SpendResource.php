@@ -76,7 +76,10 @@ class SpendResource extends Resource
                     ->columns(4)
                     ->relationship()
                     ->schema([
-                        TextInput::make('amount')->numeric()->required(),
+                        TextInput::make('amount')
+                            ->prefix('$')
+                            ->numeric()
+                            ->required(),
                         Toggle::make('is_paid'),
                         DatePicker::make('paid_on')->nullable(),
                         Select::make('card_id')
