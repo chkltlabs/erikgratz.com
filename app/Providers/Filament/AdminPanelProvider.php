@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
+use App\Filament\Resources\LoanAgainstSavingsResource\Widgets\LoansDue;
 use App\Filament\Widgets\AccountWidget;
 use App\Filament\Widgets\CardWidget;
 use App\Filament\Widgets\NetWorthStats;
@@ -49,13 +50,9 @@ class AdminPanelProvider extends PanelProvider
                 SpentPayingSaving::class,
                 CardWidget::class,
                 AccountWidget::class,
+                LoansDue::class,
                 SpendsThisMonth::class,
-                //                NetWorthStats::class,
-                //                StatsOverview::class,
                 PastStatsChart::class,
-                //                \Filament\Widgets\AccountWidget::class,
-                //                FilamentInfoWidget::class,
-
             ])
             ->middleware([
                 EncryptCookies::class,

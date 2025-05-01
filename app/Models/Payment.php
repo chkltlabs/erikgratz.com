@@ -46,7 +46,7 @@ class Payment extends Model
         return $query
             ->whereMorphedTo('spend', Spend::class)
             ->whereMonth('paid_on', now()->addMonth()->month)
-            ->whereYear('paid_on', now()->year);
+            ->whereYear('paid_on', now()->addMonth()->year);
     }
 
     public function scopeOneTimeUnpaidDueThisMonth($query)
@@ -63,7 +63,7 @@ class Payment extends Model
         return $query
             ->whereMorphedTo('spend', Spend::class)
             ->whereMonth('paid_on', now()->addMonth()->month)
-            ->whereYear('paid_on', now()->year)
+            ->whereYear('paid_on', now()->addMonth()->year)
             ->where('is_paid', false);
     }
 

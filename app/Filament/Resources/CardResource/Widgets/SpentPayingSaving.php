@@ -6,6 +6,7 @@ use App\Enums\AccountType;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
+use App\Models\LoanAgainstSavings;
 use App\Models\Payment;
 use App\Models\Scopes\SumCard;
 use App\Models\Scopes\SumPayment;
@@ -80,13 +81,15 @@ class SpentPayingSaving extends BaseWidget
 
         $thisMonthSpent = Card::futureDue()->sum('interest_saving_balance')
             + Card::futureDue()->noISBYet()->sum('balance')
-            + Card::futureDue()->noISBYet()->sum('pending');
+            + Card::futureDue()->noISBYet()->sum('pending')
+            + LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
 
         $pastDueISB = Card::pastDue()->sum('interest_saving_balance');
 
         $nextMonthSpent = $pastDueISB
             + Card::pastDue()->noISBYet()->pipe(new SumCard)
             + Card::futureDue()->pipe(new SumCard)
+            + LoanAgainstSavings::unpaid()->nextMonth()->sum('balance')
             - $thisMonthSpent;
 
         $planned = Payment::oneTimeUnpaidDueThisMonth()->pipe(new SumPayment);
@@ -97,7 +100,9 @@ class SpentPayingSaving extends BaseWidget
         $thirdPlanned += Payment::yearlyDueNextMonth()->pipe(new SumPayment);
         $thirdPlanned += Payment::monthly()->pipe(new SumPayment);
 
-        $thirdMonthSpent = Card::pastDue()->pipe(new SumCard) - $pastDueISB;
+        $thirdMonthSpent = Card::pastDue()->pipe(new SumCard)
+            - $pastDueISB
+            + LoanAgainstSavings::unpaid()->thirdMonth()->sum('balance');
 
         return [
             $thisMonthName => [
