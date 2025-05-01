@@ -80,7 +80,9 @@ class SpentPayingSaving extends BaseWidget
         $futureDueDateCards = Card::futureDue();
         $pastDueDateCards = Card::pastDue();
 
-        $thisMonthSpent = $futureDueDateCards->sum('interest_saving_balance');
+        $thisMonthSpent = Card::futureDue()->sum('interest_saving_balance')
+            + Card::futureDue()->where('interest_saving_balance', 0)->sum('balance')
+            + Card::futureDue()->where('interest_saving_balance', 0)->sum('pending');
         $pastDueISB = $pastDueDateCards->sum('interest_saving_balance');
         $nextMonthSpent = $pastDueISB
             + self::sumTheStuff($pastDueDateCards->where('interest_saving_balance', 0))
