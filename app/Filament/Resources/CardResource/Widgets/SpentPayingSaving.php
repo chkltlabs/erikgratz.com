@@ -108,7 +108,7 @@ class SpentPayingSaving extends BaseWidget
             $thisMonthName => [
                 'spent' => $thisMonthSpent + $loansDue,
                 'planned' => 0,
-                'potential' => $thisMonthCash - $thisMonthSpent,
+                'potential' => $thisMonthCash - $thisMonthSpent - $loansDue,
             ],
             $nextMonthName => [
                 'spent' => $nextMonthSpent,
