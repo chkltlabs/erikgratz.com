@@ -15,16 +15,12 @@ class SumCard
         //
     }
 
-    public function __invoke(Builder $Aquery): int|float
+    public function __invoke(Builder $query): int|float
     {
-        $Bquery = $Aquery->clone();
-        $Cquery = $Aquery->clone();
-        $Dquery = $Aquery->clone();
-
-        return $Aquery->sum('balance')
-            + $Bquery->sum('pending')
-            - $Cquery->sum('interest_free_balance')
-            + $Dquery->sum('interest_free_balance_payment');
+        return $query->sum('balance')
+            + $query->sum('pending')
+            - $query->sum('interest_free_balance')
+            + $query->sum('interest_free_balance_payment');
 
     }
 }
