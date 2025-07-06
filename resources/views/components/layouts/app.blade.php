@@ -1,3 +1,6 @@
+<?php
+
+    ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -7,8 +10,9 @@
         @vite(['resources/css/app.css','resources/sass/app.scss',])
         <title>{{ $title ?? 'Page Title' }}</title>
     </head>
-    <body>
-        <x-header />
-            {{ $slot }}
+    <body class="bg-black">
+        <x-header>
+            {{$slot}}
+        </x-header>
     </body>
 </html>

@@ -80,8 +80,7 @@ class SpentPayingSaving extends BaseWidget
         $thirdMonthName = now()->addMonths(2)->format('M');
 
         $thisMonthSpent = Card::futureDue()->sum('interest_saving_balance')
-            + Card::futureDue()->noISBYet()->sum('balance')
-            + Card::futureDue()->noISBYet()->sum('pending');
+            + Card::futureDue()->noISBYet()->pipe(new SumCard);
         $loansDue = LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
 
         $pastDueISB = Card::pastDue()->sum('interest_saving_balance');
