@@ -55,6 +55,10 @@ class CardWidget extends BaseWidget
                             ->query(fn (Builder $query) => $query->where('due_date', '>=', now()->day))
                             ->money()->label('Unpaid'),
                     ]),
+                Tables\Columns\TextInputColumn::make('interest_free_balance')
+                    ->rules(['numeric'])
+                    ->updateStateUsing(fn ($record, $state) => $record->update(['interest_free_balance' => is_null($state) ? 0 : $state]))
+                    ->summarize(Sum::make()->money()->label('')),
                 Tables\Columns\TextInputColumn::make('points_balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['points_balance' => is_null($state) ? 0 : $state]))

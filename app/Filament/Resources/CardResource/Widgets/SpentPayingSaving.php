@@ -88,7 +88,7 @@ class SpentPayingSaving extends BaseWidget
         $nextMonthSpent = $pastDueISB
             + Card::pastDue()->noISBYet()->pipe(new SumCard)
             + Card::futureDue()->pipe(new SumCard)
-            - Card::futureDue()->noISBYet()->sum('interest_saving_balance')
+//            - Card::futureDue()->noISBYet()->sum('interest_saving_balance')
             - $thisMonthSpent;
 
         $planned = Payment::oneTimeUnpaidDueThisMonth()->pipe(new SumPayment);
@@ -101,6 +101,7 @@ class SpentPayingSaving extends BaseWidget
 
         $thirdMonthSpent = Card::pastDue()->pipe(new SumCard)
             - $pastDueISB
+            + Card::sum('interest_free_balance_payment')
             + LoanAgainstSavings::unpaid()->thirdMonth()->sum('balance');
 
         return [
