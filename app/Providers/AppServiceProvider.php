@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\LoanAgainstSavings;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'spend' => Spend::class,
             'periodic_spend' => PeriodicSpend::class,
+            'loan_against_savings' => LoanAgainstSavings::class,
         ]);
     }
 

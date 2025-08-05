@@ -6,7 +6,9 @@ use App\Filament\Resources\LoanAgainstSavingsResource\Pages;
 use App\Filament\Resources\LoanAgainstSavingsResource\RelationManagers;
 use App\Models\Card;
 use App\Models\LoanAgainstSavings;
+use App\Models\PeriodicSpend;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,7 +47,10 @@ class LoanAgainstSavingsResource extends Resource
                         ->label('Paid to Card')
                         ->options(Card::all()->pluck('name', 'id'))
                         ->nullable(),
-                ])
+                ]),
+                Grid::make(1)->schema([
+                    LoanAgainstSavings::paymentFilamentFormComponent(),
+                ]),
             ]);
     }
 
