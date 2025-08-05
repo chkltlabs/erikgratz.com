@@ -69,21 +69,7 @@ class PeriodicSpendResource extends Resource
                     Toggle::make('is_income'),
                 ]),
                 Grid::make(1)->schema([
-                    Repeater::make('payments')
-                        ->columns(4)
-                        ->relationship()
-                        ->schema([
-                            TextInput::make('amount')
-                                ->prefix('$')
-                                ->numeric()
-                                ->required(),
-                            Toggle::make('is_paid'),
-                            DatePicker::make('paid_on')->nullable(),
-                            Select::make('card_id')
-                                ->label('Card')
-                                ->options(Card::all()->pluck('name', 'id'))
-                                ->nullable(),
-                        ])->defaultItems(0)->addActionLabel('Add Payment'),
+                    PeriodicSpend::paymentFilamentFormComponent(),
                 ]),
             ]);
     }

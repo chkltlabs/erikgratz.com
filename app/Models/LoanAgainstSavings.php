@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasPayments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanAgainstSavings extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPayments;
 
     public $timestamps = false;
 
