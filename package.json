@@ -39,7 +39,7 @@
         "@tiptap/vue-3": "*",
         "@vue-hero-icons/solid": "^1.7.2",
         "@vueform/multiselect": "^2.0.1",
-        "alpinejs": "^3.10.3",
+        "alpinejs": "^3.14.9",
         "chartjs-plugin-datalabels": "^2.2.0",
         "devextreme": "^21.2.5",
         "devextreme-vue": "^21.2.5",

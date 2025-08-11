@@ -216,7 +216,7 @@
 </template>
 <script>
 
-import {Editor, EditorContent, BubbleMenu, FloatingMenu} from '@tiptap/vue-3'
+import {Editor, EditorContent, } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import Multiselect from '@vueform/multiselect'
@@ -226,8 +226,8 @@ export default {
     components: {
         BreezeAuthenticatedLayout,
         EditorContent,
-        BubbleMenu,
-        FloatingMenu,
+        // BubbleMenu,
+        // FloatingMenu,
         Multiselect
     },
     props: ['BlogPost', 'mode', 'multiOptions'],
