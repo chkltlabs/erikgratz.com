@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('cache:prune-stale-tags')->hourly();
+        $schedule->command('telescope:prune')->daily();
         $schedule->job(HourlyUpkeep::class)->hourly();
         $schedule->job(DailyUpkeep::class)->dailyAt('20:00');
         $schedule->call(fn () => StateDump::checkShouldDump())->dailyAt('23:50');
