@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Activity extends Model
 {
@@ -19,6 +20,11 @@ class Activity extends Model
     public function spends()
     {
         return $this->hasMany(Spend::class);
+    }
+
+    public function redemptions(): HasMany
+    {
+        return $this->hasMany(PointRedemption::class);
     }
 
     const ARCHIVE_DAY_GRACE = 15;

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ActivityResource\RelationManagers\RedemptionsRelationManager;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
 use App\Models\Activity;
 use Carbon\Carbon;
@@ -139,6 +140,7 @@ class ActivityResource extends Resource
     {
         return [
             SpendsRelationManager::class,
+            RedemptionsRelationManager::class
         ];
     }
 
