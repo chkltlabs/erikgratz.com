@@ -1,13 +1,29 @@
 <?php
 
-    $menuImage = asset('images/webp/face.webp');
+use Livewire\Attributes\{Layout, Title};
+use Livewire\Volt\Component;
 
+new
 
-//    dd($__data);
+class extends Component
+{
 
-//    var_dump(get_defined_vars());
+    public string $selectedColor = 'text-purple-600';
+    public string $unselectedColor = 'text-gray-300';
+    public string $homeButtonColor = '';
+    public string $blogButtonColor = '';
+    public string $portfolioButtonColor = '';
 
-?>
+    public function mount()
+    {
+        $this->homeButtonColor = $this->title == 'Home' ? $this->selectedColor : $this->unselectedColor;
+        $this->blogButtonColor = $this->title == 'Blog' ? $this->selectedColor : $this->unselectedColor;
+        $this->portfolioButtonColor = $this->title == 'Portfolio' ? $this->selectedColor : $this->unselectedColor;
+
+    }
+
+} ?>
+
 <div>
     <main>
         <nav
@@ -15,9 +31,12 @@
             @scroll.window="atTop = !window.scrollY > 0 "
             class=" shadow animated fixed flex w-full"
             :class="{ 'scrolled': !atTop }"
+            class="bg-black shadow animated fixed flex w-full"
+{{--            :class="{ 'scrolled': !view.atTopOfPage}"--}}
             role="navigation"
         >
             <div x-data="{ unselectedColor: 'text-gray-300',  selectedColor: 'text-purple-600' }" class="container mx-auto p-4 flex flex-wrap items-center md:flex-no-wrap">
+            <div class="container mx-auto p-4 flex flex-wrap items-center md:flex-no-wrap">
                 <div class="mr-4 md:mr-8">
                     <a href="/admin/login" rel="login" wire:navigate>
                         <svg class="w-10 h-10 text-purple-600 transition duration-1000 transform hover:scale-150"
@@ -43,6 +62,10 @@
                         md:x-show="true"
                         class="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 lg:mr-8 md:border-0">
                         <li>
+                            <a
+
+                                class=" block px-4 py-1 md:p-2 lg:px-4 text-purple-600"
+                               href="/redo/home" wire:navigate
                             <a class="block px-4 py-1 md:p-2 lg:px-4"
 {{--                               :class="{ 'text-gray-300': $slot->component->name == 'page.home', 'text-purple-600':  !== 'page.home'}"--}}
                                href="/redo"

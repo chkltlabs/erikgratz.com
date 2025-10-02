@@ -1,38 +1,38 @@
 {
   "public/css/filament/filament/app.css": {
-    "file": "assets/app-BGPlC3wL.css",
+    "file": "assets/app-CvpdflDn.css",
     "src": "public/css/filament/filament/app.css",
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DchGykd3.css",
+    "file": "assets/app-CJaTClD7.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-C9Or0eSF.css",
+    "file": "assets/filament-DAH9zgvr.css",
     "src": "resources/css/filament.css",
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-YRv1Z-Us.css",
+    "file": "assets/theme-TWYXcKm1.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
   },
   "resources/js/Filament/filament-chart-plugins.js": {
-    "file": "assets/filament-chart-plugins-isVIs825.js",
+    "file": "assets/filament-chart-plugins-DB0LGnSJ.js",
     "name": "filament-chart-plugins",
     "src": "resources/js/Filament/filament-chart-plugins.js",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bqf9aFN7.js",
+    "file": "assets/app-Cuga3m4f.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-B1SiKp1-.css",
-      "assets/app-DchGykd3.css"
+      "assets/app-Bu1A4Afm.css",
+      "assets/app-CJaTClD7.css"
     ],
     "assets": [
       "assets/face-DpAfdnxj.webp",
@@ -40,7 +40,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-CEDur2tV.css",
+    "file": "assets/app-s9pkDPSy.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },

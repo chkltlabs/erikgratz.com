@@ -1,15 +1,20 @@
-<div class="bg-black text-purple-600">
-    hot reload works
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    Bottom Text
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    Bottomest Text
+<?php
+
+use Livewire\Attributes\{Layout, Title};
+use Livewire\Volt\Component;
+
+new
+//#[Layout('components.header')]
+#[Title('Home')]
+class extends Component
+{
+//    public function render()
+//    {
+//        return view('livewire.page.home');
+//    }
+} ?>
+
+<div>
+    <br><br><br><br>
+    hot reload worked last time
 </div>

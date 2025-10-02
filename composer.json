@@ -14,8 +14,9 @@
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.5",
-        "leandrocfe/filament-apex-charts": "3.2.0",
+        "leandrocfe/filament-apex-charts": "^3.2",
         "livewire/livewire": "^3.6.4",
+        "livewire/volt": "^1.6",
         "malzariey/filament-daterangepicker-filter": "^3.0",
         "tightenco/ziggy": "^1.0"
     },
@@ -28,7 +29,7 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.15",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^8.1",
+        "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^11.0",
         "spatie/laravel-ignition": "^2.0"
     },
