@@ -1,21 +1,21 @@
 {
   "public/css/filament/filament/app.css": {
-    "file": "assets/app-BGPlC3wL.css",
+    "file": "assets/app-WhnnaVvy.css",
     "src": "public/css/filament/filament/app.css",
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DchGykd3.css",
+    "file": "assets/app-D-L7v9-o.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-C9Or0eSF.css",
+    "file": "assets/filament-tn0RQdqM.css",
     "src": "resources/css/filament.css",
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-YRv1Z-Us.css",
+    "file": "assets/theme-IHbt0vGk.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
   },
@@ -26,13 +26,13 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bqf9aFN7.js",
+    "file": "assets/app-DYNH2I-b.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
       "assets/app-B1SiKp1-.css",
-      "assets/app-DchGykd3.css"
+      "assets/app-D-L7v9-o.css"
     ],
     "assets": [
       "assets/face-DpAfdnxj.webp",

@@ -2,9 +2,22 @@
 
 namespace App\Filament\Resources\CardResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Enums\ResetPeriod;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,24 +27,24 @@ class BenefitsRelationManager extends RelationManager
 {
     protected static string $relationship = 'benefits';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Grid::make(3)->schema([
-                    Forms\Components\TextInput::make('benefit')
+        return $schema
+            ->components([
+                Grid::make(3)->schema([
+                    TextInput::make('benefit')
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\Toggle::make('is_useable'),
-                    Forms\Components\Toggle::make('is_used'),
+                    Toggle::make('is_useable'),
+                    Toggle::make('is_used'),
                 ]),
-                Forms\Components\Grid::make(1)->schema([
-                    Forms\Components\Textarea::make('description')
+                Grid::make(1)->schema([
+                    Textarea::make('description')
                         ->maxLength(2048),
                 ]),
-                Forms\Components\TextInput::make('value')
+                TextInput::make('value')
                     ->numeric(),
-                Forms\Components\Select::make('reset_period')
+                Select::make('reset_period')
                     ->options(ResetPeriod::asSelectArray()),
             ]);
     }
@@ -41,27 +54,27 @@ class BenefitsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('benefit')
             ->columns([
-                Tables\Columns\TextColumn::make('benefit')
+                TextColumn::make('benefit')
                     ->tooltip(fn (Model $record): ?string => $record->description),
-                Tables\Columns\IconColumn::make('is_useable'),
-                Tables\Columns\ToggleColumn::make('is_used')
+                IconColumn::make('is_useable'),
+                ToggleColumn::make('is_used')
                     ->disabled(fn (?Model $record) => ! $record?->is_useable),
-                Tables\Columns\TextColumn::make('value')->money(),
-                Tables\Columns\TextColumn::make('reset_period'),
+                TextColumn::make('value')->money(),
+                TextColumn::make('reset_period'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

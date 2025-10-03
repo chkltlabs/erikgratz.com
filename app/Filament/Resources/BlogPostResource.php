@@ -2,10 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TagsInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\BlogPostResource\Pages\ListBlogPosts;
+use App\Filament\Resources\BlogPostResource\Pages\CreateBlogPost;
+use App\Filament\Resources\BlogPostResource\Pages\EditBlogPost;
 use App\Filament\Resources\BlogPostResource\Pages;
 use App\Models\BlogPost;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,28 +26,28 @@ class BlogPostResource extends Resource
 {
     protected static ?string $model = BlogPost::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
+        return $schema
+            ->components([
+                TextInput::make('title')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('user_id')
+                TextInput::make('user_id')
                     ->required(),
-                Forms\Components\DateTimePicker::make('posted'),
-                Forms\Components\DateTimePicker::make('edited'),
-                Forms\Components\TextInput::make('subtitle')
+                DateTimePicker::make('posted'),
+                DateTimePicker::make('edited'),
+                TextInput::make('subtitle')
                     ->maxLength(191),
-                Forms\Components\Textarea::make('body'),
-                Forms\Components\TextInput::make('imageUrl')
+                Textarea::make('body'),
+                TextInput::make('imageUrl')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Toggle::make('is_public')
+                Toggle::make('is_public')
                     ->required(),
-                Forms\Components\TagsInput::make('tags'),
+                TagsInput::make('tags'),
             ]);
     }
 
@@ -43,29 +55,29 @@ class BlogPostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\TextColumn::make('posted')->dateTime(),
-                Tables\Columns\TextColumn::make('edited')->dateTime(),
-                Tables\Columns\TextColumn::make('subtitle'),
-                Tables\Columns\TextColumn::make('body'),
-                Tables\Columns\TextColumn::make('imageUrl'),
-                Tables\Columns\IconColumn::make('is_public')
+                TextColumn::make('title'),
+                TextColumn::make('user_id'),
+                TextColumn::make('posted')->dateTime(),
+                TextColumn::make('edited')->dateTime(),
+                TextColumn::make('subtitle'),
+                TextColumn::make('body'),
+                TextColumn::make('imageUrl'),
+                IconColumn::make('is_public')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('tags')->badge(),
+                TextColumn::make('tags')->badge(),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -79,9 +91,9 @@ class BlogPostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBlogPosts::route('/'),
-            'create' => Pages\CreateBlogPost::route('/create'),
-            'edit' => Pages\EditBlogPost::route('/{record}/edit'),
+            'index' => ListBlogPosts::route('/'),
+            'create' => CreateBlogPost::route('/create'),
+            'edit' => EditBlogPost::route('/{record}/edit'),
         ];
     }
 }

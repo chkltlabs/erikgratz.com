@@ -2,6 +2,9 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
 use App\Models\Account;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -20,11 +23,11 @@ class AccountWidget extends BaseWidget
         return $table->query(Account::query())
             ->paginated(false)
             ->columns([
-                Tables\Columns\Layout\Stack::make([
-                    Tables\Columns\TextColumn::make('name')
+                Stack::make([
+                    TextColumn::make('name')
                         ->description(fn (Model $record) => $record->updated_at->shortRelativeDiffForHumans(),
                             'below'),
-                    Tables\Columns\TextInputColumn::make('balance')
+                    TextInputColumn::make('balance')
                         ->rules(['numeric'])
                         ->summarize(Sum::make()->money()->label('')),
                     //                        ->sortable()

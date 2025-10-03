@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ActivityResource\Pages;
 
+use App\Filament\Resources\ActivityResource\Widgets\ActivityTimelineChart;
 use App\Filament\Resources\ActivityResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -20,7 +21,7 @@ class ListActivities extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            ActivityResource\Widgets\ActivityTimelineChart::class,
+            ActivityTimelineChart::class,
         ];
     }
 }

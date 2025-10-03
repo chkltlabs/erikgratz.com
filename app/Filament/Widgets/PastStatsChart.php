@@ -5,6 +5,10 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Collections\StateDumpCollection;
 use Carbon\Carbon;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Schema;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 /**
@@ -25,7 +29,7 @@ class PastStatsChart extends ApexChartWidget
 
     protected int|string|array $columnSpan = 4;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     protected function getOptions(): array
     {
@@ -123,5 +127,30 @@ class PastStatsChart extends ApexChartWidget
         ])->toArray();
 
         return array_values($arr);
+    }
+
+    public function getOldSchemaState(string $statePath): mixed
+    {
+        // TODO: Implement getOldSchemaState() method.
+    }
+
+    public function getSchemaComponent(string $key, bool $withHidden = false, ?Component $skipComponentChildContainersWhileSearching = null): Component|Action|ActionGroup|null
+    {
+        // TODO: Implement getSchemaComponent() method.
+    }
+
+    public function getSchema(string $name): ?Schema
+    {
+        // TODO: Implement getSchema() method.
+    }
+
+    public function currentlyValidatingSchema(?Schema $schema): void
+    {
+        // TODO: Implement currentlyValidatingSchema() method.
+    }
+
+    public function getDefaultTestingSchemaName(): ?string
+    {
+        // TODO: Implement getDefaultTestingSchemaName() method.
     }
 }

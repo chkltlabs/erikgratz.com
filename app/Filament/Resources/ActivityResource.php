@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\ActivityResource\Pages\ListActivities;
+use App\Filament\Resources\ActivityResource\Pages\CreateActivity;
+use App\Filament\Resources\ActivityResource\Pages\EditActivity;
 use App\Filament\Resources\ActivityResource\RelationManagers\RedemptionsRelationManager;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
 use App\Models\Activity;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -30,11 +33,11 @@ class ActivityResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make('name')
                 ->required(),
             DateRangePicker::make('start_end_date')
@@ -103,10 +106,11 @@ class ActivityResource extends Resource
             TextColumn::make('end_date')
                 ->date(),
         ])
+            ->defaultPaginationPageOption('all')
             ->persistSortInSession()
             ->defaultPaginationPageOption('all')
             ->defaultSort('start_date')
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -130,9 +134,9 @@ class ActivityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ActivityResource\Pages\ListActivities::route('/'),
-            'create' => ActivityResource\Pages\CreateActivity::route('/create'),
-            'edit' => ActivityResource\Pages\EditActivity::route('/{record}/edit'),
+            'index' => ListActivities::route('/'),
+            'create' => CreateActivity::route('/create'),
+            'edit' => EditActivity::route('/{record}/edit'),
         ];
     }
 

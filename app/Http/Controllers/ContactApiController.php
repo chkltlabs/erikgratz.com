@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
@@ -10,7 +12,7 @@ class ContactApiController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +23,7 @@ class ContactApiController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $contact_id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy($contact_id)
     {

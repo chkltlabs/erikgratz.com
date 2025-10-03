@@ -2,21 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Components\Grid;
+use Filament\Actions\EditAction;
+use Filament\Schemas\Schema;
+use Filament\Actions\CreateAction;
+use App\Filament\Resources\SpendResource\Pages\ListSpends;
+use App\Filament\Resources\SpendResource\Pages\CreateSpend;
+use App\Filament\Resources\SpendResource\Pages\EditSpend;
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
 use App\Filament\Resources;
 use App\Models\Card;
 use App\Models\Spend;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -31,7 +34,7 @@ class SpendResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-currency-dollar';
 
     protected static ?string $navigationParentItem = 'Activities';
 
@@ -138,25 +141,25 @@ class SpendResource extends Resource
         ];
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema(self::formSchema(true));
+        return $schema->components(self::formSchema(true));
     }
 
     public static function table(Table $table): Table
     {
         return $table->columns(self::tableSchema(true))
             ->headerActions([
-                CreateAction::make()->form(self::formSchema(true)),
+                CreateAction::make()->schema(self::formSchema(true)),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Resources\SpendResource\Pages\ListSpends::route('/'),
-            'create' => Resources\SpendResource\Pages\CreateSpend::route('/create'),
-            'edit' => Resources\SpendResource\Pages\EditSpend::route('/{record}/edit'),
+            'index' => ListSpends::route('/'),
+            'create' => CreateSpend::route('/create'),
+            'edit' => EditSpend::route('/{record}/edit'),
         ];
     }
 

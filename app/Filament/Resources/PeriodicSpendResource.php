@@ -2,6 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Actions\EditAction;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\PeriodicSpendResource\Pages\ListPeriodicSpends;
+use App\Filament\Resources\PeriodicSpendResource\Pages\CreatePeriodicSpend;
+use App\Filament\Resources\PeriodicSpendResource\Pages\EditPeriodicSpend;
 use App\Enums\Period;
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
@@ -11,15 +20,12 @@ use App\Models\PeriodicSpend;
 use App\Models\Spend;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -31,14 +37,14 @@ class PeriodicSpendResource extends Resource
 {
     protected static ?string $model = PeriodicSpend::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Grid::make(3)->schema([
-                    Forms\Components\Select::make('period')
+                    Select::make('period')
                         ->options(fn () => Period::asSelectArray())
                         ->required(),
 
@@ -78,7 +84,7 @@ class PeriodicSpendResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('period')
+                TextColumn::make('period')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('name')
@@ -150,27 +156,27 @@ class PeriodicSpendResource extends Resource
 
                 TextColumn::make('subtype')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('period')
+                SelectFilter::make('period')
                     ->options(Period::asSelectArray()),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->mutateRecordDataUsing(fn (array $data): array => ActivityResource::combineStartEndDate($data))
-                    ->mutateFormDataUsing(fn (array $data): array => ActivityResource::splitStartEndDate($data)),
+                    ->mutateDataUsing(fn (array $data): array => ActivityResource::splitStartEndDate($data)),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->paginated(false);
@@ -186,9 +192,9 @@ class PeriodicSpendResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPeriodicSpends::route('/'),
-            'create' => Pages\CreatePeriodicSpend::route('/create'),
-            'edit' => Pages\EditPeriodicSpend::route('/{record}/edit'),
+            'index' => ListPeriodicSpends::route('/'),
+            'create' => CreatePeriodicSpend::route('/create'),
+            'edit' => EditPeriodicSpend::route('/{record}/edit'),
         ];
     }
 }

@@ -7,6 +7,10 @@ use App\Filament\Resources\CardResource;
 use App\Models\Activity;
 use App\Models\Card;
 use Carbon\Carbon;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
@@ -22,7 +26,7 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected static ?string $chartId = 'activityTimelineChart';
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     /**
      * Widget Title
@@ -206,6 +210,11 @@ class ActivityTimelineChart extends ApexChartWidget
                 'height' => 250,
                 //                'stacked' => true,
             ],
+            'tooltip' => [
+                'style' => [
+                    'fontFamily' => 'inherit',
+                ],
+            ],
             'series' => [
                 [
                     'name' => 'Paid',
@@ -254,88 +263,83 @@ class ActivityTimelineChart extends ApexChartWidget
     protected function extraJsOptions(): ?RawJs
     {
         return RawJs::make(<<<'JS'
-    {
-        // xaxis: {
-        //     labels: {
-        //         formatter: function (val, timestamp, opts) {
-        //             return val + '/24'
-        //         }
-        //     }
-        // },
-        // yaxis: {
-        //     labels: {
-        //         formatter: function (val, index) {
-        //             return '$' + val
-        //         }
-        //     }
-        // },
-        chart: {
-            events: {
-                  dataPointSelection: function(event, chartContext, config) {
-                    let dpIndex = config.dataPointIndex
-                    let sIndex = config.seriesIndex
-                    let clickedEl = config.w.globals.initialSeries[sIndex].data[dpIndex]
-                    window.open(clickedEl.link,"_self")
-                  }
-            }
-        },
-        tooltip: {
-            style: {
-                fontSize: '12px',
-                fontFamily: undefined
-              },
-              onDatasetHover: {
-                  highlightDataSeries: false,
-              },
-            custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-                let name = data.name
-                let paid = data.paid.toFixed(2);
-                let unpaid = data.unpaid.toFixed(2);
-                let totalSpend = data.paid + data.unpaid
-                let paidPercent = (totalSpend === 0 ? 0 : (paid / totalSpend * 100)).toFixed(2);
-                let unpaidPercent = (totalSpend === 0 ? 0 : (unpaid / totalSpend * 100)).toFixed(2);
-                return (
-                    '<div class="">' +
-                        "<span>" +
-                            '<span style="color: white;">' +
-                                name +
-                            "</span>" +
-                        "</span>" +
-                        "<br>" +
-                        "<span>" +
-                            '<span style="color: #32cd32;">$' +
-                                paid +
-                            "</span>" +
-                            " / " +
-                            '<span style="color: red">$' +
-                                unpaid +
-                            "</span>" +
-                        "</span>" +
-                        "<br>" +
-                        "<span>" +
-                            '<span style="color: #32cd32;">' +
-                                paidPercent +
-                            "% </span>" +
-                            " / " +
-                            '<span style="color: red">' +
-                                unpaidPercent +
-                            "%</span>" +
-                        "</span>" +
-                    "</div>"
-                );
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val, opt) {
-                let index = opt.dataPointIndex
-                let data = opt.w.globals.initialSeries[0].data[index]
-                return data.name;
+        {
+            chart: {
+                events: {
+                      dataPointSelection: function (event, chartContext, config) {
+                        let dpIndex = config.dataPointIndex;
+                        let sIndex = config.seriesIndex;
+                        let clickedEl = config.w.globals.initialSeries[sIndex].data[dpIndex];
+                        window.open(clickedEl.link,'_self');
+                      }
+                }
             },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val, opt) {
+                    let index = opt.dataPointIndex
+                    let data = opt.w.globals.initialSeries[0].data[index]
+                    return data.name;
+                },
+            },
+            tooltip: {
+                style: {
+                    fontSize: '12px'
+                },
+                onDatasetHover: {
+                    highlightDataSeries: false
+                },
+                custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                    let name = data.name
+                    let paid = data.paid.toFixed(2);
+                    let unpaid = data.unpaid.toFixed(2);
+                    let totalSpend = data.paid + data.unpaid
+                    let paidPercent = (totalSpend === 0 ? 0 : (paid / totalSpend * 100)).toFixed(2);
+                    let unpaidPercent = (totalSpend === 0 ? 0 : (unpaid / totalSpend * 100)).toFixed(2);
+
+                    return `<div>
+                        <span><span style='color: white'>${name}</span></span>
+                        <br>
+                        <span>
+                            <span style='color: #32cd32;'>$${paid}</span> /
+                            <span style='color: red'>$${unpaid}</span>
+                        </span>
+                        <br>
+                        <span>
+                            <span style='color: #32cd32;'>${paidPercent}%</span> /
+                            <span style='color: red'>${unpaidPercent}%</span>
+                        </span>
+                    </div>`;
+                }
+            }
+
         }
+        JS);
     }
-    JS
-        );
+
+    public function getOldSchemaState(string $statePath): mixed
+    {
+        // TODO: Implement getOldSchemaState() method.
+    }
+
+    public function getSchemaComponent(string $key, bool $withHidden = false, ?Component $skipComponentChildContainersWhileSearching = null): Component|Action|ActionGroup|null
+    {
+        // TODO: Implement getSchemaComponent() method.
+    }
+
+    public function getSchema(string $name): ?Schema
+    {
+        // TODO: Implement getSchema() method.
+    }
+
+    public function currentlyValidatingSchema(?Schema $schema): void
+    {
+        // TODO: Implement currentlyValidatingSchema() method.
+    }
+
+    public function getDefaultTestingSchemaName(): ?string
+    {
+        // TODO: Implement getDefaultTestingSchemaName() method.
     }
 }

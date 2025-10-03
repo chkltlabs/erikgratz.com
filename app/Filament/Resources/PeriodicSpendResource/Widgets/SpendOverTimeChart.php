@@ -5,6 +5,10 @@ namespace App\Filament\Resources\PeriodicSpendResource\Widgets;
 use App\Enums\Period;
 use App\Models\Activity;
 use App\Models\PeriodicSpend;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Schema;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 /**
@@ -25,7 +29,7 @@ class SpendOverTimeChart extends ApexChartWidget
 
     protected int|string|array $columnSpan = 4;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     /**
      * Chart options (series, labels, types, size, animations...)
@@ -117,5 +121,30 @@ class SpendOverTimeChart extends ApexChartWidget
                 'curve' => 'smooth',
             ],
         ];
+    }
+
+    public function getOldSchemaState(string $statePath): mixed
+    {
+        // TODO: Implement getOldSchemaState() method.
+    }
+
+    public function getSchemaComponent(string $key, bool $withHidden = false, ?Component $skipComponentChildContainersWhileSearching = null): Component|Action|ActionGroup|null
+    {
+        // TODO: Implement getSchemaComponent() method.
+    }
+
+    public function getSchema(string $name): ?Schema
+    {
+        // TODO: Implement getSchema() method.
+    }
+
+    public function currentlyValidatingSchema(?Schema $schema): void
+    {
+        // TODO: Implement currentlyValidatingSchema() method.
+    }
+
+    public function getDefaultTestingSchemaName(): ?string
+    {
+        // TODO: Implement getDefaultTestingSchemaName() method.
     }
 }

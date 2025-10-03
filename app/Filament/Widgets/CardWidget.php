@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
 use App\Models\Card;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -22,7 +24,7 @@ class CardWidget extends BaseWidget
             ->query(Card::query()->orderBy('due_date'))
             ->paginated(false)
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->description(fn (Model $record) => 'Due: '
                         .(now()->setDay($record->due_date)->isPast()
                             ? now()->addMonth()->setDay($record->due_date)->shortAbsoluteDiffForHumans()
@@ -37,15 +39,15 @@ class CardWidget extends BaseWidget
                         default => 'default'
 
                     }),
-                Tables\Columns\TextInputColumn::make('balance')
+                TextInputColumn::make('balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['balance' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
-                Tables\Columns\TextInputColumn::make('pending')
+                TextInputColumn::make('pending')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['pending' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
-                Tables\Columns\TextInputColumn::make('interest_saving_balance')
+                TextInputColumn::make('interest_saving_balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['interest_saving_balance' => is_null($state) ? 0 : $state]))
                     ->label('ISB')
@@ -55,11 +57,11 @@ class CardWidget extends BaseWidget
                             ->query(fn (Builder $query) => $query->where('due_date', '>=', now()->day))
                             ->money()->label('Unpaid'),
                     ]),
-                Tables\Columns\TextInputColumn::make('interest_free_balance')
+                TextInputColumn::make('interest_free_balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['interest_free_balance' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
-                Tables\Columns\TextInputColumn::make('points_balance')
+                TextInputColumn::make('points_balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['points_balance' => is_null($state) ? 0 : $state]))
                     ->label('Pts Bal')

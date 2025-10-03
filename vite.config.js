@@ -2,19 +2,21 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 // import react from '@vitejs/plugin-react';
 import vue from '@vitejs/plugin-vue';
-import tailwindcss from 'tailwindcss'
+
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
     server:{
         port: 5174
     },
-    css: {
-        postcss: {
-            map: true,
-            plugins: [tailwindcss]
-        }
-    },
+    // css: {
+    //     postcss: {
+    //         map: true,
+    //         plugins: [tailwindcss]
+    //     }
+    // },
     plugins: [
+        tailwindcss(),
         laravel({
             input: [
                 'resources/css/app.css',

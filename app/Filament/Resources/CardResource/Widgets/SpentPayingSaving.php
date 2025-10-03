@@ -16,6 +16,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class SpentPayingSaving extends BaseWidget
 {
@@ -126,20 +127,23 @@ class SpentPayingSaving extends BaseWidget
 
     public static function getStateDumpCharts(): array
     {
-        $stateDumps = StateDump::latest()->get();
+        return Cache::remember('stateDumps', now()->endOfDay(), function () {
+            $stateDumps = StateDump::latest()->get();
 
-        $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance');
+            $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance');
 
-        $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance');
+            $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance');
 
-        $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance');
-        $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending');
-        $cardBalanceChartNeg = SDC::setArrayNegative($cardBalanceChart);
-        $cardPendingChartNeg = SDC::setArrayNegative($cardPendingChart);
+            $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance');
+            $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending');
+            $cardBalanceChartNeg = SDC::setArrayNegative($cardBalanceChart);
+            $cardPendingChartNeg = SDC::setArrayNegative($cardPendingChart);
 
-        $netWorthChart = SDC::combineArrs(SDC::combineArrs($cashPositionChart, $cardBalanceChartNeg), $cardPendingChartNeg);
+            $netWorthChart = SDC::combineArrs(SDC::combineArrs($cashPositionChart, $cardBalanceChartNeg), $cardPendingChartNeg);
 
-        return [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart];
+            return [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart];
+        });
+
     }
 
     private static function sumTheStuff(Builder|Model $query): int|float

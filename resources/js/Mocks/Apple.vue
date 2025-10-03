@@ -13,7 +13,7 @@
                         <i class="text-white fas fa-bars"></i>
                     </button>
                 </div>
-                    <div class="lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg;shadow-none hidden"
+                    <div class="lg:flex grow items-center bg-white lg:bg-black/0 lg;shadow-none hidden"
                          id="example-collapse-id">
                         <ul class="flex flex-col lg:flex-row list-none mr-auto">
                             <li class="flex items-center">
@@ -74,7 +74,7 @@
                 <div class="absolute w-full h-full object-fill flex content-center items-center justify-center">
                     <video
                         src="https://www.apple.com/105/media/us/macbook-pro-13/2020/f2b14406-42ad-405e-bfa0-71b52a0bfd67/anim/chip/large.mp4"
-                        autoplay muted class="top-0 bg-center w-full max-w-screen-2xl">
+                        autoplay muted class="top-0 bg-center w-full max-w-(--breakpoint-2xl)">
                     </video>
                 </div>
             </div>

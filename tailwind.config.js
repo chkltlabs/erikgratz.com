@@ -93,6 +93,16 @@ export default {
                 'landscape': "url('/storage/images/webp/landscape.webp')",
                 'amy-erik': "url('/storage/images/webp/us.webp')",
             }),
+            animation: {
+                blink: 'blink 1s step-end infinite',
+            },
+            keyframes: {
+                blink: {
+                    'from, to': { opacity: '1' },
+                    '50%': { opacity: '0' },
+                },
+            },
+
         },
     },
 

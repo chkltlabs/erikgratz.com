@@ -23,7 +23,7 @@
                 <div class="leading-loose">
                     <form
                         id="note-form"
-                        class="max-w-sm p-10 m-auto bg-white bg-opacity-25 rounded shadow-xl"
+                        class="max-w-sm p-10 m-auto bg-white bg-black/25 rounded shadow-xl"
                         @submit.prevent="submit"
                     >
                         <p class="mb-8 text-2xl font-light text-center text-white">
