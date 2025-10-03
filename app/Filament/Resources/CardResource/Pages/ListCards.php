@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CardResource\Pages;
 
+use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Resources\CardResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -20,7 +21,7 @@ class ListCards extends ListRecords
     protected function getFooterWidgets(): array
     {
         return [
-            CardResource\Widgets\SpentPayingSaving::class,
+            SpentPayingSaving::class,
         ];
     }
 }

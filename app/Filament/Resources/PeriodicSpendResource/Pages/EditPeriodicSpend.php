@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PeriodicSpendResource\Pages;
 
+use Filament\Actions\DeleteAction;
 use App\Filament\Resources\ActivityResource;
 use App\Filament\Resources\PeriodicSpendResource;
 use Filament\Actions;
@@ -14,7 +15,7 @@ class EditPeriodicSpend extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 

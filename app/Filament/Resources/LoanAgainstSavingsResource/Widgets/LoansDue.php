@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\LoanAgainstSavingsResource\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use App\Models\LoanAgainstSavings;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,14 +19,14 @@ class LoansDue extends BaseWidget
                 LoanAgainstSavings::query()
             )
             ->columns([
-                Tables\Columns\TextColumn::make('reason'),
-                Tables\Columns\TextColumn::make('balance')
+                TextColumn::make('reason'),
+                TextColumn::make('balance')
                     ->money('USD')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('paid_on')
+                TextColumn::make('paid_on')
                     ->date()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('is_paid')
+                ToggleColumn::make('is_paid')
             ])
             ->paginated(false)
             ;

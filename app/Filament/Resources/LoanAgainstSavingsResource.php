@@ -2,15 +2,26 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\LoanAgainstSavingsResource\Pages\ListLoanAgainstSavings;
+use App\Filament\Resources\LoanAgainstSavingsResource\Pages\CreateLoanAgainstSavings;
+use App\Filament\Resources\LoanAgainstSavingsResource\Pages\EditLoanAgainstSavings;
 use App\Filament\Resources\LoanAgainstSavingsResource\Pages;
 use App\Filament\Resources\LoanAgainstSavingsResource\RelationManagers;
 use App\Models\Card;
 use App\Models\LoanAgainstSavings;
 use App\Models\PeriodicSpend;
 use Filament\Forms;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -19,29 +30,29 @@ class LoanAgainstSavingsResource extends Resource
 {
     protected static ?string $model = LoanAgainstSavings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Grid::make(3)->schema([
+        return $schema
+            ->components([
+                Grid::make(3)->schema([
 
-                    Forms\Components\TextInput::make('balance')
+                    TextInput::make('balance')
                         ->required()
                         ->prefix('$')
                         ->numeric(),
                 ]),
-                Forms\Components\Grid::make(1)->schema([
-                    Forms\Components\TextInput::make('reason')
+                Grid::make(1)->schema([
+                    TextInput::make('reason')
                         ->maxLength(191),
                 ]),
-                Forms\Components\Grid::make(3)->schema([
-                    Forms\Components\DatePicker::make('loan_date')
+                Grid::make(3)->schema([
+                    DatePicker::make('loan_date')
                         ->required(),
-                    Forms\Components\DatePicker::make('paid_on')
+                    DatePicker::make('paid_on')
                         ->required(),
-                    Forms\Components\Toggle::make('is_paid')
+                    Toggle::make('is_paid')
                         ->required(),
                     Select::make('card_id')
                         ->label('Paid to Card')
@@ -58,28 +69,28 @@ class LoanAgainstSavingsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('balance')
+                TextColumn::make('balance')
                     ->money('USD')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reason'),
-                Tables\Columns\TextColumn::make('loan_date')
+                TextColumn::make('reason'),
+                TextColumn::make('loan_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('paid_on')
+                TextColumn::make('paid_on')
                     ->date()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_paid')
+                IconColumn::make('is_paid')
                     ->boolean(),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -94,9 +105,9 @@ class LoanAgainstSavingsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLoanAgainstSavings::route('/'),
-            'create' => Pages\CreateLoanAgainstSavings::route('/create'),
-            'edit' => Pages\EditLoanAgainstSavings::route('/{record}/edit'),
+            'index' => ListLoanAgainstSavings::route('/'),
+            'create' => CreateLoanAgainstSavings::route('/create'),
+            'edit' => EditLoanAgainstSavings::route('/{record}/edit'),
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Inertia\Inertia\Response;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class NewPasswordController extends Controller
     /**
      * Display the password reset view.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
     public function create(Request $request)
     {
@@ -30,9 +32,9 @@ class NewPasswordController extends Controller
     /**
      * Handle an incoming new password request.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request)
     {

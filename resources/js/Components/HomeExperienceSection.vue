@@ -1,6 +1,6 @@
 <template>
     <section class="py-5 md:py-8">
-        <div class="container max-w-screen-xl mx-auto px-4">
+        <div class="container max-w-(--breakpoint-xl) mx-auto px-4">
             <h1 class="font-medium text-gray-300 text-3xl md:text-4xl mb-5">Experience</h1>
             <!-- web version -->
             <div class="flex flex-col lg:flex-row justify-between">

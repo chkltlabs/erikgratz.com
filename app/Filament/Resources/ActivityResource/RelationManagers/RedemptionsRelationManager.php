@@ -2,6 +2,14 @@
 
 namespace App\Filament\Resources\ActivityResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Enums\PointsProgram;
 use App\Enums\SpendSubtype;
 use App\Enums\SpendType;
@@ -10,7 +18,6 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,15 +29,15 @@ class RedemptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'redemptions';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 DatePicker::make('paid_on')->nullable(),
-                Forms\Components\Section::make('Types')
+                Section::make('Types')
                     ->columns(3)
                     ->schema([
                         Select::make('type')
@@ -54,7 +61,7 @@ class RedemptionsRelationManager extends RelationManager
                         Select::make('points_program')
                             ->options(PointsProgram::asSelectArray()),
                 ]),
-                Forms\Components\Section::make('Points')
+                Section::make('Points')
                     ->columns(3)
                     ->schema([
                         TextInput::make('points_spent')
@@ -78,17 +85,17 @@ class RedemptionsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('paid_on')
+                TextColumn::make('name'),
+                TextColumn::make('paid_on')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('points_spent'),
-                Tables\Columns\TextColumn::make('money_spent')
+                TextColumn::make('points_spent'),
+                TextColumn::make('money_spent')
                     ->money('USD'),
-                Tables\Columns\TextColumn::make('cash_value')
+                TextColumn::make('cash_value')
                     ->money('USD'),
-                Tables\Columns\TextColumn::make('cents_per_point')
+                TextColumn::make('cents_per_point')
                     ->money('USD')
                     ->prefix('₵')
                     ->state(
@@ -102,20 +109,20 @@ class RedemptionsRelationManager extends RelationManager
                     ),
 
 
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('subtype')
+                TextColumn::make('subtype')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('points_program')
+                TextColumn::make('points_program')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -124,15 +131,15 @@ class RedemptionsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

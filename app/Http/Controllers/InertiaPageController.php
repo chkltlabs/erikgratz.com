@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Collection;
+use App\Models\BlogPost;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,15 +40,15 @@ class InertiaPageController extends Controller
             'phone' => config('contact.phone'),
             'email' => config('contact.email'),
             'resumeUrl' => config('contact.resumeUrl'),
-            'submitButtonText' => \Illuminate\Support\Collection::make(['Validate me...', 'I\'m hungry, feed me words.', 'I love you.', 'You matter.'])->random(),
+            'submitButtonText' => Collection::make(['Validate me...', 'I\'m hungry, feed me words.', 'I love you.', 'You matter.'])->random(),
         ]);
     }
 
     public function getWedding()
     {
-        $files = \Illuminate\Support\Facades\Storage::allFiles('public/images/engagement/');
+        $files = Storage::allFiles('public/images/engagement/');
         $imageUrls = array_map(function ($i) {
-            return \Illuminate\Support\Facades\Storage::url($i);
+            return Storage::url($i);
         }, $files);
 
         return Inertia::render('Wedding', [
@@ -57,8 +59,8 @@ class InertiaPageController extends Controller
     public function getBlog()
     {
         return Inertia::render('Blog', [
-            'posts' => \App\Models\BlogPost::public()->with('author')->get(),
-            'inspire' => \Illuminate\Support\Collection::make(config('inspire'))->random(),
+            'posts' => BlogPost::public()->with('author')->get(),
+            'inspire' => Collection::make(config('inspire'))->random(),
         ]);
     }
 

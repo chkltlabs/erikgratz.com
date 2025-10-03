@@ -94,7 +94,7 @@ new class extends Component {
                             </svg>
                         </button>
                     </div>
-                    <div class="w-full md:w-auto md:flex-grow md:flex md:items-center">
+                    <div class="w-full md:w-auto md:grow md:flex md:items-center">
                         <ul
                             x-cloak x-show="$wire.navIsOpen || window.innerWidth > 768"
                             x-on:resize.window="$el.style.display = window.innerWidth >= 768

@@ -1,7 +1,7 @@
 <template>
     <div>
         <section class="py-5 md:py-8">
-            <div class="container max-w-screen-xl mx-auto px-4">
+            <div class="container max-w-(--breakpoint-xl) mx-auto px-4">
                 <div class="text-center">
                     <div class="flex justify-center mb-16">
                         <img class="w-64 h-64 rounded-full" :src="heroImage" alt="Image">
@@ -9,7 +9,7 @@
                     <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase mb-8">Erik Virgil Gratz</h6>
                     <title-box/>
                     <p class="font-normal text-gray-600 text-md md:text-xl mb-16">I have a passion for computers. I create solutions to modern web problems.</p>
-                    <div class="container max-w-screen-xl mx-auto px-4 my-10">
+                    <div class="container max-w-(--breakpoint-xl) mx-auto px-4 my-10">
                         <div class="text-center">
                             <div class="flex items-center justify-center space-x-8">
                                 <a href="https://www.twitter.com/chkltlabs"

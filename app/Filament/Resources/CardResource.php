@@ -2,6 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\CardResource\Pages\ListCards;
+use App\Filament\Resources\CardResource\Pages\CreateCard;
+use App\Filament\Resources\CardResource\Pages\EditCard;
 use App\Enums\PointsProgram;
 use App\Filament\Resources\CardResource\Pages;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
@@ -9,15 +18,9 @@ use App\Models\Card;
 use App\Models\User;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -27,12 +30,12 @@ class CardResource extends Resource
 {
     protected static ?string $model = Card::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Fieldset::make('Basic Info')
                     ->columns(3)
                     ->schema([
@@ -188,11 +191,11 @@ class CardResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -205,9 +208,9 @@ class CardResource extends Resource
         //            'index' => Pages\ManageCards::route('/'),
         //        ];
         return [
-            'index' => Pages\ListCards::route('/'),
-            'create' => Pages\CreateCard::route('/create'),
-            'edit' => Pages\EditCard::route('/{record}/edit'),
+            'index' => ListCards::route('/'),
+            'create' => CreateCard::route('/create'),
+            'edit' => EditCard::route('/{record}/edit'),
         ];
     }
 

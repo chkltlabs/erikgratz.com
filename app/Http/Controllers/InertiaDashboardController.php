@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,14 +18,14 @@ class InertiaDashboardController extends Controller
     public function getBlogListing()
     {
         return Inertia::render('BlogList', [
-            'BlogPosts' => \App\Models\BlogPost::with('author')->get(),
+            'BlogPosts' => BlogPost::with('author')->get(),
         ]);
     }
 
     public function getBlogEdit($blog_post_id)
     {
         // getting existing tags
-        $posts = \App\Models\BlogPost::all('tags')->toArray();
+        $posts = BlogPost::all('tags')->toArray();
         $posts = array_column($posts, 'tags');
         $tags = [];
         foreach ($posts as $tagArr) {
@@ -36,7 +37,7 @@ class InertiaDashboardController extends Controller
         $tags = array_combine(array_values($tags), array_values($tags));
 
         return Inertia::render('BlogEdit', [
-            'BlogPost' => \App\Models\BlogPost::with('author')->find($blog_post_id),
+            'BlogPost' => BlogPost::with('author')->find($blog_post_id),
             'mode' => 'edit',
             'multiOptions' => $tags,
         ]);
@@ -45,7 +46,7 @@ class InertiaDashboardController extends Controller
     public function postBlogEdit(Request $request, $blog_post_id)
     {
         if ($blog_post_id == $request->get('id')) {
-            $post = \App\Models\BlogPost::find($blog_post_id)->update($request->all());
+            $post = BlogPost::find($blog_post_id)->update($request->all());
 
             return redirect('/blog/listing')->with('success', 'BlogPost saved!');
         }
@@ -56,14 +57,14 @@ class InertiaDashboardController extends Controller
     public function getBlogNew()
     {
         return Inertia::render('BlogEdit', [
-            'BlogPost' => new \App\Models\BlogPost,
+            'BlogPost' => new BlogPost,
             'mode' => 'new',
         ]);
     }
 
     public function postBlogNew(Request $request)
     {
-        \App\Models\BlogPost::create($request->all());
+        BlogPost::create($request->all());
 
         return redirect('/blog/listing')->with('success', 'BlogPost saved!');
     }
