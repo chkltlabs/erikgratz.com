@@ -1,6 +1,10 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/*@import 'tailwindcss/base';*/
+/*@import 'tailwindcss/components';*/
+/*@import 'tailwindcss/utilities';*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 nav {
     z-index: 10
