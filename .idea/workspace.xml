@@ -5,114 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-D-L7v9-o.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-DYNH2I-b.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-WhnnaVvy.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/filament-tn0RQdqM.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/theme-IHbt0vGk.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-ASVAGXXE.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-XKHXBTUO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-EWLSKVKN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-R5CMSONN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-7GGTF7EK.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-ZEVLMORV.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-AXVTPQD5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-N43DBLU2.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-5SRY4DMZ.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-GZCIV3NH.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-O25CN4JL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-OPIJAQLS.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-TWG5UU7E.woff2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/erikgratz.com.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/erikgratz.com.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/webp/CCCOutput.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/webp/PlaidReadme.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/webp/WixReadme.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/livewire/components/portfolio-entry.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/ContactReqCreated.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/ContactReqCreated.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/AccountResource/Pages/ManageAccounts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/AccountResource/Pages/ManageAccounts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Pages/ListActivities.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Pages/ListActivities.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/RedemptionsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/RedemptionsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Widgets/ActivityTimelineChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Widgets/ActivityTimelineChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BlogPostResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BlogPostResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ListCards.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ListCards.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ManageCards.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ManageCards.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Widgets/SpentPayingSaving.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Widgets/SpentPayingSaving.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/EditLoanAgainstSavings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/EditLoanAgainstSavings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/ListLoanAgainstSavings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/ListLoanAgainstSavings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Widgets/LoansDue.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Widgets/LoansDue.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/EditPeriodicSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/EditPeriodicSpend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/ListPeriodicSpends.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/ListPeriodicSpends.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/EditUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/EditUser.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/ListUsers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/ListUsers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/AuthenticatedSessionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/AuthenticatedSessionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/ConfirmablePasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/ConfirmablePasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/EmailVerificationNotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/EmailVerificationNotificationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/NewPasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/NewPasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordResetLinkController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordResetLinkController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisteredUserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisteredUserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerifyEmailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerifyEmailController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContactApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContactApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContactController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/InertiaDashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/InertiaDashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/InertiaPageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/InertiaPageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Auth/LoginRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Auth/LoginRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/postcss.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-BGPlC3wL.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-BbVpeqcd.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-xneMw1Pb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/filament-C9Or0eSF.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/theme-D7axm54E.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/filament/filament/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/filament/filament/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/engagement/_DCC1177" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/engagement/_DCC1177" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/filament.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/filament.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/filament/admin/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/filament/admin/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Checkbox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Checkbox.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Dropdown.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Dropdown.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/HomeAboutSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/HomeAboutSection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/HomeExperienceSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/HomeExperienceSection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Input.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Input.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Layouts/Authenticated.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Layouts/Authenticated.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Layouts/MyHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Layouts/MyHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Mocks/Apple.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Mocks/Apple.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Blog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Blog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/BlogEdit.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/BlogEdit.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/BlogList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/BlogList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Contact.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Contact.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/ContactList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/ContactList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/page/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/page/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/app/public/images/engagement/_DCC1177" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/public/images/engagement/_DCC1177" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/portfolio.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/portfolio.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/webp/siteFiletree.webp" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/webp/siteFiletree.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/page/work.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/page/work.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -497,7 +401,7 @@
       <workItem from="1759413642373" duration="110000" />
       <workItem from="1759413760591" duration="106000" />
       <workItem from="1759413868486" duration="4587000" />
-      <workItem from="1759418486588" duration="25949000" />
+      <workItem from="1759418486588" duration="32494000" />
     </task>
     <servers />
   </component>

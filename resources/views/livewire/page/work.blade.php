@@ -9,6 +9,16 @@
             </p>
         </div>
     </div>
+    @foreach($this->portfolioItems() as $index => $portfolio)
+        <livewire:components.portfolio-entry
+            :title="$portfolio['title']"
+            :text="$portfolio['text']"
+            :imgUrl="$portfolio['imgUrl']"
+            :index="$index"
+            :link="$portfolio['link'] ?? null"
+            :linkText="$portfolio['linkText'] ?? null"
+        />
+    @endforeach
 {{--    <portfolio-entry v-for="(portfolio, index) in portfolioThings"--}}
 {{--                     :key="index"--}}
 {{--                     :index="index"--}}
