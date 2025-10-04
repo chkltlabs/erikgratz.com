@@ -39,3 +39,16 @@ if (! function_exists('getClassForMorphAlias')) {
         }
     }
 }
+
+// accidentally referenced this func from php 8.5.
+// TODO: Once upgraded to 8.5, drop this
+if (! function_exists('array_first')) {
+    function array_first(array $array)
+    {
+        foreach ($array as $value) {
+            return $value;
+        }
+
+        return null;
+    }
+}

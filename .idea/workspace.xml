@@ -5,114 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-D-L7v9-o.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-DYNH2I-b.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-WhnnaVvy.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/filament-tn0RQdqM.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/theme-IHbt0vGk.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-ASVAGXXE.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-XKHXBTUO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-EWLSKVKN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-R5CMSONN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-7GGTF7EK.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-ZEVLMORV.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-AXVTPQD5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-N43DBLU2.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-5SRY4DMZ.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-GZCIV3NH.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-O25CN4JL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-OPIJAQLS.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-TWG5UU7E.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/Pages/CreatePhoto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/Pages/EditPhoto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/Pages/ListPhotos.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/PhotoResource.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/Schemas/PhotoForm.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Photos/Tables/PhotosTable.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Livewire/Page/Experience.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Livewire/Page/Photo.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Photo.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/factories/PhotoFactory.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_04_130239_create_photos_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-BiAzLlmV.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-DA2OW1nD.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/livewire/components/cv-button.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/livewire/components/experience-entry.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/livewire/page/experience.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/livewire/page/photo.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Feature/Livewire/PhotoTest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/erikgratz.com.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/erikgratz.com.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/ContactReqCreated.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/ContactReqCreated.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/AccountResource/Pages/ManageAccounts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/AccountResource/Pages/ManageAccounts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Pages/ListActivities.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Pages/ListActivities.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/RedemptionsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/RedemptionsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Widgets/ActivityTimelineChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/Widgets/ActivityTimelineChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BlogPostResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BlogPostResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ListCards.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ListCards.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ManageCards.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages/ManageCards.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Widgets/SpentPayingSaving.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/Widgets/SpentPayingSaving.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/EditLoanAgainstSavings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/EditLoanAgainstSavings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/ListLoanAgainstSavings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Pages/ListLoanAgainstSavings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Widgets/LoansDue.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource/Widgets/LoansDue.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/EditPeriodicSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/EditPeriodicSpend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/ListPeriodicSpends.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Pages/ListPeriodicSpends.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/EditUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/EditUser.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/ListUsers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource/Pages/ListUsers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/AuthenticatedSessionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/AuthenticatedSessionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/ConfirmablePasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/ConfirmablePasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/EmailVerificationNotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/EmailVerificationNotificationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/NewPasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/NewPasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordResetLinkController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordResetLinkController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisteredUserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisteredUserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerifyEmailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerifyEmailController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContactApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContactApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContactController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/InertiaDashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/InertiaDashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/InertiaPageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/InertiaPageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Auth/LoginRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Auth/LoginRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Helpers/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/helpers.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/postcss.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-BGPlC3wL.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-BbVpeqcd.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-xneMw1Pb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/filament-C9Or0eSF.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/theme-D7axm54E.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-D-L7v9-o.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-DYNH2I-b.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/filament/filament/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/filament/filament/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/engagement/_DCC1177" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/engagement/_DCC1177" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/filament.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/filament.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/filament/admin/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/filament/admin/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Checkbox.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Checkbox.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Dropdown.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Dropdown.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/HomeAboutSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/HomeAboutSection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/HomeExperienceSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/HomeExperienceSection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Components/Input.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Components/Input.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Layouts/Authenticated.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Layouts/Authenticated.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Layouts/MyHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Layouts/MyHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Mocks/Apple.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Mocks/Apple.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Blog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Blog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/BlogEdit.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/BlogEdit.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/BlogList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/BlogList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Contact.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Contact.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/ContactList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/ContactList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/portfolio-entry.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/portfolio-entry.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/title-box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/title-box.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/livewire/page/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/page/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/app/public/images/engagement/_DCC1177" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/public/images/engagement/_DCC1177" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/page/work.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/page/work.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,6 +225,27 @@
       <path value="$PROJECT_DIR$/vendor/symfony/clock" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php84" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php85" />
+      <path value="$PROJECT_DIR$/vendor/chillerlan/php-qrcode" />
+      <path value="$PROJECT_DIR$/vendor/chillerlan/php-settings-container" />
+      <path value="$PROJECT_DIR$/vendor/rector/rector" />
+      <path value="$PROJECT_DIR$/vendor/pragmarx/google2fa" />
+      <path value="$PROJECT_DIR$/vendor/pragmarx/google2fa-qrcode" />
+      <path value="$PROJECT_DIR$/vendor/nette/php-generator" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/vendor/filament/upgrade" />
+      <path value="$PROJECT_DIR$/vendor/ueberdosis/tiptap-php" />
+      <path value="$PROJECT_DIR$/vendor/spatie/shiki-php" />
+      <path value="$PROJECT_DIR$/vendor/filament/schemas" />
+      <path value="$PROJECT_DIR$/vendor/league/uri-components" />
+      <path value="$PROJECT_DIR$/vendor/scrivo/highlight.php" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/google/auth" />
+      <path value="$PROJECT_DIR$/vendor/google/apiclient" />
+      <path value="$PROJECT_DIR$/vendor/google/apiclient-services" />
+      <path value="$PROJECT_DIR$/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/vendor/masbug/flysystem-google-drive-ext" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -315,35 +260,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.laravel-idea.update-module-directories": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "feature/switch-to-livewire-frontend",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/erikgratz/Code/erikgratz.com/app/Filament/Resources/CardResource/Pages",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "php.override.implement.member.chooser.php.doc": "NONE",
-    "settings.editor.selected.configurable": "settings.php.debug.step.filters",
-    "ts.external.directory.path": "/Applications/PhpStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.laravel-idea.update-module-directories&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/switch-to-livewire-frontend&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/erikgratz/Code/erikgratz.com/app/Filament/Resources/CardResource/Pages&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;php.override.implement.member.chooser.php.doc&quot;: &quot;NONE&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.php.debug.step.filters&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/PhpStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "PLAIN_TEXT"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;PLAIN_TEXT&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages" />
@@ -497,7 +442,9 @@
       <workItem from="1759413642373" duration="110000" />
       <workItem from="1759413760591" duration="106000" />
       <workItem from="1759413868486" duration="4587000" />
-      <workItem from="1759418486588" duration="25949000" />
+      <workItem from="1759418486588" duration="42204000" />
+      <workItem from="1759581291589" duration="11242000" />
+      <workItem from="1759606078852" duration="1014000" />
     </task>
     <servers />
   </component>

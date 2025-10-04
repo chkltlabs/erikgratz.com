@@ -39,6 +39,7 @@ class CardWidget extends BaseWidget
                         default => 'default'
 
                     }),
+
                 TextInputColumn::make('balance')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['balance' => is_null($state) ? 0 : $state]))
@@ -58,6 +59,7 @@ class CardWidget extends BaseWidget
                             ->money()->label('Unpaid'),
                     ]),
                 TextInputColumn::make('interest_free_balance')
+                    ->label('0% Bal')
                     ->rules(['numeric'])
                     ->updateStateUsing(fn ($record, $state) => $record->update(['interest_free_balance' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
