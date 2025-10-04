@@ -41,7 +41,7 @@ new class extends Component {
         $this->navIsOpen = !$this->navIsOpen;
     }
 
-    public string $routePrefix = '/redo/'; //delete this when moving to deploy
+    public string $routePrefix = '/';
 
     #[Computed]
     public function navItems(): array
