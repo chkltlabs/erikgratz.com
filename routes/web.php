@@ -69,8 +69,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('redo')->group(function () {
         Volt::route('/home', 'page.home');
         Volt::route('/work', 'page.work');
-//        Volt::route('/experience', 'page.experience');
-//        Volt::route('/photo', 'page.photo');
+        Volt::route('/experience', 'page.experience');
+        Volt::route('/photo', 'page.photo');
 
     });
 });

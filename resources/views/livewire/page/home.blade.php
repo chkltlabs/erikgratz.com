@@ -5,7 +5,7 @@
                 <div class="flex justify-center mb-16">
                     <img class="w-64 h-64 rounded-full" src="{{ $heroImage }}" alt="Image">
                 </div>
-                <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase mb-8">Erik Virgil Gratz</h6>
+                <h4 class="font-medium font-mono text-purple-500 text-lg md:text-4xl mb-8">Erik V Gratz</h4>
                 <livewire:components.title-box/>
                 <p class="font-normal text-gray-600 text-md md:text-xl mb-16">{{ $heroSub }}</p>
 {{--                <div class="container max-w-(--breakpoint-xl) mx-auto px-4 my-10">--}}
@@ -37,7 +37,7 @@
                 <a href="https://calendly.com/erikgratz/30min"
                    class="px-7 py-3 md:px-9 md:py-4
                        font-medium md:font-semibold
-                       bg-gray-700 text-gray-50 text-sm rounded-full
+                       bg-gray-700 text-gray-50 text-md md:text-sm rounded-full
                        hover:bg-purple-600 hover:text-white
                        transition ease-linear duration-500">Schedule a Call</a>
             </div>
@@ -45,7 +45,9 @@
     </section>
     <section class="py-5 md:py-8">
         <div class="container max-w-(--breakpoint-xl) mx-auto px-4">
-            <h1 class="font-medium text-gray-300 text-3xl md:text-4xl mb-5">Experience</h1>
+            <a href="/redo/experience" wire:navigate>
+                <h1 class="font-medium text-gray-300 hover:text-purple-600 transition ease-linear duration-500 text-3xl md:text-4xl mb-5">Experience</h1>
+            </a>
             <!-- web version -->
             <div class="flex flex-col lg:flex-row justify-between">
                 <div class=" hidden lg:block mb-16 md:mb-0">
@@ -118,14 +120,6 @@
                             <span class="font-normal text-gray-400"> / {{$jerb['timeframe']}}</span>
                         </p>
                     @endforeach
-{{--                    <p v-for="jerb, key in jerbs"--}}
-{{--                       v-bind:key="key"--}}
-{{--                       class="font-semibold text-gray-300 text-base">{{jerb.company}}--}}
-{{--                        <span class="font-normal text-gray-400"> / {{jerb.location}} </span>--}}
-{{--                        <br class="md:hidden"/>--}}
-{{--                        <span class="font-normal text-gray-400"> / {{jerb.title}} </span>--}}
-{{--                        <span class="font-normal text-gray-400"> / {{jerb.timeframe}}</span>--}}
-{{--                    </p>--}}
                 </div>
             </div>
         </div>

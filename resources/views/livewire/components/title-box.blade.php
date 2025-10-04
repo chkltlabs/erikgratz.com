@@ -77,7 +77,7 @@ new class extends Component
     x-init="typeNextChar()"
     class="font-normal text-gray-300 text-3xl md:text-6xl leading-none mb-8"
 >
-    <span>{{ $currentSentence }}</span>
+    <span class="font-mono">{{ $currentSentence }}</span>
     <span class="input-cursor"></span>
 </div>
 
