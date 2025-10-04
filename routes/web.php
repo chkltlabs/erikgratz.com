@@ -22,7 +22,7 @@ use Livewire\Volt\Volt;
 // $exitCode = \Illuminate\Support\Facades\Artisan::call('storage:link', []);
 // echo $exitCode; // 0 exit code for no errors.
 
-Route::get('/', [InertiaPageController::class, 'getIndex'])->name('home');
+Route::get('/', fn () => redirect('/home'));
 
 Route::get('/play', [InertiaPageController::class, 'getPlay']);
 
@@ -40,6 +40,16 @@ Route::get('/blog', [InertiaPageController::class, 'getBlog']);
 Route::get('/portfolio', [InertiaPageController::class, 'getPortfolio']);
 
 Route::get('/donate', [InertiaPageController::class, 'getDonate']);
+
+
+// -------------------
+// Livewire Redo
+// -------------------
+
+Volt::route('/home', 'page.home');
+Volt::route('/work', 'page.work');
+Volt::route('/experience', 'page.experience');
+Volt::route('/photo', 'page.photo');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contacts', \App\Http\Controllers\ContactController::class)->only(
@@ -60,19 +70,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/blog/new', [InertiaDashboardController::class, 'getBlogNew']);
 
     Route::post('/blog/new', [InertiaDashboardController::class, 'postBlogNew']);
-
-    // -------------------
-    // Livewire Redo
-    // -------------------
-
-//    Route::get('/counter', Counter::class); //example
-    Route::prefix('redo')->group(function () {
-        Volt::route('/home', 'page.home');
-        Volt::route('/work', 'page.work');
-        Volt::route('/experience', 'page.experience');
-        Volt::route('/photo', 'page.photo');
-
-    });
 });
 
 require __DIR__.'/auth.php';
