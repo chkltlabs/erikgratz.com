@@ -65,7 +65,7 @@ new class extends Component {
 <div>
     <main>
         <nav
-            class="bg-black shadow animated fixed flex py-2 w-full transition ease-in-out duration-200"
+            class="bg-black/33 shadow animated fixed flex py-2 w-full transition ease-in-out duration-200"
             :class="{ 'scrolled': !atTop }"
             x-data="{ atTop: true }"
             @scroll.window="atTop = !window.scrollY > 0 "

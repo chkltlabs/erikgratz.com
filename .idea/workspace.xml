@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-BPhv6lYV.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-CFpuUX4E.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-BiAzLlmV.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-DA2OW1nD.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/header.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/components/title-box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/components/title-box.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -406,7 +413,7 @@
       <workItem from="1759413868486" duration="4587000" />
       <workItem from="1759418486588" duration="42204000" />
       <workItem from="1759581291589" duration="11242000" />
-      <workItem from="1759606078852" duration="1347000" />
+      <workItem from="1759606078852" duration="6845000" />
     </task>
     <servers />
   </component>

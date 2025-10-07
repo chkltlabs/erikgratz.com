@@ -7,8 +7,6 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
-    public string $currentSentence = '';
-    public int $currentIndex = 0;
     public array $sentences = [
         'Senior Software Engineer',
         'Backend Developer',
@@ -24,17 +22,6 @@ new class extends Component
         'Distance Hiker'
 
     ];
-    public bool $isDeleting = false;
-    public int $charIndex = 0;
-
-    public function placeholder()
-    {
-        return <<<'HTML'
-        <div class="animate-pulse">
-            <div class="h-4 bg-gray-300 rounded w-48"></div>
-        </div>
-        HTML;
-    }
 }; ?>
 
 <div
@@ -42,42 +29,50 @@ new class extends Component
         typingSpeed: 100,
         deletingSpeed: 60,
         pauseBeforeDelete: 4000,
-        pauseBeforeNext: 700,
+        pauseBeforeNext: 1500,
+
+        currentSentenceJson: '',
+
+        async typeThings() {
+            let textOptions = $wire.sentences
+            let i = 0
+            await this.sleep(this.pauseBeforeDelete)
+            while (i < textOptions.length) {
+                await this.deleteSentence(this.deletingSpeed)
+                await this.sleep(this.pauseBeforeNext)
+                await this.typeSentence(textOptions[i], this.typingSpeed)
+                await this.sleep(this.pauseBeforeDelete)
+                i++
+                if (i === textOptions.length) {
+                    i = 0
+                }
+            }
+        },
+
+        async typeSentence(sentence, delay = 100) {
+            const letters = sentence.split('')
+            let i = this.currentSentenceJson.length;
+            while (i < letters.length) {
+                await this.sleep(delay)
+                this.currentSentenceJson += letters[i]
+                i++
+            }
+        },
+        async deleteSentence(delay = 100) {
+            while (this.currentSentenceJson.length > 0) {
+                this.currentSentenceJson = this.currentSentenceJson.slice(0, -1)
+                await this.sleep(delay)
+            }
+        },
 
         sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
-        },
-
-        async typeNextChar() {
-{{--            console.log('make')--}}
-            const currentSentence = $wire.sentences[$wire.currentIndex];
-            while ($wire.charIndex < currentSentence.length) {
-                await this.sleep(this.typingSpeed);
-                $wire.$set('currentSentence', currentSentence.substring(0, $wire.charIndex + 1));
-                $wire.$set('charIndex', $wire.charIndex + 1);
-            }
-
-            await this.sleep(this.pauseBeforeDelete);
-            await this.deleteChars();
-        },
-
-        async deleteChars() {
-{{--            console.log('delete')--}}
-            while ($wire.charIndex > 0) {
-                await this.sleep(this.deletingSpeed);
-                $wire.$set('charIndex', $wire.charIndex - 1);
-                $wire.$set('currentSentence', $wire.sentences[$wire.currentIndex].substring(0, $wire.charIndex));
-            }
-
-            $wire.$set('currentIndex', ($wire.currentIndex + 1) % $wire.sentences.length);
-            await this.sleep(this.pauseBeforeNext);
-            await this.typeNextChar();
         }
     }"
-    x-init="typeNextChar()"
+    x-init="typeThings"
     class="font-normal text-gray-300 text-3xl md:text-6xl leading-none mb-8"
 >
-    <span class="font-mono">{{ $currentSentence }}</span>
+    <span class="font-mono" x-text="currentSentenceJson"></span>
     <span class="input-cursor"></span>
 </div>
 
