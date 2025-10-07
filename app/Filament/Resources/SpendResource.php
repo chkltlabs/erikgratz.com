@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Grid;
 use Filament\Actions\EditAction;
 use Filament\Schemas\Schema;
@@ -51,7 +52,7 @@ class SpendResource extends Resource
 
         return [
             ...$activity,
-            Grid::make(4)->schema([
+            Flex::make([
                 TextInput::make('name')
                     ->required(),
                 Select::make('type')
@@ -73,10 +74,10 @@ class SpendResource extends Resource
                     ->reactive()
                     ->required(),
                 Toggle::make('is_income'),
-            ]),
-            Grid::make(1)->schema([
+            ])->columnSpanFull(),
+//            Grid::make(1)->schema([
                 Repeater::make('payments')
-                    ->columns(4)
+                    ->columnSpanFull()
                     ->relationship()
                     ->schema([
                         TextInput::make('amount')
@@ -90,7 +91,7 @@ class SpendResource extends Resource
                             ->options(Card::all()->pluck('name', 'id'))
                             ->nullable(),
                     ])->defaultItems(0)->addActionLabel('Add Payment'),
-            ]),
+//            ]),
         ];
     }
 

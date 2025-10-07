@@ -36,30 +36,35 @@ class LoanAgainstSavingsResource extends Resource
     {
         return $schema
             ->components([
-                Grid::make(3)->schema([
-
+                Grid::make(4)
+                    ->columnSpanFull()
+                    ->schema([
                     TextInput::make('balance')
+                        ->columnSpan(1)
                         ->required()
                         ->prefix('$')
                         ->numeric(),
-                ]),
-                Grid::make(1)->schema([
                     TextInput::make('reason')
+                        ->columnSpan(3)
                         ->maxLength(191),
                 ]),
-                Grid::make(3)->schema([
+                Grid::make(3)
+                    ->columnSpanFull()
+                    ->schema([
                     DatePicker::make('loan_date')
                         ->required(),
                     DatePicker::make('paid_on')
                         ->required(),
+                        Select::make('card_id')
+                            ->label('Paid to Card')
+                            ->options(Card::all()->pluck('name', 'id'))
+                            ->nullable(),
                     Toggle::make('is_paid')
                         ->required(),
-                    Select::make('card_id')
-                        ->label('Paid to Card')
-                        ->options(Card::all()->pluck('name', 'id'))
-                        ->nullable(),
                 ]),
-                Grid::make(1)->schema([
+                Grid::make(1)
+                    ->columnSpanFull()
+                    ->schema([
                     LoanAgainstSavings::paymentFilamentFormComponent(),
                 ]),
             ]);
