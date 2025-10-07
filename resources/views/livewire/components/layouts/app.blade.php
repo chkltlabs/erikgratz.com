@@ -8,7 +8,7 @@
         @livewireStyles
         <title>{{ 'Erik Gratz' }}</title>
     </head>
-    <body class="bg-black">
+    <body class="bg-gray-900">
         <livewire:components.header :page-title="$pageTitle">
 
             {{$slot}}
