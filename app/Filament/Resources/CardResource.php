@@ -49,9 +49,10 @@ class CardResource extends Resource
                                     ->pluck('name', 'id')
                             ),
                         ColorPicker::make('color'),
-                    ]),
+                    ])->columnSpanFull(),
                 Fieldset::make('Important Numbers')
                     ->columns(5)
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('limit')
                             ->required()
@@ -92,6 +93,7 @@ class CardResource extends Resource
                     ]),
                 Fieldset::make('Balance and Interest')
                     ->columns(5)
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('balance')
                             ->required()
@@ -119,7 +121,10 @@ class CardResource extends Resource
                             ->numeric()
                             ->default(0),
                     ]),
-                Fieldset::make('Points and Bonus')->columns(5)->schema([
+                Fieldset::make('Points and Bonus')
+                    ->columnSpanFull()
+                    ->columns(5)
+                    ->schema([
                     TextInput::make('points_balance')
                         ->required()
                         ->numeric()
