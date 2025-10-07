@@ -22,8 +22,11 @@ class StateDumpCollection extends Collection
         return $rtn;
     }
 
-    public function sumStatArraysForAllModels(Model $model, string $col, ?Carbon $since = null): array
+    public function sumStatArraysForAllModels(?Model $model, string $col, ?Carbon $since = null): array
     {
+        if (is_null($model)) {
+            return [];
+        }
         $models = $model::class::all();
         $rtn = [];
         foreach ($models as $specificModel) {

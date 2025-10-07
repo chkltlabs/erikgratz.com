@@ -79,6 +79,7 @@ class SpendResource extends Resource
                 Repeater::make('payments')
                     ->columnSpanFull()
                     ->relationship()
+                    ->grid(['xs' => 1, 'md' => 2])
                     ->schema([
                         TextInput::make('amount')
                             ->prefix('$')
