@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/LoanAgainstSavingsResource.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SpendResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/page/photo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/page/photo.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/CardWidget.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Collections/StateDumpCollection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Collections/StateDumpCollection.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,7 +408,7 @@
       <workItem from="1759413868486" duration="4587000" />
       <workItem from="1759418486588" duration="42204000" />
       <workItem from="1759581291589" duration="11242000" />
-      <workItem from="1759606078852" duration="10454000" />
+      <workItem from="1759606078852" duration="11744000" />
     </task>
     <servers />
   </component>
