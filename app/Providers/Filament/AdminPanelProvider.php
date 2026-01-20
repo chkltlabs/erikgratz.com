@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\PointsByProgram;
 use Filament\Pages\Dashboard;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Resources\LoanAgainstSavingsResource\Widgets\LoansDue;
@@ -52,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
                 CardWidget::class,
                 AccountWidget::class,
                 LoansDue::class,
+                PointsByProgram::class,
                 SpendsThisMonth::class,
                 PastStatsChart::class,
             ])
