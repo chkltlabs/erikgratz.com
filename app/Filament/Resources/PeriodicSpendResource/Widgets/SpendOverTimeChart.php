@@ -128,7 +128,7 @@ class SpendOverTimeChart extends ApexChartWidget
         // TODO: Implement getOldSchemaState() method.
     }
 
-    public function getSchemaComponent(string $key, bool $withHidden = false, ?Component $skipComponentChildContainersWhileSearching = null): Component|Action|ActionGroup|null
+    public function getSchemaComponent(string $key, bool $withHidden = false, array $skipComponentChildContainersWhileSearching = []): Component|Action|ActionGroup|null
     {
         // TODO: Implement getSchemaComponent() method.
     }

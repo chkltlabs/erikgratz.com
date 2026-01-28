@@ -130,12 +130,14 @@ class SpentPayingSaving extends BaseWidget
         return Cache::remember('stateDumps', now()->endOfDay(), function () {
             $stateDumps = StateDump::latest()->get();
 
-            $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance');
+            $yearAgo = now()->submonths(6);
 
-            $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance');
+            $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance', $yearAgo);
 
-            $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance');
-            $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending');
+            $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance', $yearAgo);
+
+            $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance', $yearAgo);
+            $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending', $yearAgo);
             $cardBalanceChartNeg = SDC::setArrayNegative($cardBalanceChart);
             $cardPendingChartNeg = SDC::setArrayNegative($cardPendingChart);
 
