@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\PointsByProgram;
+use App\Filament\Widgets\YearInReview;
 use Filament\Pages\Dashboard;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Resources\LoanAgainstSavingsResource\Widgets\LoansDue;
@@ -56,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 PointsByProgram::class,
                 SpendsThisMonth::class,
                 PastStatsChart::class,
+                YearInReview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
