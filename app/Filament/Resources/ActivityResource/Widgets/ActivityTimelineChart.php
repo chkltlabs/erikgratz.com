@@ -323,11 +323,6 @@ class ActivityTimelineChart extends ApexChartWidget
         // TODO: Implement getOldSchemaState() method.
     }
 
-    public function getSchemaComponent(string $key, bool $withHidden = false, array $skipComponentsChildContainersWhileSearching = []): Component | Action | ActionGroup | null
-    {
-        // TODO: Implement getSchemaComponent() method.
-    }
-
     public function getSchema(string $name): ?Schema
     {
         // TODO: Implement getSchema() method.
