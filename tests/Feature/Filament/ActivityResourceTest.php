@@ -7,11 +7,14 @@ use App\Filament\Resources\SpendResource;
 use App\Models\Activity;
 use App\Models\Spend;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class ActivityResourceTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();

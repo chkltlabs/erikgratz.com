@@ -43,6 +43,7 @@ services:
         volumes:
             - 'sailmysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/mysql/init-permissions.sh:/docker-entrypoint-initdb.d/20-init-permissions.sh'
         networks:
             - sail
         healthcheck:
