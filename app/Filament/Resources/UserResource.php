@@ -16,6 +16,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Table;
 
 class UserResource extends Resource
@@ -54,6 +55,51 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('imageUrl')
                     ->searchable(),
+                TextColumn::make('simple_fin_url'),
+                Tables\Columns\TextInputColumn::make('simple_fin_token')
+                    ->label('SimpleFIN Token')
+                    ->state(fn () => null)
+                    ->updateStateUsing(fn () => null)
+                    ->afterStateUpdated(function ($state, User $record) {
+                        if (empty($state)) {
+                            return;
+                        }
+
+                        $claimUrl = base64_decode($state);
+                        if ($claimUrl === false) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Invalid Token')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        try {
+                            $response = \Illuminate\Support\Facades\Http::post($claimUrl);
+                            if ($response->successful()) {
+                                $record->update([
+                                    'simple_fin_url' => $response->body(),
+                                ]);
+
+                                \Filament\Notifications\Notification::make()
+                                    ->title('SimpleFIN URL updated successfully')
+                                    ->success()
+                                    ->send();
+                            } else {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Failed to exchange token')
+                                    ->description($response->body())
+                                    ->danger()
+                                    ->send();
+                            }
+                        } catch (\Exception $e) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('An error occurred')
+                                ->description($e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

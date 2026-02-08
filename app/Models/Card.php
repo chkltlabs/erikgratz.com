@@ -116,4 +116,9 @@ class Card extends Model
         return $query->where('balance', '>', 0)
             ->where('interest_saving_balance', 0);
     }
+
+    public function simpleFinAccount(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(\App\Models\SimpleFin\SimpleFinAccount::class, 'associated');
+    }
 }

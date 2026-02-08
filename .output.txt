@@ -1,0 +1,203 @@
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ basic test
+   PASS  Tests\Unit\Filament\BlogPostResourceTest
+  ✓ blog post list renders                                               0.43s
+  ✓ blog post list includes entries                                      0.20s
+  ✓ blog post create renders                                             0.25s
+  ✓ blog post can create                                                 0.30s
+  ✓ blog post edit renders                                               0.19s
+  ✓ blog post can edit                                                   0.33s
+  ✓ blog post can delete                                                 0.21s
+   PASS  Tests\Unit\Http\Requests\Auth\LoginRequestTest
+  ✓ authorize                                                            0.12s
+  ✓ rules                                                                0.10s
+   PASS  Tests\Unit\Http\Requests\ContactRequestTest
+  ✓ authorize                                                            0.11s
+  ✓ rules                                                                0.11s
+   PASS  Tests\Unit\Http\Requests\ContactStoreRequestTest
+  ✓ authorize                                                            0.11s
+  ✓ rules                                                                0.11s
+   PASS  Tests\Feature\ContactListEndpointTest
+  ✓ 200 response                                                         0.13s
+   PASS  Tests\Feature\EmailVerificationTest
+  ✓ email verification screen can be rendered                            1.08s
+  ✓ email can be verified                                                0.13s
+  ✓ email is not verified with invalid hash                              0.13s
+   FAIL  Tests\Feature\ExampleTest
+  ⨯ basic test                                                           0.13s
+   FAIL  Tests\Feature\Filament\ActivityResourceTest
+  ✓ activity index renders                                               0.26s
+  ✓ activity create renders                                              0.37s
+  ✓ activity edit renders                                                0.43s
+  ✓ activity can list                                                    0.49s
+  ✓ activity can create                                                  0.24s
+  ✓ activity edit fills form                                             0.28s
+  ✓ activity can edit                                                    0.40s
+  ✓ activity can delete                                                  0.31s
+  ✓ spend index renders                                                  0.30s
+  ✓ spend create renders                                                 0.34s
+  ✓ spend edit renders                                                   0.42s
+  ✓ spend can list                                                       0.55s
+  ✓ spend can create                                                     0.44s
+  ✓ spend edit fills form                                                0.36s
+  ⨯ spend can edit                                                       0.82s
+  ✓ spend can delete                                                     0.43s
+   PASS  Tests\Feature\Filament\CardsAndAccountsTest
+  ✓ card manage renders                                                  0.33s
+  ✓ card can create                                                      0.37s
+  ✓ card can edit                                                        0.46s
+  ✓ card can delete                                                      0.26s
+  ✓ card can associate simple fin account                                0.46s
+  ✓ acct manage renders                                                  0.20s
+  ✓ acct can create                                                      0.41s
+  ✓ acct can edit                                                        0.43s
+  ✓ acct can delete                                                      0.25s
+  ✓ acct can associate simple fin account                                0.43s
+   PASS  Tests\Feature\Http\Controllers\Auth\AuthenticatedSessionControllerTest
+  ✓ create returns an ok response                                        0.17s
+  ✓ destroy returns an ok response                                       0.11s
+  ✓ store returns an ok response                                         0.12s
+  ✓ store validates with a form request                                  0.11s
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Mr. Gino Schmeler II",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Ms. Jackeline Schmeler Jr.",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Dr. Destiny Crona",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Keeley Hudson",
+    "socket": null
+}
+   PASS  Tests\Feature\Http\Controllers\ContactApiControllerTest
+  ✓ destroy returns an ok response                                       0.16s
+  ✓ index returns an ok response                                         0.13s
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Candelario Kirlin",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Prof. Hudson Gerhold",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Ethan Wisoky II",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Karley Murazik",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Ignatius Wilkinson",
+    "socket": null
+}
+[2026-02-08 16:59:22] testing.INFO: Broadcasting [App\Events\ContactReqCreated] on channels [contacts] with payload:
+{
+    "name": "Dr. Spoot",
+    "socket": null
+}
+   PASS  Tests\Feature\Http\Controllers\ContactControllerTest
+  ✓ destroy returns an ok response                                       0.13s
+  ✓ index returns an ok response                                         0.13s
+  ✓ show returns an ok response                                          0.13s
+  ✓ store returns an ok response                                         0.14s
+  ✓ store validates with a form request                                  0.12s
+   FAIL  Tests\Feature\Http\Controllers\InertiaPageControllerTest
+  ✓ get blog returns an ok response                                      0.14s
+  ✓ get contact returns an ok response                                   0.12s
+  ✓ get donate returns an ok response                                    0.12s
+  ⨯ get index returns an ok response                                     0.11s
+  ✓ get mock returns an ok response                                      0.12s
+  ✓ get play returns an ok response                                      0.12s
+  ✓ get portfolio returns an ok response                                 0.13s
+  ✓ get wedding returns an ok response                                   0.12s
+   PASS  Tests\Feature\Livewire\PhotoTest
+  ✓ it has correct title constant                                        0.14s
+  ✓ it can render the component                                          1.09s
+  ✓ it loads all photos correctly                                        1.07s
+  ✓ it generates unique tags with all option                             1.05s
+  ✓ it initializes with all tag selected                                 1.08s
+  ✓ it can filter by tag                                                 1.09s
+  ✓ filtered photos returns all when all selected                        1.12s
+  ✓ filtered photos filters by nature tag                                1.05s
+  ✓ filtered photos filters by portrait tag                              1.15s
+  ✓ filtered photos filters by people tag                                1.12s
+  ✓ filtered photos returns empty for non existent tag                   1.12s
+  ✓ component is reactive to tag changes                                 1.14s
+  ✓ photos computed property returns array format                        1.11s
+  ✓ tags computed property handles empty photos                          1.17s
+  ✓ component uses correct layout                                        1.11s
+   PASS  Tests\Feature\Models\StateDumpModelTest
+  ✓ dumping                                                              0.62s
+  ✓ dumping maximums                                                     4.70s
+  ✓ flag sets                                                            0.64s
+   PASS  Tests\Feature\SimpleFinIntakeTest
+  ✓ it intakes data correctly                                            1.12s
+  ✓ it updates existing records rather than duplicating                  0.13s
+  ✓ it removes missing transactions only if oldest date provided         0.13s
+  ✓ it preserves transactions older than provided oldest date            0.12s
+  ✓ it can be associated with an account                                 0.13s
+  ✓ it can be associated with a card                                     0.13s
+  ✓ it fetches and intakes data correctly                                0.14s
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Tests\Feature\ExampleTest > basic test
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+  at tests/Feature/ExampleTest.php:18
+     14▕     public function test_basic_test()
+     15▕     {
+     16▕         $response = $this->get('/');
+     17▕
+  ➜  18▕         $response->assertStatus(200);
+     19▕     }
+     20▕ }
+     21▕
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Tests\Feature\Filament\ActivityResourceTest > spend can edit
+  Component has errors: "data.subtype"
+Failed asserting that false is true.
+  at vendor/livewire/livewire/src/Features/SupportValidation/TestsValidation.php:109
+    105▕     {
+    106▕         $errors = $this->errors();
+    107▕
+    108▕         if (empty($keys)) {
+  ➜ 109▕             PHPUnit::assertTrue($errors->isEmpty(), 'Component has errors: "'.implode('", "', $errors->keys()).'"');
+    110▕
+    111▕             return $this;
+    112▕         }
+    113▕
+      +4 vendor frames
+  5   tests/Feature/Filament/ActivityResourceTest.php:160
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Tests\Feature\Http\Controllers\InertiaPag…  RouteNotFoundException
+  Route [home] not defined.
+  at vendor/laravel/framework/src/Illuminate/Routing/UrlGenerator.php:526
+    522▕             ! is_null($url = call_user_func($this->missingNamedRouteResolver, $name, $parameters, $absolute))) {
+    523▕             return $url;
+    524▕         }
+    525▕
+  ➜ 526▕         throw new RouteNotFoundException("Route [{$name}] not defined.");
+    527▕     }
+    528▕
+    529▕     /**
+    530▕      * Get the URL for a given route instance.
+      +2 vendor frames
+  3   tests/Feature/Http/Controllers/InertiaPageControllerTest.php:51
+  Tests:    3 failed, 86 passed (264 assertions)
+  Duration: 40.30s

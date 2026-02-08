@@ -5,8 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_08_144932_create_simple_fin_tables.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_08_153410_add_associated_morph_to_simple_fin_accounts_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_08_164239_add_is_pending_to_simple_fin_transactions_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Feature/SimpleFinIntakeTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/AccountResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Account.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Account.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Card.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Card.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/CardFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/CardFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/SpendFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/SpendFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/ExampleTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/ExampleTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Filament/CardsAndAccountsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Filament/CardsAndAccountsTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Http/Controllers/Auth/AuthenticatedSessionControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Http/Controllers/Auth/AuthenticatedSessionControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Http/Controllers/ContactApiControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Http/Controllers/ContactApiControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Http/Controllers/ContactControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Http/Controllers/ContactControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Http/Controllers/InertiaPageControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Http/Controllers/InertiaPageControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Livewire/PhotoTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Livewire/PhotoTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/Http/Requests/Auth/LoginRequestTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Http/Requests/Auth/LoginRequestTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/Http/Requests/ContactRequestTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Http/Requests/ContactRequestTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/Http/Requests/ContactStoreRequestTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Http/Requests/ContactStoreRequestTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +41,10 @@
   <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="20958" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -31,6 +60,10 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.4.14/bin/php">
     <include_path>
@@ -225,16 +258,20 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.laravel-idea.update-module-directories": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHELLCHECK.PATH": "/Users/erikgratz/Library/Application Support/JetBrains/PhpStorm2025.3/plugins/Shell Script/shellcheck",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "feature/data-integration-via-simplefin",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/erikgratz/Code/erikgratz.com/app/Filament/Resources/CardResource/Pages",
     "node.js.detected.package.eslint": "true",
@@ -254,12 +291,17 @@
     ]
   }
 }]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1770652817917" />
+    <option name="spentUsd" value="0.042185754" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages" />
       <recent name="$PROJECT_DIR$/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/views/livewire" />
     </key>
   </component>
@@ -272,8 +314,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PS-252.27397.112" />
-        <option value="bundled-php-predefined-a98d8de5180a-b35feea871ed-com.jetbrains.php.sharedIndexes-PS-252.27397.112" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.30387.85" />
+        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.30387.85" />
       </set>
     </attachedChunks>
   </component>
@@ -415,6 +457,10 @@
       <workItem from="1768911032617" duration="7175000" />
       <workItem from="1768931655754" duration="2397000" />
       <workItem from="1769615582528" duration="1726000" />
+      <workItem from="1770298268120" duration="55000" />
+      <workItem from="1770321582545" duration="622000" />
+      <workItem from="1770324710703" duration="680000" />
+      <workItem from="1770556777064" duration="9691000" />
     </task>
     <servers />
   </component>

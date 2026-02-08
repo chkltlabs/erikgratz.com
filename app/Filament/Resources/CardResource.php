@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\SimpleFin\SimpleFinAccount;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Actions\EditAction;
@@ -141,6 +142,35 @@ class CardResource extends Resource
                     Select::make('points_program')
                         ->options(PointsProgram::asSelectArray()),
                 ]),
+                Select::make('simple_fin_account_id')
+                    ->label('SimpleFIN Account')
+                    ->options(function (Card $record = null) {
+                        $query = SimpleFinAccount::query();
+                        if ($record && $record->user_id) {
+                            $query->where('user_id', $record->user_id);
+                        }
+                        return $query->pluck('name', 'id');
+                    })
+                    ->searchable()
+                    ->dehydrated(false)
+                    ->formatStateUsing(fn (Card $record = null) => $record?->simpleFinAccount?->id)
+                    ->afterStateUpdated(function ($state, Card $record) {
+                        // Unset previous association
+                        SimpleFinAccount::where('associated_type', 'card')
+                            ->where('associated_id', $record->id)
+                            ->update([
+                                'associated_id' => null,
+                                'associated_type' => null,
+                            ]);
+
+                        if ($state) {
+                            SimpleFinAccount::where('id', $state)->update([
+                                'associated_id' => $record->id,
+                                'associated_type' => 'card',
+                            ]);
+                        }
+                    })
+                    ->columnSpanFull(),
             ]);
     }
 

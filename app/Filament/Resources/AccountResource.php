@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Schemas\Schema;
+use App\Models\SimpleFin\SimpleFinAccount;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
@@ -42,6 +43,34 @@ class AccountResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Select::make('simple_fin_account_id')
+                    ->label('SimpleFIN Account')
+                    ->options(function (Account $record = null) {
+                        $query = SimpleFinAccount::query();
+                        if ($record && $record->user_id) {
+                            $query->where('user_id', $record->user_id);
+                        }
+                        return $query->pluck('name', 'id');
+                    })
+                    ->searchable()
+                    ->dehydrated(false)
+                    ->formatStateUsing(fn (Account $record = null) => $record?->simpleFinAccount?->id)
+                    ->afterStateUpdated(function ($state, Account $record) {
+                        // Unset previous association
+                        SimpleFinAccount::where('associated_type', 'account')
+                            ->where('associated_id', $record->id)
+                            ->update([
+                                'associated_id' => null,
+                                'associated_type' => null,
+                            ]);
+
+                        if ($state) {
+                            SimpleFinAccount::where('id', $state)->update([
+                                'associated_id' => $record->id,
+                                'associated_type' => 'account',
+                            ]);
+                        }
+                    }),
             ]);
     }
 

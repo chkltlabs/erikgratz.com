@@ -46,7 +46,7 @@ Route::get('/donate', [InertiaPageController::class, 'getDonate']);
 // Livewire Redo
 // -------------------
 
-Volt::route('/home', 'page.home');
+Volt::route('/home', 'page.home')->name('home');
 Volt::route('/work', 'page.work');
 Volt::route('/experience', 'page.experience');
 Volt::route('/photo', 'page.photo');

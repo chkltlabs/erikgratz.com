@@ -15,11 +15,15 @@ class SpendFactory extends Factory
 
     public function definition(): array
     {
+        $type = SpendType::getRandomValue();
+        $subtypes = array_keys(SpendSubtype::getFilteredSet($type));
+        $subtype = !empty($subtypes) ? $this->faker->randomElement($subtypes) : SpendSubtype::Other;
+
         return [
             'name' => $this->faker->name(),
             'is_income' => false,
-            'type' => SpendType::getRandomValue(),
-            'subtype' => SpendSubtype::getRandomValue(),
+            'type' => $type,
+            'subtype' => $subtype,
             'activity_id' => Activity::factory(),
         ];
     }
