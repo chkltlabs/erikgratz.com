@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Actions\EditAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -35,7 +36,8 @@ class UserResource extends Resource
                     ->maxLength(191),
                 TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->required(fn (string $context): bool => $context === 'create')
+                    ->dehydrated(fn (?string $state): bool => filled($state))
                     ->maxLength(191),
                 TextInput::make('name')
                     ->required()
@@ -55,7 +57,23 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('imageUrl')
                     ->searchable(),
-                TextColumn::make('simple_fin_url'),
+
+                IconColumn::make('simple_fin_url')
+                    ->label('SimpleFIN')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->color('danger')
+                    ->tooltip('SimpleFIN URL not set')
+                    ->visible(fn (?User $record): bool => (bool) blank($record?->simple_fin_url)),
+
+                TextColumn::make('simple_fin_url')
+                    ->label('SimpleFIN')
+                    ->formatStateUsing(fn (): string => 'Copy')
+                    ->copyable()
+                    ->copyableState(fn (?User $record): string => (string) ($record?->simple_fin_url ?? ''))
+                    ->copyMessage('SimpleFIN URL copied')
+                    ->tooltip(fn (?User $record): string => (string) ($record?->simple_fin_url ?? ''))
+                    ->visible(fn (?User $record): bool => filled($record?->simple_fin_url)),
+
                 Tables\Columns\TextInputColumn::make('simple_fin_token')
                     ->label('SimpleFIN Token')
                     ->state(fn () => null)
@@ -88,18 +106,19 @@ class UserResource extends Resource
                             } else {
                                 \Filament\Notifications\Notification::make()
                                     ->title('Failed to exchange token')
-                                    ->description($response->body())
+                                    ->body($response->body())
                                     ->danger()
                                     ->send();
                             }
                         } catch (\Exception $e) {
                             \Filament\Notifications\Notification::make()
                                 ->title('An error occurred')
-                                ->description($e->getMessage())
+                                ->body($e->getMessage())
                                 ->danger()
                                 ->send();
                         }
                     }),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

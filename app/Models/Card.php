@@ -29,7 +29,7 @@ class Card extends Model
     ];
 
     protected $casts = [
-        'date_opened' => 'date',
+        'date_opened' => 'date:Y-m-d',
         'points_program' => PointsProgram::class,
     ];
 

@@ -19,11 +19,15 @@ class PeriodicSpendFactory extends Factory
      */
     public function definition()
     {
+        $type = SpendType::getRandomValue();
+        $subtypes = array_keys(SpendSubtype::getFilteredSet($type));
+        $subtype = count($subtypes) > 0 ? $this->faker->randomElement($subtypes) : SpendSubtype::getRandomValue();
+
         return [
             'name' => $this->faker->name(),
             'is_income' => false,
-            'type' => SpendType::getRandomValue(),
-            'subtype' => SpendSubtype::getRandomValue(),
+            'type' => $type,
+            'subtype' => $subtype,
             'period' => Period::getRandomValue(),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
