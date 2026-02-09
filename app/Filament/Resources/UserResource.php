@@ -58,21 +58,17 @@ class UserResource extends Resource
                 TextColumn::make('imageUrl')
                     ->searchable(),
 
-                IconColumn::make('simple_fin_url')
-                    ->label('SimpleFIN')
-                    ->icon('heroicon-o-exclamation-triangle')
-                    ->color('danger')
-                    ->tooltip('SimpleFIN URL not set')
-                    ->visible(fn (?User $record): bool => (bool) blank($record?->simple_fin_url)),
-
                 TextColumn::make('simple_fin_url')
                     ->label('SimpleFIN')
-                    ->formatStateUsing(fn (): string => 'Copy')
-                    ->copyable()
-                    ->copyableState(fn (?User $record): string => (string) ($record?->simple_fin_url ?? ''))
+                    ->state(fn (User $record) => $record->simple_fin_url ?: 'missing')
+                    ->icon(fn ($state) => $state !== 'missing' ? 'heroicon-o-check-circle' : 'heroicon-o-exclamation-triangle')
+                    ->iconColor(fn ($state) => $state !== 'missing' ? 'success' : 'danger')
+                    ->size(\Filament\Support\Enums\TextSize::Large)
+                    ->formatStateUsing(fn () => '')
+                    ->copyable(fn ($state) => $state !== 'missing')
+                    ->copyableState(fn (User $record): string => (string) ($record->simple_fin_url ?? ''))
                     ->copyMessage('SimpleFIN URL copied')
-                    ->tooltip(fn (?User $record): string => (string) ($record?->simple_fin_url ?? ''))
-                    ->visible(fn (?User $record): bool => filled($record?->simple_fin_url)),
+                    ->tooltip(fn (User $record): string => filled($record->simple_fin_url) ? $record->simple_fin_url : 'SimpleFIN URL not set'),
 
                 Tables\Columns\TextInputColumn::make('simple_fin_token')
                     ->label('SimpleFIN Token')

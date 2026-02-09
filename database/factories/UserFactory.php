@@ -57,6 +57,7 @@ class UserFactory extends Factory
             'name' => 'Bossman',
             'email' => 'erik@erikgratz.com',
             'password' => Hash::make('15Characters!!!'),
+            'simple_fin_url' => env('SIMPLE_FIN_URL'),
         ] : [
             // This array intentionally empty to stop root user being created in non-local
         ];

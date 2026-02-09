@@ -56,7 +56,8 @@ class BenefitsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('benefit')
                     ->tooltip(fn (Model $record): ?string => $record->description),
-                IconColumn::make('is_useable'),
+                IconColumn::make('is_useable')
+                    ->boolean(),
                 ToggleColumn::make('is_used')
                     ->disabled(fn (?Model $record) => ! $record?->is_useable),
                 TextColumn::make('value')->money(),

@@ -41,8 +41,7 @@ class SpendsThisMonth extends BaseWidget
                     ]),
                 IconColumn::make('is_paid')
                     ->state(fn (Model $record) => now()->day > $record->paid_on->day)
-                //                    ->updateStateUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => dd($query->toSql()))
-                ,
+                    ->boolean(),
                 TextColumn::make('paid_on')
                     ->dateTime('jS')
                     ->sinceTooltip(),

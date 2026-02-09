@@ -16,9 +16,10 @@ class SimpleFinIntakeService
      *
      * @param User $user
      * @param Carbon|null $startDate
+     * @param \Closure|null $progressCallback Callback receiving a string message.
      * @return void
      */
-    public static function fetchAndIntake(User $user, ?Carbon $startDate = null): void
+    public static function fetchAndIntake(User $user, ?Carbon $startDate = null, ?\Closure $progressCallback = null): void
     {
         if (!$user->simple_fin_url) {
             throw new \Exception("User does not have a SimpleFIN URL set.");
@@ -40,6 +41,10 @@ class SimpleFinIntakeService
 
         $data = $response->json();
 
+        if ($progressCallback) {
+            $progressCallback("Data received successfully from SimpleFIN (non-pending).");
+        }
+
         // 2. Fetch pending transactions
         $pendingQueryParams = $queryParams;
         $pendingQueryParams['pending'] = 1;
@@ -48,9 +53,12 @@ class SimpleFinIntakeService
         $pendingData = [];
         if ($pendingResponse->successful()) {
             $pendingData = $pendingResponse->json();
+            if ($progressCallback) {
+                $progressCallback("Data received successfully from SimpleFIN (pending).");
+            }
         }
 
-        (new self())->intake($user, $data, $pendingData, $startDate);
+        (new self())->intake($user, $data, $pendingData, $startDate, $progressCallback);
     }
 
     /**
@@ -60,11 +68,15 @@ class SimpleFinIntakeService
      * @param array $data The decoded JSON data from SimpleFIN (non-pending).
      * @param array $pendingData The decoded JSON data from SimpleFIN including pending transactions.
      * @param Carbon|null $oldestTransactionDate Only remove missing transactions newer than or equal to this date.
+     * @param \Closure|null $progressCallback Callback receiving a string message.
      * @return void
      */
-    public function intake(User $user, array $data, array $pendingData = [], ?Carbon $oldestTransactionDate = null): void
+    public function intake(User $user, array $data, array $pendingData = [], ?Carbon $oldestTransactionDate = null, ?\Closure $progressCallback = null): void
     {
         if (empty($data['accounts'])) {
+            if ($progressCallback) {
+                $progressCallback("No accounts found in SimpleFIN data.");
+            }
             return;
         }
 
@@ -82,8 +94,10 @@ class SimpleFinIntakeService
             $nonPendingTxnIdsByAccount[$accountData['id']] = collect($accountData['transactions'])->pluck('id')->toArray();
         }
 
+        $syncedOrgIds = [];
+
         foreach ($data['accounts'] as $accountData) {
-            DB::transaction(function () use ($accountData, $user, $oldestTransactionDate, $pendingTxnIdsByAccount, $nonPendingTxnIdsByAccount, $pendingData) {
+            DB::transaction(function () use ($accountData, $user, $oldestTransactionDate, $pendingTxnIdsByAccount, $nonPendingTxnIdsByAccount, $pendingData, $progressCallback, &$syncedOrgIds) {
                 // 1. Sync Organization
                 $orgData = $accountData['org'];
                 $organization = SimpleFinOrganization::updateOrCreate(
@@ -95,6 +109,11 @@ class SimpleFinIntakeService
                         'sfin_url' => $orgData['sfin-url'] ?? null,
                     ]
                 );
+
+                if ($progressCallback && !in_array($organization->id, $syncedOrgIds)) {
+                    $progressCallback("Organization synced: {$organization->name} (ID: {$organization->id})");
+                    $syncedOrgIds[] = $organization->id;
+                }
 
                 // 2. Sync Account
                 $account = SimpleFinAccount::updateOrCreate(
@@ -129,6 +148,10 @@ class SimpleFinIntakeService
                     }
                 }
 
+                if ($progressCallback) {
+                    $progressCallback("Account synced: {$account->name} (Balance: {$account->balance}, Transactions: " . count($allTransactions) . ", ID: {$account->id})");
+                }
+
                 foreach ($allTransactions as $txnData) {
                     $incomingTransactionIds[] = $txnData['id'];
                     $postedDate = Carbon::createFromTimestamp($txnData['posted']);
@@ -142,7 +165,7 @@ class SimpleFinIntakeService
                         }
                     }
 
-                    SimpleFinTransaction::updateOrCreate(
+                    $transaction = SimpleFinTransaction::updateOrCreate(
                         ['id' => $txnData['id']],
                         [
                             'simple_fin_account_id' => $account->id,
@@ -155,14 +178,24 @@ class SimpleFinIntakeService
                             'is_pending' => $isPending,
                         ]
                     );
+
+                    if ($progressCallback) {
+                        $status = $transaction->wasRecentlyCreated ? 'created' : 'updated';
+                        $pendingStatus = $isPending ? ' (PENDING)' : '';
+                        $progressCallback("  Transaction {$status}: {$transaction->description} ({$transaction->amount}){$pendingStatus} (ID: {$transaction->id})");
+                    }
                 }
 
                 // Remove missing transactions for this account ONLY if $oldestTransactionDate is provided
                 if ($oldestTransactionDate) {
-                    $account->transactions()
+                    $deletedCount = $account->transactions()
                         ->whereNotIn('id', $incomingTransactionIds)
                         ->where('posted', '>=', $oldestTransactionDate)
                         ->delete();
+
+                    if ($progressCallback && $deletedCount > 0) {
+                        $progressCallback("  Removed {$deletedCount} missing transactions for account {$account->name}.");
+                    }
                 }
             });
         }
