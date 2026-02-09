@@ -22,28 +22,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_09_230120_run_maximal_simple_fin_intake.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-C7GyD-O3.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-Cet-eSMe.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/app-DfiACrll.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/filament-chart-plugins-DCqx1Vki.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/assets/theme-CP3MNxoS.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/SpendsThisMonth.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/SpendsThisMonth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/DailyUpkeep.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/DailyUpkeep.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/UserFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/UserFactory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/2026_02_08_132716_add_simple_fin_url_to_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2026_02_08_132716_add_simple_fin_url_to_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-Dy5gxGMA.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-WhnnaVvy.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/app-cchtMALD.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/filament-chart-plugins-isVIs825.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/assets/theme-IHbt0vGk.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +35,7 @@
     <execution />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="21241" />
+    <option name="cachedIndexableFilesCount" value="21246" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -481,7 +461,7 @@
       <workItem from="1770573840010" duration="7064000" />
       <workItem from="1770640911198" duration="19000" />
       <workItem from="1770640963983" duration="20000" />
-      <workItem from="1770672848399" duration="5367000" />
+      <workItem from="1770672848399" duration="6286000" />
     </task>
     <servers />
   </component>
