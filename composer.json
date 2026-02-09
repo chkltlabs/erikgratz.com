@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "bensampo/laravel-enum": "^6.11",
         "filament/filament": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
