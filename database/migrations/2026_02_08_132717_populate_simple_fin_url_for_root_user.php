@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('simple_fin_url', 1024)->nullable();
-        });
+        $rootExample = \App\Models\User::factory()->root()->make();
+        \App\Models\User::whereEmail($rootExample->email)
+            ->update([
+                'simple_fin_url' => env('SIMPLE_FIN_URL')
+            ]);
     }
 };
