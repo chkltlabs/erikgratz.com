@@ -30,12 +30,14 @@ class SimpleResource extends FilamentTestCase
     public function test_simple_resource_can_create()
     {
         $model = static::$modelClass::factory()->make();
+        $data = $model->toArray();
 
         Livewire::test(static::$pageClass)
-            ->callAction('create', $model->toArray())
+            ->callAction('create', $data)
             ->assertHasNoActionErrors();
 
-        self::assertNotNull($model->refresh());
+        $verifyData = array_diff_key($data, array_flip(['tags']));
+        self::assertNotNull(static::$modelClass::where($verifyData)->first());
     }
 
     public function test_simple_resource_can_edit()

@@ -25,4 +25,9 @@ class Account extends Model
             get: fn () => $this->user->name.' '.$this->type,
         );
     }
+
+    public function simpleFinAccount(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(\App\Models\SimpleFin\SimpleFinAccount::class, 'associated');
+    }
 }

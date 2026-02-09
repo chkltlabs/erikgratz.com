@@ -1,12 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AIAssistantCustomInstructionsStorage">
+    <option name="instructions">
+      <map>
+        <entry key="AIAssistant.General.ProjectPrompt">
+          <value>
+            <AIAssistantStoredInstruction>
+              <option name="actionId" value="AIAssistant.General.ProjectPrompt" />
+              <option name="content" value="Always run tests inside the sail container, and always run them in parallel." />
+            </AIAssistantStoredInstruction>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="AIDiffSettings">
+    <option name="showAIDiff" value="true" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/PeriodicSpendResource/Widgets/SpendOverTimeChart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/PastStatsChart.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_09_230120_run_maximal_simple_fin_intake.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-C7GyD-O3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-Cet-eSMe.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-DfiACrll.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/filament-chart-plugins-DCqx1Vki.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/theme-CP3MNxoS.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/CardResource/RelationManagers/BenefitsRelationManager.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/UserResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/SpendsThisMonth.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/SpendsThisMonth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/DailyUpkeep.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/DailyUpkeep.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/UserFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/UserFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2026_02_08_132716_add_simple_fin_url_to_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2026_02_08_132716_add_simple_fin_url_to_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-Dy5gxGMA.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-WhnnaVvy.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-cchtMALD.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/filament-chart-plugins-isVIs825.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/theme-IHbt0vGk.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +53,10 @@
   <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="21241" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -31,6 +72,10 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.4.14/bin/php">
     <include_path>
@@ -125,7 +170,6 @@
       <path value="$PROJECT_DIR$/vendor/nunomaduro/termwind" />
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/psr/http-client" />
-      <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/uri-template" />
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
@@ -207,6 +251,9 @@
       <path value="$PROJECT_DIR$/vendor/filament/schemas" />
       <path value="$PROJECT_DIR$/vendor/league/uri-components" />
       <path value="$PROJECT_DIR$/vendor/scrivo/highlight.php" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/brianium/paratest" />
+      <path value="$PROJECT_DIR$/vendor/fidry/cpu-core-counter" />
       <path value="$PROJECT_DIR$/vendor/filament/query-builder" />
     </include_path>
   </component>
@@ -225,16 +272,20 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.laravel-idea.update-module-directories": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHELLCHECK.PATH": "/Users/erikgratz/Library/Application Support/JetBrains/PhpStorm2025.3/plugins/Shell Script/shellcheck",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "feature/data-integration-via-simplefin",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/erikgratz/Code/erikgratz.com/app/Filament/Resources/CardResource/Pages",
     "node.js.detected.package.eslint": "true",
@@ -243,7 +294,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "php.override.implement.member.chooser.php.doc": "NONE",
-    "settings.editor.selected.configurable": "settings.php.debug.step.filters",
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
     "to.speed.mode.migration.done": "true",
     "ts.external.directory.path": "/Applications/PhpStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
@@ -254,12 +305,20 @@
     ]
   }
 }]]></component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1773244811530" />
+    <option name="spentUsd" value="0.00513175" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="6" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Filament/Resources/CardResource/Pages" />
       <recent name="$PROJECT_DIR$/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/views/livewire" />
     </key>
   </component>
@@ -272,8 +331,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PS-252.27397.112" />
-        <option value="bundled-php-predefined-a98d8de5180a-b35feea871ed-com.jetbrains.php.sharedIndexes-PS-252.27397.112" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.30387.85" />
+        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.30387.85" />
       </set>
     </attachedChunks>
   </component>
@@ -415,6 +474,14 @@
       <workItem from="1768911032617" duration="7175000" />
       <workItem from="1768931655754" duration="2397000" />
       <workItem from="1769615582528" duration="1726000" />
+      <workItem from="1770298268120" duration="55000" />
+      <workItem from="1770321582545" duration="622000" />
+      <workItem from="1770324710703" duration="680000" />
+      <workItem from="1770556777064" duration="13086000" />
+      <workItem from="1770573840010" duration="7064000" />
+      <workItem from="1770640911198" duration="19000" />
+      <workItem from="1770640963983" duration="20000" />
+      <workItem from="1770672848399" duration="5367000" />
     </task>
     <servers />
   </component>

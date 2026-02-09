@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -12,9 +13,7 @@ class InertiaPageControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_blog_returns_an_ok_response()
     {
         $blogPosts = \App\Models\BlogPost::factory()->times(3)->create();
@@ -26,9 +25,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_contact_returns_an_ok_response()
     {
         $response = $this->get(route('contact'));
@@ -38,9 +35,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_donate_returns_an_ok_response()
     {
         $response = $this->get('donate');
@@ -50,9 +45,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_index_returns_an_ok_response()
     {
         $response = $this->get(route('home'));
@@ -62,9 +55,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_mock_returns_an_ok_response()
     {
         $response = $this->get('mock/{page}');
@@ -74,9 +65,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_play_returns_an_ok_response()
     {
         $response = $this->get('play');
@@ -86,9 +75,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_portfolio_returns_an_ok_response()
     {
         $response = $this->get('portfolio');
@@ -98,9 +85,7 @@ class InertiaPageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_wedding_returns_an_ok_response()
     {
         $response = $this->get('wedding');

@@ -29,7 +29,7 @@ class Card extends Model
     ];
 
     protected $casts = [
-        'date_opened' => 'date',
+        'date_opened' => 'date:Y-m-d',
         'points_program' => PointsProgram::class,
     ];
 
@@ -115,5 +115,10 @@ class Card extends Model
     {
         return $query->where('balance', '>', 0)
             ->where('interest_saving_balance', 0);
+    }
+
+    public function simpleFinAccount(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(\App\Models\SimpleFin\SimpleFinAccount::class, 'associated');
     }
 }

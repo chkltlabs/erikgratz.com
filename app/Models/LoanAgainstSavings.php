@@ -17,8 +17,8 @@ class LoanAgainstSavings extends Model
     ];
 
     protected $casts = [
-        'loan_date' => 'date',
-        'paid_on' => 'date',
+        'loan_date' => 'date:Y-m-d',
+        'paid_on' => 'date:Y-m-d',
     ];
 
     public function scopeThisMonth($query)

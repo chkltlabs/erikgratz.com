@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
             'spend' => Spend::class,
             'periodic_spend' => PeriodicSpend::class,
             'loan_against_savings' => LoanAgainstSavings::class,
+            'account' => \App\Models\Account::class,
+            'card' => \App\Models\Card::class,
         ]);
     }
 

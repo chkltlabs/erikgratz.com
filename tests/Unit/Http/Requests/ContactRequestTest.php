@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Http\Requests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -19,9 +20,7 @@ class ContactRequestTest extends TestCase
         $this->subject = new \App\Http\Requests\ContactRequest;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorize()
     {
         $actual = $this->subject->authorize();
@@ -29,9 +28,7 @@ class ContactRequestTest extends TestCase
         $this->assertFalse($actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rules()
     {
         $actual = $this->subject->rules();

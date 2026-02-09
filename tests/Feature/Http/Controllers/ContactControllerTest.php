@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -13,9 +14,7 @@ class ContactControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_returns_an_ok_response()
     {
         $contact = \App\Models\Contact::factory()->create();
@@ -29,9 +28,7 @@ class ContactControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response()
     {
         $contacts = \App\Models\Contact::factory()->times(3)->create();
@@ -43,9 +40,7 @@ class ContactControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function show_returns_an_ok_response()
     {
         $contact = \App\Models\Contact::factory()->create();
@@ -57,9 +52,7 @@ class ContactControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response()
     {
         $data = [
@@ -72,9 +65,7 @@ class ContactControllerTest extends TestCase
         $this->assertDatabaseHas('contacts', $data);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_validates_with_a_form_request()
     {
         $this->assertActionUsesFormRequest(

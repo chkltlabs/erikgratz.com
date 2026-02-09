@@ -6,6 +6,7 @@ use App\Livewire\Page\Photo;
 use App\Models\Photo as PhotoModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PhotoTest extends TestCase
@@ -43,13 +44,13 @@ class PhotoTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_correct_title_constant()
     {
         $this->assertEquals('Photo', Photo::TITLE);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_render_the_component()
     {
         Livewire::test(Photo::class)
@@ -57,7 +58,7 @@ class PhotoTest extends TestCase
             ->assertViewIs('livewire.page.photo');
     }
 
-    /** @test */
+    #[Test]
     public function it_loads_all_photos_correctly()
     {
         $component = Livewire::test(Photo::class);
@@ -70,7 +71,7 @@ class PhotoTest extends TestCase
         $this->assertEquals('Mixed Photo', $photos[2]['title']);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_unique_tags_with_all_option()
     {
         $component = Livewire::test(Photo::class);
@@ -90,14 +91,14 @@ class PhotoTest extends TestCase
         $this->assertEquals('all', $tags[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_initializes_with_all_tag_selected()
     {
         Livewire::test(Photo::class)
             ->assertSet('selectedTag', 'all');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_filter_by_tag()
     {
         Livewire::test(Photo::class)
@@ -105,7 +106,7 @@ class PhotoTest extends TestCase
             ->assertSet('selectedTag', 'nature');
     }
 
-    /** @test */
+    #[Test]
     public function filtered_photos_returns_all_when_all_selected()
     {
         $component = Livewire::test(Photo::class);
@@ -115,7 +116,7 @@ class PhotoTest extends TestCase
         $this->assertCount(3, $filteredPhotos);
     }
 
-    /** @test */
+    #[Test]
     public function filtered_photos_filters_by_nature_tag()
     {
         $component = Livewire::test(Photo::class)
@@ -131,7 +132,7 @@ class PhotoTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function filtered_photos_filters_by_portrait_tag()
     {
         $component = Livewire::test(Photo::class);
@@ -143,7 +144,7 @@ class PhotoTest extends TestCase
         $this->assertEquals('Portrait Photo', array_first($filteredPhotos)['title']);
     }
 
-    /** @test */
+    #[Test]
     public function filtered_photos_filters_by_people_tag()
     {
         $component = Livewire::test(Photo::class)
@@ -159,7 +160,7 @@ class PhotoTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function filtered_photos_returns_empty_for_non_existent_tag()
     {
         $component = Livewire::test(Photo::class)
@@ -170,7 +171,7 @@ class PhotoTest extends TestCase
         $this->assertCount(0, $filteredPhotos);
     }
 
-    /** @test */
+    #[Test]
     public function component_is_reactive_to_tag_changes()
     {
         Livewire::test(Photo::class)
@@ -181,7 +182,7 @@ class PhotoTest extends TestCase
             ->assertSet('selectedTag', 'all');
     }
 
-    /** @test */
+    #[Test]
     public function photos_computed_property_returns_array_format()
     {
         $component = Livewire::test(Photo::class);
@@ -199,7 +200,7 @@ class PhotoTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function tags_computed_property_handles_empty_photos()
     {
         // Clear all photos
@@ -212,7 +213,7 @@ class PhotoTest extends TestCase
         $this->assertEquals(['all'], $tags);
     }
 
-    /** @test */
+    #[Test]
     public function component_uses_correct_layout()
     {
         $reflection = new \ReflectionClass(Photo::class);

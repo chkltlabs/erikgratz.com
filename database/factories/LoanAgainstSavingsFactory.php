@@ -18,7 +18,7 @@ class LoanAgainstSavingsFactory extends Factory
     public function definition()
     {
         return [
-            'balance' => $this->faker->randomFloat(),
+            'balance' => $this->faker->randomFloat(2, 0, 100000),
             'reason' => $this->faker->word(),
             'loan_date' => $this->faker->date(),
             'paid_on' => $this->faker->date(),

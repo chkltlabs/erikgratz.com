@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -12,9 +13,7 @@ class ContactApiControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_returns_an_ok_response()
     {
         $contact = \App\Models\Contact::factory()->create();
@@ -26,9 +25,7 @@ class ContactApiControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response()
     {
         $contacts = \App\Models\Contact::factory()->times(3)->create();

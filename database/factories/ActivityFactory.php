@@ -20,7 +20,7 @@ class ActivityFactory extends Factory
                 ->subMonths(rand(1, 40))
                 ->subDays(rand(4, 10))
                 ->toDateString(),
-            'end_date' => fn ($attrs) => Carbon::parse($attrs['start_date'])->addMonths(rand(0, 2))->addDays(rand(0, 15))->toDateString(),
+            'end_date' => Carbon::now()->addMonths(rand(1, 3))->toDateString(),
         ];
     }
 

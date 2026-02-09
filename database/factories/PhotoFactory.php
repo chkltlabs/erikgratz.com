@@ -17,7 +17,8 @@ class PhotoFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->sentence(),
+            'path' => 'photos/' . $this->faker->uuid() . '.jpg',
         ];
     }
 }

@@ -23,6 +23,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'imageUrl',
         'monthly_pay',
+        'simple_fin_url',
     ];
 
     /**
