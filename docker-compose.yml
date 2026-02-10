@@ -12,7 +12,7 @@ services:
                 XDEBUG: '${XDEBUG}'
                 XDEBUG_PORT: '${XDEBUG_PORT}'
         mem_limit: 4g
-        image: sail-8.4/app
+        image: sail-8.3/app
         ports:
             - '${APP_PORT:-80}:80'
             - '${FORWARD_VITE_PORT:-5174}:${VITE_PORT:-5174}'
