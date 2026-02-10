@@ -21,11 +21,8 @@ class SpendAssociationField
                         ->orWhereHas('activity', fn ($q) => $q->where('name', 'like', '%' . $search . '%'))
                         ->limit(50)
                         ->get()
-                        ->flatMap(fn (Spend $record) => [
-                            $record->id => ($record->activity?->name ? ($record->activity->name . ' • ') : '')
-                                . $record->name
-                                . ($record->activity?->start_date ? (' • ' . $record->activity->start_date->format('M jS')) : '')
-                                . ($record->activity?->end_date ? (' - ' . $record->activity->end_date->format('M jS')) : ''),
+                        ->mapWithKeys(fn (Spend $record) => [
+                            $record->id => $record->display_name,
                         ])
                         ->toArray()
                     )
@@ -34,20 +31,14 @@ class SpendAssociationField
                         ->latest()
                         ->limit(10)
                         ->get()
-                        ->flatMap(fn (Spend $record) => [
-                            $record->id => ($record->activity?->name ? ($record->activity->name . ' • ') : '')
-                                . $record->name
-                                . ($record->activity?->start_date ? (' • ' . $record->activity->start_date->format('M jS')) : '')
-                                . ($record->activity?->end_date ? (' - ' . $record->activity->end_date->format('M jS')) : ''),
+                        ->mapWithKeys(fn (Spend $record) => [
+                            $record->id => $record->display_name,
                         ])
                         ->toArray()
                     )
                     ->getOptionLabelUsing(function ($value): ?string {
                         $record = Spend::find($value);
-                        return $record ? (($record->activity?->name ? ($record->activity->name . ' • ') : '')
-                            . $record->name
-                            . ($record->activity?->start_date ? (' • ' . $record->activity->start_date->format('M jS')) : '')
-                            . ($record->activity?->end_date ? (' - ' . $record->activity->end_date->format('M jS')) : '')) : null;
+                        return $record?->display_name;
                     }),
                 MorphType::make(PeriodicSpend::class)
                     ->titleAttribute('name')
@@ -55,10 +46,8 @@ class SpendAssociationField
                         ->where('name', 'like', "%{$search}%")
                         ->limit(50)
                         ->get()
-                        ->flatMap(fn (PeriodicSpend $record) => [
-                            $record->id => $record->name
-                                . ($record->start_date ? (' • ' . $record->start_date->format('M jS')) : '')
-                                . ($record->end_date ? (' - ' . $record->end_date->format('M jS')) : ''),
+                        ->mapWithKeys(fn (PeriodicSpend $record) => [
+                            $record->id => $record->display_name,
                         ])
                         ->toArray()
                     )
@@ -66,18 +55,14 @@ class SpendAssociationField
                         ->latest()
                         ->limit(10)
                         ->get()
-                        ->flatMap(fn (PeriodicSpend $record) => [
-                            $record->id => $record->name
-                                . ($record->start_date ? (' • ' . $record->start_date->format('M jS')) : '')
-                                . ($record->end_date ? (' - ' . $record->end_date->format('M jS')) : ''),
+                        ->mapWithKeys(fn (PeriodicSpend $record) => [
+                            $record->id => $record->display_name,
                         ])
                         ->toArray()
                     )
                     ->getOptionLabelUsing(function ($value): ?string {
                         $record = PeriodicSpend::find($value);
-                        return $record ? ($record->name
-                            . ($record->start_date ? (' • ' . $record->start_date->format('M jS')) : '')
-                            . ($record->end_date ? (' - ' . $record->end_date->format('M jS')) : '')) : null;
+                        return $record?->display_name;
                     }),
             ])
             ->searchable();

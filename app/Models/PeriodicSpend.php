@@ -217,4 +217,13 @@ class PeriodicSpend extends Model
     {
         return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
+
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->name
+                . ($this->start_date ? (' • ' . $this->start_date->format('M jS')) : '')
+                . ($this->end_date ? (' - ' . $this->end_date->format('M jS')) : ''),
+        );
+    }
 }

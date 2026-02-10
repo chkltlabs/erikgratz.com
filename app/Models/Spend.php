@@ -7,6 +7,7 @@ use App\Enums\SpendType;
 use App\Models\Traits\GetsDumped;
 use App\Models\Traits\HasPayments;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -58,5 +59,15 @@ class Spend extends Model
     public function transactions(): MorphMany
     {
         return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
+    }
+
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->activity?->name ? ($this->activity->name . ' • ') : '')
+                . $this->name
+                . ($this->activity?->start_date ? (' • ' . $this->activity->start_date->format('M jS')) : '')
+                . ($this->activity?->end_date ? (' - ' . $this->activity->end_date->format('M jS')) : ''),
+        );
     }
 }
