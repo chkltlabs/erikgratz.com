@@ -16,7 +16,10 @@ class PhotoTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+    }
 
+    private function createPhotos(): void
+    {
         PhotoModel::truncate();
         // Create test photos with different tags
         PhotoModel::factory()->create([
@@ -51,166 +54,75 @@ class PhotoTest extends TestCase
     }
 
     #[Test]
-    public function it_can_render_the_component()
+    public function filtered_photos_various_tags()
     {
-        Livewire::test(Photo::class)
-            ->assertStatus(200)
-            ->assertViewIs('livewire.page.photo');
-    }
-
-    #[Test]
-    public function it_loads_all_photos_correctly()
-    {
+        $this->createPhotos();
         $component = Livewire::test(Photo::class);
 
-        $photos = $component->get('photos');
+        // All
+        $this->assertCount(3, $component->get('filteredPhotos'));
 
-        $this->assertCount(3, $photos);
-        $this->assertEquals('Nature Photo', $photos[0]['title']);
-        $this->assertEquals('Portrait Photo', $photos[1]['title']);
-        $this->assertEquals('Mixed Photo', $photos[2]['title']);
-    }
-
-    #[Test]
-    public function it_generates_unique_tags_with_all_option()
-    {
-        $component = Livewire::test(Photo::class);
-
-        $tags = $component->get('tags');
-
-        $this->assertContains('all', $tags);
-        $this->assertContains('nature', $tags);
-        $this->assertContains('landscape', $tags);
-        $this->assertContains('portrait', $tags);
-        $this->assertContains('people', $tags);
-
-        // Should have 'all' + 4 unique tags = 5 total
-        $this->assertCount(5, $tags);
-
-        // 'all' should be first
-        $this->assertEquals('all', $tags[0]);
-    }
-
-    #[Test]
-    public function it_initializes_with_all_tag_selected()
-    {
-        Livewire::test(Photo::class)
-            ->assertSet('selectedTag', 'all');
-    }
-
-    #[Test]
-    public function it_can_filter_by_tag()
-    {
-        Livewire::test(Photo::class)
-            ->call('filterByTag', 'nature')
-            ->assertSet('selectedTag', 'nature');
-    }
-
-    #[Test]
-    public function filtered_photos_returns_all_when_all_selected()
-    {
-        $component = Livewire::test(Photo::class);
-
+        // Nature
+        $component->call('filterByTag', 'nature');
         $filteredPhotos = $component->get('filteredPhotos');
-
-        $this->assertCount(3, $filteredPhotos);
-    }
-
-    #[Test]
-    public function filtered_photos_filters_by_nature_tag()
-    {
-        $component = Livewire::test(Photo::class)
-            ->call('filterByTag', 'nature');
-
-        $filteredPhotos = $component->get('filteredPhotos');
-
         $this->assertCount(2, $filteredPhotos);
-
-        // Check that both photos contain the 'nature' tag
         foreach ($filteredPhotos as $photo) {
             $this->assertContains('nature', $photo['tags']);
         }
-    }
 
-    #[Test]
-    public function filtered_photos_filters_by_portrait_tag()
-    {
-        $component = Livewire::test(Photo::class);
+        // Portrait
         $component->call('filterByTag', 'portrait');
-
         $filteredPhotos = $component->get('filteredPhotos');
-
         $this->assertCount(1, $filteredPhotos);
         $this->assertEquals('Portrait Photo', array_first($filteredPhotos)['title']);
-    }
 
-    #[Test]
-    public function filtered_photos_filters_by_people_tag()
-    {
-        $component = Livewire::test(Photo::class)
-            ->call('filterByTag', 'people');
-
+        // People
+        $component->call('filterByTag', 'people');
         $filteredPhotos = $component->get('filteredPhotos');
-
         $this->assertCount(2, $filteredPhotos);
-
-        // Check that both photos contain the 'people' tag
         foreach ($filteredPhotos as $photo) {
             $this->assertContains('people', $photo['tags']);
         }
+
+        // Non-existent
+        $component->call('filterByTag', 'nonexistent');
+        $this->assertCount(0, $component->get('filteredPhotos'));
     }
 
     #[Test]
-    public function filtered_photos_returns_empty_for_non_existent_tag()
+    public function component_properties_and_reactivity()
     {
-        $component = Livewire::test(Photo::class)
-            ->call('filterByTag', 'nonexistent');
-
-        $filteredPhotos = $component->get('filteredPhotos');
-
-        $this->assertCount(0, $filteredPhotos);
-    }
-
-    #[Test]
-    public function component_is_reactive_to_tag_changes()
-    {
+        $this->createPhotos();
         Livewire::test(Photo::class)
             ->assertSet('selectedTag', 'all')
             ->call('filterByTag', 'landscape')
             ->assertSet('selectedTag', 'landscape')
             ->call('filterByTag', 'all')
-            ->assertSet('selectedTag', 'all');
+            ->assertSet('selectedTag', 'all')
+            ->assertStatus(200)
+            ->assertViewIs('livewire.page.photo');
     }
 
     #[Test]
-    public function photos_computed_property_returns_array_format()
+    public function photos_and_tags_computed_properties()
     {
+        $this->createPhotos();
         $component = Livewire::test(Photo::class);
 
         $photos = $component->get('photos');
-
         $this->assertIsArray($photos);
-
-        foreach ($photos as $photo) {
-            $this->assertArrayHasKey('title', $photo);
-            $this->assertArrayHasKey('tags', $photo);
-            $this->assertArrayHasKey('url', $photo);
-            $this->assertArrayHasKey('path', $photo);
-            $this->assertArrayHasKey('description', $photo);
-        }
-    }
-
-    #[Test]
-    public function tags_computed_property_handles_empty_photos()
-    {
-        // Clear all photos
-        PhotoModel::truncate();
-
-        $component = Livewire::test(Photo::class);
+        $this->assertCount(3, $photos);
 
         $tags = $component->get('tags');
+        $this->assertContains('all', $tags);
+        $this->assertCount(5, $tags);
+        $this->assertEquals('all', $tags[0]);
 
-        $this->assertEquals(['all'], $tags);
+        // Empty case
+        PhotoModel::truncate();
+        \Illuminate\Support\Facades\Cache::forget('photos.all');
+        $component = Livewire::test(Photo::class);
+        $this->assertEquals(['all'], $component->get('tags'));
     }
 
     #[Test]

@@ -26,6 +26,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use App\Filament\Resources\SpendResource\RelationManagers\TransactionsRelationManager as SpendTransactionsRelationManager;
 
 class SpendResource extends Resource
 {
@@ -162,6 +163,13 @@ class SpendResource extends Resource
             'index' => ListSpends::route('/'),
             'create' => CreateSpend::route('/create'),
             'edit' => EditSpend::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            SpendTransactionsRelationManager::class,
         ];
     }
 

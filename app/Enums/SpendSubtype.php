@@ -47,6 +47,7 @@ final class SpendSubtype extends Enum
 
     const HousingFree = 'housing_free';
 
+    const TransportFerry = 'transport_ferry';
     const TransportFlight = 'transport_flight';
 
     const TransportTrain = 'transport_train';

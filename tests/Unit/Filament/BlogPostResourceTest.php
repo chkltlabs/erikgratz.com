@@ -16,7 +16,14 @@ class BlogPostResourceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actingAs(User::first() ?? User::factory()->create());
+        // Skip actingAs in setUp to avoid creating user for every test if not needed
+        // but many tests here use Livewire components which might require authentication.
+        // Let's keep it but maybe optimize how the user is retrieved.
+        static $user = null;
+        if (!$user) {
+            $user = User::first() ?? User::factory()->create();
+        }
+        $this->actingAs($user);
     }
 
     public function test_blog_post_list_renders()

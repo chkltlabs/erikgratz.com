@@ -275,6 +275,42 @@ class SimpleFinIntakeTest extends TestCase
         $this->assertEquals($card->id, $sfinAccount->fresh()->associated->id);
     }
 
+    public function test_it_marks_transaction_as_pending_if_posted_is_zero()
+    {
+        $data = [
+            'accounts' => [
+                [
+                    'id' => 'ACT-1',
+                    'name' => 'Test Account',
+                    'currency' => 'USD',
+                    'balance' => '100.00',
+                    'available-balance' => '90.00',
+                    'balance-date' => 1700000000,
+                    'org' => [
+                        'id' => 'ORG-1',
+                        'name' => 'Test Org',
+                        'domain' => 'test.com',
+                    ],
+                    'transactions' => [
+                        [
+                            'id' => 'TXN-PENDING-EPOCH',
+                            'posted' => 0,
+                            'amount' => '-10.00',
+                            'description' => 'Pending Epoch Txn',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->service->intake($this->user, $data, [], null);
+
+        $this->assertDatabaseHas('simple_fin_transactions', [
+            'id' => 'TXN-PENDING-EPOCH',
+            'is_pending' => true,
+        ]);
+    }
+
     public function test_it_fetches_and_intakes_data_correctly()
     {
         $this->user->update(['simple_fin_url' => 'https://example.com/sfin']);

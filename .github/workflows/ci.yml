@@ -1,0 +1,127 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ hashFiles('vendor/laravel/sail/runtimes/8.4/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --no-scripts
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Build and Cache Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./vendor/laravel/sail/runtimes/8.4
+          push: false
+          load: true
+          tags: sail-8.4/app:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          build-args: |
+            WWWGROUP=1000
+            WWWUSER=1000
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Start Docker Compose
+        env:
+          WWWGROUP: 1000
+          WWWUSER: 1000
+        run: |
+          docker compose up -d
+          sleep 10
+
+      - name: Install Dependencies
+        run: docker compose exec -T laravel.test composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generate key
+        run: docker compose exec -T laravel.test php artisan key:generate
+
+      - name: Directory Permissions
+        run: docker compose exec -T laravel.test chmod -R 777 storage bootstrap/cache
+
+      - name: Wait for MySQL
+        env:
+          WWWGROUP: 1000
+          WWWUSER: 1000
+        run: |
+          until docker compose exec -T mysql mysqladmin ping -p'password' --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+        timeout-minutes: 2
+
+      - name: Run Migrations
+        run: docker compose exec -T laravel.test php artisan migrate --force
+
+      - name: Run Parallel Tests
+        run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-cobertura=cobertura.xml
+
+      - name: Get List of Changed Files in App Dir
+        id: changed-files
+        if: github.event_name == 'pull_request'
+          && always() && !cancelled()
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          path: 'app'
+          # Avoid using single or double quotes for multiline patterns
+          files: |
+            **.php
+
+      - name: Analyze Coverage of App Dir Files
+        id: analyze
+        if: github.event_name == 'pull_request'
+          && steps.changed-files.outputs.all_changed_files_count != 0
+          && always() && !cancelled()
+        uses: chkltlabs/CodeCoverageSummary@v2
+        with:
+          filename: cobertura.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          prfiles: " ${{ steps.changed-files.outputs.all_changed_files }} "
+          thresholds: '80 90'
+
+      - name: Add Coverage PR Comment
+        if: github.event_name == 'pull_request'
+          && steps.changed-files.outputs.all_changed_files_count != 0
+          && always() && !cancelled()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          hide_and_recreate: true
+          hide_classify: 'OUTDATED'
+          path: code-coverage-results.md

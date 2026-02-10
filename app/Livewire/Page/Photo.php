@@ -14,7 +14,11 @@ class Photo extends Component
     #[Computed]
     public function photos(): array
     {
-        return \App\Models\Photo::all()->map(fn ($p) => $p->toArray())->toArray();
+        return \Illuminate\Support\Facades\Cache::remember(
+            'photos.all',
+            3600,
+            fn () => \App\Models\Photo::all()->map(fn ($p) => $p->toArray())->toArray()
+        );
     }
 
     #[Computed]

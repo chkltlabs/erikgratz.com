@@ -154,12 +154,16 @@ class SimpleFinIntakeService
 
                 foreach ($allTransactions as $txnData) {
                     $incomingTransactionIds[] = $txnData['id'];
-                    $postedDate = Carbon::createFromTimestamp($txnData['posted']);
+                    $postedTs = max(1, (int) ($txnData['posted'] ?? 0));
+                    $postedDate = Carbon::createFromTimestamp($postedTs);
 
                     // Differentiate pending:
                     // A transaction is pending if it is in pendingData BUT NOT in the regular (non-pending) data.
+                    // ALSO, a transaction is pending if posted date is 0 (epoch).
                     $isPending = false;
-                    if (isset($pendingTxnIdsByAccount[$account->id]) && in_array($txnData['id'], $pendingTxnIdsByAccount[$account->id])) {
+                    if ($txnData['posted'] == 0) {
+                        $isPending = true;
+                    } elseif (isset($pendingTxnIdsByAccount[$account->id]) && in_array($txnData['id'], $pendingTxnIdsByAccount[$account->id])) {
                         if (!isset($nonPendingTxnIdsByAccount[$account->id]) || !in_array($txnData['id'], $nonPendingTxnIdsByAccount[$account->id])) {
                             $isPending = true;
                         }
@@ -174,7 +178,9 @@ class SimpleFinIntakeService
                             'description' => $txnData['description'],
                             'payee' => $txnData['payee'] ?? null,
                             'memo' => $txnData['memo'] ?? null,
-                            'transacted_at' => isset($txnData['transacted_at']) ? Carbon::createFromTimestamp($txnData['transacted_at']) : null,
+                            'transacted_at' => (isset($txnData['transacted_at']) && (int)$txnData['transacted_at'] >= 1)
+                                ? Carbon::createFromTimestamp(max(1, (int)$txnData['transacted_at']))
+                                : null,
                             'is_pending' => $isPending,
                         ]
                     );

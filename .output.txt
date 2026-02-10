@@ -1,266 +1,563 @@
 PHPUnit 11.5.52 by Sebastian Bergmann and contributors.
-Runtime:       PHP 8.5.2
-Configuration: /Users/erikgratz/Code/erikgratz.com/phpunit.xml
-EE                                                                  2 / 2 (100%)
-Time: 00:00.212, Memory: 54.50 MB
-There were 2 errors:
-1) Tests\Feature\SimpleFinIntakeCommandTest::test_command_fetches_and_intakes_data_for_all_users_with_url
-Illuminate\Database\QueryException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
+Runtime:       PHP 8.4.17 with PCOV 1.0.12
+Configuration: /var/www/html/phpunit.xml
+.F.E                                                                4 / 4 (100%)
+Time: 00:03.182, Memory: 103.00 MB
+There was 1 error:
+1) Tests\Feature\Filament\Resources\Spend\RelationManagers\TransactionsRelationManagerTest::test_attach_transactions_header_action_associates_selected_transactions
+Illuminate\View\ViewException: Class "Filament\Tables\Actions\Action" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
+/var/www/html/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php:40
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:58
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php:59
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:22
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php:76
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:10
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:208
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:191
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:160
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php:353
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:25
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/CallableDispatcher.php:39
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:243
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:214
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:822
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:821
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:800
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:764
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:753
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:200
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:175
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:144
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:607
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:33
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/RequestBroker.php:30
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:32
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Render.php:24
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:31
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:17
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Testable.php:44
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:197
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/tests/Feature/Filament/Resources/Spend/RelationManagers/TransactionsRelationManagerTest.php:25
 Caused by
-PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:85
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:48
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php:24
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php:186
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1257
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1295
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:525
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:420
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:827
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
-Caused by
-PDOException: PDO::connect(): php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:85
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:48
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php:24
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php:186
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1257
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1295
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:525
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:420
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:827
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
-2) Tests\Feature\SimpleFinIntakeCommandTest::test_command_fetches_for_specific_user
-Illuminate\Database\QueryException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'migrations' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
-Caused by
-PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:85
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:48
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php:24
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php:186
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1257
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1295
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:525
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:420
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:827
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
-Caused by
-PDOException: PDO::connect(): php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:85
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:48
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php:24
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php:186
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1257
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:1295
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:525
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:420
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:827
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:999
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:978
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:796
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:357
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:374
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php:176
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/DatabaseMigrationRepository.php:185
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:758
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:67
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:671
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php:66
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php:799
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:211
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php:341
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php:180
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:1079
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:356
-/Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php:195
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Application.php:165
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php:447
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:451
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Testing/PendingCommand.php:675
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithConsole.php:87
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:119
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:84
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php:25
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:217
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php:101
-/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php:63
+Error: Class "Filament\Tables\Actions\Action" not found
+/var/www/html/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php:40
+/var/www/html/vendor/filament/tables/src/Concerns/InteractsWithTable.php:47
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
+/var/www/html/vendor/livewire/livewire/src/Wrapped.php:23
+/var/www/html/vendor/livewire/livewire/src/Features/SupportLifecycleHooks/SupportLifecycleHooks.php:144
+/var/www/html/vendor/livewire/livewire/src/Features/SupportLifecycleHooks/SupportLifecycleHooks.php:24
+/var/www/html/vendor/livewire/livewire/src/ComponentHook.php:19
+/var/www/html/vendor/livewire/livewire/src/ComponentHookRegistry.php:45
+/var/www/html/vendor/livewire/livewire/src/EventBus.php:60
+/var/www/html/vendor/livewire/livewire/src/helpers.php:98
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/HandleComponents/HandleComponents.php:50
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:73
+/var/www/html/vendor/livewire/volt/src/LivewireManager.php:23
+/var/www/html/storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
+/var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:123
+/var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:124
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php:57
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:22
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php:76
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:10
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:208
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:191
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:160
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php:353
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:25
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/CallableDispatcher.php:39
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:243
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:214
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:822
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:821
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:800
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:764
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:753
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:200
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:175
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:144
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:607
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:33
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/RequestBroker.php:30
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:32
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Render.php:24
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:31
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:17
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Testable.php:44
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:197
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/tests/Feature/Filament/Resources/Spend/RelationManagers/TransactionsRelationManagerTest.php:25
+--
+There was 1 failure:
+1) Tests\Feature\Filament\Resources\SimpleFin\RelationManagers\AccountsRelationManagerTest::test_has_expected_columns_and_view_action
+Failed asserting that '\n
+    \n
+        \n
+                                                \n
+        \n
+                    \n
+\n
+                                                                                                                                        \n
+        \n
+                            \n
+                    \n
+    \n
+\n
+    \n
+        \n
+        \n
+            \n
+                \n
+\n
+                                    \n
+                                                    \n
+                                                                    \n
+                                        Accounts\n
+                                    \n
+                                \n
+                                                            \n
+                        \n
+                                            \n
+                \n
+                \n
+\n
+                \n
+                \n
+\n
+                \n
+                    \n
+\n
+                    \n
+                        \n
+\n
+                        \n
+                        \n
+\n
+                        \n
+                        \n
+\n
+                        \n
+                        \n
+                    \n
+\n
+                                            \n
+                            \n
+\n
+                                                            \n
+                                \n
+    \n
+        Search\n
+    \n
+\n
+    \n
+            \n
+            \n
+            \n
+  \n
+\n
+\n
+                            \n
+    \n
+    \n
+\n
+            \n
+                    \n
+    \n
+    \n
+        \n
+    \n
+\n
+    \n
+\n
+                            \n
+                            \n
+\n
+                                                    \n
+                    \n
+                    \n
+                \n
+\n
+                \n
+            \n
+\n
+            \n
+            \n
+                            \n
+                                            \n
+                        \n
+                            \n
+                                \n
+                                \n
+                                \n
+                                                                                                                        \n
+                                            \n
+                                                                                                                        \n
+                                    \n
+                                                                                                                        \n
+                                            \n
+                                                                                                                                                            Name\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            User\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Currency\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Balance\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Available balance\n
+                                                                                                                                                \n
+                                                                            \n
+                                                                                                                                                                        \n
+                                                                                    \n
+                                        \n
+                                                                                                            \n
+                            \n
+\n
+                                                            \n
+                                    \n
+                                                                            \n
+                                                                                    \n
+                                            \n
+                                                                                            \n
+                                                    \n
+                                                    \n
+                                                    \n
+                                                    \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                in veritatis reprehenderit                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                Jayme Lockman                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                USD                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                $1,556.13                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                $7,261.25                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                    \n
+                                                                                                            \n
+                                                            \n
+                                                                                                                                    \n
+        \n
+        \n
+                            \n
+  \n
+  \n
+                \n
+    \n
+    \n
+            \n
+                            View            \n
+            \n
+                    \n
+\n
+        \n
+        \n
+                                                                                                                            \n
+                                                        \n
+                                                    \n
+                                                    \n
+                                                                                                    \n
+                                            \n
+                                                                                    \n
+                                        \n
+                                                                                    \n
+                                            \n
+    \n
+    \n
+    \n
+    \n
+                \n
+                        \n
+            \n
+                                    Summary\n
+                            \n
+                                                        \n
+            \n
+                                                            \n
+        \n
+                            \n
+                    Sum                \n
+            \n
+            \n
+                $1,556.13            \n
+        \n
+\n
+        \n
+                                                \n
+                                \n
+            \n
+                                                            \n
+        \n
+                            \n
+                    Sum                \n
+            \n
+            \n
+                $7,261.25            \n
+        \n
+\n
+        \n
+                                                \n
+            \n
+            \n
+    \n
+    \n
+                                                                                                            \n
+                            \n
+                                                    \n
+                                    \n
+            \n
+            \n
+                            \n
+                \n
+    \n
+            \n
+            Showing 1 result\n
+        \n
+    \n
+            \n
+            \n
+                \n
+    \n
+    \n
+        \n
+                                \n
+                                5\n
+                            \n
+                                                    \n
+                                10\n
+                            \n
+                                                    \n
+                                25\n
+                            \n
+                                                    \n
+                                50\n
+                            \n
+                        \n
+\n
+    \n
+\n
+    \n
+\n
+                \n
+                    Per page\n
+                \n
+            \n
+\n
+            \n
+                \n
+            \n
+            \n
+            \n
+\n
+            \n
+                            \n
+                    Per page\n
+                \n
+                    \n
+    \n
+    \n
+        \n
+                                \n
+                                5\n
+                            \n
+                                                    \n
+                                10\n
+                            \n
+                                                    \n
+                                25\n
+                            \n
+                                                    \n
+                                50\n
+                            \n
+                        \n
+\n
+    \n
+\n
+    \n
+            \n
+        \n
+    \n
+    \n
+    \n
+            \n
+                    \n
+\n
+            \n
+\n
+        \n
+            \n
+\n
+    \n
+                \n
+                    \n
+\n
+                                                                                                            \n
+\n
+        \n
+\n
+    \n
+' [ASCII](length: 13234) contains "name" [ASCII](length: 4).
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/MakesAssertions.php:79
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/helpers.php:388
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/MakesAssertions.php:77
+/var/www/html/tests/Feature/Filament/Resources/SimpleFin/RelationManagers/AccountsRelationManagerTest.php:39
 ERRORS!
-Tests: 2, Assertions: 0, Errors: 2, Deprecations: 1.
+Tests: 4, Assertions: 6, Errors: 1, Failures: 1.
+Code Coverage Report:
+  2026-02-10 16:40:09
+
+ Summary:
+  Classes:  6.77% (9/133)
+  Methods: 11.93% (42/352)
+  Lines:   11.90% (389/3270)
+App\Console\Kernel
+  Methods:  50.00% ( 1/ 2)   Lines:  28.57% (  2/  7)
+App\Enums\SpendSubtype
+  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
+App\Exceptions\Handler
+  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
+App\Filament\Forms\Fields\SpendAssociationField
+  Methods:   0.00% ( 0/ 1)   Lines:  63.01% ( 46/ 73)
+App\Filament\Resources\AccountResource
+  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
+App\Filament\Resources\ActivityResource
+  Methods:  28.57% ( 2/ 7)   Lines:  11.11% (  9/ 81)
+App\Filament\Resources\BlogPostResource
+  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
+App\Filament\Resources\CardResource
+  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
+App\Filament\Resources\LoanAgainstSavingsResource
+  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
+App\Filament\Resources\PeriodicSpendResource
+  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
+App\Filament\Resources\Photos\PhotoResource
+  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
+App\Filament\Resources\SimpleFin\SimpleFinAccountResource
+  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
+App\Filament\Resources\SimpleFin\SimpleFinAccountResource\RelationManagers\TransactionsRelationManager
+  Methods:   0.00% ( 0/ 1)   Lines:  97.73% ( 43/ 44)
+App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
+  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
+App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource\RelationManagers\AccountsRelationManager
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 25/ 25)
+App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
+  Methods:  40.00% ( 2/ 5)   Lines:   9.28% (  9/ 97)
+App\Filament\Resources\SpendResource
+  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
+App\Filament\Resources\SpendResource\RelationManagers\TransactionsRelationManager
+  Methods:   0.00% ( 0/ 1)   Lines:  65.22% ( 45/ 69)
+App\Filament\Resources\UserResource
+  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
+App\Models\Payment
+  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
+App\Models\SimpleFin\SimpleFinAccount
+  Methods:  50.00% ( 2/ 4)   Lines:  50.00% (  2/  4)
+App\Models\SimpleFin\SimpleFinOrganization
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Models\StateDump
+  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
+App\Models\Traits\GetsDumped
+  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
+App\Models\Traits\HasPayments
+  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
+App\Providers\AppServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Providers\AuthServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Providers\BroadcastServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Providers\EventServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Providers\FilamentConfigurationProvider
+  Methods:  50.00% ( 1/ 2)   Lines:  75.00% ( 15/ 20)
+App\Providers\Filament\AdminPanelProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
+App\Providers\HelperServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Providers\RouteServiceProvider
+  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
+App\Providers\TelescopeServiceProvider
+  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
+App\Providers\VoltServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)

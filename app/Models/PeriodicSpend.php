@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class PeriodicSpend extends Model
 {
@@ -191,12 +192,12 @@ class PeriodicSpend extends Model
         $rtn = [];
         $firstDate = Carbon::parse(array_key_first($data))->$startOf();
         $lastDate = Carbon::parse(array_key_last($data))->$endOf();
-        while ($firstDate->lte($lastDate)) {
+        while ($firstDate->lt($lastDate)) {
             $rangeDate = $firstDate->copy()->$add();
             $amount = 0;
             $keyString = $firstDate->format('Y-m-d');
             $carbonCopy = $firstDate->copy();
-            while ($firstDate->lte($rangeDate)) {
+            while ($firstDate->lt($rangeDate)) {
                 if (array_key_exists($firstDate->format('Y-m-d'), $data)) {
                     $amount += $data[$firstDate->format('Y-m-d')]['y'];
                 }
@@ -210,5 +211,10 @@ class PeriodicSpend extends Model
 
         //        dd($rtn);
         return $rtn;
+    }
+
+    public function transactions(): MorphMany
+    {
+        return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
 }
