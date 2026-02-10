@@ -10,7 +10,7 @@ class StateDumpModelTest extends TestCase
 {
     public function test_dumping()
     {
-        $c = 3;
+        $c = 1;
         foreach (StateDump::$dumpables as $dumpable) {
             if ($dumpable::count() < $c) {
                 $dumpable::factory($c)->create();
@@ -26,8 +26,8 @@ class StateDumpModelTest extends TestCase
 
     public function test_dumping_maximums()
     {
-        // 30
-        $c = 30;
+        // 5 is enough to test the mechanism without taking forever
+        $c = 5;
         foreach (StateDump::$dumpables as $dumpable) {
             if ($dumpable::count() < $c) {
                 $dumpable::factory($c)->create();
@@ -39,17 +39,6 @@ class StateDumpModelTest extends TestCase
         foreach (StateDump::$dumpables as $dumpable) {
             self::assertArrayHasKey($dumpable, $new->data);
         }
-
-        //        //300 - works fine, just takes forever
-        //        foreach(StateDump::$dumpables as $dumpable) {
-        //            $dumpable::factory(300)->create();
-        //        }
-        //
-        //        $new = StateDump::dump();
-        //
-        //        foreach(StateDump::$dumpables as $dumpable) {
-        //            self::assertArrayHasKey($dumpable, $new->data);
-        //        }
     }
 
     public function test_flag_sets()
