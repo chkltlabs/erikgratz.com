@@ -22,13 +22,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Livewire/Page/Photo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Livewire/Page/Photo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Photo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Photo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Livewire/PhotoTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Livewire/PhotoTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Models/StateDumpModelTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Models/StateDumpModelTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Unit/Filament/BlogPostResourceTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Filament/BlogPostResourceTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +34,7 @@
     <execution />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="21246" />
+    <option name="cachedIndexableFilesCount" value="21248" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -292,10 +286,10 @@
 }</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1773244811530" />
-    <option name="spentUsd" value="0.00513175" />
+    <option name="spentUsd" value="0.01874975" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="6" />
+    <option name="suspendCountdown" value="5" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -468,6 +462,7 @@
       <workItem from="1770640963983" duration="20000" />
       <workItem from="1770672848399" duration="6509000" />
       <workItem from="1770679399762" duration="3266000" />
+      <workItem from="1770682707610" duration="712000" />
     </task>
     <servers />
   </component>
