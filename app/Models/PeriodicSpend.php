@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class PeriodicSpend extends Model
 {
@@ -210,5 +211,10 @@ class PeriodicSpend extends Model
 
         //        dd($rtn);
         return $rtn;
+    }
+
+    public function transactions(): MorphMany
+    {
+        return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
 }

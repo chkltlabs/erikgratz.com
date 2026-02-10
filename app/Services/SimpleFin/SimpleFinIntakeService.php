@@ -159,8 +159,11 @@ class SimpleFinIntakeService
 
                     // Differentiate pending:
                     // A transaction is pending if it is in pendingData BUT NOT in the regular (non-pending) data.
+                    // ALSO, a transaction is pending if posted date is 0 (epoch).
                     $isPending = false;
-                    if (isset($pendingTxnIdsByAccount[$account->id]) && in_array($txnData['id'], $pendingTxnIdsByAccount[$account->id])) {
+                    if ($txnData['posted'] == 0) {
+                        $isPending = true;
+                    } elseif (isset($pendingTxnIdsByAccount[$account->id]) && in_array($txnData['id'], $pendingTxnIdsByAccount[$account->id])) {
                         if (!isset($nonPendingTxnIdsByAccount[$account->id]) || !in_array($txnData['id'], $nonPendingTxnIdsByAccount[$account->id])) {
                             $isPending = true;
                         }

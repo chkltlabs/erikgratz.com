@@ -9,6 +9,7 @@ use App\Models\Traits\HasPayments;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Spend extends Model
 {
@@ -52,5 +53,10 @@ class Spend extends Model
         }
 
         return $rtn;
+    }
+
+    public function transactions(): MorphMany
+    {
+        return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
 }

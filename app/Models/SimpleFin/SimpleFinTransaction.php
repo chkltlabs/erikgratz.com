@@ -5,6 +5,7 @@ namespace App\Models\SimpleFin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SimpleFinTransaction extends Model
 {
@@ -23,6 +24,8 @@ class SimpleFinTransaction extends Model
         'memo',
         'transacted_at',
         'is_pending',
+        'spend_type',
+        'spend_id',
     ];
 
     protected $casts = [
@@ -35,5 +38,10 @@ class SimpleFinTransaction extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(SimpleFinAccount::class, 'simple_fin_account_id');
+    }
+
+    public function spend(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__);
     }
 }
