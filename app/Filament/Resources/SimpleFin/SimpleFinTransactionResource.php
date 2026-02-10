@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\SimpleFin;
 
 use App\Filament\Resources\SimpleFin\SimpleFinTransactionResource\Pages;
+use App\Filament\Forms\Fields\SpendAssociationField;
 use App\Models\SimpleFin\SimpleFinTransaction;
 use App\Models\Spend;
 use App\Models\PeriodicSpend;
+use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\MorphToSelect;
-use Filament\Forms\Components\MorphToSelect\Type as MorphType;
 use Filament\Schemas\Schema;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Actions\BulkActionGroup;
@@ -19,7 +19,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class SimpleFinTransactionResource extends Resource
 {
@@ -53,20 +52,7 @@ class SimpleFinTransactionResource extends Resource
                 Forms\Components\DateTimePicker::make('transacted_at'),
                 Forms\Components\Toggle::make('is_pending')
                     ->required(),
-                MorphToSelect::make('spend')
-                    ->label('Associate To')
-                    ->types([
-                        MorphType::make(Spend::class)
-                            ->titleAttribute('name')
-                            ->getOptionLabelFromRecordUsing(fn (Spend $record) => ($record->activity?->name ? ($record->activity->name . ' • ') : '') . $record->name)
-                            ->modifyOptionsQueryUsing(fn (Builder $query) => $query
-                                ->orWhereHas('activity', fn ($q) => $q->where('name', 'like', '%' . request()->input('search') . '%'))
-                            ),
-                        MorphType::make(PeriodicSpend::class)
-                            ->titleAttribute('name'),
-                    ])
-                    ->searchable()
-                    ->nullable(),
+                SpendAssociationField::make('spend', false),
             ]);
     }
 

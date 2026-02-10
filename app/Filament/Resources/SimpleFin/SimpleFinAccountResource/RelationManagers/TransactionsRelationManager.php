@@ -2,19 +2,21 @@
 
 namespace App\Filament\Resources\SimpleFin\SimpleFinAccountResource\RelationManagers;
 
+use App\Filament\Forms\Fields\SpendAssociationField;
 use App\Models\PeriodicSpend;
+use App\Models\SimpleFin\SimpleFinTransaction;
 use App\Models\Spend;
 use Carbon\Carbon;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\MorphToSelect;
-use Filament\Forms\Components\MorphToSelect\Type as MorphType;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class TransactionsRelationManager extends RelationManager
 {
@@ -51,45 +53,14 @@ class TransactionsRelationManager extends RelationManager
                     ->label('Assign to Spend')
                     ->icon('heroicon-o-link')
                     ->schema([
-                        MorphToSelect::make('spend')
-                            ->label('Associate To')
-                            ->types([
-                                MorphType::make(Spend::class)
-                                    ->titleAttribute('name')
-                                    ->getOptionLabelUsing(fn (array $record): string => ($record['name']))
-                                    ->getSearchResultsUsing(fn (string $search): array => Spend::query()
-                                        ->where('name', 'like', "%{$search}%")
-                                        ->orWhereHas('activity', fn ($q) => $q->where('name', 'like', '%' . $search . '%'))
-                                        ->get()
-                                        ->flatMap(fn (Spend $record) => [
-                                            $record->id => (
-                                                $record->activity?->name
-                                                        ? ($record->activity->name . ' • ')
-                                                        : ''
-                                                )
-                                                . $record->name
-                                                . ($record->activity?->start_date
-                                                    ? (' • ' . Carbon::parse($record->activity->start_date)->format('M jS') )
-                                                    : '')
-                                                . ($record->activity?->end_date
-                                                    ? (' - ' . Carbon::parse($record->activity->end_date)->format('M jS') )
-                                                    : '')
-
-                                        ])
-                                        ->toArray()
-                                    )
-//                                    ->getOptionLabelFromRecordUsing(fn (Spend $record) => ($record->activity?->name ? ($record->activity->name . ' • ') : '') . $record->name)
-
-                                ,
-                                MorphType::make(PeriodicSpend::class)
-                                    ->titleAttribute('name'),
-                            ])
-                            ->searchable()
-                            ->required(),
+                        SpendAssociationField::make('spend', true),
                     ])
-                    ->action(function ($record, array $data) {
-                        $record->spend()->associate($data['spend']);
-                        $record->save();
+                    ->fillForm(fn (SimpleFinTransaction $record): array => [
+                        'spend_type' => $record->spend_type,
+                        'spend_id' => $record->spend_id,
+                    ])
+                    ->action(function (SimpleFinTransaction $record, array $data) {
+                        $record->update($data);
                     })
             ])
             ->bulkActions([

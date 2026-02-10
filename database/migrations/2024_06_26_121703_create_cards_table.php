@@ -28,11 +28,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('cards');
         });
-
-        Card::create(['name' => 'CS Reserve']);
-        Card::create(['name' => 'CS Preferred']);
-        Card::create(['name' => 'C1 V X (Erik)']);
-        Card::create(['name' => 'C1 V X (Amy)']);
     }
 
     /**
