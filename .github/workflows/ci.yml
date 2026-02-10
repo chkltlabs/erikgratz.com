@@ -114,7 +114,7 @@ jobs:
           indicators: true
           output: both
           prfiles: " ${{ steps.changed-files.outputs.all_changed_files }} "
-          thresholds: '60 80'
+          thresholds: '80 90'
 
       - name: Add Coverage PR Comment
         if: github.event_name == 'pull_request'
