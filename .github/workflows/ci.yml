@@ -19,7 +19,7 @@ jobs:
           php-version: '8.4'
 
       - name: Install Composer Dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist --no-scripts
 
       - name: Start Docker Compose
         run: |
