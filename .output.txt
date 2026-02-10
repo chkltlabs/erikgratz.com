@@ -1,335 +1,563 @@
-PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /Users/erikgratz/Code/erikgratz.com/config/database.php on line 65
-Deprecated: Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /Users/erikgratz/Code/erikgratz.com/config/database.php on line 65
-   INFO  Seeding database.
-[2026-02-10 16:11:17] local.ERROR: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists(select * from `activities` where (`id` = 1)) as `exists`) ["/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php",838,"#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select exists(s...', Array, Object(Closure))
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select exists(s...', Array, Object(Closure))
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3762): Illuminate\\Database\\Connection->select('select exists(s...', Array, true)
-#5 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4150): Illuminate\\Database\\Query\\Builder->exists()
-#6 /Users/erikgratz/Code/erikgratz.com/database/seeders/ActivitySpendSeeder.php(99): Illuminate\\Database\\Query\\Builder->updateOrInsert(Array, Array)
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database\\Seeders\\ActivitySpendSeeder->run()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(184): Illuminate\\Container\\Container->call(Array, Array)
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(193): Illuminate\\Database\\Seeder->{closure:Illuminate\\Database\\Seeder::__invoke():183}()
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(71): Illuminate\\Database\\Seeder->__invoke()
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(157): Illuminate\\Database\\Console\\Seeds\\SeedCommand->{closure:Illuminate\\Database\\Console\\Seeds\\SeedCommand::handle():70}()
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call(Array)
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#29 /Users/erikgratz/Code/erikgratz.com/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#30 {main}"]
-[2026-02-10 16:11:17] local.ERROR: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists(select * from `activities` where (`id` = 1)) as `exists`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists(select * from `activities` where (`id` = 1)) as `exists`) at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select exists(s...', Array, Object(Closure))
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select exists(s...', Array, Object(Closure))
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3762): Illuminate\\Database\\Connection->select('select exists(s...', Array, true)
-#5 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4150): Illuminate\\Database\\Query\\Builder->exists()
-#6 /Users/erikgratz/Code/erikgratz.com/database/seeders/ActivitySpendSeeder.php(99): Illuminate\\Database\\Query\\Builder->updateOrInsert(Array, Array)
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database\\Seeders\\ActivitySpendSeeder->run()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(184): Illuminate\\Container\\Container->call(Array, Array)
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(193): Illuminate\\Database\\Seeder->{closure:Illuminate\\Database\\Seeder::__invoke():183}()
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(71): Illuminate\\Database\\Seeder->__invoke()
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(157): Illuminate\\Database\\Console\\Seeds\\SeedCommand->{closure:Illuminate\\Database\\Console\\Seeds\\SeedCommand::handle():70}()
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call(Array)
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#29 /Users/erikgratz/Code/erikgratz.com/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#30 {main}
-[previous exception] [object] (PDOException(code: 2002): SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(67): PDO::connect('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(85): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(48): Illuminate\\Database\\Connectors\\Connector->tryAgainIfCausedByLostConnection(Object(PDOException), 'mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=mysq...', Array, Array)
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(186): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
-#5 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():181}()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1257): call_user_func(Object(Closure))
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1295): Illuminate\\Database\\Connection->getPdo()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(525): Illuminate\\Database\\Connection->getReadPdo()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(420): Illuminate\\Database\\Connection->getPdoForSelect(true)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():411}('select exists(s...', Array)
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select exists(s...', Array, Object(Closure))
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select exists(s...', Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3762): Illuminate\\Database\\Connection->select('select exists(s...', Array, true)
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4150): Illuminate\\Database\\Query\\Builder->exists()
-#17 /Users/erikgratz/Code/erikgratz.com/database/seeders/ActivitySpendSeeder.php(99): Illuminate\\Database\\Query\\Builder->updateOrInsert(Array, Array)
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database\\Seeders\\ActivitySpendSeeder->run()
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(184): Illuminate\\Container\\Container->call(Array, Array)
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(193): Illuminate\\Database\\Seeder->{closure:Illuminate\\Database\\Seeder::__invoke():183}()
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(71): Illuminate\\Database\\Seeder->__invoke()
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(157): Illuminate\\Database\\Console\\Seeds\\SeedCommand->{closure:Illuminate\\Database\\Console\\Seeds\\SeedCommand::handle():70}()
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#31 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#32 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#33 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call(Array)
-#34 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#35 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#36 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#37 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#38 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#39 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#40 /Users/erikgratz/Code/erikgratz.com/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#41 {main}
-[previous exception] [object] (PDOException(code: 0): PDO::connect(): php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(67): PDO::connect('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(85): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(48): Illuminate\\Database\\Connectors\\Connector->tryAgainIfCausedByLostConnection(Object(PDOException), 'mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=mysq...', Array, Array)
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(186): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
-#5 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():181}()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1257): call_user_func(Object(Closure))
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1295): Illuminate\\Database\\Connection->getPdo()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(525): Illuminate\\Database\\Connection->getReadPdo()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(420): Illuminate\\Database\\Connection->getPdoForSelect(true)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():411}('select exists(s...', Array)
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select exists(s...', Array, Object(Closure))
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select exists(s...', Array, Object(Closure))
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select exists(s...', Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3762): Illuminate\\Database\\Connection->select('select exists(s...', Array, true)
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4150): Illuminate\\Database\\Query\\Builder->exists()
-#17 /Users/erikgratz/Code/erikgratz.com/database/seeders/ActivitySpendSeeder.php(99): Illuminate\\Database\\Query\\Builder->updateOrInsert(Array, Array)
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database\\Seeders\\ActivitySpendSeeder->run()
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(184): Illuminate\\Container\\Container->call(Array, Array)
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(193): Illuminate\\Database\\Seeder->{closure:Illuminate\\Database\\Seeder::__invoke():183}()
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(71): Illuminate\\Database\\Seeder->__invoke()
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(157): Illuminate\\Database\\Console\\Seeds\\SeedCommand->{closure:Illuminate\\Database\\Console\\Seeds\\SeedCommand::handle():70}()
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#31 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
-#32 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
-#33 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call(Array)
-#34 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#35 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
-#36 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#37 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#38 /Users/erikgratz/Code/erikgratz.com/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#39 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#40 /Users/erikgratz/Code/erikgratz.com/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
-#41 {main}
-"}
-   Illuminate\Database\QueryException
-  SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select exists(select * from `activities` where (`id` = 1)) as `exists`)
-  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
-    834▕             $exceptionType = $this->isUniqueConstraintError($e)
-    835▕                 ? UniqueConstraintViolationException::class
-    836▕                 : QueryException::class;
-    837▕
-  ➜ 838▕             throw new $exceptionType(
-    839▕                 $this->getNameWithReadWriteType(),
-    840▕                 $query,
-    841▕                 $this->prepareBindings($bindings),
-    842▕                 $e,
-      +18 vendor frames
-  19  database/seeders/ActivitySpendSeeder.php:99
-      Illuminate\Database\Query\Builder::updateOrInsert([])
-      +22 vendor frames
-  42  artisan:35
-      Illuminate\Foundation\Console\Kernel::handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-[2026-02-10 16:11:17] local.ERROR: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select count(*) as aggregate from `telescope_entries` where `type` = exception and `family_hash` = 39033e73b4ed12406bc9c617096fe6a7) ["/Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php",838,"#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select count(*)...', Array, Object(Closure))
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select count(*)...', Array, Object(Closure))
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3389): Illuminate\\Database\\Connection->select('select count(*)...', Array, true)
-#5 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3374): Illuminate\\Database\\Query\\Builder->runSelect()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3964): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():3373}()
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3373): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3888): Illuminate\\Database\\Query\\Builder->get(Array)
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3816): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(123): Illuminate\\Database\\Query\\Builder->count()
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(165): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->countExceptionOccurences(Object(Laravel\\Telescope\\IncomingExceptionEntry))
-#12 [internal function]: Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}:164}(Object(Laravel\\Telescope\\IncomingExceptionEntry), 1)
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Arr.php(840): array_map(Object(Closure), Array, Array)
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(829): Illuminate\\Support\\Arr::map(Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(164): Illuminate\\Support\\Collection->map(Object(Closure))
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}(Object(Illuminate\\Support\\Collection), 0)
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(163): Illuminate\\Support\\Collection->each(Object(Closure))
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(140): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->storeExceptions(Object(Illuminate\\Support\\Collection))
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(664): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->store(Object(Illuminate\\Support\\Collection))
-#20 [internal function]: Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\Telescope::store():656}()
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(289): call_user_func(Object(Closure))
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(656): Laravel\\Telescope\\Telescope::withoutRecording(Object(Closure))
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/ListensForStorageOpportunities.php(65): Laravel\\Telescope\\Telescope::store(Object(Laravel\\Telescope\\Storage\\DatabaseEntriesRepository))
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\ListensForStorageOpportunities::storeEntriesBeforeTermination():64}()
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(84): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1466): Illuminate\\Container\\Container->call(Object(Closure))
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(219): Illuminate\\Foundation\\Application->terminate()
-#31 /Users/erikgratz/Code/erikgratz.com/artisan(51): Illuminate\\Foundation\\Console\\Kernel->terminate(Object(Symfony\\Component\\Console\\Input\\ArgvInput), 1)
-#32 {main}"]
-[2026-02-10 16:11:17] local.ERROR: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select count(*) as aggregate from `telescope_entries` where `type` = exception and `family_hash` = 39033e73b4ed12406bc9c617096fe6a7) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 2002): SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known (Connection: mysql, Host: mysql, Port: 3306, Database: erikgratz, SQL: select count(*) as aggregate from `telescope_entries` where `type` = exception and `family_hash` = 39033e73b4ed12406bc9c617096fe6a7) at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select count(*)...', Array, Object(Closure))
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select count(*)...', Array, Object(Closure))
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3389): Illuminate\\Database\\Connection->select('select count(*)...', Array, true)
-#5 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3374): Illuminate\\Database\\Query\\Builder->runSelect()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3964): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():3373}()
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3373): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3888): Illuminate\\Database\\Query\\Builder->get(Array)
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3816): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(123): Illuminate\\Database\\Query\\Builder->count()
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(165): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->countExceptionOccurences(Object(Laravel\\Telescope\\IncomingExceptionEntry))
-#12 [internal function]: Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}:164}(Object(Laravel\\Telescope\\IncomingExceptionEntry), 1)
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Arr.php(840): array_map(Object(Closure), Array, Array)
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(829): Illuminate\\Support\\Arr::map(Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(164): Illuminate\\Support\\Collection->map(Object(Closure))
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}(Object(Illuminate\\Support\\Collection), 0)
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(163): Illuminate\\Support\\Collection->each(Object(Closure))
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(140): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->storeExceptions(Object(Illuminate\\Support\\Collection))
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(664): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->store(Object(Illuminate\\Support\\Collection))
-#20 [internal function]: Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\Telescope::store():656}()
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(289): call_user_func(Object(Closure))
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(656): Laravel\\Telescope\\Telescope::withoutRecording(Object(Closure))
-#23 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/ListensForStorageOpportunities.php(65): Laravel\\Telescope\\Telescope::store(Object(Laravel\\Telescope\\Storage\\DatabaseEntriesRepository))
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\ListensForStorageOpportunities::storeEntriesBeforeTermination():64}()
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(84): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1466): Illuminate\\Container\\Container->call(Object(Closure))
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(219): Illuminate\\Foundation\\Application->terminate()
-#31 /Users/erikgratz/Code/erikgratz.com/artisan(51): Illuminate\\Foundation\\Console\\Kernel->terminate(Object(Symfony\\Component\\Console\\Input\\ArgvInput), 1)
-#32 {main}
-[previous exception] [object] (PDOException(code: 2002): SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(67): PDO::connect('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(85): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(48): Illuminate\\Database\\Connectors\\Connector->tryAgainIfCausedByLostConnection(Object(PDOException), 'mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=mysq...', Array, Array)
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(186): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
-#5 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():181}()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1257): call_user_func(Object(Closure))
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1295): Illuminate\\Database\\Connection->getPdo()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(525): Illuminate\\Database\\Connection->getReadPdo()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(420): Illuminate\\Database\\Connection->getPdoForSelect(true)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():411}('select count(*)...', Array)
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select count(*)...', Array, Object(Closure))
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select count(*)...', Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3389): Illuminate\\Database\\Connection->select('select count(*)...', Array, true)
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3374): Illuminate\\Database\\Query\\Builder->runSelect()
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3964): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():3373}()
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3373): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3888): Illuminate\\Database\\Query\\Builder->get(Array)
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3816): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(123): Illuminate\\Database\\Query\\Builder->count()
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(165): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->countExceptionOccurences(Object(Laravel\\Telescope\\IncomingExceptionEntry))
-#23 [internal function]: Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}:164}(Object(Laravel\\Telescope\\IncomingExceptionEntry), 1)
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Arr.php(840): array_map(Object(Closure), Array, Array)
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(829): Illuminate\\Support\\Arr::map(Array, Object(Closure))
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(164): Illuminate\\Support\\Collection->map(Object(Closure))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}(Object(Illuminate\\Support\\Collection), 0)
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(163): Illuminate\\Support\\Collection->each(Object(Closure))
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(140): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->storeExceptions(Object(Illuminate\\Support\\Collection))
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(664): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->store(Object(Illuminate\\Support\\Collection))
-#31 [internal function]: Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\Telescope::store():656}()
-#32 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(289): call_user_func(Object(Closure))
-#33 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(656): Laravel\\Telescope\\Telescope::withoutRecording(Object(Closure))
-#34 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/ListensForStorageOpportunities.php(65): Laravel\\Telescope\\Telescope::store(Object(Laravel\\Telescope\\Storage\\DatabaseEntriesRepository))
-#35 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\ListensForStorageOpportunities::storeEntriesBeforeTermination():64}()
-#36 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#37 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(84): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#38 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
-#39 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
-#40 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1466): Illuminate\\Container\\Container->call(Object(Closure))
-#41 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(219): Illuminate\\Foundation\\Application->terminate()
-#42 /Users/erikgratz/Code/erikgratz.com/artisan(51): Illuminate\\Foundation\\Console\\Kernel->terminate(Object(Symfony\\Component\\Console\\Input\\ArgvInput), 1)
-#43 {main}
-[previous exception] [object] (PDOException(code: 0): PDO::connect(): php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known at /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php:67)
-[stacktrace]
-#0 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(67): PDO::connect('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#1 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(85): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#2 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php(48): Illuminate\\Database\\Connectors\\Connector->tryAgainIfCausedByLostConnection(Object(PDOException), 'mysql:host=mysq...', 'sail', Object(SensitiveParameterValue), Array)
-#3 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php(24): Illuminate\\Database\\Connectors\\Connector->createConnection('mysql:host=mysq...', Array, Array)
-#4 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(186): Illuminate\\Database\\Connectors\\MySqlConnector->connect(Array)
-#5 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():181}()
-#6 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1257): call_user_func(Object(Closure))
-#7 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1295): Illuminate\\Database\\Connection->getPdo()
-#8 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(525): Illuminate\\Database\\Connection->getReadPdo()
-#9 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(420): Illuminate\\Database\\Connection->getPdoForSelect(true)
-#10 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():411}('select count(*)...', Array)
-#11 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(999): Illuminate\\Database\\Connection->runQueryCallback('select count(*)...', Array, Object(Closure))
-#12 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(978): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#13 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(796): Illuminate\\Database\\Connection->handleQueryException(Object(Illuminate\\Database\\QueryException), 'select count(*)...', Array, Object(Closure))
-#14 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\\Database\\Connection->run('select count(*)...', Array, Object(Closure))
-#15 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3389): Illuminate\\Database\\Connection->select('select count(*)...', Array, true)
-#16 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3374): Illuminate\\Database\\Query\\Builder->runSelect()
-#17 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3964): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():3373}()
-#18 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3373): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#19 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3888): Illuminate\\Database\\Query\\Builder->get(Array)
-#20 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3816): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
-#21 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(123): Illuminate\\Database\\Query\\Builder->count()
-#22 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(165): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->countExceptionOccurences(Object(Laravel\\Telescope\\IncomingExceptionEntry))
-#23 [internal function]: Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}:164}(Object(Laravel\\Telescope\\IncomingExceptionEntry), 1)
-#24 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Arr.php(840): array_map(Object(Closure), Array, Array)
-#25 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Collection.php(829): Illuminate\\Support\\Arr::map(Array, Object(Closure))
-#26 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(164): Illuminate\\Support\\Collection->map(Object(Closure))
-#27 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->{closure:Laravel\\Telescope\\Storage\\DatabaseEntriesRepository::storeExceptions():163}(Object(Illuminate\\Support\\Collection), 0)
-#28 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(163): Illuminate\\Support\\Collection->each(Object(Closure))
-#29 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Storage/DatabaseEntriesRepository.php(140): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->storeExceptions(Object(Illuminate\\Support\\Collection))
-#30 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(664): Laravel\\Telescope\\Storage\\DatabaseEntriesRepository->store(Object(Illuminate\\Support\\Collection))
-#31 [internal function]: Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\Telescope::store():656}()
-#32 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(289): call_user_func(Object(Closure))
-#33 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/Telescope.php(656): Laravel\\Telescope\\Telescope::withoutRecording(Object(Closure))
-#34 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/telescope/src/ListensForStorageOpportunities.php(65): Laravel\\Telescope\\Telescope::store(Object(Laravel\\Telescope\\Storage\\DatabaseEntriesRepository))
-#35 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel\\Telescope\\Telescope::{closure:Laravel\\Telescope\\ListensForStorageOpportunities::storeEntriesBeforeTermination():64}()
-#36 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
-#37 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(84): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
-#38 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
-#39 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
-#40 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1466): Illuminate\\Container\\Container->call(Object(Closure))
-#41 /Users/erikgratz/Code/erikgratz.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(219): Illuminate\\Foundation\\Application->terminate()
-#42 /Users/erikgratz/Code/erikgratz.com/artisan(51): Illuminate\\Foundation\\Console\\Kernel->terminate(Object(Symfony\\Component\\Console\\Input\\ArgvInput), 1)
-#43 {main}
-"}
+PHPUnit 11.5.52 by Sebastian Bergmann and contributors.
+Runtime:       PHP 8.4.17 with PCOV 1.0.12
+Configuration: /var/www/html/phpunit.xml
+.F.E                                                                4 / 4 (100%)
+Time: 00:03.182, Memory: 103.00 MB
+There was 1 error:
+1) Tests\Feature\Filament\Resources\Spend\RelationManagers\TransactionsRelationManagerTest::test_attach_transactions_header_action_associates_selected_transactions
+Illuminate\View\ViewException: Class "Filament\Tables\Actions\Action" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
+/var/www/html/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php:40
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:58
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php:59
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:22
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php:76
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:10
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:208
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:191
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:160
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php:353
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:25
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/CallableDispatcher.php:39
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:243
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:214
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:822
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:821
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:800
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:764
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:753
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:200
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:175
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:144
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:607
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:33
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/RequestBroker.php:30
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:32
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Render.php:24
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:31
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:17
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Testable.php:44
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:197
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/tests/Feature/Filament/Resources/Spend/RelationManagers/TransactionsRelationManagerTest.php:25
+Caused by
+Error: Class "Filament\Tables\Actions\Action" not found
+/var/www/html/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php:40
+/var/www/html/vendor/filament/tables/src/Concerns/InteractsWithTable.php:47
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:36
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/Util.php:43
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:96
+/var/www/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php:35
+/var/www/html/vendor/livewire/livewire/src/Wrapped.php:23
+/var/www/html/vendor/livewire/livewire/src/Features/SupportLifecycleHooks/SupportLifecycleHooks.php:144
+/var/www/html/vendor/livewire/livewire/src/Features/SupportLifecycleHooks/SupportLifecycleHooks.php:24
+/var/www/html/vendor/livewire/livewire/src/ComponentHook.php:19
+/var/www/html/vendor/livewire/livewire/src/ComponentHookRegistry.php:45
+/var/www/html/vendor/livewire/livewire/src/EventBus.php:60
+/var/www/html/vendor/livewire/livewire/src/helpers.php:98
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/HandleComponents/HandleComponents.php:50
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:73
+/var/www/html/vendor/livewire/volt/src/LivewireManager.php:23
+/var/www/html/storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
+/var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:123
+/var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:124
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php:57
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:22
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php:76
+/var/www/html/vendor/livewire/livewire/src/Mechanisms/ExtendBlade/ExtendedCompilerEngine.php:10
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:208
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:191
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php:160
+/var/www/html/vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php:353
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:25
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/CallableDispatcher.php:39
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:243
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php:214
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:822
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:821
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:800
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:764
+/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php:753
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:200
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:180
+/var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php:137
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:175
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php:144
+/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php:607
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:33
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/RequestBroker.php:30
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:32
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Render.php:24
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:31
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/InitialRender.php:17
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/Testable.php:44
+/var/www/html/vendor/livewire/livewire/src/LivewireManager.php:197
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:363
+/var/www/html/tests/Feature/Filament/Resources/Spend/RelationManagers/TransactionsRelationManagerTest.php:25
+--
+There was 1 failure:
+1) Tests\Feature\Filament\Resources\SimpleFin\RelationManagers\AccountsRelationManagerTest::test_has_expected_columns_and_view_action
+Failed asserting that '\n
+    \n
+        \n
+                                                \n
+        \n
+                    \n
+\n
+                                                                                                                                        \n
+        \n
+                            \n
+                    \n
+    \n
+\n
+    \n
+        \n
+        \n
+            \n
+                \n
+\n
+                                    \n
+                                                    \n
+                                                                    \n
+                                        Accounts\n
+                                    \n
+                                \n
+                                                            \n
+                        \n
+                                            \n
+                \n
+                \n
+\n
+                \n
+                \n
+\n
+                \n
+                    \n
+\n
+                    \n
+                        \n
+\n
+                        \n
+                        \n
+\n
+                        \n
+                        \n
+\n
+                        \n
+                        \n
+                    \n
+\n
+                                            \n
+                            \n
+\n
+                                                            \n
+                                \n
+    \n
+        Search\n
+    \n
+\n
+    \n
+            \n
+            \n
+            \n
+  \n
+\n
+\n
+                            \n
+    \n
+    \n
+\n
+            \n
+                    \n
+    \n
+    \n
+        \n
+    \n
+\n
+    \n
+\n
+                            \n
+                            \n
+\n
+                                                    \n
+                    \n
+                    \n
+                \n
+\n
+                \n
+            \n
+\n
+            \n
+            \n
+                            \n
+                                            \n
+                        \n
+                            \n
+                                \n
+                                \n
+                                \n
+                                                                                                                        \n
+                                            \n
+                                                                                                                        \n
+                                    \n
+                                                                                                                        \n
+                                            \n
+                                                                                                                                                            Name\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            User\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Currency\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Balance\n
+                                                                                                                                                \n
+                                                                                                                                                                \n
+                                            \n
+                                                                                                                                                            Available balance\n
+                                                                                                                                                \n
+                                                                            \n
+                                                                                                                                                                        \n
+                                                                                    \n
+                                        \n
+                                                                                                            \n
+                            \n
+\n
+                                                            \n
+                                    \n
+                                                                            \n
+                                                                                    \n
+                                            \n
+                                                                                            \n
+                                                    \n
+                                                    \n
+                                                    \n
+                                                    \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                in veritatis reprehenderit                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                Jayme Lockman                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                USD                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                $1,556.13                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                                                                            \n
+                                                        \n
+                                                            \n
+                                                            \n
+                                                                \n
+            \n
+                \n
+                                $7,261.25                \n
+                            \n
+\n
+            \n
+                                                            \n
+                                                            \n
+                                                        \n
+                                                    \n
+                                                                                                            \n
+                                                            \n
+                                                                                                                                    \n
+        \n
+        \n
+                            \n
+  \n
+  \n
+                \n
+    \n
+    \n
+            \n
+                            View            \n
+            \n
+                    \n
+\n
+        \n
+        \n
+                                                                                                                            \n
+                                                        \n
+                                                    \n
+                                                    \n
+                                                                                                    \n
+                                            \n
+                                                                                    \n
+                                        \n
+                                                                                    \n
+                                            \n
+    \n
+    \n
+    \n
+    \n
+                \n
+                        \n
+            \n
+                                    Summary\n
+                            \n
+                                                        \n
+            \n
+                                                            \n
+        \n
+                            \n
+                    Sum                \n
+            \n
+            \n
+                $1,556.13            \n
+        \n
+\n
+        \n
+                                                \n
+                                \n
+            \n
+                                                            \n
+        \n
+                            \n
+                    Sum                \n
+            \n
+            \n
+                $7,261.25            \n
+        \n
+\n
+        \n
+                                                \n
+            \n
+            \n
+    \n
+    \n
+                                                                                                            \n
+                            \n
+                                                    \n
+                                    \n
+            \n
+            \n
+                            \n
+                \n
+    \n
+            \n
+            Showing 1 result\n
+        \n
+    \n
+            \n
+            \n
+                \n
+    \n
+    \n
+        \n
+                                \n
+                                5\n
+                            \n
+                                                    \n
+                                10\n
+                            \n
+                                                    \n
+                                25\n
+                            \n
+                                                    \n
+                                50\n
+                            \n
+                        \n
+\n
+    \n
+\n
+    \n
+\n
+                \n
+                    Per page\n
+                \n
+            \n
+\n
+            \n
+                \n
+            \n
+            \n
+            \n
+\n
+            \n
+                            \n
+                    Per page\n
+                \n
+                    \n
+    \n
+    \n
+        \n
+                                \n
+                                5\n
+                            \n
+                                                    \n
+                                10\n
+                            \n
+                                                    \n
+                                25\n
+                            \n
+                                                    \n
+                                50\n
+                            \n
+                        \n
+\n
+    \n
+\n
+    \n
+            \n
+        \n
+    \n
+    \n
+    \n
+            \n
+                    \n
+\n
+            \n
+\n
+        \n
+            \n
+\n
+    \n
+                \n
+                    \n
+\n
+                                                                                                            \n
+\n
+        \n
+\n
+    \n
+' [ASCII](length: 13234) contains "name" [ASCII](length: 4).
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/MakesAssertions.php:79
+/var/www/html/vendor/laravel/framework/src/Illuminate/Support/helpers.php:388
+/var/www/html/vendor/livewire/livewire/src/Features/SupportTesting/MakesAssertions.php:77
+/var/www/html/tests/Feature/Filament/Resources/SimpleFin/RelationManagers/AccountsRelationManagerTest.php:39
+ERRORS!
+Tests: 4, Assertions: 6, Errors: 1, Failures: 1.
+Code Coverage Report:
+  2026-02-10 16:40:09
+
+ Summary:
+  Classes:  6.77% (9/133)
+  Methods: 11.93% (42/352)
+  Lines:   11.90% (389/3270)
+App\Console\Kernel
+  Methods:  50.00% ( 1/ 2)   Lines:  28.57% (  2/  7)
+App\Enums\SpendSubtype
+  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
+App\Exceptions\Handler
+  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
+App\Filament\Forms\Fields\SpendAssociationField
+  Methods:   0.00% ( 0/ 1)   Lines:  63.01% ( 46/ 73)
+App\Filament\Resources\AccountResource
+  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
+App\Filament\Resources\ActivityResource
+  Methods:  28.57% ( 2/ 7)   Lines:  11.11% (  9/ 81)
+App\Filament\Resources\BlogPostResource
+  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
+App\Filament\Resources\CardResource
+  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
+App\Filament\Resources\LoanAgainstSavingsResource
+  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
+App\Filament\Resources\PeriodicSpendResource
+  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
+App\Filament\Resources\Photos\PhotoResource
+  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
+App\Filament\Resources\SimpleFin\SimpleFinAccountResource
+  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
+App\Filament\Resources\SimpleFin\SimpleFinAccountResource\RelationManagers\TransactionsRelationManager
+  Methods:   0.00% ( 0/ 1)   Lines:  97.73% ( 43/ 44)
+App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
+  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
+App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource\RelationManagers\AccountsRelationManager
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 25/ 25)
+App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
+  Methods:  40.00% ( 2/ 5)   Lines:   9.28% (  9/ 97)
+App\Filament\Resources\SpendResource
+  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
+App\Filament\Resources\SpendResource\RelationManagers\TransactionsRelationManager
+  Methods:   0.00% ( 0/ 1)   Lines:  65.22% ( 45/ 69)
+App\Filament\Resources\UserResource
+  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
+App\Models\Payment
+  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
+App\Models\SimpleFin\SimpleFinAccount
+  Methods:  50.00% ( 2/ 4)   Lines:  50.00% (  2/  4)
+App\Models\SimpleFin\SimpleFinOrganization
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Models\StateDump
+  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
+App\Models\Traits\GetsDumped
+  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
+App\Models\Traits\HasPayments
+  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
+App\Providers\AppServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Providers\AuthServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Providers\BroadcastServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Providers\EventServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Providers\FilamentConfigurationProvider
+  Methods:  50.00% ( 1/ 2)   Lines:  75.00% ( 15/ 20)
+App\Providers\Filament\AdminPanelProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
+App\Providers\HelperServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Providers\RouteServiceProvider
+  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
+App\Providers\TelescopeServiceProvider
+  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
+App\Providers\VoltServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)

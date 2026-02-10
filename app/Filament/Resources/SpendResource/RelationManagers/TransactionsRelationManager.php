@@ -6,7 +6,7 @@ use App\Models\SimpleFin\SimpleFinTransaction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -59,11 +59,16 @@ class TransactionsRelationManager extends RelationManager
                                     })
                                     ->toArray();
                             })
-                            ->getOptionLabelUsing(function ($value) {
-                                $txn = SimpleFinTransaction::find($value);
-                                return $txn
-                                    ? ($txn->posted?->format('Y-m-d') . ' • ' . number_format((float)$txn->amount, 2) . ' • ' . ($txn->payee ?? '-') . ' • ' . mb_strimwidth($txn->description, 0, 50, '…'))
-                                    : $value;
+                            ->getOptionLabelsUsing(function (array $values) {
+                                return collect($values)
+                                    ->mapWithKeys(function ($value) {
+                                        $txn = SimpleFinTransaction::find($value);
+                                        $label = $txn
+                                            ? ($txn->posted?->format('Y-m-d') . ' • ' . number_format((float)$txn->amount, 2) . ' • ' . ($txn->payee ?? '-') . ' • ' . mb_strimwidth($txn->description, 0, 50, '…'))
+                                            : $value;
+                                        return [$value => $label];
+                                    })
+                                    ->toArray();
                             })
                             ->required(),
                     ])

@@ -22,7 +22,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinAccount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinAccount.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SpendResource/RelationManagers/TransactionsRelationManager.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -464,7 +468,7 @@
       <workItem from="1770679399762" duration="3266000" />
       <workItem from="1770682707610" duration="3902000" />
       <workItem from="1770705272399" duration="15474000" />
-      <workItem from="1770737513992" duration="3212000" />
+      <workItem from="1770737513992" duration="5039000" />
     </task>
     <servers />
   </component>

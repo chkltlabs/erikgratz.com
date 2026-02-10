@@ -192,12 +192,12 @@ class PeriodicSpend extends Model
         $rtn = [];
         $firstDate = Carbon::parse(array_key_first($data))->$startOf();
         $lastDate = Carbon::parse(array_key_last($data))->$endOf();
-        while ($firstDate->lte($lastDate)) {
+        while ($firstDate->lt($lastDate)) {
             $rangeDate = $firstDate->copy()->$add();
             $amount = 0;
             $keyString = $firstDate->format('Y-m-d');
             $carbonCopy = $firstDate->copy();
-            while ($firstDate->lte($rangeDate)) {
+            while ($firstDate->lt($rangeDate)) {
                 if (array_key_exists($firstDate->format('Y-m-d'), $data)) {
                     $amount += $data[$firstDate->format('Y-m-d')]['y'];
                 }

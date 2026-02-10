@@ -82,10 +82,13 @@ class SimpleFinIntakeCommand extends Command
         $this->info("Fetching and starting intake for user {$user->name}...");
 
         try {
+            $command = $this;
             \App\Services\SimpleFin\SimpleFinIntakeService::fetchAndIntake(
                 $user,
                 $startDate,
-                fn (string $message) => $this->info("  " . $message)
+                function (string $message) use ($command) {
+                    $command->info('  ' . $message);
+                }
             );
             $this->info("Intake completed successfully for {$user->name}.");
         } catch (\Exception $e) {
