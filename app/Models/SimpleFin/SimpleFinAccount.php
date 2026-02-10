@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Traits\Dumpable;
 
 class SimpleFinAccount extends Model
 {
-    use HasFactory;
+    use HasFactory, Dumpable;
 
     public $incrementing = false;
     protected $keyType = 'string';

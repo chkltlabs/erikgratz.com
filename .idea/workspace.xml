@@ -22,16 +22,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.output.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/ActivitySpendSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/SimpleFinDataSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinAccountResource/RelationManagers/TransactionsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinAccountResource/RelationManagers/TransactionsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinTransactionResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinTransactionResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2024_06_26_121703_create_cards_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2024_06_26_121703_create_cards_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2026_02_09_115135_set_simple_fin_url_in_local.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2026_02_09_230120_run_maximal_simple_fin_intake.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinAccount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinAccount.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -473,7 +464,7 @@
       <workItem from="1770679399762" duration="3266000" />
       <workItem from="1770682707610" duration="3902000" />
       <workItem from="1770705272399" duration="15474000" />
-      <workItem from="1770737513992" duration="2794000" />
+      <workItem from="1770737513992" duration="3212000" />
     </task>
     <servers />
   </component>
