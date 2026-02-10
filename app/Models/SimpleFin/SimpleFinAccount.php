@@ -2,6 +2,7 @@
 
 namespace App\Models\SimpleFin;
 
+use App\Models\Traits\GetsDumped;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Support\Traits\Dumpable;
 
 class SimpleFinAccount extends Model
 {
-    use HasFactory, Dumpable;
+    use HasFactory, GetsDumped;
 
     public $incrementing = false;
     protected $keyType = 'string';
