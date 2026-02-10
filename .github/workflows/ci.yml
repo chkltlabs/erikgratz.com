@@ -85,7 +85,7 @@ jobs:
         run: docker compose exec -T laravel.test php artisan migrate --force
 
       - name: Run Parallel Tests
-        run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-clover=cobertura.xml
+        run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-cobertura=cobertura.xml
 
       - name: Get List of Changed Files in App Dir
         id: changed-files
