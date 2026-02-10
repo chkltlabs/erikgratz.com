@@ -11,74 +11,77 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Start Docker Compose
-      run: |
-        docker compose up -d
-        sleep 10
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist
 
-    - name: Install Dependencies
-      run: docker compose exec -T laravel.test composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Start Docker Compose
+        run: |
+          docker compose up -d
+          sleep 10
 
-    - name: Copy .env
-      run: docker compose exec -T laravel.test php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: docker compose exec -T laravel.test composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-    - name: Generate key
-      run: docker compose exec -T laravel.test php artisan key:generate
+      - name: Copy .env
+        run: docker compose exec -T laravel.test php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-    - name: Directory Permissions
-      run: docker compose exec -T laravel.test chmod -R 777 storage bootstrap/cache
+      - name: Generate key
+        run: docker compose exec -T laravel.test php artisan key:generate
 
-    - name: Wait for MySQL
-      run: |
-        until docker compose exec -T mysql mysqladmin ping -p'password' --silent; do
-          echo "Waiting for MySQL..."
-          sleep 2
-        done
-      timeout-minutes: 2
+      - name: Directory Permissions
+        run: docker compose exec -T laravel.test chmod -R 777 storage bootstrap/cache
 
-    - name: Run Migrations
-      run: docker compose exec -T laravel.test php artisan migrate --force
+      - name: Wait for MySQL
+        run: |
+          until docker compose exec -T mysql mysqladmin ping -p'password' --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+        timeout-minutes: 2
 
-    - name: Run Parallel Tests
-      run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-clover=cobertura.xml
+      - name: Run Migrations
+        run: docker compose exec -T laravel.test php artisan migrate --force
 
-    - name: Get List of Changed Files in App Dir
-      id: changed-files
-      if: github.event_name == 'pull_request'
-        && always() && !cancelled()
-      uses: tj-actions/changed-files@v46.0.5
-      with:
-        path: 'app'
-        # Avoid using single or double quotes for multiline patterns
-        files: |
-          **.php
+      - name: Run Parallel Tests
+        run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-clover=cobertura.xml
 
-    - name: Analyze Coverage of App Dir Files
-      id: analyze
-      if: github.event_name == 'pull_request'
-        && steps.changed-files.outputs.all_changed_files_count != 0
-        && always() && !cancelled()
-      uses: chkltlabs/CodeCoverageSummary@v2
-      with:
-        filename: cobertura.xml
-        badge: true
-        fail_below_min: true
-        format: markdown
-        hide_branch_rate: false
-        hide_complexity: true
-        indicators: true
-        output: both
-        prfiles: " ${{ steps.changed-files.outputs.all_changed_files }} "
-        thresholds: '60 80'
+      - name: Get List of Changed Files in App Dir
+        id: changed-files
+        if: github.event_name == 'pull_request'
+          && always() && !cancelled()
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          path: 'app'
+          # Avoid using single or double quotes for multiline patterns
+          files: |
+            **.php
 
-    - name: Add Coverage PR Comment
-      if: github.event_name == 'pull_request'
-        && steps.changed-files.outputs.all_changed_files_count != 0
-        && always() && !cancelled()
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        hide_and_recreate: true
-        hide_classify: 'OUTDATED'
-        path: code-coverage-results.md
+      - name: Analyze Coverage of App Dir Files
+        id: analyze
+        if: github.event_name == 'pull_request'
+          && steps.changed-files.outputs.all_changed_files_count != 0
+          && always() && !cancelled()
+        uses: chkltlabs/CodeCoverageSummary@v2
+        with:
+          filename: cobertura.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          prfiles: " ${{ steps.changed-files.outputs.all_changed_files }} "
+          thresholds: '60 80'
+
+      - name: Add Coverage PR Comment
+        if: github.event_name == 'pull_request'
+          && steps.changed-files.outputs.all_changed_files_count != 0
+          && always() && !cancelled()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          hide_and_recreate: true
+          hide_classify: 'OUTDATED'
+          path: code-coverage-results.md
