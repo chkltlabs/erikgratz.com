@@ -21,7 +21,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="" />
+    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_09_115135_set_simple_fin_url_in_local.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.junie/guidelines.md" beforeDir="false" afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/SimpleFinIntakeCommand.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -284,10 +289,10 @@
 }</component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1773244811530" />
-    <option name="spentUsd" value="0.0217375" />
+    <option name="spentUsd" value="0.028153999" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="4" />
+    <option name="suspendCountdown" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -461,11 +466,21 @@
       <workItem from="1770672848399" duration="6509000" />
       <workItem from="1770679399762" duration="3266000" />
       <workItem from="1770682707610" duration="3902000" />
+      <workItem from="1770705272399" duration="3738000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="javascript:npm:prettier" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:vue" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:postcss" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

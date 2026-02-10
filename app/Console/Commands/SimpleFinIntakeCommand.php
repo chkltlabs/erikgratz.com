@@ -78,7 +78,7 @@ class SimpleFinIntakeCommand extends Command
             $this->error("User {$user->name} does not have a SimpleFIN URL set.");
             return;
         }
-
+        $this->info(' ');
         $this->info("Fetching and starting intake for user {$user->name}...");
 
         try {
