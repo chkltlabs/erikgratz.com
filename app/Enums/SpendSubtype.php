@@ -12,6 +12,7 @@ use BenSampo\Enum\Enum;
  * @method static static HousingRent()
  * @method static static HousingHotel()
  * @method static static HousingFree()
+ * @method static static TransportFerry()
  * @method static static TransportFlight()
  * @method static static TransportTrain()
  * @method static static TransportCarHire()

@@ -22,10 +22,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Providers/HorizonServiceProvider.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/horizon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/erikgratz.com.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/erikgratz.com.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Forms/Fields/SpendAssociationField.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Forms/Fields/SpendAssociationField.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Spend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Spend.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Enums/SpendSubtype.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/SpendSubtype.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,6 +243,10 @@
       <path value="$PROJECT_DIR$/vendor/brianium/paratest" />
       <path value="$PROJECT_DIR$/vendor/fidry/cpu-core-counter" />
       <path value="$PROJECT_DIR$/vendor/filament/query-builder" />
+      <path value="$PROJECT_DIR$/vendor/laravel/horizon" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/laravel/pulse" />
+      <path value="$PROJECT_DIR$/vendor/laravel/nightwatch" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{

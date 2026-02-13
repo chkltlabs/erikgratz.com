@@ -198,6 +198,10 @@
       <path value="$PROJECT_DIR$/vendor/brianium/paratest" />
       <path value="$PROJECT_DIR$/vendor/fidry/cpu-core-counter" />
       <path value="$PROJECT_DIR$/vendor/filament/query-builder" />
+      <path value="$PROJECT_DIR$/vendor/laravel/horizon" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/laravel/pulse" />
+      <path value="$PROJECT_DIR$/vendor/laravel/nightwatch" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
