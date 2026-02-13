@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Artisan;
 
 class DailyUpkeep implements ShouldQueue
 {
@@ -26,13 +27,7 @@ class DailyUpkeep implements ShouldQueue
             ->whereIsPaid(false)
             ->update(['is_paid' => true]);
 
-        User::whereNotNull('simple_fin_url')->each(function (User $user) {
-            try {
-                SimpleFinIntakeService::fetchAndIntake($user, now()->subDays(14));
-            } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error("SimpleFIN Intake failed for user {$user->id}: " . $e->getMessage());
-            }
-        });
+        Artisan::call('app:simple-fin-intake', ['--start-date' => now()->subDays(14)->toDateString()]);
 
         ZeroISB::dispatch();
         DebitIFB::dispatch();
