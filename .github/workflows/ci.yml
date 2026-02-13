@@ -94,6 +94,7 @@ jobs:
         uses: tj-actions/changed-files@v46.0.5
         with:
           path: 'app'
+          files_ignore: 'Console/Kernel.php'
           # Avoid using single or double quotes for multiline patterns
           files: |
             **.php
