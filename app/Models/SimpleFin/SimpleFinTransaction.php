@@ -24,6 +24,7 @@ class SimpleFinTransaction extends Model
         'memo',
         'transacted_at',
         'is_pending',
+        'is_confirmed',
         'spend_type',
         'spend_id',
     ];
@@ -33,6 +34,7 @@ class SimpleFinTransaction extends Model
         'amount' => 'decimal:2',
         'transacted_at' => 'datetime',
         'is_pending' => 'boolean',
+        'is_confirmed' => 'boolean',
     ];
 
     public function account(): BelongsTo

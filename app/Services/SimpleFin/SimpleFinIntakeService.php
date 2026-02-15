@@ -205,5 +205,12 @@ class SimpleFinIntakeService
                 }
             });
         }
+
+        // Trigger categorization after intake
+        SimpleFinCategorizationService::categorize($user);
+
+        if ($progressCallback) {
+            $progressCallback("Auto-categorization completed.");
+        }
     }
 }

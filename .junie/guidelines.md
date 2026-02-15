@@ -19,7 +19,7 @@ This file contains persistent guidelines for Junie to ensure consistency across 
     - Components: `PascalCase.php`
 
 ### AI Collaboration Best Practices
-1. **Specific Preferences:** Prefer the Livewire frontend components to be Volt single file components whenever possible.
+1. **Specific Preferences:** Prefer the Livewire frontend components to be Volt single file components whenever possible. Also in Filament 4.x, Actions have moved namespaces from Filament\Tables\Actions\Action to Filament\Actions\Action. (this has come up more than once)
 2. **Commit Messages:** Do not propose commits without my approval and explicit instruction.
 3. **Documentation:** A PHP DocBlock is required for every public controller endpoint method.
 4. **Testing Strategy:** All testing must be performed inside running containers via Laravel Sail. Additionally, ParaTest has been installed, so parallel testing is available and should be utilized for optimum speed. To maintain compatibility with ParaTest, avoid using the RefreshDatabase trait, opting instead for the DatabaseTransactions trait. Tests must be written that cover at least 85% of lines in the main project files. When testing Filament components, extend the tests/Feature/Filament/Parent test files where appropriate, use the disabling traits in that same directory where appropriate, and add additional tests to achieve full coverage.

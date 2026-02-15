@@ -47,4 +47,36 @@ class TransactionsRelationManagerTest extends FilamentTestCase
                 'POSTED TXN',
             ]);
     }
+
+    public function test_can_assign_transaction_and_create_rule()
+    {
+        $account = SimpleFinAccount::factory()->create();
+        $transaction = SimpleFinTransaction::factory()->recycle($account)->create([
+            'description' => 'Netflix.com',
+            'is_confirmed' => false,
+        ]);
+        $spend = \App\Models\Spend::factory()->create();
+
+        Livewire::test(TransactionsRelationManager::class, [
+            'ownerRecord' => $account,
+            'pageClass' => EditSimpleFinAccount::class,
+        ])
+            ->callTableAction('assign', $transaction, data: [
+                'spend_type' => 'spend',
+                'spend_id' => $spend->id,
+                'create_rule' => true,
+                'rule_pattern' => 'Netflix',
+            ])
+            ->assertHasNoTableActionErrors();
+
+        $transaction->refresh();
+        $this->assertTrue($transaction->is_confirmed);
+        $this->assertEquals($spend->id, $transaction->spend_id);
+
+        $this->assertDatabaseHas('simple_fin_rules', [
+            'pattern' => 'Netflix',
+            'spend_id' => $spend->id,
+            'spend_type' => 'spend',
+        ]);
+    }
 }

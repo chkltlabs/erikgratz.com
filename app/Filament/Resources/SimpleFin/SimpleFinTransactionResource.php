@@ -6,15 +6,20 @@ use App\Filament\Resources\SimpleFin\SimpleFinTransactionResource\Pages;
 use App\Filament\Forms\Fields\SpendAssociationField;
 use App\Models\SimpleFin\SimpleFinTransaction;
 use App\Models\Spend;
-use App\Models\PeriodicSpend;
+use App\Models\SimpleFinRule;
+use App\Services\SimpleFin\SimpleFinCategorizationService;
+use App\Services\SimpleFin\SimpleFinIntakeService;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Utilities\Get;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\ViewAction;
-use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -75,33 +80,109 @@ class SimpleFinTransactionResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_pending')
                     ->boolean(),
+                Tables\Columns\IconColumn::make('is_confirmed')
+                    ->label('Confirmed')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('spend.display_name')
+                    ->label('Assigned To'),
                 Tables\Columns\TextColumn::make('transacted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('spend_display')
-                    ->label('Associated To')
-                    ->state(function (SimpleFinTransaction $record) {
-                        if (! $record->spend) {
-                            return '—';
-                        }
-                        $label = $record->spend instanceof Spend ? 'Spend' : 'Periodic Spend';
-                        $name = method_exists($record->spend, 'name') ? $record->spend->name : '';
-                        if ($record->spend instanceof Spend && $record->spend->activity) {
-                            $name = $record->spend->activity->name . ' • ' . $name;
-                        }
-                        return $label . ': ' . $name;
-                    })
-                    ->searchable(false),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('account')
                     ->relationship('account', 'name'),
                 Tables\Filters\TernaryFilter::make('is_pending'),
+                Tables\Filters\TernaryFilter::make('is_confirmed'),
+                Tables\Filters\TernaryFilter::make('assigned')
+                    ->placeholder('All')
+                    ->trueLabel('Assigned')
+                    ->falseLabel('Unassigned')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('spend_id'),
+                        false: fn ($query) => $query->whereNull('spend_id'),
+                    ),
+            ])
+            ->headerActions([
+                Action::make('sync')
+                    ->label('Sync & Auto-match')
+                    ->icon('heroicon-o-arrow-path')
+                    ->action(function () {
+                        $user = \Illuminate\Support\Facades\Auth::user();
+                        if ($user) {
+                            SimpleFinIntakeService::fetchAndIntake($user);
+                            Notification::make()
+                                ->title('Transactions synced and auto-categorized')
+                                ->success()
+                                ->send();
+                        }
+                    }),
+                Action::make('recategorize')
+                    ->label('Re-categorize All')
+                    ->icon('heroicon-o-sparkles')
+                    ->color('info')
+                    ->requiresConfirmation()
+                    ->modalDescription('This will run the auto-categorization engine on all unconfirmed transactions.')
+                    ->action(function () {
+                        $user = \Illuminate\Support\Facades\Auth::user();
+                        if ($user) {
+                            SimpleFinCategorizationService::categorize($user, true);
+                            Notification::make()
+                                ->title('Auto-categorization completed')
+                                ->success()
+                                ->send();
+                        }
+                    }),
             ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('confirm')
+                    ->label('Confirm')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn (SimpleFinTransaction $record): bool => $record->spend_id !== null && !$record->is_confirmed)
+                    ->action(fn (SimpleFinTransaction $record) => $record->update(['is_confirmed' => true])),
+                Action::make('assign')
+                    ->label('Assign')
+                    ->icon('heroicon-o-link')
+                    ->schema([
+                        SpendAssociationField::make('spend', true),
+                        Forms\Components\Toggle::make('create_rule')
+                            ->label('Save as rule for future transactions')
+                            ->live(),
+                        Forms\Components\TextInput::make('rule_pattern')
+                            ->label('Matching Pattern')
+                            ->placeholder('e.g. Netflix')
+                            ->required(fn (Get $get) => $get('create_rule'))
+                            ->visible(fn (Get $get) => $get('create_rule')),
+                    ])
+                    ->fillForm(fn (SimpleFinTransaction $record): array => [
+                        'spend_type' => $record->spend_type,
+                        'spend_id' => $record->spend_id,
+                        'rule_pattern' => $record->payee ?: $record->description,
+                    ])
+                    ->action(function (SimpleFinTransaction $record, array $data) {
+                        $record->update([
+                            'spend_type' => $data['spend_type'],
+                            'spend_id' => $data['spend_id'],
+                            'is_confirmed' => true,
+                        ]);
+
+                        if ($data['create_rule'] ?? false) {
+                            SimpleFinRule::create([
+                                'pattern' => $data['rule_pattern'],
+                                'spend_type' => $data['spend_type'],
+                                'spend_id' => $data['spend_id'],
+                            ]);
+
+                            Notification::make()
+                                ->title('Rule created')
+                                ->success()
+                                ->send();
+                        }
+                    })
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
