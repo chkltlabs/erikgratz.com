@@ -218,6 +218,11 @@ class PeriodicSpend extends Model
         return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
 
+    public function rules(): MorphMany
+    {
+        return $this->morphMany(\App\Models\SimpleFinRule::class, 'spend');
+    }
+
     public function confirmedTransactions(): MorphMany
     {
         return $this->transactions()->where('is_confirmed', true);

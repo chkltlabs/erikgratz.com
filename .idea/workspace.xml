@@ -21,28 +21,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.junie/Projects/RuleBreakdown.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.junie/Projects/SimpleFinImprovements.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/SimpleFinRule.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_14_094342_add_is_confirmed_to_simple_fin_transactions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2026_02_14_094351_create_simple_fin_rules_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/filament/tables/columns/progress-bar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.junie/guidelines.md" beforeDir="false" afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.output.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinAccountResource/RelationManagers/TransactionsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinAccountResource/RelationManagers/TransactionsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinTransactionResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/SimpleFin/SimpleFinTransactionResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/PeriodicSpend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinTransaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SimpleFin/SimpleFinTransaction.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Spend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Spend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/SimpleFin/SimpleFinIntakeService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/SpendFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/SpendFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Console/SimpleFinIntakeCommandTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Console/SimpleFinIntakeCommandTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Filament/Resources/SimpleFin/RelationManagers/TransactionsRelationManagerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Filament/Resources/SimpleFin/RelationManagers/TransactionsRelationManagerTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Models/PeriodicSpendTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Models/PeriodicSpendTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Models/SpendTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Models/SpendTest.php" afterDir="false" />
-    </list>
+    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -502,7 +481,7 @@
       <workItem from="1770737513992" duration="7093000" />
       <workItem from="1771025656956" duration="972000" />
       <workItem from="1771026788964" duration="87000" />
-      <workItem from="1771028304749" duration="13829000" />
+      <workItem from="1771028304749" duration="14330000" />
     </task>
     <servers />
   </component>
