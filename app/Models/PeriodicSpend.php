@@ -218,6 +218,33 @@ class PeriodicSpend extends Model
         return $this->morphMany(\App\Models\SimpleFin\SimpleFinTransaction::class, 'spend');
     }
 
+    public function rules(): MorphMany
+    {
+        return $this->morphMany(\App\Models\SimpleFinRule::class, 'spend');
+    }
+
+    public function confirmedTransactions(): MorphMany
+    {
+        return $this->transactions()->where('is_confirmed', true);
+    }
+
+    public function actualSpend(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $sum = $this->confirmedTransactions()->sum('amount');
+                return $this->is_income ? $sum : abs($sum);
+            }
+        );
+    }
+
+    public function variance(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->actual_spend - $this->total_spend
+        );
+    }
+
     protected function displayName(): Attribute
     {
         return Attribute::make(

@@ -36,6 +36,11 @@ class SpendFactory extends Factory
             ]);
     }
 
+    public function noPayments()
+    {
+        return $this->afterCreating(fn () => null);
+    }
+
     public function configure()
     {
         return $this->afterCreating(

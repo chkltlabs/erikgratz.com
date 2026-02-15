@@ -45,7 +45,21 @@ class SimpleFinIntakeCommandTest extends TestCase
 
         Http::fake([
             'https://example.test/token/accounts*' => Http::response([
-                'accounts' => [],
+                'accounts' => [
+                    [
+                        'id' => 'acc_1',
+                        'name' => 'Checking',
+                        'currency' => 'USD',
+                        'balance' => 1000,
+                        'available-balance' => 1000,
+                        'balance-date' => now()->timestamp,
+                        'org' => [
+                            'id' => 'org_1',
+                            'name' => 'Test Bank',
+                        ],
+                        'transactions' => [],
+                    ]
+                ],
             ], 200),
         ]);
 
@@ -55,6 +69,7 @@ class SimpleFinIntakeCommandTest extends TestCase
         ])->expectsOutput(' ')
           ->expectsOutput('Fetching and starting intake for user Alice...')
           ->expectsOutput('  Data received successfully from SimpleFIN (non-pending).')
+          ->expectsOutput('  Auto-categorization completed.')
           ->expectsOutput('Intake completed successfully for Alice.')
           ->assertExitCode(0);
     }

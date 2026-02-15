@@ -112,4 +112,34 @@ class PeriodicSpendTest extends TestCase
         $this->assertEquals(['2024-01-01','2024-01-02','2024-01-03'], array_keys($merged));
         $this->assertEquals(6.0, $merged['2024-01-03']['y']);
     }
+
+    public function test_actual_spend_and_variance_only_count_confirmed_transactions(): void
+    {
+        $ps = PeriodicSpend::factory()->create([
+            'is_income' => false,
+            'period' => Period::Monthly(),
+            'start_date' => '2024-01-01',
+            'end_date' => '2024-01-31',
+        ]);
+
+        // Budgeted: 500
+        Payment::factory()->create([
+            'spend_type' => 'periodic_spend',
+            'spend_id' => $ps->id,
+            'amount' => 500,
+            'paid_on' => '2024-01-01',
+        ]);
+
+        // Transaction 1: Confirmed -200
+        \App\Models\SimpleFin\SimpleFinTransaction::factory()->create([
+            'spend_type' => 'periodic_spend',
+            'spend_id' => $ps->id,
+            'amount' => -200.00,
+            'is_confirmed' => true,
+        ]);
+
+        $this->assertEquals(200.00, $ps->actual_spend);
+        $this->assertEquals(500.00, $ps->total_spend);
+        $this->assertEquals(-300.00, $ps->variance);
+    }
 }
