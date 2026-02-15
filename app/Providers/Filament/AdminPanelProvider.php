@@ -2,6 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\IncomeReconciliation;
+use App\Filament\Widgets\MonthlyBudgetStatus;
+use App\Filament\Widgets\PendingReviewTransactions;
+use App\Filament\Widgets\SpendingCategoryChart;
+use App\Filament\Widgets\SpendingTrendsChart;
+use App\Filament\Widgets\UncategorizedTransactions;
 use App\Filament\Widgets\PointsByProgram;
 use Filament\Pages\Dashboard;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
@@ -49,6 +55,12 @@ class AdminPanelProvider extends PanelProvider
             ])
 //            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                IncomeReconciliation::class,
+                PendingReviewTransactions::class,
+                UncategorizedTransactions::class,
+                MonthlyBudgetStatus::class,
+                SpendingCategoryChart::class,
+                SpendingTrendsChart::class,
                 SpentPayingSaving::class,
                 CardWidget::class,
                 AccountWidget::class,

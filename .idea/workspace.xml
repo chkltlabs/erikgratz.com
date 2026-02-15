@@ -21,7 +21,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="" />
+    <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/Filament/AdminPanelProvider.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -481,7 +483,7 @@
       <workItem from="1770737513992" duration="7093000" />
       <workItem from="1771025656956" duration="972000" />
       <workItem from="1771026788964" duration="87000" />
-      <workItem from="1771028304749" duration="15188000" />
+      <workItem from="1771028304749" duration="16051000" />
     </task>
     <servers />
   </component>
