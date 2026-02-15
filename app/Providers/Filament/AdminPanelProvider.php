@@ -55,12 +55,6 @@ class AdminPanelProvider extends PanelProvider
             ])
 //            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                IncomeReconciliation::class,
-                PendingReviewTransactions::class,
-                UncategorizedTransactions::class,
-                MonthlyBudgetStatus::class,
-                SpendingCategoryChart::class,
-                SpendingTrendsChart::class,
                 SpentPayingSaving::class,
                 CardWidget::class,
                 AccountWidget::class,
@@ -68,6 +62,12 @@ class AdminPanelProvider extends PanelProvider
                 PointsByProgram::class,
                 SpendsThisMonth::class,
                 PastStatsChart::class,
+                IncomeReconciliation::class,
+                PendingReviewTransactions::class,
+                UncategorizedTransactions::class,
+                MonthlyBudgetStatus::class,
+                SpendingCategoryChart::class,
+                SpendingTrendsChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
