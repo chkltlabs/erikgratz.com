@@ -62,12 +62,12 @@ class AdminPanelProvider extends PanelProvider
                 PointsByProgram::class,
                 SpendsThisMonth::class,
                 PastStatsChart::class,
-                IncomeReconciliation::class,
-                PendingReviewTransactions::class,
-                UncategorizedTransactions::class,
-                MonthlyBudgetStatus::class,
-                SpendingCategoryChart::class,
-                SpendingTrendsChart::class,
+//                IncomeReconciliation::class,
+//                PendingReviewTransactions::class,
+//                UncategorizedTransactions::class,
+//                MonthlyBudgetStatus::class,
+//                SpendingCategoryChart::class,
+//                SpendingTrendsChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

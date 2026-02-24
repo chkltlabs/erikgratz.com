@@ -21,6 +21,7 @@ class Spend extends Model
         'is_income',
         'type',
         'subtype',
+        'activity_id',
     ];
 
     protected $casts = [

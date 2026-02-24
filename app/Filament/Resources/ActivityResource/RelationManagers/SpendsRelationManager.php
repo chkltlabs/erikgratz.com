@@ -2,6 +2,12 @@
 
 namespace App\Filament\Resources\ActivityResource\RelationManagers;
 
+use App\Filament\Resources\ActivityResource;
+use App\Models\Activity;
+use Filament\Actions\BulkAction;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
 use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
@@ -12,6 +18,8 @@ use App\Filament\Resources\SpendResource;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class SpendsRelationManager extends RelationManager
 {
@@ -41,6 +49,31 @@ class SpendsRelationManager extends RelationManager
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('break_out')
+                        ->label('Break out to new activity')
+                        ->icon('heroicon-o-plus-circle')
+                        ->form([
+                            TextInput::make('name')
+                                ->required(),
+                            DateRangePicker::make('start_end_date')
+                                ->alwaysShowCalendar()
+                                ->required(),
+                            Textarea::make('description')
+                                ->rows(5),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $activityData = ActivityResource::splitStartEndDate($data);
+                            $newActivity = Activity::create($activityData);
+
+                            $records->each(function ($spend) use ($newActivity) {
+                                $spend->update(['activity_id' => $newActivity->id]);
+                            });
+
+                            Notification::make()
+                                ->title('Spends broken out into new activity: '.$newActivity->name)
+                                ->success()
+                                ->send();
+                        }),
                 ]),
             ]);
     }
