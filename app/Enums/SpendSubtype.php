@@ -82,6 +82,8 @@ final class SpendSubtype extends Enum
     const ExperienceOther = 'experience_other';
 
     const ExperienceDiving = 'experience_diving';
+    const ExperienceMuseum = 'experience_museum';
+    const ExperienceCathedral = 'experience_cathedral';
 
     const SubscriptionMedia = 'subscription_media';
 

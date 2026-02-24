@@ -1,1111 +1,365 @@
+ParaTest v7.8.5 upon PHPUnit 11.5.52 by Sebastian Bergmann and contributors.
+Processes:     10
+Runtime:       PHP 8.4.17
+Configuration: /var/www/html/phpunit.xml
+In WorkerCrashedException.php line 41:
 
-Code Coverage Report:
-  2026-02-15 20:35:37
+  The test "PARATEST='1' TEST_TOKEN='1' UNIQUE_TEST_TOKEN='1_699da51b0d2ac' t
+  ests/Feature/Filament/ActivitySpendBreakoutTest.php" failed.
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  Exit Code: 255(Unknown error)
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  Working directory: /var/www/html
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  Output:
+  ================
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  In SpendSubtype.php line 85:
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+    Cannot redefine class constant App\Enums\SpendSubtype::ExperienceDiving
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  Error Output:
+  ================
+  PHP Fatal error:  Cannot redefine class constant App\Enums\SpendSubtype::Ex
+  perienceDiving in /var/www/html/app/Enums/SpendSubtype.php on line 85
+  PHP Stack trace:
+  PHP   1. {main}() /var/www/html/vendor/brianium/paratest/bin/phpunit-wrappe
+  r.php:0
+  PHP   2. {closure:/var/www/html/vendor/brianium/paratest/bin/phpunit-wrappe
+  r.php:8-85}() /var/www/html/vendor/brianium/paratest/bin/phpunit-wrapper.ph
+  p:85
+  PHP   3. ParaTest\WrapperRunner\ApplicationForWrapperWorker->runTest($testP
+  ath = 'tests/Feature/Filament/ActivitySpendBreakoutTest.php') /var/www/html
+  /vendor/brianium/paratest/bin/phpunit-wrapper.php:80
+  PHP   4. PHPUnit\Framework\TestSuite->run() /var/www/html/vendor/brianium/p
+  aratest/src/WrapperRunner/ApplicationForWrapperWorker.php:116
+  PHP   5. PHPUnit\Framework\TestCase->run() /var/www/html/vendor/phpunit/php
+  unit/src/Framework/TestSuite.php:369
+  PHP   6. PHPUnit\Framework\TestRunner->run($test = class Tests\Feature\Fila
+  ment\ActivitySpendBreakoutTest { private ?bool ${PHPUnit\Framework\TestCase
+  }backupGlobals = FALSE; private array ${PHPUnit\Framework\TestCase}backupGl
+  obalsExcludeList = []; private ?bool ${PHPUnit\Framework\TestCase}backupSta
+  ticProperties = FALSE; private array ${PHPUnit\Framework\TestCase}backupSta
+  ticPropertiesExcludeList = []; private ?SebastianBergmann\GlobalState\Snaps
+  hot ${PHPUnit\Framework\TestCase}snapshot = NULL; private ?array ${PHPUnit\
+  Framework\TestCase}backupGlobalErrorHandlers = [0 => class PHPUnit\Runner\E
+  rrorHandler { ... }]; private ?array ${PHPUnit\Framework\TestCase}backupGlo
+  balExceptionHandlers = []; private ?bool ${PHPUnit\Framework\TestCase}runCl
+  assInSeparateProcess = NULL; private ?bool ${PHPUnit\Framework\TestCase}run
+  TestInSeparateProcess = NULL; private bool ${PHPUnit\Framework\TestCase}pre
+  serveGlobalState = FALSE; private bool ${PHPUnit\Framework\TestCase}inIsola
+  tion = FALSE; private ?string ${PHPUnit\Framework\TestCase}expectedExceptio
+  n = NULL; private ?string ${PHPUnit\Framework\TestCase}expectedExceptionMes
+  sage = NULL; private ?string ${PHPUnit\Framework\TestCase}expectedException
+  MessageRegExp = NULL; private string|int|null ${PHPUnit\Framework\TestCase}
+  expectedExceptionCode = NULL; private array ${PHPUnit\Framework\TestCase}pr
+  ovidedTests = [0 => class PHPUnit\Framework\ExecutionOrderDependency { ...
+  }]; private array ${PHPUnit\Framework\TestCase}data = []; private string|in
+  t ${PHPUnit\Framework\TestCase}dataName = ''; private string ${PHPUnit\Fram
+  ework\TestCase}methodName = 'test_can_break_out_spends_into_new_activity';
+  private array ${PHPUnit\Framework\TestCase}groups = [0 => 'default']; priva
+  te array ${PHPUnit\Framework\TestCase}dependencies = []; private array ${PH
+  PUnit\Framework\TestCase}dependencyInput = []; private array ${PHPUnit\Fram
+  ework\TestCase}iniSettings = []; private array ${PHPUnit\Framework\TestCase
+  }locale = []; private array ${PHPUnit\Framework\TestCase}mockObjects = [];
+  private PHPUnit\Framework\TestStatus\TestStatus ${PHPUnit\Framework\TestCas
+  e}status = class PHPUnit\Framework\TestStatus\Unknown { private readonly st
+  ring ${PHPUnit\Framework\TestStatus\TestStatus}message = '' }; private int
+  ${PHPUnit\Framework\TestCase}numberOfAssertionsPerformed = 0; private mixed
+   ${PHPUnit\Framework\TestCase}testResult = NULL; private string ${PHPUnit\F
+  ramework\TestCase}output = ''; private ?string ${PHPUnit\Framework\TestCase
+  }outputExpectedRegex = NULL; private ?string ${PHPUnit\Framework\TestCase}o
+  utputExpectedString = NULL; private bool ${PHPUnit\Framework\TestCase}outpu
+  tBufferingActive = TRUE; private int ${PHPUnit\Framework\TestCase}outputBuf
+  feringLevel = 1; private bool ${PHPUnit\Framework\TestCase}outputRetrievedF
+  orAssertion = FALSE; private bool ${PHPUnit\Framework\TestCase}doesNotPerfo
+  rmAssertions = FALSE; private array ${PHPUnit\Framework\TestCase}customComp
+  arators = []; private ?PHPUnit\Event\Code\TestMethod ${PHPUnit\Framework\Te
+  stCase}testValueObjectForEvents = class PHPUnit\Event\Code\TestMethod { pri
+  vate readonly string ${PHPUnit\Event\Code\Test}file = '/var/www/html/tests/
+  Feature/Filament/ActivitySpendBreakoutTest.php'; private readonly string $c
+  lassName = 'Tests\\Feature\\Filament\\ActivitySpendBreakoutTest'; private r
+  eadonly string $methodName = 'test_can_break_out_spends_into_new_activity';
+   private readonly int $line = 24; private readonly PHPUnit\Event\Code\TestD
+  ox $testDox = class PHPUnit\Event\Code\TestDox { ... }; private readonly PH
+  PUnit\Metadata\MetadataCollection $metadata = class PHPUnit\Metadata\Metada
+  taCollection { ... }; private readonly PHPUnit\Event\TestData\TestDataColle
+  ction $testData = class PHPUnit\Event\TestData\TestDataCollection { ... } }
+  ; private bool ${PHPUnit\Framework\TestCase}wasPrepared = TRUE; private arr
+  ay ${PHPUnit\Framework\TestCase}failureTypes = []; private array ${PHPUnit\
+  Framework\TestCase}expectedUserDeprecationMessage = []; private array ${PHP
+  Unit\Framework\TestCase}expectedUserDeprecationMessageRegularExpression = [
+  ]; protected array $traitsUsedByTest = *uninitialized*; protected $original
+  Vite = NULL; protected $originalMix = NULL; protected $originalDeferredCall
+  backsCollection = NULL; protected $defaultHeaders = []; protected $defaultC
+  ookies = []; protected $unencryptedCookies = []; protected $serverVariables
+   = []; protected $followRedirects = FALSE; protected $encryptCookies = TRUE
+  ; protected $withCredentials = FALSE; public $mockConsoleOutput = TRUE; pub
+  lic $expectsOutput = NULL; public $expectedOutput = []; public $expectedOut
+  putSubstrings = []; public $unexpectedOutput = []; public $unexpectedOutput
+  Substrings = []; public $expectedTables = []; public $expectedQuestions = [
+  ]; public $expectedChoices = []; protected $originalDeprecationHandler = NU
+  LL; protected $originalExceptionHandler = NULL; protected $app = class Illu
+  minate\Foundation\Application { protected $resolved = [...]; protected $bin
+  dings = [...]; protected $methodBindings = [...]; protected $instances = [.
+  ..]; protected $scopedInstances = [...]; protected $aliases = [...]; protec
+  ted $abstractAliases = [...]; protected $extenders = [...]; protected $tags
+   = [...]; protected $buildStack = [...]; protected $with = [...]; public $c
+  ontextual = [...]; public $contextualAttributes = [...]; protected $checked
+  ForAttributeBindings = [...]; protected $checkedForSingletonOrScopedAttribu
+  tes = [...]; protected $reboundCallbacks = [...]; protected $globalBeforeRe
+  solvingCallbacks = [...]; protected $globalResolvingCallbacks = [...]; prot
+  ected $globalAfterResolvingCallbacks = [...]; protected $beforeResolvingCal
+  lbacks = [...]; protected $resolvingCallbacks = [...]; protected $afterReso
+  lvingCallbacks = [...]; protected $afterResolvingAttributeCallbacks = [...]
+  ; protected $environmentResolver = class Closure { ... }; protected $basePa
+  th = '/var/www/html'; protected $registeredCallbacks = [...]; protected $ha
+  sBeenBootstrapped = TRUE; protected $booted = TRUE; protected $bootingCallb
+  acks = [...]; protected $bootedCallbacks = [...]; protected $terminatingCal
+  lbacks = [...]; protected $serviceProviders = [...]; protected $loadedProvi
+  ders = [...]; protected $deferredServices = [...]; protected $bootstrapPath
+   = '/var/www/html/bootstrap'; protected $appPath = NULL; protected $configP
+  ath = NULL; protected $databasePath = NULL; protected $langPath = '/var/www
+  /html/resources/lang'; protected $publicPath = NULL; protected $storagePath
+   = NULL; protected $environmentPath = NULL; protected $environmentFile = '.
+  env'; protected $isRunningInConsole = TRUE; protected $namespace = 'App\\';
+   protected $mergeFrameworkConfiguration = TRUE; protected $absoluteCachePat
+  hPrefixes = [...] }; protected $afterApplicationCreatedCallbacks = []; prot
+  ected $beforeApplicationDestroyedCallbacks = [0 => class Closure { ... }, 1
+   => class Closure { ... }]; protected $callbackException = NULL; protected
+  $setUpHasRun = TRUE }) /var/www/html/vendor/phpunit/phpunit/src/Framework/T
+  estCase.php:365
+  PHP   7. PHPUnit\Framework\TestCase->runBare() /var/www/html/vendor/phpunit
+  /phpunit/src/Framework/TestRunner/TestRunner.php:87
+  PHP   8. PHPUnit\Framework\TestCase->runTest() /var/www/html/vendor/phpunit
+  /phpunit/src/Framework/TestCase.php:519
+  PHP   9. Tests\Feature\Filament\ActivitySpendBreakoutTest->test_can_break_o
+  ut_spends_into_new_activity() /var/www/html/vendor/phpunit/phpunit/src/Fram
+  ework/TestCase.php:1667
+  PHP  10. Illuminate\Database\Eloquent\Factories\Factory->create($attributes
+   = ['name' => 'Old Activity', 'start_date' => '2023-01-01', 'end_date' => '
+  2023-01-31'], $parent = *uninitialized*) /var/www/html/tests/Feature/Filame
+  nt/ActivitySpendBreakoutTest.php:26
+  PHP  11. Illuminate\Database\Eloquent\Factories\Factory->create($attributes
+   = [], $parent = NULL) /var/www/html/vendor/laravel/framework/src/Illuminat
+  e/Database/Eloquent/Factories/Factory.php:315
+  PHP  12. Illuminate\Database\Eloquent\Factories\Factory->callAfterCreating(
+  $instances = class Illuminate\Support\Collection { protected $items = [0 =>
+   class App\Models\Activity { ... }]; protected $escapeWhenCastingToString =
+   FALSE }, $parent = NULL) /var/www/html/vendor/laravel/framework/src/Illumi
+  nate/Database/Eloquent/Factories/Factory.php:323
+  PHP  13. Illuminate\Support\Collection->each($callback = class Closure { pu
+  blic $name = '{closure:Illuminate\\Database\\Eloquent\\Factories\\Factory::
+  callAfterCreating():803}'; public $file = '/var/www/html/vendor/laravel/fra
+  mework/src/Illuminate/Database/Eloquent/Factories/Factory.php'; public $lin
+  e = 803; public $static = ['parent' => NULL]; public $this = class Database
+  \Factories\ActivityFactory { protected $model = 'App\\Models\\Activity'; pr
+  otected $count = NULL; protected $states = class Illuminate\Support\Collect
+  ion { ... }; protected $has = class Illuminate\Support\Collection { ... };
+  protected $for = class Illuminate\Support\Collection { ... }; protected $re
+  cycle = class Illuminate\Support\Collection { ... }; protected $afterMaking
+   = class Illuminate\Support\Collection { ... }; protected $afterCreating =
+  class Illuminate\Support\Collection { ... }; protected $expandRelationships
+   = TRUE; protected $excludeRelationships = [...]; protected $connection = N
+  ULL; protected ?Faker\Generator $faker = class Faker\Generator { ... } }; p
+  ublic $parameter = ['$model' => '<required>'] }) /var/www/html/vendor/larav
+  el/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:803
+  PHP  14. Illuminate\Database\Eloquent\Factories\Factory->{closure:/var/www/
+  html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Fa
+  ctory.php:803-807}($model = class App\Models\Activity { protected $connecti
+  on = 'mysql'; protected $table = NULL; protected $primaryKey = 'id'; protec
+  ted $keyType = 'int'; public $incrementing = TRUE; protected $with = []; pr
+  otected $withCount = []; public $preventsLazyLoading = FALSE; protected $pe
+  rPage = 15; public $exists = TRUE; public $wasRecentlyCreated = TRUE; prote
+  cted $escapeWhenCastingToString = FALSE; protected $attributes = ['name' =>
+   'Old Activity', 'description' => 'Quis nulla voluptas est quia. Harum vero
+   accusantium laborum minima esse tempore. Quibusdam dicta eum excepturi et
+  et nesciunt quaerat. Optio qui eos adipisci.', 'start_date' => '2023-01-01
+  00:00:00', 'end_date' => '2023-01-31 00:00:00', 'updated_at' => '2026-02-24
+   13:18:20', 'created_at' => '2026-02-24 13:18:20', 'id' => 1]; protected $o
+  riginal = ['name' => 'Old Activity', 'description' => 'Quis nulla voluptas
+  est quia. Harum vero accusantium laborum minima esse tempore. Quibusdam dic
+  ta eum excepturi et et nesciunt quaerat. Optio qui eos adipisci.', 'start_d
+  ate' => '2023-01-01 00:00:00', 'end_date' => '2023-01-31 00:00:00', 'update
+  d_at' => '2026-02-24 13:18:20', 'created_at' => '2026-02-24 13:18:20', 'id'
+   => 1]; protected $changes = []; protected $previous = []; protected $casts
+   = ['start_date' => 'date', 'end_date' => 'date']; protected $classCastCach
+  e = []; protected $attributeCastCache = []; protected $dateFormat = NULL; p
+  rotected $appends = []; protected $dispatchesEvents = []; protected $observ
+  ables = []; protected $relations = []; protected $touches = []; protected $
+  relationAutoloadCallback = NULL; protected $relationAutoloadContext = NULL;
+   public $timestamps = TRUE; public $usesUniqueIds = FALSE; protected $hidde
+  n = []; protected $visible = []; protected $fillable = [0 => 'name', 1 => '
+  description', 2 => 'start_date', 3 => 'end_date']; protected $guarded = [0
+  => '*'] }, 0) /var/www/html/vendor/laravel/framework/src/Illuminate/Collect
+  ions/Traits/EnumeratesValues.php:275
+  PHP  15. Illuminate\Support\Collection->each($callback = class Closure { pu
+  blic $name = '{closure:{closure:Illuminate\\Database\\Eloquent\\Factories\\
+  Factory::callAfterCreating():803}:804}'; public $file = '/var/www/html/vend
+  or/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php
+  '; public $line = 804; public $static = ['model' => class App\Models\Activi
+  ty { ... }, 'parent' => NULL]; public $this = class Database\Factories\Acti
+  vityFactory { protected $model = 'App\\Models\\Activity'; protected $count
+  = NULL; protected $states = class Illuminate\Support\Collection { ... }; pr
+  otected $has = class Illuminate\Support\Collection { ... }; protected $for
+  = class Illuminate\Support\Collection { ... }; protected $recycle = class I
+  lluminate\Support\Collection { ... }; protected $afterMaking = class Illumi
+  nate\Support\Collection { ... }; protected $afterCreating = class Illuminat
+  e\Support\Collection { ... }; protected $expandRelationships = TRUE; protec
+  ted $excludeRelationships = [...]; protected $connection = NULL; protected
+  ?Faker\Generator $faker = class Faker\Generator { ... } }; public $paramete
+  r = ['$callback' => '<required>'] }) /var/www/html/vendor/laravel/framework
+  /src/Illuminate/Database/Eloquent/Factories/Factory.php:804
+  PHP  16. Illuminate\Database\Eloquent\Factories\Factory->{closure:/var/www/
+  html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Fa
+  ctory.php:804-806}($callback = class Closure { public $name = '{closure:Dat
+  abase\\Factories\\ActivityFactory::configure():30}'; public $file = '/var/w
+  ww/html/database/factories/ActivityFactory.php'; public $line = 30; public
+  $this = class Database\Factories\ActivityFactory { protected $model = 'App\
+  \Models\\Activity'; protected $count = NULL; protected $states = class Illu
+  minate\Support\Collection { ... }; protected $has = class Illuminate\Suppor
+  t\Collection { ... }; protected $for = class Illuminate\Support\Collection
+  { ... }; protected $recycle = class Illuminate\Support\Collection { ... };
+  protected $afterMaking = class Illuminate\Support\Collection { ... }; prote
+  cted $afterCreating = class Illuminate\Support\Collection { ... }; protecte
+  d $expandRelationships = TRUE; protected $excludeRelationships = [...]; pro
+  tected $connection = NULL; protected ?Faker\Generator $faker = class Faker\
+  Generator { ... } }; public $parameter = ['$model' => '<required>'] }, 0) /
+  var/www/html/vendor/laravel/framework/src/Illuminate/Collections/Traits/Enu
+  meratesValues.php:275
+  PHP  17. Database\Factories\ActivityFactory->{closure:/var/www/html/databas
+  e/factories/ActivityFactory.php:30-32}($model = class App\Models\Activity {
+   protected $connection = 'mysql'; protected $table = NULL; protected $prima
+  ryKey = 'id'; protected $keyType = 'int'; public $incrementing = TRUE; prot
+  ected $with = []; protected $withCount = []; public $preventsLazyLoading =
+  FALSE; protected $perPage = 15; public $exists = TRUE; public $wasRecentlyC
+  reated = TRUE; protected $escapeWhenCastingToString = FALSE; protected $att
+  ributes = ['name' => 'Old Activity', 'description' => 'Quis nulla voluptas
+  est quia. Harum vero accusantium laborum minima esse tempore. Quibusdam dic
+  ta eum excepturi et et nesciunt quaerat. Optio qui eos adipisci.', 'start_d
+  ate' => '2023-01-01 00:00:00', 'end_date' => '2023-01-31 00:00:00', 'update
+  d_at' => '2026-02-24 13:18:20', 'created_at' => '2026-02-24 13:18:20', 'id'
+   => 1]; protected $original = ['name' => 'Old Activity', 'description' => '
+  Quis nulla voluptas est quia. Harum vero accusantium laborum minima esse te
+  mpore. Quibusdam dicta eum excepturi et et nesciunt quaerat. Optio qui eos
+  adipisci.', 'start_date' => '2023-01-01 00:00:00', 'end_date' => '2023-01-3
+  1 00:00:00', 'updated_at' => '2026-02-24 13:18:20', 'created_at' => '2026-0
+  2-24 13:18:20', 'id' => 1]; protected $changes = []; protected $previous =
+  []; protected $casts = ['start_date' => 'date', 'end_date' => 'date']; prot
+  ected $classCastCache = []; protected $attributeCastCache = []; protected $
+  dateFormat = NULL; protected $appends = []; protected $dispatchesEvents = [
+  ]; protected $observables = []; protected $relations = []; protected $touch
+  es = []; protected $relationAutoloadCallback = NULL; protected $relationAut
+  oloadContext = NULL; public $timestamps = TRUE; public $usesUniqueIds = FAL
+  SE; protected $hidden = []; protected $visible = []; protected $fillable =
+  [0 => 'name', 1 => 'description', 2 => 'start_date', 3 => 'end_date']; prot
+  ected $guarded = [0 => '*'] }, NULL) /var/www/html/vendor/laravel/framework
+  /src/Illuminate/Database/Eloquent/Factories/Factory.php:805
+  PHP  18. Illuminate\Database\Eloquent\Factories\Factory->create($attributes
+   = *uninitialized*, $parent = *uninitialized*) /var/www/html/database/facto
+  ries/ActivityFactory.php:32
+  PHP  19. Illuminate\Database\Eloquent\Factories\Factory->make($attributes =
+   [], $parent = NULL) /var/www/html/vendor/laravel/framework/src/Illuminate/
+  Database/Eloquent/Factories/Factory.php:318
+  PHP  20. array_map($callback = class Closure { public $name = '{closure:Ill
+  uminate\\Database\\Eloquent\\Factories\\Factory::make():438}'; public $file
+   = '/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent
+  /Factories/Factory.php'; public $line = 438; public $static = ['parent' =>
+  NULL]; public $this = class Database\Factories\SpendFactory { protected $mo
+  del = 'App\\Models\\Spend'; protected $count = 4; protected $states = class
+   Illuminate\Support\Collection { ... }; protected $has = class Illuminate\S
+  upport\Collection { ... }; protected $for = class Illuminate\Support\Collec
+  tion { ... }; protected $recycle = class Illuminate\Support\Collection { ..
+  . }; protected $afterMaking = class Illuminate\Support\Collection { ... };
+  protected $afterCreating = class Illuminate\Support\Collection { ... }; pro
+  tected $expandRelationships = TRUE; protected $excludeRelationships = [...]
+  ; protected $connection = NULL; protected ?Faker\Generator $faker = class F
+  aker\Generator { ... } } }, $array = [0 => 1, 1 => 2, 2 => 3, 3 => 4]) /var
+  /www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factori
+  es/Factory.php:438
+  PHP  21. Illuminate\Database\Eloquent\Factories\Factory->{closure:/var/www/
+  html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Fa
+  ctory.php:438-440}(1) /var/www/html/vendor/laravel/framework/src/Illuminate
+  /Database/Eloquent/Factories/Factory.php:438
+  PHP  22. Illuminate\Database\Eloquent\Factories\Factory->makeInstance($pare
+  nt = NULL) /var/www/html/vendor/laravel/framework/src/Illuminate/Database/E
+  loquent/Factories/Factory.php:439
+  PHP  23. Illuminate\Database\Eloquent\Model::unguarded($callback = class Cl
+  osure { public $name = '{closure:Illuminate\\Database\\Eloquent\\Factories\
+  \Factory::makeInstance():489}'; public $file = '/var/www/html/vendor/larave
+  l/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php'; public
+   $line = 489; public $static = ['parent' => NULL]; public $this = class Dat
+  abase\Factories\SpendFactory { protected $model = 'App\\Models\\Spend'; pro
+  tected $count = 4; protected $states = class Illuminate\Support\Collection
+  { ... }; protected $has = class Illuminate\Support\Collection { ... }; prot
+  ected $for = class Illuminate\Support\Collection { ... }; protected $recycl
+  e = class Illuminate\Support\Collection { ... }; protected $afterMaking = c
+  lass Illuminate\Support\Collection { ... }; protected $afterCreating = clas
+  s Illuminate\Support\Collection { ... }; protected $expandRelationships = T
+  RUE; protected $excludeRelationships = [...]; protected $connection = NULL;
+   protected ?Faker\Generator $faker = class Faker\Generator { ... } } }) /va
+  r/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factor
+  ies/Factory.php:489
+  PHP  24. Illuminate\Database\Eloquent\Factories\Factory->{closure:/var/www/
+  html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Fa
+  ctory.php:489-495}() /var/www/html/vendor/laravel/framework/src/Illuminate/
+  Database/Eloquent/Concerns/GuardsAttributes.php:157
+  PHP  25. Illuminate\Database\Eloquent\Factories\Factory->getExpandedAttribu
+  tes($parent = NULL) /var/www/html/vendor/laravel/framework/src/Illuminate/D
+  atabase/Eloquent/Factories/Factory.php:490
+  PHP  26. Illuminate\Database\Eloquent\Factories\Factory->getRawAttributes($
+  parent = NULL) /var/www/html/vendor/laravel/framework/src/Illuminate/Databa
+  se/Eloquent/Factories/Factory.php:506
+  PHP  27. Database\Factories\SpendFactory->definition() /var/www/html/vendor
+  /laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:5
+  27
+  PHP  28. Composer\Autoload\ClassLoader->loadClass($class = 'App\\Enums\\Spe
+  ndSubtype') /var/www/html/database/factories/SpendFactory.php:19
+  PHP  29. {closure:/var/www/html/vendor/composer/ClassLoader.php:575-577}($f
+  ile = '/var/www/html/vendor/composer/../../app/Enums/SpendSubtype.php') /va
+  r/www/html/vendor/composer/ClassLoader.php:427
+  [2026-02-24 13:18:20] testing.ERROR: Cannot redefine class constant App\Enu
+  ms\SpendSubtype::ExperienceDiving ["/var/www/html/app/Enums/SpendSubtype.ph
+  p",85,"#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/
+  Bootstrap/HandleExceptions.php(247): Symfony\\Component\\ErrorHandler\\Erro
+  r\\FatalError->__construct(message: '...', code: '...', error: '...', trace
+  Offset: '...', traceArgs: '...', trace: '...')
+  #1 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(234): Illuminate\\Foundation\\Bootstrap\\HandleExce
+  ptions->fatalErrorFromPhpError(error: '...', traceOffset: '...')
+  #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExce
+  ptions->handleShutdown()
+  #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(0): Illuminate\\Foundation\\Bootstrap\\HandleExcept
+  ions->{closure:/var/www/html/vendor/laravel/framework/src/Illuminate/Founda
+  tion/Bootstrap/HandleExceptions.php:257-259}()
+  #4 {main}"]
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
+  [2026-02-24 13:18:20] testing.ERROR: Cannot redefine class constant App\Enu
+  ms\SpendSubtype::ExperienceDiving {"userId":1,"exception":"[object] (Symfon
+  y\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redefine cla
+  ss constant App\\Enums\\SpendSubtype::ExperienceDiving at /var/www/html/app
+  /Enums/SpendSubtype.php:85)
+  [stacktrace]
+  #0 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(247): Symfony\\Component\\ErrorHandler\\Error\\Fata
+  lError->__construct(message: '...', code: '...', error: '...', traceOffset:
+   '...', traceArgs: '...', trace: '...')
+  #1 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(234): Illuminate\\Foundation\\Bootstrap\\HandleExce
+  ptions->fatalErrorFromPhpError(error: '...', traceOffset: '...')
+  #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExce
+  ptions->handleShutdown()
+  #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstr
+  ap/HandleExceptions.php(0): Illuminate\\Foundation\\Bootstrap\\HandleExcept
+  ions->{closure:/var/www/html/vendor/laravel/framework/src/Illuminate/Founda
+  tion/Bootstrap/HandleExceptions.php:257-259}()
+  #4 {main}
+  "}
 
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-Code Coverage Report:
-  2026-02-15 20:35:37
-
- Summary:
-  Classes:  7.59% (11/145)
-  Methods: 12.86% (49/381)
-  Lines:    8.83% (333/3770)
-App\Console\Kernel
-  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  2/  8)
-App\Enums\SpendSubtype
-  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
-App\Exceptions\Handler
-  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
-App\Filament\Forms\Fields\SpendAssociationField
-  Methods:   0.00% ( 0/ 1)   Lines:  86.21% ( 50/ 58)
-App\Filament\Resources\AccountResource
-  Methods:  33.33% ( 1/ 3)   Lines:   4.23% (  3/ 71)
-App\Filament\Resources\ActivityResource
-  Methods:  42.86% ( 3/ 7)   Lines:  12.35% ( 10/ 81)
-App\Filament\Resources\BlogPostResource
-  Methods:  50.00% ( 2/ 4)   Lines:  15.09% (  8/ 53)
-App\Filament\Resources\CardResource
-  Methods:  50.00% ( 2/ 4)   Lines:   4.00% (  8/200)
-App\Filament\Resources\LoanAgainstSavingsResource
-  Methods:  50.00% ( 2/ 4)   Lines:  11.76% (  8/ 68)
-App\Filament\Resources\PeriodicSpendResource
-  Methods:  50.00% ( 2/ 4)   Lines:   5.84% (  8/137)
-App\Filament\Resources\Photos\PhotoResource
-  Methods:  50.00% ( 2/ 4)   Lines:  80.00% (  8/ 10)
-App\Filament\Resources\SimpleFin\SimpleFinAccountResource
-  Methods:  40.00% ( 2/ 5)   Lines:  10.84% (  9/ 83)
-App\Filament\Resources\SimpleFin\SimpleFinOrganizationResource
-  Methods:  40.00% ( 2/ 5)   Lines:  15.00% (  9/ 60)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 36/ 36)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\EditSimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinRuleResource\Pages\ListSimpleFinRules
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
-App\Filament\Resources\SimpleFin\SimpleFinTransactionResource
-  Methods:  40.00% ( 2/ 5)   Lines:   5.29% (  9/170)
-App\Filament\Resources\SpendResource
-  Methods:  28.57% ( 2/ 7)   Lines:   7.84% (  8/102)
-App\Filament\Resources\UserResource
-  Methods:  50.00% ( 2/ 4)   Lines:   8.08% (  8/ 99)
-App\Models\Payment
-  Methods:   7.69% ( 1/13)   Lines:   9.30% (  4/ 43)
-App\Models\SimpleFinRule
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Models\Spend
-  Methods:  22.22% ( 2/ 9)   Lines:  19.44% (  7/ 36)
-App\Models\StateDump
-  Methods:  25.00% ( 1/ 4)   Lines:   7.14% (  1/ 14)
-App\Models\Traits\GetsDumped
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Models\Traits\HasPayments
-  Methods:   0.00% ( 0/ 4)   Lines:   9.09% (  2/ 22)
-App\Models\User
-  Methods:  25.00% ( 1/ 4)   Lines:  25.00% (  1/  4)
-App\Providers\AppServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
-App\Providers\AuthServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\BroadcastServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\EventServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-App\Providers\FilamentConfigurationProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  80.00% ( 16/ 20)
-App\Providers\Filament\AdminPanelProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 42/ 42)
-App\Providers\HelperServiceProvider
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
-App\Providers\HorizonServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  3/  6)
-App\Providers\RouteServiceProvider
-  Methods:  50.00% ( 1/ 2)   Lines:  92.31% ( 12/ 13)
-App\Providers\TelescopeServiceProvider
-  Methods:   0.00% ( 0/ 3)   Lines:  56.00% ( 14/ 25)
-App\Providers\VoltServiceProvider
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
-   FAIL  Tests\Feature\Filament\Resources\SimpleFin\SimpleFinRuleResourceTest
-  ⨯ resource index renders                                               1.19s
-  ⨯ resource create renders                                              0.13s
-  ⨯ resource edit renders                                                0.13s
-  ⨯ resource can list                                                    0.39s
-  ⨯ resource can create                                                  0.27s
-  ⨯ resource edit fills form                                             0.27s
-  ⨯ resource can edit                                                    0.39s
-  ⨯ resource can delete                                                  0.26s
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleFinRuleRe…  Error
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found
-  at tests/Feature/Filament/Parent/Resource.php:34
-     30▕     }
-     31▕
-     32▕     public function test_resource_index_renders()
-     33▕     {
-  ➜  34▕         $this->get(static::$resourceClass::getUrl('index'))->assertSuccessful();
-     35▕     }
-     36▕
-     37▕     public function test_resource_create_renders()
-     38▕     {
-  1   tests/Feature/Filament/Parent/Resource.php:34
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleFinRuleRe…  Error
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found
-  at tests/Feature/Filament/Parent/Resource.php:39
-     35▕     }
-     36▕
-     37▕     public function test_resource_create_renders()
-     38▕     {
-  ➜  39▕         $this->get(static::$resourceClass::getUrl('create'))->assertSuccessful();
-     40▕     }
-     41▕
-     42▕     public function test_resource_edit_renders()
-     43▕     {
-  1   tests/Feature/Filament/Parent/Resource.php:39
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleFinRuleRe…  Error
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found
-  at tests/Feature/Filament/Parent/Resource.php:44
-     40▕     }
-     41▕
-     42▕     public function test_resource_edit_renders()
-     43▕     {
-  ➜  44▕         $this->get(static::$resourceClass::getUrl('edit', [
-     45▕             'record' => static::$modelClass::factory()->create()->getKey(),
-     46▕         ]))->assertSuccessful();
-     47▕     }
-     48▕
-  1   tests/Feature/Filament/Parent/Resource.php:44
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleF…  ViewException
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
-  at vendor/filament/filament/src/Resources/Pages/Concerns/InteractsWithParentRecord.php:32
-     28▕         if ($this->parentRecord) {
-     29▕             return;
-     30▕         }
-     31▕
-  ➜  32▕         $parentResourceRegistration = static::getResource()::getParentResourceRegistration();
-     33▕
-     34▕         if (! $parentResourceRegistration) {
-     35▕             return;
-     36▕         }
-      +20 vendor frames
-  21  storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
-      +36 vendor frames
-  58  tests/Feature/Filament/Parent/Resource.php:53
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleF…  ViewException
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
-  at vendor/filament/filament/src/Resources/Pages/Concerns/InteractsWithParentRecord.php:32
-     28▕         if ($this->parentRecord) {
-     29▕             return;
-     30▕         }
-     31▕
-  ➜  32▕         $parentResourceRegistration = static::getResource()::getParentResourceRegistration();
-     33▕
-     34▕         if (! $parentResourceRegistration) {
-     35▕             return;
-     36▕         }
-      +20 vendor frames
-  21  storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
-      +36 vendor frames
-  58  tests/Feature/Filament/Parent/Resource.php:93
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleF…  ViewException
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
-  at vendor/filament/filament/src/Resources/Pages/Concerns/InteractsWithParentRecord.php:32
-     28▕         if ($this->parentRecord) {
-     29▕             return;
-     30▕         }
-     31▕
-  ➜  32▕         $parentResourceRegistration = static::getResource()::getParentResourceRegistration();
-     33▕
-     34▕         if (! $parentResourceRegistration) {
-     35▕             return;
-     36▕         }
-      +20 vendor frames
-  21  storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
-      +36 vendor frames
-  58  tests/Feature/Filament/Parent/Resource.php:115
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleF…  ViewException
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
-  at vendor/filament/filament/src/Resources/Pages/Concerns/InteractsWithParentRecord.php:32
-     28▕         if ($this->parentRecord) {
-     29▕             return;
-     30▕         }
-     31▕
-  ➜  32▕         $parentResourceRegistration = static::getResource()::getParentResourceRegistration();
-     33▕
-     34▕         if (! $parentResourceRegistration) {
-     35▕             return;
-     36▕         }
-      +20 vendor frames
-  21  storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
-      +36 vendor frames
-  58  tests/Feature/Filament/Parent/Resource.php:141
-  ────────────────────────────────────────────────────────────────────────────
-   FAILED  Tests\Feature\Filament\Resources\SimpleFin\SimpleF…  ViewException
-  Class "App\Filament\Resources\SimpleFin\SimpleFinRuleResource" not found (View: /var/www/html/storage/framework/views/a168b0ebcff266df6b662fc4b6d06e88.blade.php)
-  at vendor/filament/filament/src/Resources/Pages/Concerns/InteractsWithParentRecord.php:32
-     28▕         if ($this->parentRecord) {
-     29▕             return;
-     30▕         }
-     31▕
-  ➜  32▕         $parentResourceRegistration = static::getResource()::getParentResourceRegistration();
-     33▕
-     34▕         if (! $parentResourceRegistration) {
-     35▕             return;
-     36▕         }
-      +20 vendor frames
-  21  storage/framework/views/d76adc34f3e5651d58b1e86454689044.php:11
-      +36 vendor frames
-  58  tests/Feature/Filament/Parent/Resource.php:155
-  Tests:    8 failed (0 assertions)
-  Duration: 3.10s
+paratest [--functional] [-m|--max-batch-size MAX-BATCH-SIZE] [--no-test-tokens] [--passthru-php PASSTHRU-PHP] [-p|--processes PROCESSES] [--runner RUNNER] [--tmp-dir TMP-DIR] [-v|--verbose] [--bootstrap BOOTSTRAP] [-c|--configuration CONFIGURATION] [--no-configuration] [--cache-directory CACHE-DIRECTORY] [--testsuite TESTSUITE] [--exclude-testsuite EXCLUDE-TESTSUITE] [--group GROUP] [--exclude-group EXCLUDE-GROUP] [--filter FILTER] [--process-isolation] [--strict-coverage] [--strict-global-state] [--disallow-test-output] [--dont-report-useless-tests] [--stop-on-defect] [--stop-on-error] [--stop-on-failure] [--stop-on-warning] [--stop-on-risky] [--stop-on-skipped] [--stop-on-incomplete] [--fail-on-incomplete] [--fail-on-risky] [--fail-on-skipped] [--fail-on-warning] [--fail-on-deprecation] [--order-by ORDER-BY] [--random-order-seed RANDOM-ORDER-SEED] [--colors [COLORS]] [--no-progress] [--display-incomplete] [--display-skipped] [--display-deprecations] [--display-errors] [--display-notices] [--display-warnings] [--teamcity] [--testdox] [--log-junit LOG-JUNIT] [--log-teamcity LOG-TEAMCITY] [--coverage-clover COVERAGE-CLOVER] [--coverage-cobertura COVERAGE-COBERTURA] [--coverage-crap4j COVERAGE-CRAP4J] [--coverage-html COVERAGE-HTML] [--coverage-php COVERAGE-PHP] [--coverage-text [COVERAGE-TEXT]] [--coverage-xml COVERAGE-XML] [--coverage-filter COVERAGE-FILTER] [--no-coverage] [--] [<path>]
