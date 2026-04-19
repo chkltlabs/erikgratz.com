@@ -22,13 +22,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/Feature/Filament/ActivitySpendBreakoutTest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.junie/guidelines.md" beforeDir="false" afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.output.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/SpendSubtype.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/SpendSubtype.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/ActivityResource/RelationManagers/SpendsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Spend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Spend.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -492,7 +486,7 @@
       <workItem from="1771028304749" duration="16861000" />
       <workItem from="1771448869250" duration="235000" />
       <workItem from="1771881050316" duration="1000" />
-      <workItem from="1771937898525" duration="1176000" />
+      <workItem from="1771937898525" duration="2133000" />
     </task>
     <servers />
   </component>
