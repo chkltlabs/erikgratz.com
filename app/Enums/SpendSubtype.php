@@ -30,6 +30,8 @@ use BenSampo\Enum\Enum;
  * @method static static Experience()
  * @method static static ExperienceOther()
  * @method static static ExperienceDiving()
+ * @method static static ExperienceMuseum()
+ * @method static static ExperienceCathedral()
  * @method static static SubscriptionMedia()
  * @method static static SubscriptionTech()
  * @method static static SubscriptionCreative()
