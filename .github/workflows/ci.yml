@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
   packages: write
+  issues: write
+  pull-requests: write
 
 jobs:
   laravel-tests:
@@ -140,7 +142,7 @@ jobs:
         if: github.event_name == 'pull_request'
           && steps.changed-files.outputs.all_changed_files_count != 0
           && always() && !cancelled()
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v2.9.2
         with:
           hide_and_recreate: true
           hide_classify: 'OUTDATED'
