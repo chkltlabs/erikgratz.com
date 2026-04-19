@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main", "master" ]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
@@ -18,46 +22,61 @@ jobs:
         with:
           php-version: '8.4'
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('vendor/laravel/sail/runtimes/8.4/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       - name: Install Composer Dependencies
         run: composer install --no-interaction --prefer-dist --no-scripts
 
+      - name: Compute Sail runtime fingerprint
+        id: runtime
+        run: |
+          RUNTIME_HASH=$(tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -cf - -C vendor/laravel/sail/runtimes/8.4 . | sha256sum | cut -c1-12)
+          echo "runtime_hash=${RUNTIME_HASH}" >> "$GITHUB_OUTPUT"
+          echo "sail_runtime_image=ghcr.io/${{ github.repository }}/sail-8.4" >> "$GITHUB_OUTPUT"
+          echo "SAIL_RUNTIME_IMAGE=ghcr.io/${{ github.repository }}/sail-8.4" >> "$GITHUB_ENV"
+          echo "SAIL_RUNTIME_TAG=sail-${RUNTIME_HASH}" >> "$GITHUB_ENV"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - name: Build and Cache Docker Image
+      - name: Build and push Sail runtime image
         uses: docker/build-push-action@v6
         with:
           context: ./vendor/laravel/sail/runtimes/8.4
-          push: false
-          load: true
-          tags: sail-8.4/app:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          platforms: linux/amd64,linux/arm64
+          push: true
+          provenance: false
+          tags: ${{ steps.runtime.outputs.sail_runtime_image }}:sail-${{ steps.runtime.outputs.runtime_hash }}
+          cache-from: type=registry,ref=${{ steps.runtime.outputs.sail_runtime_image }}:buildcache
+          cache-to: type=registry,ref=${{ steps.runtime.outputs.sail_runtime_image }}:buildcache,mode=max
           build-args: |
             WWWGROUP=1000
             WWWUSER=1000
 
-      - name: Move cache
+      - name: Tag latest Sail runtime image
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          docker buildx imagetools create \
+            --tag "${{ steps.runtime.outputs.sail_runtime_image }}:latest" \
+            "${{ steps.runtime.outputs.sail_runtime_image }}:sail-${{ steps.runtime.outputs.runtime_hash }}"
 
-      - name: Start Docker Compose
+      - name: Pull and start Docker Compose
         env:
           WWWGROUP: 1000
           WWWUSER: 1000
         run: |
+          docker compose pull laravel.test
           docker compose up -d
           sleep 10
 

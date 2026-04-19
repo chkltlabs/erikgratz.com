@@ -4,15 +4,8 @@ services:
     laravel.test:
         # extra_hosts:
         #     - 'host.docker.internal:192.168.2.193'
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.4
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-                XDEBUG: '${XDEBUG}'
-                XDEBUG_PORT: '${XDEBUG_PORT}'
         mem_limit: 4g
-        image: sail-8.4/app
+        image: '${SAIL_RUNTIME_IMAGE:-ghcr.io/erikgratz/erikgratz.com/sail-8.4}:${SAIL_RUNTIME_TAG:-latest}'
         ports:
             - '${APP_PORT:-80}:80'
             - '${FORWARD_VITE_PORT:-5174}:${VITE_PORT:-5174}'
