@@ -49,14 +49,14 @@ The GHCR image is rebuilt in CI when the Sail runtime content changes under `ven
   - Push to `main`/`master` (or open a PR and merge)
 - CI will:
   - Recompute the runtime fingerprint
-  - Build and push `ghcr.io/erikgratz/erikgratz.com/sail-8.4:sail-<fingerprint>`
+  - Build and push `ghcr.io/chkltlabs/erikgratz.com/sail-8.4:sail-<fingerprint>`
   - Retag `:latest` on `main`/`master`
 
 To manually rebuild/publish (outside CI), run from repo root after `composer install`:
 
 ```bash
 RUNTIME_HASH=$(tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -cf - -C vendor/laravel/sail/runtimes/8.4 . | shasum -a 256 | awk '{print substr($1,1,12)}')
-IMAGE=ghcr.io/erikgratz/erikgratz.com/sail-8.4
+IMAGE=ghcr.io/chkltlabs/erikgratz.com/sail-8.4
 
 docker login ghcr.io
 docker buildx build \

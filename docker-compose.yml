@@ -5,7 +5,7 @@ services:
         # extra_hosts:
         #     - 'host.docker.internal:192.168.2.193'
         mem_limit: 4g
-        image: '${SAIL_RUNTIME_IMAGE:-ghcr.io/erikgratz/erikgratz.com/sail-8.4}:${SAIL_RUNTIME_TAG:-latest}'
+        image: '${SAIL_RUNTIME_IMAGE:-ghcr.io/chkltlabs/erikgratz.com/sail-8.4}:${SAIL_RUNTIME_TAG:-latest}'
         ports:
             - '${APP_PORT:-80}:80'
             - '${FORWARD_VITE_PORT:-5174}:${VITE_PORT:-5174}'

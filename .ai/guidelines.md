@@ -7,7 +7,7 @@ This file contains persistent guidelines for Junie to ensure consistency across 
 - **PHP Version:** ^8.4
 - **Frontend:** Livewire ^3.0 with Tailwind CSS and Alpine.js
 - **Admin Panel:** Filament ^4.0
-- **Testing:** PHPUnit ^11.0 with ParaTest ^7.8
+- **Testing:** PHPUnit ^11.0 with ParaTest ^7.8 run inside Docker (Laravel Sail)
 
 ### Coding Standards
 - **PHP:** Follow PSR-12 and use Laravel's standard conventions. Use typed properties and return types where possible.
