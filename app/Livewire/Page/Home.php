@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Page;
 
-use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,24 +23,6 @@ class Home extends Component
     {
         $this->heroImage = asset('images/webp/suit-up.webp');
     }
-
-
-    // contact form fields
-    public $contact_name = '';
-    public $contact_email = '';
-    public $contact_message = '';
-
-    protected $rules = [
-        'contact_name' => 'required|string|min:2|max:100',
-        'contact_email' => 'required|email',
-        'contact_message' => 'required|string|min:10|max:2000',
-    ];
-
-    protected $messages = [
-        'contact_name.required' => 'Please tell me your name.',
-        'contact_email.required' => 'Please include your email so I can respond.',
-        'contact_message.required' => 'Please include a short message.',
-    ];
 
     #[Computed]
     public function jerbs()
@@ -66,27 +47,6 @@ class Home extends Component
                 'timeframe' => '2019-2020',
             ]
         ];
-    }
-
-    public function submitContact()
-    {
-        $this->validate();
-
-        // Example: send an email (uncomment and configure mail in .env)
-        /*
-        Mail::send('emails.contact', [
-            'name' => $this->contact_name,
-            'email' => $this->contact_email,
-            'message' => $this->contact_message,
-        ], function ($m) {
-            $m->to('your@email.com')
-              ->subject('New contact from website');
-        });
-        */
-
-        // For now just reset the form and flash a message
-        $this->reset(['contact_name','contact_email','contact_message']);
-        session()->flash('success', 'Thanks — I received your message. I will respond shortly.');
     }
 
     public function render()

@@ -14,7 +14,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
@@ -60,7 +59,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            HandleInertiaRequests::class,
         ],
 
         'api' => [

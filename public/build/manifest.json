@@ -1,11 +1,11 @@
 {
   "public/css/filament/filament/app.css": {
-    "file": "assets/app-Cet-eSMe.css",
+    "file": "assets/app-BG9O7JPj.css",
     "src": "public/css/filament/filament/app.css",
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DfiACrll.css",
+    "file": "assets/app-DOKsF2bD.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -15,41 +15,29 @@
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-CP3MNxoS.css",
+    "file": "assets/theme-DTb3fjgd.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
   },
   "resources/js/Filament/filament-chart-plugins.js": {
-    "file": "assets/filament-chart-plugins-DCqx1Vki.js",
+    "file": "assets/filament-chart-plugins-DsT3YK4N.js",
     "name": "filament-chart-plugins",
     "src": "resources/js/Filament/filament-chart-plugins.js",
     "isEntry": true
   },
-  "resources/js/app.js": {
-    "file": "assets/app-C7GyD-O3.js",
-    "name": "app",
-    "src": "resources/js/app.js",
+  "resources/js/livewire.js": {
+    "file": "assets/livewire-BbeMk0Sl.js",
+    "name": "livewire",
+    "src": "resources/js/livewire.js",
     "isEntry": true,
     "css": [
-      "assets/app-B1SiKp1-.css",
-      "assets/app-DfiACrll.css"
-    ],
-    "assets": [
-      "assets/face-DpAfdnxj.webp",
-      "assets/suit-up-CVqUPZFF.webp"
+      "assets/app-DOKsF2bD.css",
+      "assets/app-CEDur2tV.css"
     ]
   },
   "resources/sass/app.scss": {
     "file": "assets/app-CEDur2tV.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
-  },
-  "storage/app/public/images/webp/face.webp": {
-    "file": "assets/face-DpAfdnxj.webp",
-    "src": "storage/app/public/images/webp/face.webp"
-  },
-  "storage/app/public/images/webp/suit-up.webp": {
-    "file": "assets/suit-up-CVqUPZFF.webp",
-    "src": "storage/app/public/images/webp/suit-up.webp"
   }
 }

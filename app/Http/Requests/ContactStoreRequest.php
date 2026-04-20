@@ -24,6 +24,14 @@ class ContactStoreRequest extends FormRequest
      */
     public function rules()
     {
+        return self::rulesArray();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function rulesArray(): array
+    {
         return [
             'contact' => new EmailOrPhoneRule,
             'name' => 'required|string',

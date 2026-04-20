@@ -10,7 +10,7 @@
         <title>{{ config('app.name') }}</title>
 
         <style>[x-cloak] { display: none !important; }</style>
-        @vite((['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css','resources/css/filament/admin/tailwind.config.js']))
+        @vite(['resources/css/app.css', 'resources/js/livewire.js', 'resources/css/filament/admin/theme.css','resources/css/filament/admin/tailwind.config.js'])
         @livewireStyles
         @stack('scripts')
     </head>

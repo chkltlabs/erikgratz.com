@@ -51,6 +51,8 @@ new class extends Component {
             Page\Work::class,
             Page\Experience::class,
             Page\Photo::class,
+            Page\Portfolio::class,
+            Page\Contact::class,
         ];
 
         return array_map(fn($item) => [
