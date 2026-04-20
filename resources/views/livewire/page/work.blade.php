@@ -9,7 +9,7 @@
             </p>
         </div>
     </div>
-    @foreach($this->portfolioItems() as $index => $portfolio)
+    @foreach($this->portfolioItems as $index => $portfolio)
         <livewire:components.portfolio-entry
             :title="$portfolio['title']"
             :text="$portfolio['text']"

@@ -178,4 +178,6 @@ return [
     // hides Socialist homepage stuff
     'useRealHomepage' => false,
 
+    'playground_enabled' => (bool) env('PLAYGROUND_ENABLED', false),
+
 ];

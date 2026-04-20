@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Auth;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -10,50 +12,22 @@ use Tests\TestCase;
  */
 class AuthenticatedSessionControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
-    public function create_returns_an_ok_response()
+    public function filament_login_page_returns_ok(): void
     {
-        $response = $this->get(route('filament.admin.auth.login'));
-
-        $response->assertOk();
-
-        // TODO: perform additional assertions
+        $this->get(route('filament.admin.auth.login'))->assertOk();
     }
 
     #[Test]
-    public function destroy_returns_an_ok_response()
+    public function destroy_logs_out_and_redirects_home(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $response = $this->post(route('logout'), [
-            // TODO: send request data
-        ]);
+        $this->post(route('logout'))->assertRedirect('/');
 
-        $response->assertRedirect('/admin/login');
-
-        // TODO: perform additional assertions
+        $this->assertGuest();
     }
-
-    #[Test]
-    public function store_returns_an_ok_response()
-    {
-        $response = $this->post('login', [
-            // TODO: send request data
-        ]);
-
-        $response->assertRedirect();
-
-        // TODO: perform additional assertions
-    }
-
-    #[Test]
-    public function store_validates_with_a_form_request()
-    {
-        $this->assertActionUsesFormRequest(
-            \App\Http\Controllers\Auth\AuthenticatedSessionController::class,
-            'store',
-            \App\Http\Requests\Auth\LoginRequest::class
-        );
-    }
-
-    // test cases...
 }

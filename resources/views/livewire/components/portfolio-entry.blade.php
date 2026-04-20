@@ -26,7 +26,7 @@ new class extends Component {
         $this->imgUrl = $imgUrl;
         $this->index = $index;
         $this->link = $link;
-        $this->linkTex = $linkText;
+        $this->linkText = $linkText;
     }
 }
 ?>

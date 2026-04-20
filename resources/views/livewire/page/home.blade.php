@@ -34,18 +34,26 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <a href="https://calendly.com/erikgratz/30min"
-                   class="px-7 py-3 md:px-9 md:py-4
-                       font-medium md:font-semibold
-                       bg-gray-700 text-gray-50 text-md md:text-sm rounded-full
-                       hover:bg-purple-600 hover:text-white
-                       transition ease-linear duration-500">Schedule a Call</a>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://calendly.com/erikgratz/30min"
+                       class="px-7 py-3 md:px-9 md:py-4
+                           font-medium md:font-semibold
+                           bg-gray-700 text-gray-50 text-md md:text-sm rounded-full
+                           hover:bg-purple-600 hover:text-white
+                           transition ease-linear duration-500">Schedule a Call</a>
+                    <a href="{{ route('contact') }}" wire:navigate
+                       class="px-7 py-3 md:px-9 md:py-4
+                           font-medium md:font-semibold
+                           border border-purple-600 text-purple-400 text-md md:text-sm rounded-full
+                           hover:bg-purple-600 hover:text-white
+                           transition ease-linear duration-500">Contact</a>
+                </div>
             </div>
         </div>
     </section>
     <section class="py-5 md:py-8">
         <div class="container max-w-(--breakpoint-xl) mx-auto px-4">
-            <a href="/redo/experience" wire:navigate>
+            <a href="/experience" wire:navigate>
                 <h1 class="font-medium text-gray-300 hover:text-purple-600 transition ease-linear duration-500 text-3xl md:text-4xl mb-5">Experience</h1>
             </a>
             <!-- web version -->

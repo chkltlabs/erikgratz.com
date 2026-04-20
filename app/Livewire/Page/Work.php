@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Page;
 
-use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
