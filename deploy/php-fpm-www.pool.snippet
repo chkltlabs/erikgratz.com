@@ -1,0 +1,14 @@
+; Paste into Forge: Server → PHP → FPM (pool www), or merge into
+; /etc/php/8.4/fpm/pool.d/www.conf then: sudo systemctl reload php8.4-fpm
+;
+; Sizing pm.max_children (example for a 2 GB droplet):
+;   Reserve ~500 MB OS/MySQL/Redis/Nginx, ~512 MB for Horizon (4 × 128 MB),
+;   ~400 MB left for FPM → 400 / 120 ≈ 3–5 children. Adjust for your RAM.
+
+pm.max_requests = 500
+request_terminate_timeout = 60s
+
+; Forge UI equivalents (if you prefer the dashboard):
+;   Max Requests = 500
+;   Request Terminate Timeout = 60
+;   Max Children = (see calculation above; start with 5 on 2 GB, 8–10 on 4 GB)
