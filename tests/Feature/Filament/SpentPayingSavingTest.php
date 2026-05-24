@@ -191,11 +191,62 @@ class SpentPayingSavingTest extends TestCase
             'paid_on' => now()->addMonth()->startOfMonth()->addDays(3),
         ]);
 
-        $items = SpentPayingSaving::plannedItemsForThirdMonth();
+        $money = SpentPayingSaving::getMoneyData();
+        $items = $money[now()->addMonths(2)->format('M')]['planned_items'];
 
         $this->assertCount(1, $items);
         $this->assertSame('Annual Insurance', $items[0]['name']);
         $this->assertSame(300.0, $items[0]['amount']);
+    }
+
+    #[Test]
+    public function planned_total_and_tooltip_items_include_income_offsets_consistently(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser();
+
+        $expense = PeriodicSpend::factory()->create([
+            'name' => 'Expense',
+            'period' => Period::Monthly,
+            'is_income' => false,
+        ]);
+        $income = PeriodicSpend::factory()->create([
+            'name' => 'Income',
+            'period' => Period::Monthly,
+            'is_income' => true,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $expense->id,
+            'amount' => 100,
+            'is_paid' => false,
+            'paid_on' => now()->setDay(20),
+        ]);
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $income->id,
+            'amount' => 40,
+            'is_paid' => false,
+            'paid_on' => now()->setDay(21),
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+        $jun = now()->addMonth()->format('M');
+
+        $this->assertSame(60.0, $money[$jun]['planned']);
+        $this->assertCount(2, $money[$jun]['planned_items']);
+        $this->assertSame('Expense', $money[$jun]['planned_items'][0]['name']);
+        $this->assertSame(100.0, $money[$jun]['planned_items'][0]['amount']);
+        $this->assertSame('Income', $money[$jun]['planned_items'][1]['name']);
+        $this->assertSame(-40.0, $money[$jun]['planned_items'][1]['amount']);
+
+        $stat = $this->invokeMakeUnspentStat($jun, $money[$jun]);
+        $tooltip = (string) ($stat->getExtraAttributes()['title'] ?? '');
+
+        $this->assertStringContainsString('Income — $-40.00', $tooltip);
+        $this->assertStringContainsString('Total: $60.00', $tooltip);
     }
 
     #[Test]
