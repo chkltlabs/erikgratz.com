@@ -2,11 +2,12 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Card;
+use App\Rules\ValidMathExpression;
+use App\Support\MathExpression;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use App\Models\Card;
-use Filament\Tables;
-use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
@@ -40,17 +41,11 @@ class CardWidget extends BaseWidget
 
                     }),
 
-                TextInputColumn::make('balance')
-                    ->rules(['numeric'])
-                    ->updateStateUsing(fn ($record, $state) => $record->update(['balance' => is_null($state) ? 0 : $state]))
+                $this->mathInputColumn('balance')
                     ->summarize(Sum::make()->money()->label('')),
-                TextInputColumn::make('pending')
-                    ->rules(['numeric'])
-                    ->updateStateUsing(fn ($record, $state) => $record->update(['pending' => is_null($state) ? 0 : $state]))
+                $this->mathInputColumn('pending')
                     ->summarize(Sum::make()->money()->label('')),
-                TextInputColumn::make('interest_saving_balance')
-                    ->rules(['numeric'])
-                    ->updateStateUsing(fn ($record, $state) => $record->update(['interest_saving_balance' => is_null($state) ? 0 : $state]))
+                $this->mathInputColumn('interest_saving_balance')
                     ->label('ISB')
                     ->summarize([
                         Sum::make()->money()->label('Total'),
@@ -58,16 +53,25 @@ class CardWidget extends BaseWidget
                             ->query(fn (Builder $query) => $query->where('due_date', '>=', now()->day))
                             ->money()->label('Unpaid'),
                     ]),
-                TextInputColumn::make('interest_free_balance')
+                $this->mathInputColumn('interest_free_balance')
                     ->label('0% Bal')
-                    ->rules(['numeric'])
-                    ->updateStateUsing(fn ($record, $state) => $record->update(['interest_free_balance' => is_null($state) ? 0 : $state]))
                     ->summarize(Sum::make()->money()->label('')),
-                TextInputColumn::make('points_balance')
-                    ->rules(['numeric'])
-                    ->updateStateUsing(fn ($record, $state) => $record->update(['points_balance' => is_null($state) ? 0 : $state]))
+                $this->mathInputColumn('points_balance', asInteger: true)
                     ->label('Pts Bal')
                     ->summarize(Sum::make()->numeric()->label('')),
             ]);
+    }
+
+    private function mathInputColumn(string $field, bool $asInteger = false): TextInputColumn
+    {
+        return TextInputColumn::make($field)
+            ->rules([new ValidMathExpression])
+            ->updateStateUsing(function ($record, $state) use ($field, $asInteger) {
+                $resolved = MathExpression::resolve($state);
+                $value = $asInteger ? (int) round($resolved) : $resolved;
+                $record->update([$field => $value]);
+
+                return $value;
+            });
     }
 }
