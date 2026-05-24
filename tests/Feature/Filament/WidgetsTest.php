@@ -2,14 +2,13 @@
 
 namespace Tests\Feature\Filament;
 
-use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class WidgetsTest extends TestCase
 {
     #[Test]
-    public function it_exists()
+    public function it_exists(): void
     {
         $this->assertTrue(true);
     }
