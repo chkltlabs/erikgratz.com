@@ -9,7 +9,6 @@ use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\LoanAgainstSavings;
 use App\Models\Payment;
 use App\Models\Scopes\SumCard;
-use App\Models\Scopes\SumPayment;
 use App\Models\StateDump;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -138,15 +137,13 @@ class SpentPayingSaving extends BaseWidget
 //            - Card::futureDue()->noISBYet()->sum('interest_saving_balance')
             - $thisMonthSpent;
 
-        $planned = Payment::oneTimeUnpaidDueThisMonth()->pipe(new SumPayment);
-        $planned += Payment::yearlyUnpaidDueThisMonth()->pipe(new SumPayment);
-        $planned += Payment::monthlyUnpaid()->pipe(new SumPayment);
-        $nextPlannedItems = self::plannedItemsForNextMonth();
+        $nextPlannedSummary = self::summarizePlannedPayments(self::plannedPaymentsForNextMonth());
+        $planned = $nextPlannedSummary['total'];
+        $nextPlannedItems = $nextPlannedSummary['items'];
 
-        $thirdPlanned = Payment::oneTimeUnpaidDueNextMonth()->pipe(new SumPayment);
-        $thirdPlanned += Payment::yearlyDueNextMonth()->pipe(new SumPayment);
-        $thirdPlanned += Payment::monthly()->pipe(new SumPayment);
-        $thirdPlannedItems = self::plannedItemsForThirdMonth();
+        $thirdPlannedSummary = self::summarizePlannedPayments(self::plannedPaymentsForThirdMonth());
+        $thirdPlanned = $thirdPlannedSummary['total'];
+        $thirdPlannedItems = $thirdPlannedSummary['items'];
 
         $thirdMonthSpent = Card::pastDue()->pipe(new SumCard)
             - $pastDueISB
@@ -176,45 +173,55 @@ class SpentPayingSaving extends BaseWidget
     }
 
     /**
-     * @return array<int, array{name: string, amount: float}>
+     * @return Collection<int, Payment>
      */
-    public static function plannedItemsForNextMonth(): array
+    protected static function plannedPaymentsForNextMonth(): Collection
     {
-        return self::mapPaymentsToPlannedItems(
-            Payment::oneTimeUnpaidDueThisMonth()->with('spend')->get()
-                ->merge(Payment::yearlyUnpaidDueThisMonth()->with('spend')->get())
-                ->merge(Payment::monthlyUnpaid()->with('spend')->get())
-                ->unique('id')
-        );
+        return Payment::oneTimeUnpaidDueThisMonth()->with('spend')->get()
+            ->merge(Payment::yearlyUnpaidDueThisMonth()->with('spend')->get())
+            ->merge(Payment::monthlyUnpaid()->with('spend')->get())
+            ->unique('id')
+            ->values();
     }
 
     /**
-     * @return array<int, array{name: string, amount: float}>
+     * @return Collection<int, Payment>
      */
-    public static function plannedItemsForThirdMonth(): array
+    protected static function plannedPaymentsForThirdMonth(): Collection
     {
-        return self::mapPaymentsToPlannedItems(
-            Payment::oneTimeUnpaidDueNextMonth()->with('spend')->get()
-                ->merge(Payment::yearlyDueNextMonth()->with('spend')->get())
-                ->merge(Payment::monthly()->with('spend')->get())
-                ->unique('id')
-        );
+        return Payment::oneTimeUnpaidDueNextMonth()->with('spend')->get()
+            ->merge(Payment::yearlyDueNextMonth()->with('spend')->get())
+            ->merge(Payment::monthly()->with('spend')->get())
+            ->unique('id')
+            ->values();
     }
 
     /**
      * @param  Collection<int, Payment>  $payments
-     * @return array<int, array{name: string, amount: float}>
+     * @return array{total: float, items: array<int, array{name: string, amount: float}>}
      */
-    protected static function mapPaymentsToPlannedItems(Collection $payments): array
+    protected static function summarizePlannedPayments(Collection $payments): array
     {
-        return $payments
-            ->filter(fn (Payment $payment): bool => ! $payment->spend?->is_income)
-            ->map(fn (Payment $payment): array => [
+        $items = $payments
+            ->filter(fn (Payment $payment): bool => (bool) $payment->spend)
+            ->map(function (Payment $payment): array {
+                $amount = (float) $payment->amount;
+                if ($payment->spend?->is_income) {
+                    $amount *= -1;
+                }
+
+                return [
                 'name' => $payment->spend?->name ?? 'Unknown',
-                'amount' => (float) $payment->amount,
-            ])
+                'amount' => $amount,
+                ];
+            })
             ->values()
             ->all();
+
+        return [
+            'total' => (float) array_sum(array_column($items, 'amount')),
+            'items' => $items,
+        ];
     }
 
     public static function getStateDumpCharts(): array
