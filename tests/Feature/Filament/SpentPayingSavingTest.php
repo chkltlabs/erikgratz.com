@@ -18,6 +18,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 use Tests\TestCase;
@@ -58,6 +59,32 @@ class SpentPayingSavingTest extends TestCase
         [, , $netWorth] = SpentPayingSaving::getPointsAndChartData();
 
         $this->assertEqualsWithDelta(100.0, $netWorth, 0.01);
+    }
+
+    #[Test]
+    public function livewire_stats_overview_renders_with_mixed_currency_accounts(): void
+    {
+        Http::fake([
+            'api.frankfurter.dev/*' => Http::response([
+                'amount' => 1,
+                'base' => 'USD',
+                'date' => now()->toDateString(),
+                'rates' => ['CAD' => 1.25],
+            ]),
+        ]);
+
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 5000]);
+        Account::factory()->create([
+            'currency' => CurrencyCode::CAD,
+            'balance' => 125,
+        ]);
+        Card::factory()->create();
+
+        app(ExchangeRateService::class)->refreshRatesForAccounts();
+
+        Livewire::test(SpentPayingSaving::class)->assertSuccessful();
     }
 
     #[Test]

@@ -50,6 +50,25 @@ class AccountWidgetTest extends TestCase
     }
 
     #[Test]
+    public function it_renders_widget_table_with_mixed_currency_accounts(): void
+    {
+        Http::fake([
+            'api.frankfurter.dev/*' => Http::response([
+                'amount' => 1,
+                'base' => 'USD',
+                'date' => now()->toDateString(),
+                'rates' => ['CAD' => 1.25],
+            ]),
+        ]);
+
+        Account::factory()->create(['currency' => CurrencyCode::CAD, 'balance' => 125]);
+
+        app(ExchangeRateService::class)->refreshRatesForAccounts();
+
+        Livewire::test(AccountWidget::class)->assertSuccessful();
+    }
+
+    #[Test]
     public function sum_balance_in_usd_converts_mixed_currencies(): void
     {
         Http::fake([
