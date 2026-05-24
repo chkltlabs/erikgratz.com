@@ -29,4 +29,13 @@ class SpentPayingSavingTooltipTest extends TestCase
             SpentPayingSaving::formatUnspentTooltip([], 0),
         );
     }
+
+    #[Test]
+    public function format_unspent_tooltip_shows_total_when_items_missing_but_total_present(): void
+    {
+        $this->assertSame(
+            'Total: $42.00',
+            SpentPayingSaving::formatUnspentTooltip([], 42),
+        );
+    }
 }

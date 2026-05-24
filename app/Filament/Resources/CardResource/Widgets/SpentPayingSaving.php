@@ -14,8 +14,6 @@ use App\Models\StateDump;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -240,13 +238,5 @@ class SpentPayingSaving extends BaseWidget
             return [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart];
         });
 
-    }
-
-    private static function sumTheStuff(Builder|Model $query): int|float
-    {
-        return $query->sum('balance')
-            + $query->sum('pending')
-            - $query->sum('interest_free_balance')
-            + $query->sum('interest_free_balance_payment');
     }
 }

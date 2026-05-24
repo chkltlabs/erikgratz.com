@@ -2,15 +2,19 @@
 
 namespace Tests\Feature\Filament;
 
+use App\Enums\AccountType;
 use App\Enums\Period;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
+use App\Models\Spend;
+use App\Models\StateDump;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 use Tests\TestCase;
@@ -20,6 +24,7 @@ class SpentPayingSavingTest extends TestCase
     protected function tearDown(): void
     {
         Carbon::setTestNow();
+        Cache::forget('stateDumps');
 
         parent::tearDown();
     }
@@ -29,7 +34,7 @@ class SpentPayingSavingTest extends TestCase
     {
         Carbon::setTestNow('2026-05-15');
 
-        User::factory()->create(['email' => 'erik@erikgratz.com', 'monthly_pay' => 5000]);
+        $this->ensureErikUser(['monthly_pay' => 5000]);
         Card::factory()->create();
 
         $stats = $this->invokeGetStats();
@@ -70,7 +75,7 @@ class SpentPayingSavingTest extends TestCase
     {
         Carbon::setTestNow('2026-05-15');
 
-        User::factory()->create(['email' => 'erik@erikgratz.com', 'monthly_pay' => 5000]);
+        $this->ensureErikUser(['monthly_pay' => 5000]);
 
         $spend = PeriodicSpend::factory()->create([
             'name' => 'Gym Membership',
@@ -110,9 +115,13 @@ class SpentPayingSavingTest extends TestCase
     {
         Carbon::setTestNow('2026-05-15');
 
-        User::factory()->create(['email' => 'erik@erikgratz.com', 'monthly_pay' => 8000]);
+        $erik = $this->ensureErikUser(['monthly_pay' => 8000]);
 
-        Account::factory()->create(['balance' => 10000]);
+        Account::factory()->create([
+            'user_id' => $erik->id,
+            'type' => AccountType::Checking,
+            'balance' => 10000,
+        ]);
         Card::factory()->create(['balance' => 2000, 'pending' => 500, 'points_balance' => 0]);
 
         [, , $netWorth] = SpentPayingSaving::getPointsAndChartData();
@@ -134,6 +143,122 @@ class SpentPayingSavingTest extends TestCase
         $this->assertSame('$'.($netWorth + $junPotential + $julPotential), $valuesByLabel['Jul CC Projected Net Worth']);
     }
 
+    #[Test]
+    public function get_money_data_applies_half_paycheck_before_the_fifteenth(): void
+    {
+        Carbon::setTestNow('2026-05-05');
+
+        $erik = $this->ensureErikUser(['monthly_pay' => 4000]);
+
+        Account::factory()->create([
+            'user_id' => $erik->id,
+            'type' => AccountType::Checking,
+            'balance' => 1000,
+        ]);
+
+        Card::factory()->create([
+            'due_date' => now()->addDays(5)->day,
+            'interest_saving_balance' => 0,
+            'balance' => 100,
+            'pending' => 0,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 0,
+        ]);
+
+        $may = now()->format('M');
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertEqualsWithDelta(1000 + 2000 - 100, $money[$may]['potential'], 0.01);
+    }
+
+    #[Test]
+    public function planned_items_for_third_month_include_next_month_one_time_spend(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser();
+
+        $spend = Spend::factory()->bare()->create([
+            'name' => 'Annual Insurance',
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'amount' => 300,
+            'is_paid' => false,
+            'paid_on' => now()->addMonth()->startOfMonth()->addDays(3),
+        ]);
+
+        $items = SpentPayingSaving::plannedItemsForThirdMonth();
+
+        $this->assertCount(1, $items);
+        $this->assertSame('Annual Insurance', $items[0]['name']);
+        $this->assertSame(300.0, $items[0]['amount']);
+    }
+
+    #[Test]
+    public function get_state_dump_charts_returns_chart_arrays(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $card = Card::factory()->create();
+        StateDump::factory()->create([
+            'data' => [
+                Card::class => [
+                    [
+                        'id' => $card->id,
+                        'balance' => 100,
+                        'pending' => 50,
+                        'points_balance' => 1000,
+                    ],
+                ],
+            ],
+        ]);
+
+        [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart] = SpentPayingSaving::getStateDumpCharts();
+
+        $this->assertIsArray($netWorthChart);
+        $this->assertIsArray($cardBalanceChart);
+        $this->assertIsArray($cardPendingChart);
+        $this->assertIsArray($cashPositionChart);
+        $this->assertIsArray($pointsChart);
+        $this->assertNotEmpty($pointsChart);
+        $this->assertSame($card->id, $card->fresh()->id);
+    }
+
+    #[Test]
+    public function make_unspent_stat_omits_tooltip_when_no_planned_items(): void
+    {
+        $stat = $this->invokeMakeUnspentStat('Jun', [
+            'planned' => 0,
+            'planned_items' => [],
+        ]);
+
+        $this->assertSame('Jun CC Unspent', (string) $stat->getLabel());
+        $this->assertSame('$0', (string) $stat->getValue());
+        $this->assertSame([], $stat->getExtraAttributes());
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    protected function ensureErikUser(array $attributes = []): User
+    {
+        $user = User::whereEmail('erik@erikgratz.com')->first();
+
+        if ($user) {
+            $user->update($attributes);
+
+            return $user->fresh();
+        }
+
+        return User::factory()->create(array_merge([
+            'email' => 'erik@erikgratz.com',
+        ], $attributes));
+    }
+
     /**
      * @return array<Stat>
      */
@@ -145,5 +270,16 @@ class SpentPayingSavingTest extends TestCase
         $method->setAccessible(true);
 
         return $method->invoke($widget);
+    }
+
+    /**
+     * @param  array{planned: int|float, planned_items?: array<int, array{name: string, amount: float}>}  $monthData
+     */
+    protected function invokeMakeUnspentStat(string $month, array $monthData): Stat
+    {
+        $method = new ReflectionMethod(SpentPayingSaving::class, 'makeUnspentStat');
+        $method->setAccessible(true);
+
+        return $method->invoke(null, $month, $monthData);
     }
 }
