@@ -2,18 +2,19 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\TextInputColumn;
+use App\Filament\Widgets\Concerns\HasMathInputColumn;
 use App\Models\Account;
-use Filament\Tables;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountWidget extends BaseWidget
 {
+    use HasMathInputColumn;
+
     protected int|string|array $columnSpan = 'full';
 
     protected static ?string $heading = 'Accounts';
@@ -27,10 +28,8 @@ class AccountWidget extends BaseWidget
                     TextColumn::make('name')
                         ->description(fn (Model $record) => $record->updated_at->shortRelativeDiffForHumans(),
                             'below'),
-                    TextInputColumn::make('balance')
-                        ->rules(['numeric'])
+                    $this->mathInputColumn('balance')
                         ->summarize(Sum::make()->money()->label('')),
-                    //                        ->sortable()
                 ]),
             ])->contentGrid(fn () => $this->gridSize());
     }
