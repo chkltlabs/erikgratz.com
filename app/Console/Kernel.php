@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
         $schedule->job(HourlyUpkeep::class)->hourly();
         $schedule->job(DailyUpkeep::class)->dailyAt('20:00');
+        $schedule->command('fx:refresh')->dailyAt('17:30');
         $schedule->call(fn () => StateDump::checkShouldDump())->dailyAt('23:50');
     }
 

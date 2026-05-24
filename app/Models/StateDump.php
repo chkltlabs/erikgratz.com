@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\CurrencyCode;
 use App\Models\Collections\StateDumpCollection;
 use App\Models\SimpleFin\SimpleFinAccount;
+use App\Services\Currency\ExchangeRateService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -40,7 +42,35 @@ class StateDump extends Model
             $data[$class] = $class::getDump();
         }
 
+        if (isset($data[Account::class])) {
+            $currencies = collect($data[Account::class])
+                ->map(fn (array $row): string => self::currencyFromDumpRow($row))
+                ->unique()
+                ->values()
+                ->all();
+
+            $data['exchange_rates'] = [
+                'date' => now()->toDateString(),
+                'base' => 'USD',
+                'multipliers' => app(ExchangeRateService::class)->multipliersForDump($currencies),
+            ];
+        }
+
         return self::create(['data' => $data]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     */
+    protected static function currencyFromDumpRow(array $row): string
+    {
+        $currency = $row['currency'] ?? CurrencyCode::USD->value;
+
+        if ($currency instanceof CurrencyCode) {
+            return $currency->value;
+        }
+
+        return strtoupper((string) $currency);
     }
 
     const SHOULD_DUMP = 'data_will_dump_tonight';
@@ -60,12 +90,32 @@ class StateDump extends Model
 
     public function getStatForModel(Model $model, string $col): int|float|string
     {
-        $foundState = collect($this->data[$model::class])
+        $foundState = collect($this->data[$model::class] ?? [])
             ->first(
                 fn ($item) => $item[$model->getKeyName()]
                     === $model->getKey()
             );
 
-        return is_null($foundState) ? 0 : $foundState[$col];
+        if (is_null($foundState)) {
+            return 0;
+        }
+
+        if ($model instanceof Account && $col === 'balance') {
+            return $this->accountBalanceInUsd($foundState);
+        }
+
+        return $foundState[$col];
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     */
+    protected function accountBalanceInUsd(array $row): float
+    {
+        $balance = (float) ($row['balance'] ?? 0);
+        $currency = self::currencyFromDumpRow($row);
+        $multipliers = $this->data['exchange_rates']['multipliers'] ?? [];
+
+        return $balance * ($multipliers[$currency] ?? 1.0);
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Filament;
 
 use App\Enums\AccountType;
+use App\Enums\CurrencyCode;
 use App\Enums\Period;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Account;
@@ -12,9 +13,11 @@ use App\Models\PeriodicSpend;
 use App\Models\Spend;
 use App\Models\StateDump;
 use App\Models\User;
+use App\Services\Currency\ExchangeRateService;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 use Tests\TestCase;
@@ -25,8 +28,36 @@ class SpentPayingSavingTest extends TestCase
     {
         Carbon::setTestNow();
         Cache::forget('stateDumps');
+        Cache::flush();
 
         parent::tearDown();
+    }
+
+    #[Test]
+    public function net_worth_converts_non_usd_account_balances(): void
+    {
+        Http::fake([
+            'api.frankfurter.dev/*' => Http::response([
+                'amount' => 1,
+                'base' => 'USD',
+                'date' => now()->toDateString(),
+                'rates' => ['CAD' => 1.25],
+            ]),
+        ]);
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        Account::factory()->create([
+            'currency' => CurrencyCode::CAD,
+            'balance' => 125,
+        ]);
+        Card::factory()->create(['balance' => 0, 'pending' => 0, 'points_balance' => 0]);
+
+        app(ExchangeRateService::class)->refreshRatesForAccounts();
+
+        [, , $netWorth] = SpentPayingSaving::getPointsAndChartData();
+
+        $this->assertEqualsWithDelta(100.0, $netWorth, 0.01);
     }
 
     #[Test]

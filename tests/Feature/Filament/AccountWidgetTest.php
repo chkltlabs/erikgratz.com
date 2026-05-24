@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Filament;
 
+use App\Enums\CurrencyCode;
 use App\Filament\Widgets\AccountWidget;
 use App\Models\Account;
 use App\Models\User;
+use App\Services\Currency\ExchangeRateService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -44,5 +47,25 @@ class AccountWidgetTest extends TestCase
             && array_key_exists('error', $returned)
             && str_contains($returned['error'], 'valid number or math expression'));
         $this->assertSame(1500.0, (float) $account->fresh()->balance);
+    }
+
+    #[Test]
+    public function sum_balance_in_usd_converts_mixed_currencies(): void
+    {
+        Http::fake([
+            'api.frankfurter.dev/*' => Http::response([
+                'amount' => 1,
+                'base' => 'USD',
+                'date' => now()->toDateString(),
+                'rates' => ['CAD' => 1.25],
+            ]),
+        ]);
+
+        Account::factory()->create(['currency' => CurrencyCode::USD, 'balance' => 100]);
+        Account::factory()->create(['currency' => CurrencyCode::CAD, 'balance' => 125]);
+
+        app(ExchangeRateService::class)->refreshRatesForAccounts();
+
+        $this->assertEqualsWithDelta(200.0, Account::sumBalanceInUsd(), 0.01);
     }
 }

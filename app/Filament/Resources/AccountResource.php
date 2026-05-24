@@ -2,32 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
+use App\Enums\AccountType;
+use App\Enums\CurrencyCode;
+use App\Filament\Resources\AccountResource\Pages\ManageAccounts;
+use App\Models\Account;
 use App\Models\SimpleFin\SimpleFinAccount;
+use App\Models\User;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\AccountResource\Pages\ManageAccounts;
-use App\Enums\AccountType;
-use App\Filament\Resources\AccountResource\Pages;
-use App\Models\Account;
-use App\Models\User;
-use Filament\Forms;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class AccountResource extends Resource
 {
     protected static ?string $model = Account::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -43,18 +42,23 @@ class AccountResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Select::make('currency')
+                    ->options(CurrencyCode::options())
+                    ->default(CurrencyCode::USD->value)
+                    ->required(),
                 Select::make('simple_fin_account_id')
                     ->label('SimpleFIN Account')
-                    ->options(function (Account $record = null) {
+                    ->options(function (?Account $record = null) {
                         $query = SimpleFinAccount::query();
                         if ($record && $record->user_id) {
                             $query->where('user_id', $record->user_id);
                         }
+
                         return $query->pluck('name', 'id');
                     })
                     ->searchable()
                     ->dehydrated(false)
-                    ->formatStateUsing(fn (Account $record = null) => $record?->simpleFinAccount?->id)
+                    ->formatStateUsing(fn (?Account $record = null) => $record?->simpleFinAccount?->id)
                     ->afterStateUpdated(function ($state, Account $record) {
                         // Unset previous association
                         SimpleFinAccount::where('associated_type', 'account')
@@ -80,10 +84,17 @@ class AccountResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('currency')
+                    ->badge()
+                    ->toggleable(),
                 TextInputColumn::make('balance')
                     ->rules(['numeric'])
-//                    ->money()
-                    ->summarize(Sum::make()->money()->label(''))
+                    ->summarize(
+                        Summarizer::make()
+                            ->money('USD')
+                            ->label('Total (USD)')
+                            ->using(fn (QueryBuilder $query): float => Account::sumBalanceInUsd($query))
+                    )
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

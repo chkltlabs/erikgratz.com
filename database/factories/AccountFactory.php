@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\AccountType;
+use App\Enums\CurrencyCode;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,6 +18,7 @@ class AccountFactory extends Factory
             'user_id' => User::factory(),
             'type' => AccountType::getRandomValue(),
             'balance' => $this->faker->randomFloat(),
+            'currency' => CurrencyCode::USD,
         ];
     }
 }
