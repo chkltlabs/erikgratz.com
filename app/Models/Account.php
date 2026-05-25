@@ -36,9 +36,6 @@ class Account extends Model
         'currency' => CurrencyCode::class,
     ];
 
-    protected $attributes = [
-        'currency' => 'USD',
-    ];
 
     public function name(): Attribute
     {
