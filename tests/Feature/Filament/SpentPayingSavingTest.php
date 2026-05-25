@@ -236,7 +236,7 @@ class SpentPayingSavingTest extends TestCase
 
         $this->ensureErikUser();
 
-        $spend = Spend::factory()->bare()->create([
+        $spend = Spend::factory()->bare()->noPayments()->create([
             'name' => 'Annual Insurance',
             'is_income' => false,
         ]);
