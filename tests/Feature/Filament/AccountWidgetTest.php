@@ -69,6 +69,30 @@ class AccountWidgetTest extends TestCase
     }
 
     #[Test]
+    public function name_returns_display_name_when_set(): void
+    {
+        $account = Account::factory()->create(['display_name' => 'My Savings']);
+
+        $this->assertSame('My Savings', $account->name);
+    }
+
+    #[Test]
+    public function name_falls_back_to_user_type_when_display_name_is_blank(): void
+    {
+        $account = Account::factory()->create(['display_name' => '']);
+
+        $this->assertSame($account->user->name.' '.$account->type, $account->name);
+    }
+
+    #[Test]
+    public function name_falls_back_to_user_type_when_display_name_is_null(): void
+    {
+        $account = Account::factory()->create(['display_name' => null]);
+
+        $this->assertSame($account->user->name.' '.$account->type, $account->name);
+    }
+
+    #[Test]
     public function sum_balance_in_usd_converts_mixed_currencies(): void
     {
         Http::fake([
