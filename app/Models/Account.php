@@ -29,7 +29,7 @@ class Account extends Model
         });
     }
 
-    protected $fillable = ['user_id', 'type', 'balance', 'currency'];
+    protected $fillable = ['user_id', 'type', 'balance', 'currency', 'display_name'];
 
     protected $casts = [
         'type' => AccountType::class,
@@ -40,7 +40,9 @@ class Account extends Model
     public function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->user->name.' '.$this->type,
+            get: fn () => filled($this->display_name)
+                ? $this->display_name
+                : $this->user->name.' '.$this->type,
         );
     }
 
