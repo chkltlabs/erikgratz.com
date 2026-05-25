@@ -93,8 +93,13 @@ jobs:
       - name: Run Migrations
         run: docker compose exec -T laravel.test php artisan migrate --force
 
-      - name: Run Parallel Tests
-        run: docker compose exec -T laravel.test php artisan test --parallel --processes=8 --coverage --coverage-cobertura=cobertura.xml
+      - name: Run Tests
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            docker compose exec -T laravel.test php artisan test --coverage --coverage-cobertura=cobertura.xml
+          else
+            docker compose exec -T laravel.test php artisan test --parallel --processes=8
+          fi
 
       - name: Get List of Changed Files in App Dir
         id: changed-files
