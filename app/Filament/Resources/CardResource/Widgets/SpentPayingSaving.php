@@ -21,7 +21,7 @@ class SpentPayingSaving extends BaseWidget
     /**
      * @var int | array<string, ?int> | null
      */
-    protected int | array | null $columns = ['@xl' => 4, '!@lg' => 4];
+    protected int|array|null $columns = ['@xl' => 4, '!@lg' => 4];
 
     protected function getStats(): array
     {
@@ -105,7 +105,7 @@ class SpentPayingSaving extends BaseWidget
     public static function getPointsAndChartData(): array
     {
         $totalPoints = Card::sum('points_balance');
-        $netWorth = Account::sum('balance') - Card::sum('balance') - Card::sum('pending');
+        $netWorth = Account::sumBalanceInUsd() - Card::sum('balance') - Card::sum('pending');
 
         [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart] = self::getStateDumpCharts();
 
@@ -115,9 +115,9 @@ class SpentPayingSaving extends BaseWidget
     public static function getMoneyData(): array
     {
         $totalMonthIncome = User::sum('monthly_pay');
-        $thisMonthCash = Account::forUser(User::erik())
-            ->whereType(AccountType::Checking)
-            ->sum('balance')
+        $thisMonthCash = Account::sumBalanceInUsd(
+            Account::forUser(User::erik())->whereType(AccountType::Checking)
+        )
             + ($totalMonthIncome * (now()->day < 15 ? 0.5 : 0));
         // if its before the 15th, add one paycheck ^^^
 
@@ -211,8 +211,8 @@ class SpentPayingSaving extends BaseWidget
                 }
 
                 return [
-                'name' => $payment->spend?->name ?? 'Unknown',
-                'amount' => $amount,
+                    'name' => $payment->spend?->name ?? 'Unknown',
+                    'amount' => $amount,
                 ];
             })
             ->values()

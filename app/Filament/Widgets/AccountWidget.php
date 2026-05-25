@@ -5,11 +5,12 @@ namespace App\Filament\Widgets;
 use App\Filament\Widgets\Concerns\HasMathInputColumn;
 use App\Models\Account;
 use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class AccountWidget extends BaseWidget
 {
@@ -29,7 +30,12 @@ class AccountWidget extends BaseWidget
                         ->description(fn (Model $record) => $record->updated_at->shortRelativeDiffForHumans(),
                             'below'),
                     $this->mathInputColumn('balance')
-                        ->summarize(Sum::make()->money()->label('')),
+                        ->summarize(
+                            Summarizer::make()
+                                ->money('USD')
+                                ->label('Total (USD)')
+                                ->using(fn (QueryBuilder $query): float => Account::sumBalanceInUsd($query))
+                        ),
                 ]),
             ])->contentGrid(fn () => $this->gridSize());
     }

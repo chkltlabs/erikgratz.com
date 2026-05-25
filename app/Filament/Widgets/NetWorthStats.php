@@ -11,7 +11,7 @@ class NetWorthStats extends BaseWidget
 {
     protected function getStats(): array
     {
-        $actBals = Account::sum('balance');
+        $actBals = Account::sumBalanceInUsd();
         $ccBals = Card::sum('balance') + Card::sum('pending');
         $ccDueNext = Card::get()->sum('amountDue');
 

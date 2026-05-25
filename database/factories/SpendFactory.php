@@ -38,7 +38,7 @@ class SpendFactory extends Factory
 
     public function noPayments()
     {
-        return $this->afterCreating(fn () => null);
+        return $this->newInstance(['afterCreating' => collect()]);
     }
 
     public function configure()
