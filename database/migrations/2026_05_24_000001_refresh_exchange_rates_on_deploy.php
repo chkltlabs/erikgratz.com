@@ -7,7 +7,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Artisan::call('fx:refresh');
+        if (! app()->runningUnitTests()) {
+            Artisan::call('fx:refresh');
+        }
     }
 
     public function down(): void
