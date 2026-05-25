@@ -37,7 +37,7 @@ class ExchangeRateService
 
     public function convertToUsd(float $amount, CurrencyCode $currency): float
     {
-        return $amount * $this->getToUsdMultiplier($currency);
+        return round($amount * $this->getToUsdMultiplier($currency), 2);
     }
 
     /**
@@ -45,11 +45,14 @@ class ExchangeRateService
      */
     public function sumBalancesInUsd(Builder $query): float
     {
-        return $query->get(['balance', 'currency'])
-            ->sum(fn (Account $account): float => $this->convertToUsd(
-                (float) $account->balance,
-                $account->currency,
-            ));
+        return round(
+            $query->get(['balance', 'currency'])
+                ->sum(fn (Account $account): float => $this->convertToUsd(
+                    (float) $account->balance,
+                    $account->currency,
+                )),
+            2,
+        );
     }
 
     public function refreshRatesForAccounts(): void
