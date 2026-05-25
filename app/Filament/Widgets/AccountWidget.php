@@ -22,7 +22,7 @@ class AccountWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
-        return $table->query(Account::query())
+        return $table->query(Account::query()->orderBy('type'))
             ->paginated(false)
             ->columns([
                 Stack::make([
