@@ -38,6 +38,10 @@ class AccountResource extends Resource
                 Select::make('type')
                     ->options(AccountType::asSelectArray())
                     ->required(),
+                TextInput::make('display_name')
+                    ->label('Display Name')
+                    ->placeholder('Leave blank to use default')
+                    ->maxLength(255),
                 TextInput::make('balance')
                     ->required()
                     ->numeric()

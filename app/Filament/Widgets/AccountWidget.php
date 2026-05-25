@@ -29,6 +29,8 @@ class AccountWidget extends BaseWidget
                     TextColumn::make('name')
                         ->description(fn (Model $record) => $record->updated_at->shortRelativeDiffForHumans(),
                             'below'),
+                    TextColumn::make('currency')
+                        ->badge(),
                     $this->mathInputColumn('balance')
                         ->summarize(
                             Summarizer::make()
