@@ -97,7 +97,7 @@ jobs:
         run: |
           rm -f cobertura.xml
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            docker compose exec -T laravel.test php artisan test --coverage --coverage-cobertura=cobertura.xml
+            docker compose exec -T laravel.test php -d memory_limit=512M artisan test --coverage --coverage-cobertura=cobertura.xml
           else
             docker compose exec -T laravel.test php artisan test --parallel --processes=8
           fi
