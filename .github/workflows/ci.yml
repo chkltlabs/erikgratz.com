@@ -95,6 +95,7 @@ jobs:
 
       - name: Run Tests
         run: |
+          rm -f cobertura.xml
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             docker compose exec -T laravel.test php artisan test --coverage --coverage-cobertura=cobertura.xml
           else
