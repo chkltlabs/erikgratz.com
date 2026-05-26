@@ -86,7 +86,7 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('display_name')-
                     ->searchable(),
                 TextColumn::make('currency')
                     ->badge()
