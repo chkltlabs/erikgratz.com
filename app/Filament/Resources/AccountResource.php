@@ -86,8 +86,8 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('display_name')-
-                    ->searchable(),
+                TextInputColumn::make('display_name')
+                ->placeholder(fn (Account $record) => $record->name ?? 'No display name'),
                 TextColumn::make('currency')
                     ->badge()
                     ->toggleable(),
