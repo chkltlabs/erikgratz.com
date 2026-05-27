@@ -205,7 +205,7 @@ class SpentPayingSaving extends BaseWidget
         $items = $payments
             ->filter(fn (Payment $payment): bool => (bool) $payment->spend)
             ->map(function (Payment $payment): array {
-                $amount = (float) $payment->amount;
+                $amount = $payment->amountInUsd();
                 if ($payment->spend?->is_income) {
                     $amount *= -1;
                 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Currency;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class ExchangeRateApiProvider implements ExchangeRateProvider
@@ -12,7 +13,7 @@ class ExchangeRateApiProvider implements ExchangeRateProvider
      * @param  list<string>  $currencies
      * @return array<string, float>
      */
-    public function fetchToUsdMultipliers(array $currencies): array
+    public function fetchToUsdMultipliers(array $currencies, ?Carbon $date = null): array
     {
         if ($currencies === []) {
             return [];

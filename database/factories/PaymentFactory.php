@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CurrencyCode;
 use App\Models\Card;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
@@ -18,6 +19,7 @@ class PaymentFactory extends Factory
     {
         return [
             'amount' => rand(10, 4000),
+            'currency' => CurrencyCode::USD,
             'is_paid' => $this->faker->boolean(),
             'paid_on' => Carbon::now(),
             'spend_type' => self::spendType(),

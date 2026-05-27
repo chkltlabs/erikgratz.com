@@ -28,16 +28,16 @@ class ExchangeRateService
         $rates = $this->getCachedRates($dateKey);
 
         if (! array_key_exists($currency->value, $rates)) {
-            $this->refreshRatesForAccounts();
+            $this->ensureRatesForDate($dateKey, [$currency->value]);
             $rates = $this->getCachedRates($dateKey);
         }
 
         return $rates[$currency->value] ?? 1.0;
     }
 
-    public function convertToUsd(float $amount, CurrencyCode $currency): float
+    public function convertToUsd(float $amount, CurrencyCode $currency, ?Carbon $date = null): float
     {
-        return round($amount * $this->getToUsdMultiplier($currency), 2);
+        return round($amount * $this->getToUsdMultiplier($currency, $date), 2);
     }
 
     /**
@@ -73,7 +73,7 @@ class ExchangeRateService
         $multipliers = ['USD' => 1.0];
 
         if ($nonUsd !== []) {
-            $fetched = $this->fetchMultipliersWithFailover($nonUsd);
+            $fetched = $this->fetchMultipliersWithFailover($nonUsd, now());
             $multipliers = array_merge($multipliers, $fetched);
         }
 
@@ -118,24 +118,55 @@ class ExchangeRateService
     }
 
     /**
+     * @param  list<string>  $currencyCodes
+     */
+    public function ensureRatesForDate(string $dateKey, array $currencyCodes): void
+    {
+        $nonUsd = array_values(array_filter(
+            $currencyCodes,
+            fn (string $code): bool => strtoupper($code) !== 'USD',
+        ));
+
+        if ($nonUsd === []) {
+            return;
+        }
+
+        $cached = $this->getCachedRates($dateKey);
+        $missing = array_values(array_filter(
+            $nonUsd,
+            fn (string $code): bool => ! array_key_exists($code, $cached),
+        ));
+
+        if ($missing === []) {
+            return;
+        }
+
+        $date = Carbon::parse($dateKey);
+        $fetched = $this->fetchMultipliersWithFailover($missing, $date);
+        $this->putCachedRates($dateKey, array_merge(['USD' => 1.0], $cached, $fetched));
+    }
+
+    /**
      * @param  list<string>  $currencies
      * @return array<string, float>
      */
-    protected function fetchMultipliersWithFailover(array $currencies): array
+    protected function fetchMultipliersWithFailover(array $currencies, Carbon $date): array
     {
         try {
-            return $this->frankfurter->fetchToUsdMultipliers($currencies);
+            return $this->frankfurter->fetchToUsdMultipliers($currencies, $date);
         } catch (\Throwable $e) {
             Log::warning('Frankfurter exchange rate fetch failed, trying ExchangeRate-API.', [
                 'message' => $e->getMessage(),
+                'date' => $date->toDateString(),
             ]);
         }
 
         try {
-            return $this->exchangeRateApi->fetchToUsdMultipliers($currencies);
+            return $this->exchangeRateApi->fetchToUsdMultipliers($currencies, $date);
         } catch (\Throwable $e) {
             Log::error('Exchange rate fetch failed for all providers.', [
                 'currencies' => $currencies,
+                'date' => $date->toDateString(),
                 'message' => $e->getMessage(),
             ]);
 
@@ -156,7 +187,10 @@ class ExchangeRateService
      */
     protected function putCachedRates(string $dateKey, array $multipliers): void
     {
-        Cache::put($this->cacheKey($dateKey), $multipliers, now()->endOfDay());
+        $date = Carbon::parse($dateKey);
+        $ttl = $date->isToday() ? now()->endOfDay() : now()->addYear();
+
+        Cache::put($this->cacheKey($dateKey), $multipliers, $ttl);
     }
 
     protected function cacheKey(string $dateKey): string
