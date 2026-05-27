@@ -77,22 +77,9 @@ class SpendResource extends Resource
                 Toggle::make('is_income'),
             ])->columnSpanFull(),
 //            Grid::make(1)->schema([
-                Repeater::make('payments')
+                Spend::paymentFilamentFormComponent()
                     ->columnSpanFull()
-                    ->relationship()
-                    ->grid(['xs' => 1, 'md' => 2])
-                    ->schema([
-                        TextInput::make('amount')
-                            ->prefix('$')
-                            ->numeric()
-                            ->required(),
-                        Toggle::make('is_paid'),
-                        DatePicker::make('paid_on')->nullable(),
-                        Select::make('card_id')
-                            ->label('Card')
-                            ->options(Card::all()->pluck('name', 'id'))
-                            ->nullable(),
-                    ])->defaultItems(0)->addActionLabel('Add Payment'),
+                    ->grid(['xs' => 1, 'md' => 2]),
 //            ]),
         ];
     }

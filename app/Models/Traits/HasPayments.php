@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Enums\CurrencyCode;
 use App\Models\Card;
 use App\Models\Payment;
 use Filament\Forms\Components\DatePicker;
@@ -28,7 +29,10 @@ trait HasPayments
     public function amount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->payments()->sum('amount')
+            get: fn () => round(
+                $this->payments->sum(fn (Payment $payment): float => $payment->amountInUsd()),
+                2,
+            ),
         );
     }
 
@@ -38,8 +42,13 @@ trait HasPayments
             ->columns(4)
             ->relationship()
             ->schema([
+                Select::make('currency')
+                    ->options(CurrencyCode::options())
+                    ->default(CurrencyCode::USD->value)
+                    ->required()
+                    ->live(),
                 TextInput::make('amount')
-                    ->prefix('$')
+                    ->prefix(fn ($get): string => (string) ($get('currency') ?? CurrencyCode::USD->value))
                     ->numeric()
                     ->required(),
                 Toggle::make('is_paid'),

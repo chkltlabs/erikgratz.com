@@ -21,9 +21,10 @@ class DailyUpkeep implements ShouldQueue
      */
     public function handle()
     {
-        Payment::where('paid_on', '=', now()->toDateString())
-            ->whereIsPaid(false)
-            ->update(['is_paid' => true]);
+        Payment::query()
+            ->where('paid_on', '=', now()->toDateString())
+            ->where('is_paid', false)
+            ->each(fn (Payment $payment) => $payment->update(['is_paid' => true]));
 
         Artisan::call('fx:refresh');
 

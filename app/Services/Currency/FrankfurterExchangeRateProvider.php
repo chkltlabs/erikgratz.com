@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Currency;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class FrankfurterExchangeRateProvider implements ExchangeRateProvider
@@ -12,7 +13,7 @@ class FrankfurterExchangeRateProvider implements ExchangeRateProvider
      * @param  list<string>  $currencies
      * @return array<string, float>
      */
-    public function fetchToUsdMultipliers(array $currencies): array
+    public function fetchToUsdMultipliers(array $currencies, ?Carbon $date = null): array
     {
         if ($currencies === []) {
             return [];
@@ -20,8 +21,11 @@ class FrankfurterExchangeRateProvider implements ExchangeRateProvider
 
         $symbols = implode(',', $currencies);
         $baseUrl = rtrim(config('currency.frankfurter.base_url'), '/');
+        $endpoint = $date !== null
+            ? "{$baseUrl}/{$date->toDateString()}"
+            : "{$baseUrl}/latest";
 
-        $response = Http::timeout(15)->get("{$baseUrl}/latest", [
+        $response = Http::timeout(15)->get($endpoint, [
             'from' => 'USD',
             'to' => $symbols,
         ]);
