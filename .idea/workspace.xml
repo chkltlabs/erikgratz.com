@@ -22,10 +22,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348e6aae-b6f2-4797-8e90-de5218112e77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/build/assets/app-BO2S-ZNn.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/assets/livewire-2JDXUDMX.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/erikgratz.com.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/erikgratz.com.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Widgets/AccountWidget.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Traits/HasPayments.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Traits/HasPayments.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/app-DOKsF2bD.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/assets/livewire-BbeMk0Sl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +41,7 @@
     <execution />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="21552" />
+    <option name="cachedIndexableFilesCount" value="21558" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -281,7 +285,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/production-hardening",
+    "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/erikgratz/Code/erikgratz.com/app/Filament/Resources/CardResource/Pages",
     "node.js.detected.package.eslint": "true",
@@ -489,6 +493,7 @@
       <workItem from="1771881050316" duration="1000" />
       <workItem from="1771937898525" duration="2133000" />
       <workItem from="1779742930554" duration="4000" />
+      <workItem from="1780062736868" duration="308000" />
     </task>
     <servers />
   </component>

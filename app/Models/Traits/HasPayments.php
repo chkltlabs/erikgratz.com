@@ -10,6 +10,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasPayments
@@ -42,21 +43,25 @@ trait HasPayments
             ->columns(4)
             ->relationship()
             ->schema([
-                Select::make('currency')
-                    ->options(CurrencyCode::options())
-                    ->default(CurrencyCode::USD->value)
-                    ->required()
-                    ->live(),
-                TextInput::make('amount')
-                    ->prefix(fn ($get): string => (string) ($get('currency') ?? CurrencyCode::USD->value))
-                    ->numeric()
-                    ->required(),
-                Toggle::make('is_paid'),
-                DatePicker::make('paid_on')->nullable(),
-                Select::make('card_id')
-                    ->label('Card')
-                    ->options(Card::all()->pluck('name', 'id'))
-                    ->nullable(),
+                Group::make([
+                    Select::make('currency')
+                        ->options(CurrencyCode::options())
+                        ->default(CurrencyCode::USD->value)
+                        ->required()
+                        ->live(),
+                    TextInput::make('amount')
+                        ->prefix(fn ($get): string => (string) ($get('currency') ?? CurrencyCode::USD->value))
+                        ->numeric()
+                        ->required(),
+                ])->columnSpan(2),
+                Group::make([
+                    Toggle::make('is_paid'),
+                    DatePicker::make('paid_on')->nullable(),
+                    Select::make('card_id')
+                        ->label('Card')
+                        ->options(Card::all()->pluck('name', 'id'))
+                        ->nullable(),
+                ])->columnSpan(2),
             ])->defaultItems(0)->addActionLabel('Add Payment');
     }
 }
