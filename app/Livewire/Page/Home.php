@@ -21,7 +21,7 @@ class Home extends Component
 
     public function mount(): void
     {
-        $this->heroImage = asset('images/webp/suit-up.webp');
+        $this->heroImage = asset('images/webp/github-avatar.webp');
     }
 
     #[Computed]
