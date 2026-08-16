@@ -1,0 +1,65 @@
+ERIK GRATZ
+Remote | 937-218-2673 | erikgratz110@gmail.com
+https://www.linkedin.com/in/erik-gratz-126ba410b/ | https://erikgratz.com
+
+PROFESSIONAL SUMMARY
+
+Full-stack Laravel engineer with 6+ years of production PHP experience building scalable APIs, queue-driven integrations, and cloud-hosted platforms in wellness and fintech. Owned backend development from MVP through acquisition at an early-stage startup, scaling systems 40x while improving query performance, data integrity, and deployment workflows. Experienced with Laravel queues (Horizon, RabbitMQ), third-party API integration (including maintaining SDKs for poorly documented providers), Docker, CI/CD, PHPUnit testing, access control, and secure handling of sensitive user data. Strong Eloquent and SQL skills with a track record of live-data migrations, schema refactors, and performance optimization without downtime.
+
+TECHNICAL SKILLS
+
+Languages and Frameworks: PHP 8.x, Laravel, Lumen, Eloquent, Livewire, FilamentPHP, JavaScript, Vue.js, REST APIs, API design consuming and exposing
+Data and Performance: MySQL, MongoDB, SQL query optimization, schema design, database migrations on live production data, ElasticSearch
+Queues and Integrations: Laravel Horizon, queued background jobs, RabbitMQ, webhook and cron workflows, third-party API integration, retry and reconciliation patterns
+Testing and Quality: PHPUnit, unit testing, code coverage, GitHub Actions CI/CD
+Infrastructure and DevOps: Docker, Laravel Forge, Sail, Google Cloud Platform, AWS, DigitalOcean, zero-downtime deployments
+Security and Compliance: access control, permissions, API key management, XSS and vulnerability remediation, security-conscious development in regulated-adjacent wellness and financial products
+Payments and Financial APIs: Plaid API integration and SDK maintenance
+Laravel Ecosystem: Passport, Sanctum, Telescope, Pint, Flare
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer, Backend
+Pocketnest | Detroit, MI (Remote)
+May 2022 - Present
+
+- Led Laravel backend development from MVP through acquisition, scaling the platform to 40x user growth while supporting a 36.6x increase in company valuation at exit.
+- Built and maintained production APIs with Laravel, including a client-facing analytics API with API key management, role-based permissions, and email invitation workflows.
+- Owned Laravel Horizon queue infrastructure for background jobs, external service calls, and async processing across staging and production environments.
+- Executed zero-downtime migration of the full platform from AWS to Google Cloud using Docker and Laravel Forge for deployment and server management.
+- Optimized Eloquent queries and application routes, achieving up to 20x performance improvements in the first month through SQL tuning and architectural refactors.
+- Refactored application core to eliminate data redundancy and database bloat, improving maintainability and query performance across the schema.
+- Built an internal FilamentPHP configuration dashboard with database snapshots, analytics, and staging-to-production config transfer for faster iteration.
+- Maintained a fork of the Plaid PHP SDK to support evolving third-party API requirements when the upstream library was abandoned.
+- Technologies: PHP, Laravel, MySQL, Eloquent, Docker, FilamentPHP, Livewire, Horizon, Passport, Sanctum, Telescope, Forge, Sail, PHPUnit
+
+Developer
+Sonic Boom Wellness | San Diego, CA (Remote)
+February 2020 - May 2022
+
+- Developed and maintained APIs for an employee wellness platform in a regulated-adjacent healthcare context, with focus on scalability, data validation, and secure access.
+- Migrated platform features from a legacy Zend application to a new Lumen API, modernizing the PHP stack and improving maintainability.
+- Implemented extensive queued jobs, cron scheduling, and RabbitMQ-backed background processing for integrations with external systems and large data imports.
+- Led a self-directed security initiative with staff to identify and remediate vulnerabilities across the stack, including XSS and input validation gaps.
+- Technologies: PHP, Laravel, Lumen, Eloquent, MySQL, MongoDB, Vue 3, JavaScript, RabbitMQ, ElasticSearch, Rundeck, Docker
+
+PHP Developer (Lead)
+Internet Things | San Diego, CA
+April 2019 - February 2020
+
+- Stepped into lead developer role and owned continued development of SimplySweeps.com, a lead-generation platform with automated third-party API integrations.
+- Built and maintained an API-driven lead auction system with transparent reporting, connection debugging UI, and real-time integration with external partner APIs.
+- Technologies: PHP, Laravel, Eloquent, MySQL, JavaScript, jQuery, Docker, JIRA
+
+OPEN SOURCE AND PROJECTS
+
+Plaid SDK for PHP (2024-Present): Maintains abandoned upstream SDK for ongoing Plaid API compatibility; demonstrates third-party integration and API versioning discipline.
+Code Coverage Summary GitHub Action (2025-Present): CI/CD tooling for targeted PHPUnit cobertura coverage analysis on pull requests.
+Wix SDK for PHP (2023-Present): Custom PHP client for Wix website API integration.
+Personal portfolio site: Laravel, Livewire, MySQL, Tailwind CSS, Docker, Forge, DigitalOcean, with PHPUnit test suite.
+
+EDUCATION AND CONTINUING EDUCATION
+
+Laracasts - Laravel-focused professional development (2020-Present)
+Treehouse - Full Stack Development (2019)
+Ohio University - Computer Science coursework (2008-2010)
