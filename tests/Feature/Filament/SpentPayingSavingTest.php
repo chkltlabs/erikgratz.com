@@ -8,6 +8,7 @@ use App\Enums\Period;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Account;
 use App\Models\Card;
+use App\Models\LoanAgainstSavings;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
@@ -147,6 +148,7 @@ class SpentPayingSavingTest extends TestCase
             'amount' => 75,
             'is_paid' => false,
             'paid_on' => now()->setDay(20),
+            'card_id' => null,
         ]);
 
         $money = SpentPayingSaving::getMoneyData();
@@ -197,8 +199,14 @@ class SpentPayingSavingTest extends TestCase
         $junPotential = $money[$jun]['potential'];
         $julPotential = $money[$jul]['potential'];
 
-        $this->assertSame('$'.($netWorth + $junPotential), $valuesByLabel['Jun CC Projected Net Worth']);
-        $this->assertSame('$'.($netWorth + $junPotential + $julPotential), $valuesByLabel['Jul CC Projected Net Worth']);
+        $this->assertSame(
+            '$'.number_format($netWorth + $junPotential, 2),
+            $valuesByLabel['Jun CC Projected Net Worth'],
+        );
+        $this->assertSame(
+            '$'.number_format($netWorth + $junPotential + $julPotential, 2),
+            $valuesByLabel['Jul CC Projected Net Worth'],
+        );
     }
 
     #[Test]
@@ -214,6 +222,7 @@ class SpentPayingSavingTest extends TestCase
             'balance' => 1000,
         ]);
 
+        // no-ISB stock is second-month due, not this month
         Card::factory()->create([
             'due_date' => now()->addDays(5)->day,
             'interest_saving_balance' => 0,
@@ -226,7 +235,197 @@ class SpentPayingSavingTest extends TestCase
         $may = now()->format('M');
         $money = SpentPayingSaving::getMoneyData();
 
-        $this->assertEqualsWithDelta(1000 + 2000 - 100, $money[$may]['potential'], 0.01);
+        $this->assertEqualsWithDelta(1000 + 2000, $money[$may]['potential'], 0.01);
+        $this->assertEqualsWithDelta(0.0, $money[$may]['spent'], 0.01);
+    }
+
+    #[Test]
+    public function this_month_due_is_future_due_isb_only(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        Card::factory()->create([
+            'due_date' => 20,
+            'interest_saving_balance' => 250,
+            'balance' => 800,
+            'pending' => 50,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 0,
+        ]);
+        Card::factory()->create([
+            'due_date' => 25,
+            'interest_saving_balance' => 0,
+            'balance' => 400,
+            'pending' => 0,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 0,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+        $may = now()->format('M');
+        $jun = now()->addMonth()->format('M');
+
+        $this->assertEqualsWithDelta(250.0, $money[$may]['spent'], 0.01);
+        // ISB leftover (800+50-250=600) + no-ISB full stock (400)
+        $this->assertEqualsWithDelta(1000.0, $money[$jun]['spent'], 0.01);
+    }
+
+    #[Test]
+    public function third_month_due_is_past_due_isb_leftover_without_ifbp_double_count(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        Card::factory()->create([
+            'due_date' => 10,
+            'interest_saving_balance' => 100,
+            'balance' => 500,
+            'pending' => 0,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 50,
+        ]);
+        // past-due no ISB should not reappear in third month
+        Card::factory()->create([
+            'due_date' => 5,
+            'interest_saving_balance' => 0,
+            'balance' => 999,
+            'pending' => 0,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 0,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+        $jul = now()->addMonths(2)->format('M');
+
+        // stock = 500+0-0+50 = 550; leftover after ISB = 450
+        $this->assertEqualsWithDelta(450.0, $money[$jul]['spent'], 0.01);
+    }
+
+    #[Test]
+    public function statement_close_assigns_one_time_spend_to_jun_or_jul_boxes(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        $card = Card::factory()->create([
+            'statement_date' => 15,
+            'due_date' => 5,
+        ]);
+
+        $beforeClose = Spend::factory()->bare()->noPayments()->create([
+            'name' => 'Before Close',
+            'is_income' => false,
+        ]);
+        $afterClose = Spend::factory()->bare()->noPayments()->create([
+            'name' => 'After Close',
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $beforeClose->id,
+            'amount' => 110,
+            'is_paid' => false,
+            'paid_on' => '2026-05-10',
+            'card_id' => $card->id,
+        ]);
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $afterClose->id,
+            'amount' => 220,
+            'is_paid' => false,
+            'paid_on' => '2026-05-20',
+            'card_id' => $card->id,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+        $junItems = collect($money['Jun']['planned_items'])->pluck('name')->all();
+        $julItems = collect($money['Jul']['planned_items'])->pluck('name')->all();
+
+        $this->assertContains('Before Close', $junItems);
+        $this->assertNotContains('After Close', $junItems);
+        $this->assertContains('After Close', $julItems);
+        $this->assertNotContains('Before Close', $julItems);
+    }
+
+    #[Test]
+    public function paid_monthly_is_excluded_from_unspent(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        $spend = PeriodicSpend::factory()->create([
+            'name' => 'Already Paid',
+            'period' => Period::Monthly,
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $spend->id,
+            'amount' => 80,
+            'is_paid' => true,
+            'paid_on' => now()->setDay(20),
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertSame(0.0, $money['Jun']['planned']);
+        $this->assertSame([], $money['Jun']['planned_items']);
+        $this->assertSame(0.0, $money['Jul']['planned']);
+    }
+
+    #[Test]
+    public function next_month_loan_is_included_in_second_month_spent(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        LoanAgainstSavings::factory()->create([
+            'balance' => 175,
+            'is_paid' => false,
+            'paid_on' => now()->addMonth()->startOfMonth()->addDays(2),
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertEqualsWithDelta(175.0, $money['Jun']['spent'], 0.01);
+    }
+
+    #[Test]
+    public function null_card_one_time_floats_into_following_month_unspent(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        $spend = Spend::factory()->bare()->noPayments()->create([
+            'name' => 'No Card Float',
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'amount' => 300,
+            'is_paid' => false,
+            'paid_on' => '2026-05-12',
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertCount(1, $money['Jun']['planned_items']);
+        $this->assertSame('No Card Float', $money['Jun']['planned_items'][0]['name']);
+        $this->assertSame([], $money['Jul']['planned_items']);
     }
 
     #[Test]
@@ -247,6 +446,7 @@ class SpentPayingSavingTest extends TestCase
             'amount' => 300,
             'is_paid' => false,
             'paid_on' => now()->addMonth()->startOfMonth()->addDays(3),
+            'card_id' => null,
         ]);
 
         $money = SpentPayingSaving::getMoneyData();
@@ -281,6 +481,7 @@ class SpentPayingSavingTest extends TestCase
             'amount' => 100,
             'is_paid' => false,
             'paid_on' => now()->setDay(20),
+            'card_id' => null,
         ]);
         Payment::factory()->create([
             'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
@@ -288,6 +489,7 @@ class SpentPayingSavingTest extends TestCase
             'amount' => 40,
             'is_paid' => false,
             'paid_on' => now()->setDay(21),
+            'card_id' => null,
         ]);
 
         $money = SpentPayingSaving::getMoneyData();
@@ -338,6 +540,50 @@ class SpentPayingSavingTest extends TestCase
     }
 
     #[Test]
+    public function get_state_dump_charts_excludes_dumps_older_than_six_months(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+        Cache::forget('stateDumps');
+
+        $card = Card::factory()->create();
+
+        $old = StateDump::factory()->create([
+            'data' => [
+                Card::class => [
+                    ['id' => $card->id, 'balance' => 1, 'pending' => 0, 'points_balance' => 1],
+                ],
+            ],
+        ]);
+        $old->created_at = now()->subMonths(8);
+        $old->save();
+
+        $recent = StateDump::factory()->create([
+            'data' => [
+                Card::class => [
+                    ['id' => $card->id, 'balance' => 100, 'pending' => 0, 'points_balance' => 50],
+                ],
+            ],
+        ]);
+
+        [, $cardBalanceChart, , , $pointsChart] = SpentPayingSaving::getStateDumpCharts();
+
+        $this->assertArrayNotHasKey($old->created_at->timestamp, $cardBalanceChart);
+        $this->assertArrayHasKey($recent->created_at->timestamp, $cardBalanceChart);
+        $this->assertSame(100.0, $cardBalanceChart[$recent->created_at->timestamp]);
+        $this->assertSame(50.0, $pointsChart[$recent->created_at->timestamp]);
+    }
+
+    #[Test]
+    public function state_dump_uses_custom_collection(): void
+    {
+        $dump = StateDump::factory()->create(['data' => []]);
+
+        $collection = StateDump::query()->whereKey($dump->id)->get();
+
+        $this->assertInstanceOf(\App\Models\Collections\StateDumpCollection::class, $collection);
+    }
+
+    #[Test]
     public function make_unspent_stat_omits_tooltip_when_no_planned_items(): void
     {
         $stat = $this->invokeMakeUnspentStat('Jun', [
@@ -346,7 +592,7 @@ class SpentPayingSavingTest extends TestCase
         ]);
 
         $this->assertSame('Jun CC Unspent', (string) $stat->getLabel());
-        $this->assertSame('$0', (string) $stat->getValue());
+        $this->assertSame('$0.00', (string) $stat->getValue());
         $this->assertSame([], $stat->getExtraAttributes());
     }
 

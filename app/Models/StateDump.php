@@ -18,11 +18,14 @@ class StateDump extends Model
 
     use HasFactory;
 
-    protected static string $collectionClass = StateDumpCollection::class;
-
     protected $fillable = ['data'];
 
     protected $casts = ['data' => 'array'];
+
+    public function newCollection(array $models = []): StateDumpCollection
+    {
+        return new StateDumpCollection($models);
+    }
 
     // be sure each class in this array implements the GetsDumped trait
     public static $dumpables = [

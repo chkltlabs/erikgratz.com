@@ -8,7 +8,6 @@ use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\LoanAgainstSavings;
 use App\Models\Payment;
-use App\Models\Scopes\SumCard;
 use App\Models\StateDump;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -45,22 +44,27 @@ class SpentPayingSaving extends BaseWidget
             Stat::make('Total Points', $totalPoints)
                 ->chart($pointsChart)
                 ->chartColor('danger'),
-            Stat::make($thisMonthName.' CC Due', '$'.$moneyArray[$thisMonthName]['spent']),
-            Stat::make($thisMonthName.' Potential Savings', '$'.$moneyArray[$thisMonthName]['potential']),
-            Stat::make('Net Worth', '$'.$netWorth)
+            Stat::make($thisMonthName.' CC Due', self::money($moneyArray[$thisMonthName]['spent'])),
+            Stat::make($thisMonthName.' Potential Savings', self::money($moneyArray[$thisMonthName]['potential'])),
+            Stat::make('Net Worth', self::money($netWorth))
                 ->chart($netWorthChart)
                 ->chartColor('success'),
 
-            Stat::make($nextMonthName.' CC Due', '$'.$moneyArray[$nextMonthName]['spent']),
+            Stat::make($nextMonthName.' CC Due', self::money($moneyArray[$nextMonthName]['spent'])),
             self::makeUnspentStat($nextMonthName, $moneyArray[$nextMonthName]),
-            Stat::make($nextMonthName.' CC Potential Save', '$'.$nextPotential),
-            Stat::make($nextMonthName.' CC Projected Net Worth', '$'.($netWorth + $nextPotential)),
+            Stat::make($nextMonthName.' CC Potential Save', self::money($nextPotential)),
+            Stat::make($nextMonthName.' CC Projected Net Worth', self::money($netWorth + $nextPotential)),
 
-            Stat::make($thirdMonthName.' CC Due', '$'.$moneyArray[$thirdMonthName]['spent']),
+            Stat::make($thirdMonthName.' CC Due', self::money($moneyArray[$thirdMonthName]['spent'])),
             self::makeUnspentStat($thirdMonthName, $moneyArray[$thirdMonthName]),
-            Stat::make($thirdMonthName.' CC Potential Save', '$'.$thirdPotential),
-            Stat::make($thirdMonthName.' CC Projected Net Worth', '$'.($netWorth + $nextPotential + $thirdPotential)),
+            Stat::make($thirdMonthName.' CC Potential Save', self::money($thirdPotential)),
+            Stat::make($thirdMonthName.' CC Projected Net Worth', self::money($netWorth + $nextPotential + $thirdPotential)),
         ];
+    }
+
+    protected static function money(int|float $value): string
+    {
+        return '$'.number_format((float) $value, 2);
     }
 
     /**
@@ -68,7 +72,7 @@ class SpentPayingSaving extends BaseWidget
      */
     protected static function makeUnspentStat(string $month, array $monthData): Stat
     {
-        $stat = Stat::make($month.' CC Unspent', '$'.$monthData['planned']);
+        $stat = Stat::make($month.' CC Unspent', self::money($monthData['planned']));
 
         $items = $monthData['planned_items'] ?? [];
 
@@ -125,17 +129,39 @@ class SpentPayingSaving extends BaseWidget
         $nextMonthName = now()->addMonth()->format('M');
         $thirdMonthName = now()->addMonths(2)->format('M');
 
-        $thisMonthSpent = Card::futureDue()->sum('interest_saving_balance')
-            + Card::futureDue()->noISBYet()->pipe(new SumCard);
-        $loansDue = LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
+        $cards = Card::query()->get([
+            'id',
+            'due_date',
+            'balance',
+            'pending',
+            'interest_saving_balance',
+            'interest_free_balance',
+            'interest_free_balance_payment',
+        ]);
 
-        $pastDueISB = Card::pastDue()->sum('interest_saving_balance');
+        $todayDay = now()->day;
 
-        $nextMonthSpent = $pastDueISB
-            + Card::pastDue()->noISBYet()->pipe(new SumCard)
-            + Card::futureDue()->pipe(new SumCard)
-//            - Card::futureDue()->noISBYet()->sum('interest_saving_balance')
-            - $thisMonthSpent;
+        $futureDue = $cards->filter(fn (Card $card): bool => (int) $card->due_date >= $todayDay);
+        $pastDue = $cards->filter(fn (Card $card): bool => (int) $card->due_date < $todayDay);
+
+        // This month: ISB for cards not yet paid this cycle
+        $thisMonthSpent = (float) $futureDue->sum('interest_saving_balance');
+        $loansDue = (float) LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
+
+        // Second month card stock: unpaid-this-month leftovers + no-ISB full stock
+        // + overdue ISB still on past-due cards (missed ZeroISB)
+        $nextMonthCardSpent = 0.0;
+        foreach ($futureDue as $card) {
+            $isb = (float) $card->interest_saving_balance;
+            if ($isb != 0.0) {
+                $nextMonthCardSpent += $card->stockBalance() - $isb;
+            } elseif ((float) $card->balance > 0) {
+                $nextMonthCardSpent += $card->stockBalance();
+            }
+        }
+        $nextMonthCardSpent += (float) $pastDue->sum('interest_saving_balance');
+        $nextMonthLoans = (float) LoanAgainstSavings::unpaid()->nextMonth()->sum('balance');
+        $nextMonthSpent = $nextMonthCardSpent + $nextMonthLoans;
 
         $nextPlannedSummary = self::summarizePlannedPayments(self::plannedPaymentsForNextMonth());
         $planned = $nextPlannedSummary['total'];
@@ -145,10 +171,16 @@ class SpentPayingSaving extends BaseWidget
         $thirdPlanned = $thirdPlannedSummary['total'];
         $thirdPlannedItems = $thirdPlannedSummary['items'];
 
-        $thirdMonthSpent = Card::pastDue()->pipe(new SumCard)
-            - $pastDueISB
-            + Card::sum('interest_free_balance_payment')
-            + LoanAgainstSavings::unpaid()->thirdMonth()->sum('balance');
+        // Third month: past-due cards with ISB → stock leftover after ISB
+        $thirdMonthCardSpent = 0.0;
+        foreach ($pastDue as $card) {
+            $isb = (float) $card->interest_saving_balance;
+            if ($isb != 0.0) {
+                $thirdMonthCardSpent += $card->stockBalance() - $isb;
+            }
+        }
+        $thirdMonthLoans = (float) LoanAgainstSavings::unpaid()->thirdMonth()->sum('balance');
+        $thirdMonthSpent = $thirdMonthCardSpent + $thirdMonthLoans;
 
         return [
             $thisMonthName => [
@@ -173,25 +205,44 @@ class SpentPayingSaving extends BaseWidget
     }
 
     /**
+     * Unpaid spends due in the next calendar month via card statement close → due,
+     * plus monthlys still unpaid from today forward.
+     *
      * @return Collection<int, Payment>
      */
     protected static function plannedPaymentsForNextMonth(): Collection
     {
-        return Payment::oneTimeUnpaidDueThisMonth()->with('spend')->get()
-            ->merge(Payment::yearlyUnpaidDueThisMonth()->with('spend')->get())
-            ->merge(Payment::monthlyUnpaid()->with('spend')->get())
+        $targetMonth = now()->addMonth()->startOfMonth();
+
+        $oneTimeAndYearly = Payment::oneTimeUnpaid()->with(['spend', 'card'])->get()
+            ->merge(Payment::yearlyUnpaidAll()->with(['spend', 'card'])->get())
+            ->filter(fn (Payment $payment): bool => $payment->cashflowDueFallsInMonth($targetMonth));
+
+        $monthlys = Payment::monthlyUnpaid()->with(['spend', 'card'])->get();
+
+        return $oneTimeAndYearly
+            ->merge($monthlys)
             ->unique('id')
             ->values();
     }
 
     /**
+     * Unpaid spends due two months out via card statement close → due, plus all unpaid monthlys.
+     *
      * @return Collection<int, Payment>
      */
     protected static function plannedPaymentsForThirdMonth(): Collection
     {
-        return Payment::oneTimeUnpaidDueNextMonth()->with('spend')->get()
-            ->merge(Payment::yearlyDueNextMonth()->with('spend')->get())
-            ->merge(Payment::monthly()->with('spend')->get())
+        $targetMonth = now()->addMonths(2)->startOfMonth();
+
+        $oneTimeAndYearly = Payment::oneTimeUnpaid()->with(['spend', 'card'])->get()
+            ->merge(Payment::yearlyUnpaidAll()->with(['spend', 'card'])->get())
+            ->filter(fn (Payment $payment): bool => $payment->cashflowDueFallsInMonth($targetMonth));
+
+        $monthlys = Payment::monthlyAllUnpaid()->with(['spend', 'card'])->get();
+
+        return $oneTimeAndYearly
+            ->merge($monthlys)
             ->unique('id')
             ->values();
     }
@@ -227,23 +278,85 @@ class SpentPayingSaving extends BaseWidget
     public static function getStateDumpCharts(): array
     {
         return Cache::remember('stateDumps', now()->endOfDay(), function () {
-            $stateDumps = StateDump::latest()->get();
+            $since = now()->subMonths(6);
 
-            $yearAgo = now()->submonths(6);
+            $stateDumps = StateDump::query()
+                ->where('created_at', '>=', $since)
+                ->orderBy('created_at')
+                ->get();
 
-            $pointsChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'points_balance', $yearAgo);
+            $cards = Card::query()->get(['id']);
+            $accounts = Account::query()->get(['id', 'balance', 'currency']);
 
-            $cashPositionChart = $stateDumps->sumStatArraysForAllModels(Account::first(), 'balance', $yearAgo);
+            $pointsChart = [];
+            $cardBalanceChart = [];
+            $cardPendingChart = [];
+            $cashPositionChart = [];
 
-            $cardBalanceChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'balance', $yearAgo);
-            $cardPendingChart = $stateDumps->sumStatArraysForAllModels(Card::first(), 'pending', $yearAgo);
+            foreach ($stateDumps as $stateDump) {
+                $timestamp = $stateDump->created_at->timestamp;
+                $data = $stateDump->data ?? [];
+
+                $cardRowsById = self::indexDumpRowsById($data[Card::class] ?? []);
+                $accountRowsById = self::indexDumpRowsById($data[Account::class] ?? []);
+
+                $points = 0.0;
+                $balances = 0.0;
+                $pending = 0.0;
+                foreach ($cards as $card) {
+                    $row = $cardRowsById[$card->id] ?? null;
+                    if ($row === null) {
+                        continue;
+                    }
+                    $points += (float) ($row['points_balance'] ?? 0);
+                    $balances += (float) ($row['balance'] ?? 0);
+                    $pending += (float) ($row['pending'] ?? 0);
+                }
+
+                $cash = 0.0;
+                $multipliers = $data['exchange_rates']['multipliers'] ?? [];
+                foreach ($accounts as $account) {
+                    $row = $accountRowsById[$account->id] ?? null;
+                    if ($row === null) {
+                        continue;
+                    }
+                    $balance = (float) ($row['balance'] ?? 0);
+                    $currency = strtoupper((string) ($row['currency'] ?? 'USD'));
+                    $cash += $balance * (float) ($multipliers[$currency] ?? 1.0);
+                }
+
+                $pointsChart[$timestamp] = $points;
+                $cardBalanceChart[$timestamp] = $balances;
+                $cardPendingChart[$timestamp] = $pending;
+                $cashPositionChart[$timestamp] = $cash;
+            }
+
             $cardBalanceChartNeg = SDC::setArrayNegative($cardBalanceChart);
             $cardPendingChartNeg = SDC::setArrayNegative($cardPendingChart);
 
-            $netWorthChart = SDC::combineArrs(SDC::combineArrs($cashPositionChart, $cardBalanceChartNeg), $cardPendingChartNeg);
+            $netWorthChart = SDC::combineArrs(
+                SDC::combineArrs($cashPositionChart, $cardBalanceChartNeg),
+                $cardPendingChartNeg,
+            );
 
             return [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart];
         });
+    }
 
+    /**
+     * @param  array<int, array<string, mixed>>  $rows
+     * @return array<int|string, array<string, mixed>>
+     */
+    protected static function indexDumpRowsById(array $rows): array
+    {
+        $indexed = [];
+        foreach ($rows as $row) {
+            if (! is_array($row) || ! array_key_exists('id', $row)) {
+                continue;
+            }
+            $indexed[$row['id']] = $row;
+        }
+
+        return $indexed;
     }
 }
