@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ActivityResource\RelationManagers;
 
-use App\Enums\TravelMethod;
 use App\Filament\Forms\Components\LocationPicker;
 use App\Filament\Resources\ActivityResource;
 use App\Filament\Resources\SpendResource;
@@ -13,7 +12,6 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -56,15 +54,12 @@ class SpendsRelationManager extends RelationManager
                         ->icon('heroicon-o-plus-circle')
                         ->form([
                             TextInput::make('name')
-                                ->required(),
+                                ->required()
+                                ->live(onBlur: true),
                             DateRangePicker::make('start_end_date')
                                 ->alwaysShowCalendar()
                                 ->required(),
-                            Select::make('travel_method')
-                                ->label('Arrival method')
-                                ->options(TravelMethod::asSelectArray())
-                                ->nullable(),
-                            ...LocationPicker::make(),
+                            LocationPicker::section(),
                             Textarea::make('description')
                                 ->rows(5),
                         ])

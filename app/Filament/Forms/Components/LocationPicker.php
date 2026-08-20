@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Forms\Components;
 
+use App\Enums\TravelMethod;
 use App\Services\Geocoding\NominatimGeocoder;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Throwable;
@@ -18,48 +19,85 @@ use Throwable;
 class LocationPicker
 {
     /**
-     * @return array<int, Group|Hidden|Select|TextInput>
+     * Filament Section wrapping arrival method + city search fields.
+     */
+    public static function section(): Section
+    {
+        return Section::make('Location')
+            ->description('Where this activity took place and how you arrived.')
+            ->icon('heroicon-o-map-pin')
+            ->columns(1)
+            ->schema(self::fields());
+    }
+
+    /**
+     * @return array<int, Hidden|Select|TextInput>
+     */
+    public static function fields(): array
+    {
+        return [
+            Select::make('travel_method')
+                ->label('Arrival method')
+                ->helperText('How you traveled to this activity. Colors the incoming (and return) route on the map.')
+                ->options(TravelMethod::asSelectArray())
+                ->native(false)
+                ->nullable(),
+            TextInput::make('location_search')
+                ->label('Search city')
+                ->placeholder('e.g. Istanbul, Turkey')
+                ->dehydrated(false)
+                ->helperText('Type a city name, then press Search. Results come from OpenStreetMap Nominatim.')
+                ->afterStateHydrated(function (TextInput $component, Get $get, mixed $state): void {
+                    if (filled($state) || filled($get('location_name'))) {
+                        return;
+                    }
+
+                    $title = $get('name');
+                    if (filled($title)) {
+                        $component->state($title);
+                    }
+                })
+                ->suffixAction(
+                    Action::make('searchLocation')
+                        ->icon('heroicon-m-magnifying-glass')
+                        ->label('Search')
+                        ->action(fn (Get $get, Set $set) => self::search($get, $set))
+                ),
+            Select::make('selected_location')
+                ->label('Select location')
+                ->dehydrated(false)
+                ->native(false)
+                ->visible(fn (Get $get): bool => filled($get('location_search_results')))
+                ->options(fn (Get $get): array => self::resultOptions($get))
+                ->afterStateUpdated(fn (?string $state, Get $get, Set $set) => self::applySelection($state, $get, $set)),
+            TextInput::make('location_name')
+                ->label('Saved location')
+                ->disabled()
+                ->dehydrated()
+                ->placeholder('No location selected')
+                ->suffixAction(
+                    Action::make('clearLocation')
+                        ->icon('heroicon-m-x-mark')
+                        ->color('danger')
+                        ->visible(fn (Get $get): bool => filled($get('location_name')))
+                        ->action(fn (Set $set) => self::clear($set))
+                ),
+            Hidden::make('latitude'),
+            Hidden::make('longitude'),
+            Hidden::make('location_search_results')
+                ->dehydrated(false)
+                ->default([]),
+        ];
+    }
+
+    /**
+     * @return array<int, Section>
+     *
+     * @deprecated Use section() in form schemas instead.
      */
     public static function make(): array
     {
-        return [
-            Group::make([
-                TextInput::make('location_search')
-                    ->label('Search city')
-                    ->placeholder('e.g. Istanbul, Turkey')
-                    ->dehydrated(false)
-                    ->helperText('Type a city name, then press Search. Results come from OpenStreetMap Nominatim.')
-                    ->suffixAction(
-                        Action::make('searchLocation')
-                            ->icon('heroicon-m-magnifying-glass')
-                            ->label('Search')
-                            ->action(fn (Get $get, Set $set) => self::search($get, $set))
-                    ),
-                Select::make('selected_location')
-                    ->label('Select location')
-                    ->dehydrated(false)
-                    ->visible(fn (Get $get): bool => filled($get('location_search_results')))
-                    ->options(fn (Get $get): array => self::resultOptions($get))
-                    ->afterStateUpdated(fn (?string $state, Get $get, Set $set) => self::applySelection($state, $get, $set)),
-                TextInput::make('location_name')
-                    ->label('Location')
-                    ->disabled()
-                    ->dehydrated()
-                    ->placeholder('No location selected')
-                    ->suffixAction(
-                        Action::make('clearLocation')
-                            ->icon('heroicon-m-x-mark')
-                            ->color('danger')
-                            ->visible(fn (Get $get): bool => filled($get('location_name')))
-                            ->action(fn (Set $set) => self::clear($set))
-                    ),
-                Hidden::make('latitude'),
-                Hidden::make('longitude'),
-                Hidden::make('location_search_results')
-                    ->dehydrated(false)
-                    ->default([]),
-            ])->columnSpanFull(),
-        ];
+        return [self::section()];
     }
 
     public static function search(Get $get, Set $set): void

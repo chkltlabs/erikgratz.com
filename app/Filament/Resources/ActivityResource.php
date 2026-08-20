@@ -13,11 +13,12 @@ use App\Models\Activity;
 use Carbon\Carbon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -40,21 +41,26 @@ class ActivityResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')
-                ->required(),
-            DateRangePicker::make('start_end_date')
-                ->alwaysShowCalendar()
-                ->required(),
-            Select::make('travel_method')
-                ->label('Arrival method')
-                ->helperText('How you traveled to this activity. Colors the incoming route on the map.')
-                ->options(TravelMethod::asSelectArray())
-                ->nullable(),
-            ...LocationPicker::make(),
-            Grid::make(1)->schema([
-                Textarea::make('description')
-                    ->rows(5),
-            ]),
+            Section::make('Details')
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (?string $state, Get $get, Set $set): void {
+                            if (filled($get('location_name'))) {
+                                return;
+                            }
+
+                            $set('location_search', $state);
+                        }),
+                    DateRangePicker::make('start_end_date')
+                        ->alwaysShowCalendar()
+                        ->required(),
+                    Textarea::make('description')
+                        ->rows(5)
+                        ->columnSpanFull(),
+                ]),
+            LocationPicker::section(),
         ]);
     }
 

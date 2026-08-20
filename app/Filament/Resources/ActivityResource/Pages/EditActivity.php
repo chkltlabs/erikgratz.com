@@ -3,18 +3,79 @@
 namespace App\Filament\Resources\ActivityResource\Pages;
 
 use App\Filament\Resources\ActivityResource;
+use App\Models\Activity;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\IconPosition;
+use Illuminate\Database\Eloquent\Model;
 
 class EditActivity extends EditRecord
 {
     protected static string $resource = ActivityResource::class;
 
-    protected function getActions(): array
+    /** @var array{previous: ?Model, next: ?Model}|null */
+    protected ?array $adjacentRecords = null;
+
+    protected function getHeaderActions(): array
     {
         return [
+            Action::make('previous')
+                ->label('Back')
+                ->icon('heroicon-o-chevron-left')
+                ->color('gray')
+                ->url(fn (): ?string => $this->getAdjacentRecordUrl(previous: true))
+                ->disabled(fn (): bool => $this->getAdjacentRecord(previous: true) === null),
+            Action::make('next')
+                ->label('Next')
+                ->icon('heroicon-o-chevron-right')
+                ->iconPosition(IconPosition::After)
+                ->color('gray')
+                ->url(fn (): ?string => $this->getAdjacentRecordUrl(previous: false))
+                ->disabled(fn (): bool => $this->getAdjacentRecord(previous: false) === null),
             DeleteAction::make(),
         ];
+    }
+
+    protected function getAdjacentRecord(bool $previous): ?Model
+    {
+        $adjacent = $this->resolveAdjacentRecords();
+
+        return $previous ? $adjacent['previous'] : $adjacent['next'];
+    }
+
+    /**
+     * @return array{previous: ?Model, next: ?Model}
+     */
+    protected function resolveAdjacentRecords(): array
+    {
+        if ($this->adjacentRecords !== null) {
+            return $this->adjacentRecords;
+        }
+
+        $id = $this->getRecord()->getKey();
+
+        return $this->adjacentRecords = [
+            'previous' => Activity::query()
+                ->where('id', '<', $id)
+                ->orderByDesc('id')
+                ->first(),
+            'next' => Activity::query()
+                ->where('id', '>', $id)
+                ->orderBy('id')
+                ->first(),
+        ];
+    }
+
+    protected function getAdjacentRecordUrl(bool $previous): ?string
+    {
+        $record = $this->getAdjacentRecord($previous);
+
+        if ($record === null) {
+            return null;
+        }
+
+        return ActivityResource::getUrl('edit', ['record' => $record]);
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
@@ -24,6 +85,12 @@ class EditActivity extends EditRecord
 
     public function mutateFormDataBeforeFill(array $data): array
     {
-        return ActivityResource::combineStartEndDate($data);
+        $data = ActivityResource::combineStartEndDate($data);
+
+        if (blank($data['location_name'] ?? null) && filled($data['name'] ?? null)) {
+            $data['location_search'] = $data['name'];
+        }
+
+        return $data;
     }
 }
