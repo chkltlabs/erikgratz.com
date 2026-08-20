@@ -41,6 +41,9 @@ window.activityTravelMap = function activityTravelMap(config) {
             const bounds = [];
 
             (config.routes || []).forEach((route) => {
+                const kind = route.kind
+                    || (route.is_return ? 'return' : (route.is_continue ? 'continue' : 'travel'));
+
                 L.polyline(
                     [
                         [route.from.lat, route.from.lng],
@@ -48,8 +51,9 @@ window.activityTravelMap = function activityTravelMap(config) {
                     ],
                     {
                         color: route.color,
-                        weight: 3,
+                        weight: kind === 'return' ? 2 : 3,
                         opacity: 0.85,
+                        dashArray: kind === 'continue' ? '8 8' : (kind === 'return' ? '2 8' : null),
                     },
                 ).addTo(this.map);
             });

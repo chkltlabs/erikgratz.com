@@ -23,6 +23,12 @@ class ActivityMap extends Widget
 
     protected ?string $placeholderHeight = '28rem';
 
+    public const KIND_TRAVEL = 'travel';
+
+    public const KIND_CONTINUE = 'continue';
+
+    public const KIND_RETURN = 'return';
+
     /**
      * @return array{points: list<array<string, mixed>>, routes: list<array<string, mixed>>, legend: list<array{label: string, color: string, value: string}>}
      */
@@ -66,19 +72,80 @@ class ActivityMap extends Widget
     }
 
     /**
-     * Chronological legs (colored by destination arrival method), plus automatic
-     * return-to-base when a nested vacation finishes before its enclosing base.
+     * Build map routes:
+     * - travel: sequential non-nested hops (and base → first vacation stop)
+     * - continue: vacation stop → next stop while still nested in the same base
+     * - return: last nested vacation stop → enclosing base
      *
      * @param  Collection<int, Activity>  $activities
-     * @return list<array{from: array{lat: float, lng: float}, to: array{lat: float, lng: float}, color: string, method: string|null, is_return: bool}>
+     * @return list<array{from: array{lat: float, lng: float}, to: array{lat: float, lng: float}, color: string, method: string|null, kind: string, is_return: bool, is_continue: bool}>
      */
     public static function buildRoutes(Collection $activities): array
     {
         $items = $activities->values();
-        $routes = [];
         $count = $items->count();
+        $routes = [];
+        /** @var array<string, true> $drawnEdges */
+        $drawnEdges = [];
+
+        for ($baseIndex = 0; $baseIndex < $count; $baseIndex++) {
+            $nestedIndices = self::contiguousNestedIndices($items, $baseIndex);
+            if ($nestedIndices === []) {
+                continue;
+            }
+
+            /** @var Activity $base */
+            $base = $items[$baseIndex];
+            $firstIndex = $nestedIndices[0];
+            /** @var Activity $firstStop */
+            $firstStop = $items[$firstIndex];
+
+            $outboundKey = self::edgeKey($baseIndex, $firstIndex);
+            $routes[] = self::makeRoute(
+                from: $base,
+                to: $firstStop,
+                method: self::resolveMethod($firstStop),
+                kind: self::KIND_TRAVEL,
+            );
+            $drawnEdges[$outboundKey] = true;
+
+            for ($n = 1; $n < count($nestedIndices); $n++) {
+                $fromIndex = $nestedIndices[$n - 1];
+                $toIndex = $nestedIndices[$n];
+                /** @var Activity $fromStop */
+                $fromStop = $items[$fromIndex];
+                /** @var Activity $toStop */
+                $toStop = $items[$toIndex];
+
+                $continueKey = self::edgeKey($fromIndex, $toIndex);
+                $routes[] = self::makeRoute(
+                    from: $fromStop,
+                    to: $toStop,
+                    method: self::resolveMethod($toStop),
+                    kind: self::KIND_CONTINUE,
+                );
+                $drawnEdges[$continueKey] = true;
+            }
+
+            $lastIndex = $nestedIndices[array_key_last($nestedIndices)];
+            if (self::shouldDrawReturnToBase($items, $lastIndex, $baseIndex)) {
+                /** @var Activity $lastStop */
+                $lastStop = $items[$lastIndex];
+                $routes[] = self::makeRoute(
+                    from: $lastStop,
+                    to: $base,
+                    method: self::resolveMethod($lastStop),
+                    kind: self::KIND_RETURN,
+                );
+            }
+        }
 
         for ($i = 1; $i < $count; $i++) {
+            $key = self::edgeKey($i - 1, $i);
+            if (isset($drawnEdges[$key])) {
+                continue;
+            }
+
             /** @var Activity $previous */
             $previous = $items[$i - 1];
             /** @var Activity $current */
@@ -88,34 +155,39 @@ class ActivityMap extends Widget
                 from: $previous,
                 to: $current,
                 method: self::resolveMethod($current),
-                isReturn: false,
-            );
-        }
-
-        for ($i = 1; $i < $count; $i++) {
-            $baseIndex = self::findEnclosingBaseIndex($items, $i);
-            if ($baseIndex === null) {
-                continue;
-            }
-
-            if (! self::shouldDrawReturnToBase($items, $i, $baseIndex)) {
-                continue;
-            }
-
-            /** @var Activity $vacation */
-            $vacation = $items[$i];
-            /** @var Activity $base */
-            $base = $items[$baseIndex];
-
-            $routes[] = self::makeRoute(
-                from: $vacation,
-                to: $base,
-                method: self::resolveMethod($vacation),
-                isReturn: true,
+                kind: self::KIND_TRAVEL,
             );
         }
 
         return $routes;
+    }
+
+    /**
+     * Contiguous activities after $baseIndex that end before the base ends.
+     *
+     * @param  Collection<int, Activity>  $items
+     * @return list<int>
+     */
+    public static function contiguousNestedIndices(Collection $items, int $baseIndex): array
+    {
+        /** @var Activity $base */
+        $base = $items[$baseIndex];
+        $baseEnd = Carbon::parse($base->end_date)->startOfDay();
+        $nested = [];
+
+        for ($j = $baseIndex + 1; $j < $items->count(); $j++) {
+            /** @var Activity $candidate */
+            $candidate = $items[$j];
+            $candidateEnd = Carbon::parse($candidate->end_date)->startOfDay();
+
+            if (! $candidateEnd->lt($baseEnd)) {
+                break;
+            }
+
+            $nested[] = $j;
+        }
+
+        return $nested;
     }
 
     /**
@@ -167,29 +239,16 @@ class ActivityMap extends Widget
             return false;
         }
 
-        $next = $items->get($vacationIndex + 1);
-        if ($next !== null) {
-            $nextEnd = Carbon::parse($next->end_date)->startOfDay();
-            if ($nextEnd->lt($baseEnd)) {
-                return false;
-            }
+        $nestedIndices = self::contiguousNestedIndices($items, $baseIndex);
+        if ($nestedIndices === [] || $nestedIndices[array_key_last($nestedIndices)] !== $vacationIndex) {
+            return false;
         }
 
         $vacationStart = Carbon::parse($vacation->start_date)->toDateString();
 
-        $sameDayNested = $items
-            ->filter(function (Activity $other, int $index) use ($baseIndex, $vacationStart, $baseEnd): bool {
-                if ($index <= $baseIndex) {
-                    return false;
-                }
-
-                if (Carbon::parse($other->start_date)->toDateString() !== $vacationStart) {
-                    return false;
-                }
-
-                return Carbon::parse($other->end_date)->startOfDay()->lt($baseEnd)
-                    && Carbon::parse($other->start_date)->startOfDay()->lt($baseEnd);
-            })
+        $sameDayNested = collect($nestedIndices)
+            ->map(fn (int $index): Activity => $items[$index])
+            ->filter(fn (Activity $other): bool => Carbon::parse($other->start_date)->toDateString() === $vacationStart)
             ->sortBy([
                 fn (Activity $activity) => Carbon::parse($activity->start_date)->timestamp,
                 fn (Activity $activity) => $activity->id ?? 0,
@@ -206,10 +265,15 @@ class ActivityMap extends Widget
             || $last === $vacation;
     }
 
+    protected static function edgeKey(int $fromIndex, int $toIndex): string
+    {
+        return $fromIndex.'>'.$toIndex;
+    }
+
     /**
-     * @return array{from: array{lat: float, lng: float}, to: array{lat: float, lng: float}, color: string, method: string|null, is_return: bool}
+     * @return array{from: array{lat: float, lng: float}, to: array{lat: float, lng: float}, color: string, method: string|null, kind: string, is_return: bool, is_continue: bool}
      */
-    protected static function makeRoute(Activity $from, Activity $to, ?TravelMethod $method, bool $isReturn): array
+    protected static function makeRoute(Activity $from, Activity $to, ?TravelMethod $method, string $kind): array
     {
         return [
             'from' => [
@@ -222,7 +286,9 @@ class ActivityMap extends Widget
             ],
             'color' => $method?->color() ?? '#6b7280',
             'method' => $method?->value,
-            'is_return' => $isReturn,
+            'kind' => $kind,
+            'is_return' => $kind === self::KIND_RETURN,
+            'is_continue' => $kind === self::KIND_CONTINUE,
         ];
     }
 

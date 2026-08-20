@@ -44,11 +44,13 @@ class ActivityMapTest extends TestCase
         $routes = ActivityMap::buildRoutes($activities);
 
         $this->assertCount(2, $routes);
+        $this->assertSame(ActivityMap::KIND_TRAVEL, $routes[0]['kind']);
         $this->assertSame(TravelMethod::Plane, $routes[0]['method']);
         $this->assertFalse($routes[0]['is_return']);
+        $this->assertFalse($routes[0]['is_continue']);
         $this->assertSame(TravelMethod::colors()[TravelMethod::Plane], $routes[0]['color']);
         $this->assertSame(TravelMethod::Train, $routes[1]['method']);
-        $this->assertFalse($routes[1]['is_return']);
+        $this->assertSame(ActivityMap::KIND_TRAVEL, $routes[1]['kind']);
         $this->assertSame(40.0, $routes[0]['from']['lat']);
         $this->assertSame(41.0, $routes[0]['to']['lat']);
     }
@@ -78,10 +80,11 @@ class ActivityMapTest extends TestCase
         $routes = ActivityMap::buildRoutes(new Collection([$base, $vacation]));
 
         $this->assertCount(2, $routes);
-        $this->assertFalse($routes[0]['is_return']);
+        $this->assertSame(ActivityMap::KIND_TRAVEL, $routes[0]['kind']);
         $this->assertSame(40.0, $routes[0]['from']['lat']);
         $this->assertSame(48.0, $routes[0]['to']['lat']);
 
+        $this->assertSame(ActivityMap::KIND_RETURN, $routes[1]['kind']);
         $this->assertTrue($routes[1]['is_return']);
         $this->assertSame(48.0, $routes[1]['from']['lat']);
         $this->assertSame(40.0, $routes[1]['to']['lat']);
@@ -89,7 +92,7 @@ class ActivityMapTest extends TestCase
     }
 
     #[Test]
-    public function it_skips_return_while_a_later_stop_is_still_nested_in_base(): void
+    public function it_draws_continue_lines_between_nested_vacation_stops(): void
     {
         $base = new Activity([
             'id' => 1,
@@ -120,14 +123,26 @@ class ActivityMapTest extends TestCase
 
         $routes = ActivityMap::buildRoutes(new Collection([$base, $paris, $london]));
 
-        $returns = array_values(array_filter($routes, fn (array $route): bool => $route['is_return']));
+        $this->assertSame(
+            [ActivityMap::KIND_TRAVEL, ActivityMap::KIND_CONTINUE, ActivityMap::KIND_RETURN],
+            array_column($routes, 'kind')
+        );
 
-        $this->assertCount(1, $returns);
-        $this->assertSame(51.5, $returns[0]['from']['lat']);
-        $this->assertSame(40.0, $returns[0]['to']['lat']);
-        $this->assertSame(0, ActivityMap::findEnclosingBaseIndex(new Collection([$base, $paris, $london]), 2));
-        $this->assertTrue(ActivityMap::shouldDrawReturnToBase(new Collection([$base, $paris, $london]), 2));
+        $this->assertSame(40.0, $routes[0]['from']['lat']);
+        $this->assertSame(48.0, $routes[0]['to']['lat']);
+
+        $this->assertTrue($routes[1]['is_continue']);
+        $this->assertSame(48.0, $routes[1]['from']['lat']);
+        $this->assertSame(51.5, $routes[1]['to']['lat']);
+        $this->assertSame(TravelMethod::Train, $routes[1]['method']);
+
+        $this->assertTrue($routes[2]['is_return']);
+        $this->assertSame(51.5, $routes[2]['from']['lat']);
+        $this->assertSame(40.0, $routes[2]['to']['lat']);
+
+        $this->assertSame([1, 2], ActivityMap::contiguousNestedIndices(new Collection([$base, $paris, $london]), 0));
         $this->assertFalse(ActivityMap::shouldDrawReturnToBase(new Collection([$base, $paris, $london]), 1));
+        $this->assertTrue(ActivityMap::shouldDrawReturnToBase(new Collection([$base, $paris, $london]), 2));
     }
 
     #[Test]
@@ -161,7 +176,12 @@ class ActivityMapTest extends TestCase
         ]);
 
         $items = new Collection([$base, $spotA, $spotB]);
+        $routes = ActivityMap::buildRoutes($items);
 
+        $this->assertSame(
+            [ActivityMap::KIND_TRAVEL, ActivityMap::KIND_CONTINUE, ActivityMap::KIND_RETURN],
+            array_column($routes, 'kind')
+        );
         $this->assertFalse(ActivityMap::shouldDrawReturnToBase($items, 1));
         $this->assertTrue(ActivityMap::shouldDrawReturnToBase($items, 2));
     }
