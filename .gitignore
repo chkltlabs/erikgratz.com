@@ -17,7 +17,6 @@ npm-debug.log
 yarn-error.log
 /public/mix-manifest.json
 /public/js/
-package-lock.json
 *.DS_Store
 cobertura*.xml
 /.idea
