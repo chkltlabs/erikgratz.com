@@ -3,7 +3,6 @@
 namespace Tests\Feature\Filament;
 
 use App\Enums\TravelMethod;
-use App\Filament\Resources\ActivityResource;
 use App\Filament\Resources\ActivityResource\Pages\ListActivities;
 use App\Filament\Resources\ActivityResource\Widgets\ActivityMap;
 use App\Models\Activity;

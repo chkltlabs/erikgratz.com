@@ -58,7 +58,9 @@ class ActivityMap extends Widget
             'travel_method' => $activity->travel_method instanceof TravelMethod
                 ? $activity->travel_method->value
                 : $activity->travel_method,
-            'url' => ActivityResource::getUrl('edit', ['record' => $activity]),
+            'url' => $activity->getKey()
+                ? ActivityResource::getUrl('edit', ['record' => $activity])
+                : null,
         ])->values()->all();
     }
 

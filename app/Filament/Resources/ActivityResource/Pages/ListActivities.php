@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\ActivityResource\Pages;
 
-use App\Filament\Resources\ActivityResource\Widgets\ActivityTimelineChart;
 use App\Filament\Resources\ActivityResource;
+use App\Filament\Resources\ActivityResource\Widgets\ActivityMap;
+use App\Filament\Resources\ActivityResource\Widgets\ActivityTimelineChart;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -22,6 +23,13 @@ class ListActivities extends ListRecords
     {
         return [
             ActivityTimelineChart::class,
+        ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            ActivityMap::class,
         ];
     }
 }

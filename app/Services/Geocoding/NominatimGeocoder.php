@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Geocoding;
 
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;

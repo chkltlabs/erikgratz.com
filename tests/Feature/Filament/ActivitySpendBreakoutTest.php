@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Filament;
 
+use App\Enums\TravelMethod;
 use App\Filament\Resources\ActivityResource;
 use App\Models\Activity;
 use App\Models\Spend;
@@ -37,6 +38,10 @@ class ActivitySpendBreakoutTest extends TestCase
             'name' => 'New Activity',
             'start_end_date' => '01/02/2023 - 28/02/2023',
             'description' => 'New activity description',
+            'travel_method' => TravelMethod::Train,
+            'location_name' => 'Montreal, Canada',
+            'latitude' => 45.5017,
+            'longitude' => -73.5673,
         ];
 
         Livewire::test(ActivityResource\RelationManagers\SpendsRelationManager::class, [
@@ -51,6 +56,8 @@ class ActivitySpendBreakoutTest extends TestCase
             'description' => 'New activity description',
             'start_date' => '2023-02-01',
             'end_date' => '2023-02-28',
+            'travel_method' => TravelMethod::Train,
+            'location_name' => 'Montreal, Canada',
         ]);
 
         $newActivity = Activity::where('name', 'New Activity')->first();

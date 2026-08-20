@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TravelMethod;
 use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,13 +15,28 @@ class Activity extends Model
     use GetsDumped, HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'start_date', 'end_date',
+        'name',
+        'description',
+        'start_date',
+        'end_date',
+        'location_name',
+        'latitude',
+        'longitude',
+        'travel_method',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'latitude' => 'float',
+        'longitude' => 'float',
+        'travel_method' => TravelMethod::class,
     ];
+
+    public function hasCoordinates(): bool
+    {
+        return $this->latitude !== null && $this->longitude !== null;
+    }
 
     public function spends()
     {
