@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'nominatim' => [
+        'base_url' => env('NOMINATIM_BASE_URL', 'https://nominatim.openstreetmap.org'),
+        'user_agent' => env('NOMINATIM_USER_AGENT', 'ErikGratz.com Activity Map (https://erikgratz.com; contact@erikgratz.com)'),
+        'email' => env('NOMINATIM_EMAIL'),
+    ],
+
 ];

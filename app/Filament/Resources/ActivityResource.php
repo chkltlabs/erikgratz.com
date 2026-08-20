@@ -2,23 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Grid;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\ActivityResource\Pages\ListActivities;
+use App\Enums\TravelMethod;
+use App\Filament\Forms\Components\LocationPicker;
 use App\Filament\Resources\ActivityResource\Pages\CreateActivity;
 use App\Filament\Resources\ActivityResource\Pages\EditActivity;
+use App\Filament\Resources\ActivityResource\Pages\ListActivities;
 use App\Filament\Resources\ActivityResource\RelationManagers\RedemptionsRelationManager;
 use App\Filament\Resources\ActivityResource\RelationManagers\SpendsRelationManager;
 use App\Models\Activity;
 use Carbon\Carbon;
-use Filament\Forms\Components\DatePicker;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,7 +35,7 @@ class ActivityResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-presentation-chart-line';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
     public static function form(Schema $schema): Schema
     {
@@ -43,14 +45,16 @@ class ActivityResource extends Resource
             DateRangePicker::make('start_end_date')
                 ->alwaysShowCalendar()
                 ->required(),
+            Select::make('travel_method')
+                ->label('Arrival method')
+                ->helperText('How you traveled to this activity. Colors the incoming route on the map.')
+                ->options(TravelMethod::asSelectArray())
+                ->nullable(),
+            ...LocationPicker::make(),
             Grid::make(1)->schema([
                 Textarea::make('description')
                     ->rows(5),
             ]),
-
-            //            DatePicker::make('start_date'),
-            //
-            //            DatePicker::make('end_date'),
         ]);
     }
 
@@ -79,6 +83,27 @@ class ActivityResource extends Resource
             TextColumn::make('name')
                 ->searchable()
                 ->sortable(),
+
+            TextColumn::make('location_name')
+                ->label('Location')
+                ->searchable()
+                ->toggleable()
+                ->limit(40),
+
+            TextColumn::make('travel_method')
+                ->label('Arrival')
+                ->badge()
+                ->formatStateUsing(fn ($state) => $state instanceof TravelMethod
+                    ? $state->description
+                    : (TravelMethod::hasValue($state) ? TravelMethod::fromValue($state)->description : $state))
+                ->color(fn ($state) => match ($state instanceof TravelMethod ? $state->value : $state) {
+                    TravelMethod::Plane => 'info',
+                    TravelMethod::Car => 'warning',
+                    TravelMethod::Train => 'success',
+                    TravelMethod::Ferry => 'primary',
+                    default => 'gray',
+                })
+                ->toggleable(),
 
             TextColumn::make('description')->limit(25),
 
@@ -125,8 +150,11 @@ class ActivityResource extends Resource
                     ->queries(
                         true: fn (Builder $query) => $query->where('end_date', '<', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
                         false: fn (Builder $query) => $query->where('end_date', '>=', Carbon::now()->subDays(Activity::ARCHIVE_DAY_GRACE)),
-                        blank: fn (Builder $query) => $query, // we do not want to filter the query when it is blank.
+                        blank: fn (Builder $query) => $query,
                     ),
+                SelectFilter::make('travel_method')
+                    ->label('Arrival method')
+                    ->options(TravelMethod::asSelectArray()),
             ])
             ->persistFiltersInSession();
     }
@@ -144,12 +172,12 @@ class ActivityResource extends Resource
     {
         return [
             SpendsRelationManager::class,
-            RedemptionsRelationManager::class
+            RedemptionsRelationManager::class,
         ];
     }
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name'];
+        return ['name', 'location_name'];
     }
 }

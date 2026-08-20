@@ -2,21 +2,23 @@
 
 namespace App\Filament\Resources\ActivityResource\RelationManagers;
 
+use App\Enums\TravelMethod;
+use App\Filament\Forms\Components\LocationPicker;
 use App\Filament\Resources\ActivityResource;
+use App\Filament\Resources\SpendResource;
 use App\Models\Activity;
 use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Schemas\Schema;
-use Filament\Actions\CreateAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\SpendResource;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
@@ -58,6 +60,11 @@ class SpendsRelationManager extends RelationManager
                             DateRangePicker::make('start_end_date')
                                 ->alwaysShowCalendar()
                                 ->required(),
+                            Select::make('travel_method')
+                                ->label('Arrival method')
+                                ->options(TravelMethod::asSelectArray())
+                                ->nullable(),
+                            ...LocationPicker::make(),
                             Textarea::make('description')
                                 ->rows(5),
                         ])

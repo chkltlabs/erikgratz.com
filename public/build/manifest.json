@@ -1,11 +1,36 @@
 {
+  "node_modules/leaflet/dist/images/layers-2x.png": {
+    "file": "assets/layers-2x-Bpkbi35X.png",
+    "src": "node_modules/leaflet/dist/images/layers-2x.png"
+  },
+  "node_modules/leaflet/dist/images/layers.png": {
+    "file": "assets/layers-BWBAp2CZ.png",
+    "src": "node_modules/leaflet/dist/images/layers.png"
+  },
+  "node_modules/leaflet/dist/images/marker-icon-2x.png": {
+    "file": "assets/marker-icon-2x-_ZA0WGCc.png",
+    "src": "node_modules/leaflet/dist/images/marker-icon-2x.png"
+  },
+  "node_modules/leaflet/dist/images/marker-icon.png": {
+    "file": "assets/marker-icon-hN30_KVU.png",
+    "src": "node_modules/leaflet/dist/images/marker-icon.png"
+  },
+  "node_modules/leaflet/dist/images/marker-shadow.png": {
+    "file": "assets/marker-shadow-f7SaPCxT.png",
+    "src": "node_modules/leaflet/dist/images/marker-shadow.png"
+  },
   "public/css/filament/filament/app.css": {
     "file": "assets/app-BG9O7JPj.css",
     "src": "public/css/filament/filament/app.css",
     "isEntry": true
   },
+  "resources/css/Filament/activity-map.css": {
+    "file": "assets/activity-map-CLLlcC51.css",
+    "src": "resources/css/Filament/activity-map.css",
+    "isEntry": true
+  },
   "resources/css/app.css": {
-    "file": "assets/app-BO2S-ZNn.css",
+    "file": "assets/app-BxyEUwUV.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -15,9 +40,20 @@
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-DTb3fjgd.css",
+    "file": "assets/theme-BPwRnTxz.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
+  },
+  "resources/js/Filament/activity-map.js": {
+    "file": "assets/activity-map-BD-Lz1ae.js",
+    "name": "activity-map",
+    "src": "resources/js/Filament/activity-map.js",
+    "isEntry": true,
+    "assets": [
+      "assets/marker-icon-2x-_ZA0WGCc.png",
+      "assets/marker-icon-hN30_KVU.png",
+      "assets/marker-shadow-f7SaPCxT.png"
+    ]
   },
   "resources/js/Filament/filament-chart-plugins.js": {
     "file": "assets/filament-chart-plugins-DsT3YK4N.js",
@@ -26,12 +62,12 @@
     "isEntry": true
   },
   "resources/js/livewire.js": {
-    "file": "assets/livewire-2JDXUDMX.js",
+    "file": "assets/livewire-Dqzh41zJ.js",
     "name": "livewire",
     "src": "resources/js/livewire.js",
     "isEntry": true,
     "css": [
-      "assets/app-BO2S-ZNn.css",
+      "assets/app-BxyEUwUV.css",
       "assets/app-CEDur2tV.css"
     ]
   },

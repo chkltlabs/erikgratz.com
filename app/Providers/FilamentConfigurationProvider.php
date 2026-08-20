@@ -51,6 +51,8 @@ class FilamentConfigurationProvider extends ServiceProvider
 
         FilamentAsset::register([
             Js::make('chart-js-plugins', Vite::asset('resources/js/Filament/filament-chart-plugins.js'))->module(),
+            Js::make('activity-map', Vite::asset('resources/js/Filament/activity-map.js'))->module(),
+            Css::make('activity-map', Vite::asset('resources/css/Filament/activity-map.css')),
             //        ]);
 
             //            Theme::make('theme', Vite::asset('resources/css/filament/admin/theme.css')),

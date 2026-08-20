@@ -17,6 +17,8 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'public/css/filament/filament/app.css',
                 'resources/js/Filament/filament-chart-plugins.js',
+                'resources/js/Filament/activity-map.js',
+                'resources/css/Filament/activity-map.css',
                 'resources/css/filament/admin/theme.css'
             ],
             refresh: true,

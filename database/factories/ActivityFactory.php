@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TravelMethod;
 use App\Models\Activity;
 use App\Models\Spend;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,25 @@ class ActivityFactory extends Factory
                 ->subDays(rand(4, 10))
                 ->toDateString(),
             'end_date' => Carbon::now()->addMonths(rand(1, 3))->toDateString(),
+            'location_name' => null,
+            'latitude' => null,
+            'longitude' => null,
+            'travel_method' => null,
         ];
+    }
+
+    public function withLocation(
+        string $name = 'Istanbul, Turkey',
+        float $latitude = 41.0082,
+        float $longitude = 28.9784,
+        ?string $travelMethod = TravelMethod::Plane,
+    ): static {
+        return $this->state(fn (): array => [
+            'location_name' => $name,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'travel_method' => $travelMethod,
+        ]);
     }
 
     public function configure()
