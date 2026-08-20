@@ -102,6 +102,37 @@ class ActivityResourceTest extends TestCase
         $this->assertDatabaseMissing($model->getTable(), $model->toArray());
     }
 
+    public function test_activity_edit_has_adjacent_navigation()
+    {
+        Activity::query()->delete();
+
+        $first = Activity::factory()->create();
+        $middle = Activity::factory()->create();
+        $last = Activity::factory()->create();
+
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
+            'record' => $middle->id,
+        ])
+            ->assertActionEnabled('previous')
+            ->assertActionEnabled('next')
+            ->assertActionHasUrl('previous', ActivityResource::getUrl('edit', ['record' => $first]))
+            ->assertActionHasUrl('next', ActivityResource::getUrl('edit', ['record' => $last]));
+
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
+            'record' => $first->id,
+        ])
+            ->assertActionDisabled('previous')
+            ->assertActionEnabled('next')
+            ->assertActionHasUrl('next', ActivityResource::getUrl('edit', ['record' => $middle]));
+
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
+            'record' => $last->id,
+        ])
+            ->assertActionEnabled('previous')
+            ->assertActionDisabled('next')
+            ->assertActionHasUrl('previous', ActivityResource::getUrl('edit', ['record' => $middle]));
+    }
+
     // -------------------------------
     // Spends - Resource
     // -------------------------------
