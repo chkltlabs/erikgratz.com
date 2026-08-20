@@ -222,7 +222,7 @@ class SpentPayingSavingTest extends TestCase
             'balance' => 1000,
         ]);
 
-        // no-ISB stock is second-month due, not this month
+        // Future + ISB=0 → Stack is due this month
         Card::factory()->create([
             'due_date' => now()->addDays(5)->day,
             'interest_saving_balance' => 0,
@@ -235,12 +235,12 @@ class SpentPayingSavingTest extends TestCase
         $may = now()->format('M');
         $money = SpentPayingSaving::getMoneyData();
 
-        $this->assertEqualsWithDelta(1000 + 2000, $money[$may]['potential'], 0.01);
-        $this->assertEqualsWithDelta(0.0, $money[$may]['spent'], 0.01);
+        $this->assertEqualsWithDelta(1000 + 2000 - 100, $money[$may]['potential'], 0.01);
+        $this->assertEqualsWithDelta(100.0, $money[$may]['spent'], 0.01);
     }
 
     #[Test]
-    public function this_month_due_is_future_due_isb_only(): void
+    public function future_isb_and_no_isb_cards_allocate_across_months(): void
     {
         Carbon::setTestNow('2026-05-15');
 
@@ -266,14 +266,17 @@ class SpentPayingSavingTest extends TestCase
         $money = SpentPayingSaving::getMoneyData();
         $may = now()->format('M');
         $jun = now()->addMonth()->format('M');
+        $jul = now()->addMonths(2)->format('M');
 
-        $this->assertEqualsWithDelta(250.0, $money[$may]['spent'], 0.01);
-        // ISB leftover (800+50-250=600) + no-ISB full stock (400)
-        $this->assertEqualsWithDelta(1000.0, $money[$jun]['spent'], 0.01);
+        // this: ISB 250 + Stack 400
+        $this->assertEqualsWithDelta(650.0, $money[$may]['spent'], 0.01);
+        // next: Stack-ISB for first card = 600; second card done
+        $this->assertEqualsWithDelta(600.0, $money[$jun]['spent'], 0.01);
+        $this->assertEqualsWithDelta(0.0, $money[$jul]['spent'], 0.01);
     }
 
     #[Test]
-    public function third_month_due_is_past_due_isb_leftover_without_ifbp_double_count(): void
+    public function past_isb_and_no_isb_cards_allocate_across_months(): void
     {
         Carbon::setTestNow('2026-05-15');
 
@@ -285,9 +288,8 @@ class SpentPayingSavingTest extends TestCase
             'balance' => 500,
             'pending' => 0,
             'interest_free_balance' => 0,
-            'interest_free_balance_payment' => 50,
+            'interest_free_balance_payment' => 0,
         ]);
-        // past-due no ISB should not reappear in third month
         Card::factory()->create([
             'due_date' => 5,
             'interest_saving_balance' => 0,
@@ -298,10 +300,87 @@ class SpentPayingSavingTest extends TestCase
         ]);
 
         $money = SpentPayingSaving::getMoneyData();
+        $may = now()->format('M');
+        $jun = now()->addMonth()->format('M');
         $jul = now()->addMonths(2)->format('M');
 
-        // stock = 500+0-0+50 = 550; leftover after ISB = 450
-        $this->assertEqualsWithDelta(450.0, $money[$jul]['spent'], 0.01);
+        $this->assertEqualsWithDelta(0.0, $money[$may]['spent'], 0.01);
+        // next: ISB 100 + Stack 999
+        $this->assertEqualsWithDelta(1099.0, $money[$jun]['spent'], 0.01);
+        // third: Stack-ISB = 400 for first card only
+        $this->assertEqualsWithDelta(400.0, $money[$jul]['spent'], 0.01);
+    }
+
+    #[Test]
+    public function ifbp_is_inside_isb_and_not_added_on_top_this_month(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        Card::factory()->create([
+            'due_date' => 20,
+            'interest_saving_balance' => 300,
+            'balance' => 1000,
+            'pending' => 0,
+            'interest_free_balance' => 250,
+            'interest_free_balance_payment' => 100,
+        ]);
+
+        $dues = SpentPayingSaving::allocateCardDues(Card::first(), 15);
+
+        $this->assertEqualsWithDelta(300.0, $dues['this'], 0.01);
+        // After ISB month, IFB projects to 150; next = Stack(150)-300 = (1000-150+100)-300 = 650
+        $this->assertEqualsWithDelta(650.0, $dues['next'], 0.01);
+    }
+
+    #[Test]
+    public function ifbp_runs_off_across_months_until_ifb_is_gone(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        // Future, ISB=0, IFB=250, IFBP=100 → Stack this month, then trailing IFBPs
+        Card::factory()->create([
+            'due_date' => 20,
+            'interest_saving_balance' => 0,
+            'balance' => 250,
+            'pending' => 0,
+            'interest_free_balance' => 250,
+            'interest_free_balance_payment' => 100,
+        ]);
+
+        $dues = SpentPayingSaving::allocateCardDues(Card::first(), 15);
+
+        // Stack = 250 - 250 + 100 = 100; IFB → 150
+        $this->assertEqualsWithDelta(100.0, $dues['this'], 0.01);
+        // Trailing IFBP while IFB remains
+        $this->assertEqualsWithDelta(100.0, $dues['next'], 0.01);
+        $this->assertEqualsWithDelta(100.0, $dues['third'], 0.01);
+    }
+
+    #[Test]
+    public function past_no_isb_puts_stack_in_next_month_not_third(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        Card::factory()->create([
+            'due_date' => 5,
+            'interest_saving_balance' => 0,
+            'balance' => 400,
+            'pending' => 50,
+            'interest_free_balance' => 0,
+            'interest_free_balance_payment' => 0,
+        ]);
+
+        $dues = SpentPayingSaving::allocateCardDues(Card::first(), 15);
+
+        $this->assertEqualsWithDelta(0.0, $dues['this'], 0.01);
+        $this->assertEqualsWithDelta(450.0, $dues['next'], 0.01);
+        $this->assertEqualsWithDelta(0.0, $dues['third'], 0.01);
     }
 
     #[Test]
