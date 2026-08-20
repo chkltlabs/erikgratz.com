@@ -116,6 +116,73 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame($input[2]['y'], $result[2]['y']);
     }
 
+    #[Test]
+    public function split_paid_unpaid_splits_range_by_paid_ratio(): void
+    {
+        [$paid, $unpaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [0, 100],
+                'name' => 'half',
+                'paid' => 50.0,
+                'unpaid' => 50.0,
+            ],
+        ]);
+
+        $this->assertSame(50, $paid[0]['y'][1]);
+        $this->assertSame(0, $paid[0]['y'][0]);
+        $this->assertSame(10000050, $unpaid[0]['y'][0]);
+        $this->assertSame(100, $unpaid[0]['y'][1]);
+    }
+
+    #[Test]
+    public function split_paid_unpaid_drops_invisible_segments_when_fully_paid_or_unpaid(): void
+    {
+        [$paidFullyPaid, $unpaidFullyPaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [0, 100],
+                'name' => 'all_paid',
+                'paid' => 100.0,
+                'unpaid' => 0.0,
+            ],
+        ]);
+
+        $this->assertSame(100, $paidFullyPaid[0]['y'][1]);
+        $this->assertSame([], $unpaidFullyPaid[0]);
+
+        [$paidFullyUnpaid, $unpaidFullyUnpaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [0, 100],
+                'name' => 'all_unpaid',
+                'paid' => 0.0,
+                'unpaid' => 100.0,
+            ],
+        ]);
+
+        $this->assertSame([], $paidFullyUnpaid[0]);
+        $this->assertNotSame([], $unpaidFullyUnpaid[0]);
+    }
+
+    #[Test]
+    public function split_paid_unpaid_handles_zero_total(): void
+    {
+        [$paid, $unpaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [10, 110],
+                'name' => 'empty',
+                'paid' => 0.0,
+                'unpaid' => 0.0,
+            ],
+        ]);
+
+        $this->assertSame([], $paid[0]);
+        $this->assertNotSame([], $unpaid[0]);
+        $this->assertSame(10000010, $unpaid[0]['y'][0]);
+    }
+
     /**
      * @param  list<array<string, mixed>>  $data
      * @return list<array<string, mixed>>
@@ -123,6 +190,17 @@ class ActivityTimelineChartTest extends TestCase
     private function setX(array $data): array
     {
         $method = new ReflectionMethod(ActivityTimelineChart::class, 'setX');
+
+        return $method->invoke(null, $data);
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $data
+     * @return array{0: list<array<string, mixed>>, 1: list<array<string, mixed>>}
+     */
+    private function splitPaidUnpaid(array $data): array
+    {
+        $method = new ReflectionMethod(ActivityTimelineChart::class, 'splitPaidUnpaid');
 
         return $method->invoke(null, $data);
     }
