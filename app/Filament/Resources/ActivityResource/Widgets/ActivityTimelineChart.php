@@ -21,6 +21,8 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
  */
 class ActivityTimelineChart extends ApexChartWidget
 {
+    private const MAX_ROWS = 11;
+
     /**
      * Chart Id
      */
@@ -89,39 +91,104 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function setX(array $data): array
     {
-        // leetcode shivers at this ultra-brute-force solution
-        // i stand upon the crest of the hill
-        // and continue to give not one shit.
-        // its O(n)^2 though
-        $graphTracker = [[], [], [], [], [], [], [], [], [], [], []];
-        foreach ($data as $index => $bar) {
-            $lo = Carbon::parse($bar['lo']);
-            $hi = Carbon::parse($bar['hi']);
-            foreach ($graphTracker as $x => $existingSets) {
-                if (empty($existingSets)) {
-                    $data[$index]['x'] = "$x";
-                    $graphTracker[$x][] = [$lo, $hi];
+        $unplaced = array_keys($data);
 
-                    continue 2;
-                }
-                foreach ($existingSets as $existing) {
-                    if (
-                        $lo->betweenExcluded($existing[0], $existing[1]) ||
-                        $hi->betweenExcluded($existing[0], $existing[1]) ||
-                        $existing[0]->betweenExcluded($lo, $hi) ||
-                        $existing[1]->betweenExcluded($lo, $hi)
-                    ) {
-                        continue 2;
-                    }
-                }
-                $data[$index]['x'] = "$x";
-                $graphTracker[$x][] = [$lo, $hi];
+        for ($row = 0; $row < self::MAX_ROWS && $unplaced !== []; $row++) {
+            $chosen = self::bestFitRowIndexes($data, $unplaced);
+            $chosenLookup = array_flip($chosen);
 
-                continue 2;
+            foreach ($chosen as $index) {
+                $data[$index]['x'] = (string) $row;
             }
+
+            $unplaced = array_values(array_filter(
+                $unplaced,
+                fn (int $index): bool => ! isset($chosenLookup[$index]),
+            ));
         }
 
         return $data;
+    }
+
+    /**
+     * Pick the non-overlapping subset of unplaced bars that covers the most total time
+     * (weighted interval scheduling). Ties prefer the excluding branch so earlier-ending
+     * (and thus earlier-starting among equal-duration) bars win the lower row.
+     *
+     * @param  array<int, array<string, mixed>>  $data
+     * @param  list<int>  $unplaced
+     * @return list<int>
+     */
+    private static function bestFitRowIndexes(array $data, array $unplaced): array
+    {
+        $candidates = [];
+        foreach ($unplaced as $index) {
+            $start = (int) $data[$index]['y'][0];
+            $end = (int) $data[$index]['y'][1];
+            $candidates[] = [
+                'index' => $index,
+                'start' => $start,
+                'end' => $end,
+                'weight' => max(0, $end - $start) + 1,
+            ];
+        }
+
+        usort($candidates, function (array $a, array $b): int {
+            if ($a['end'] !== $b['end']) {
+                return $a['end'] <=> $b['end'];
+            }
+
+            return $a['start'] <=> $b['start'];
+        });
+
+        $n = count($candidates);
+        if ($n === 0) {
+            return [];
+        }
+
+        $prev = array_fill(0, $n, -1);
+        for ($i = 0; $i < $n; $i++) {
+            for ($j = $i - 1; $j >= 0; $j--) {
+                if ($candidates[$j]['end'] <= $candidates[$i]['start']) {
+                    $prev[$i] = $j;
+                    break;
+                }
+            }
+        }
+
+        $dp = array_fill(0, $n, 0);
+        $take = array_fill(0, $n, false);
+        $dp[0] = $candidates[0]['weight'];
+        $take[0] = true;
+
+        for ($i = 1; $i < $n; $i++) {
+            $with = $candidates[$i]['weight'];
+            if ($prev[$i] !== -1) {
+                $with += $dp[$prev[$i]];
+            }
+
+            $without = $dp[$i - 1];
+            if ($with > $without) {
+                $dp[$i] = $with;
+                $take[$i] = true;
+            } else {
+                $dp[$i] = $without;
+                $take[$i] = false;
+            }
+        }
+
+        $chosen = [];
+        $i = $n - 1;
+        while ($i >= 0) {
+            if ($take[$i]) {
+                $chosen[] = $candidates[$i]['index'];
+                $i = $prev[$i];
+            } else {
+                $i--;
+            }
+        }
+
+        return array_reverse($chosen);
     }
 
     private static function calcSplit(array $entry): int
