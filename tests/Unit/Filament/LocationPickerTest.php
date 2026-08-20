@@ -5,6 +5,7 @@ namespace Tests\Unit\Filament;
 use App\Filament\Forms\Components\LocationPicker;
 use App\Services\Geocoding\NominatimGeocoder;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Mockery;
@@ -15,11 +16,21 @@ use Tests\TestCase;
 class LocationPickerTest extends TestCase
 {
     #[Test]
+    public function section_is_a_filament_section(): void
+    {
+        $section = LocationPicker::section();
+
+        $this->assertInstanceOf(Section::class, $section);
+        $this->assertSame('Location', $section->getHeading());
+    }
+
+    #[Test]
     public function make_returns_location_section(): void
     {
         $components = LocationPicker::make();
 
-        $this->assertNotEmpty($components);
+        $this->assertCount(1, $components);
+        $this->assertInstanceOf(Section::class, $components[0]);
         $this->assertSame('Location', $components[0]->getHeading());
     }
 

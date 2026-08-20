@@ -59,7 +59,7 @@ class SpendsRelationManager extends RelationManager
                             DateRangePicker::make('start_end_date')
                                 ->alwaysShowCalendar()
                                 ->required(),
-                            ...LocationPicker::make(),
+                            LocationPicker::section(),
                             Textarea::make('description')
                                 ->rows(5),
                         ])

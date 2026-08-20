@@ -16,7 +16,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
@@ -41,24 +41,26 @@ class ActivityResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(function (?string $state, Get $get, Set $set): void {
-                    if (filled($get('location_name'))) {
-                        return;
-                    }
+            Section::make('Details')
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (?string $state, Get $get, Set $set): void {
+                            if (filled($get('location_name'))) {
+                                return;
+                            }
 
-                    $set('location_search', $state);
-                }),
-            DateRangePicker::make('start_end_date')
-                ->alwaysShowCalendar()
-                ->required(),
-            ...LocationPicker::make(),
-            Grid::make(1)->schema([
-                Textarea::make('description')
-                    ->rows(5),
-            ]),
+                            $set('location_search', $state);
+                        }),
+                    DateRangePicker::make('start_end_date')
+                        ->alwaysShowCalendar()
+                        ->required(),
+                    Textarea::make('description')
+                        ->rows(5)
+                        ->columnSpanFull(),
+                ]),
+            LocationPicker::section(),
         ]);
     }
 
