@@ -33,83 +33,14 @@ class LocationPicker
                         Action::make('searchLocation')
                             ->icon('heroicon-m-magnifying-glass')
                             ->label('Search')
-                            ->action(function (Get $get, Set $set): void {
-                                $query = trim((string) $get('location_search'));
-
-                                if ($query === '') {
-                                    Notification::make()
-                                        ->title('Enter a city to search')
-                                        ->warning()
-                                        ->send();
-
-                                    return;
-                                }
-
-                                try {
-                                    $results = app(NominatimGeocoder::class)->search($query);
-                                } catch (Throwable $e) {
-                                    report($e);
-                                    Notification::make()
-                                        ->title('Location search failed')
-                                        ->body('Please try again in a moment.')
-                                        ->danger()
-                                        ->send();
-
-                                    return;
-                                }
-
-                                if ($results === []) {
-                                    $set('location_search_results', []);
-                                    Notification::make()
-                                        ->title('No locations found')
-                                        ->warning()
-                                        ->send();
-
-                                    return;
-                                }
-
-                                $set('location_search_results', $results);
-                                $set('selected_location', null);
-
-                                Notification::make()
-                                    ->title(count($results).' location(s) found')
-                                    ->success()
-                                    ->send();
-                            })
+                            ->action(fn (Get $get, Set $set) => self::search($get, $set))
                     ),
                 Select::make('selected_location')
                     ->label('Select location')
                     ->dehydrated(false)
                     ->visible(fn (Get $get): bool => filled($get('location_search_results')))
-                    ->options(function (Get $get): array {
-                        /** @var array<int, array{place_id: string|int, display_name: string}> $results */
-                        $results = $get('location_search_results') ?? [];
-
-                        return collect($results)
-                            ->mapWithKeys(fn (array $result): array => [
-                                (string) $result['place_id'] => $result['display_name'],
-                            ])
-                            ->all();
-                    })
-                    ->afterStateUpdated(function (?string $state, Get $get, Set $set): void {
-                        if ($state === null) {
-                            return;
-                        }
-
-                        /** @var array<int, array{place_id: string|int, display_name: string, latitude: float, longitude: float}> $results */
-                        $results = $get('location_search_results') ?? [];
-                        $match = collect($results)->first(
-                            fn (array $result): bool => (string) $result['place_id'] === (string) $state
-                        );
-
-                        if ($match === null) {
-                            return;
-                        }
-
-                        $set('location_name', $match['display_name']);
-                        $set('latitude', $match['latitude']);
-                        $set('longitude', $match['longitude']);
-                    }),
+                    ->options(fn (Get $get): array => self::resultOptions($get))
+                    ->afterStateUpdated(fn (?string $state, Get $get, Set $set) => self::applySelection($state, $get, $set)),
                 TextInput::make('location_name')
                     ->label('Location')
                     ->disabled()
@@ -120,14 +51,7 @@ class LocationPicker
                             ->icon('heroicon-m-x-mark')
                             ->color('danger')
                             ->visible(fn (Get $get): bool => filled($get('location_name')))
-                            ->action(function (Set $set): void {
-                                $set('location_name', null);
-                                $set('latitude', null);
-                                $set('longitude', null);
-                                $set('selected_location', null);
-                                $set('location_search_results', []);
-                                $set('location_search', null);
-                            })
+                            ->action(fn (Set $set) => self::clear($set))
                     ),
                 Hidden::make('latitude'),
                 Hidden::make('longitude'),
@@ -136,5 +60,96 @@ class LocationPicker
                     ->default([]),
             ])->columnSpanFull(),
         ];
+    }
+
+    public static function search(Get $get, Set $set): void
+    {
+        $query = trim((string) $get('location_search'));
+
+        if ($query === '') {
+            Notification::make()
+                ->title('Enter a city to search')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        try {
+            $results = app(NominatimGeocoder::class)->search($query);
+        } catch (Throwable $e) {
+            report($e);
+            Notification::make()
+                ->title('Location search failed')
+                ->body('Please try again in a moment.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        if ($results === []) {
+            $set('location_search_results', []);
+            Notification::make()
+                ->title('No locations found')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $set('location_search_results', $results);
+        $set('selected_location', null);
+
+        Notification::make()
+            ->title(count($results).' location(s) found')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function resultOptions(Get $get): array
+    {
+        /** @var array<int, array{place_id: string|int, display_name: string}> $results */
+        $results = $get('location_search_results') ?? [];
+
+        return collect($results)
+            ->mapWithKeys(fn (array $result): array => [
+                (string) $result['place_id'] => $result['display_name'],
+            ])
+            ->all();
+    }
+
+    public static function applySelection(?string $state, Get $get, Set $set): void
+    {
+        if ($state === null) {
+            return;
+        }
+
+        /** @var array<int, array{place_id: string|int, display_name: string, latitude: float, longitude: float}> $results */
+        $results = $get('location_search_results') ?? [];
+        $match = collect($results)->first(
+            fn (array $result): bool => (string) $result['place_id'] === (string) $state
+        );
+
+        if ($match === null) {
+            return;
+        }
+
+        $set('location_name', $match['display_name']);
+        $set('latitude', $match['latitude']);
+        $set('longitude', $match['longitude']);
+    }
+
+    public static function clear(Set $set): void
+    {
+        $set('location_name', null);
+        $set('latitude', null);
+        $set('longitude', null);
+        $set('selected_location', null);
+        $set('location_search_results', []);
+        $set('location_search', null);
     }
 }
