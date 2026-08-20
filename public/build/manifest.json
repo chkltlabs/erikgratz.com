@@ -24,11 +24,6 @@
     "src": "public/css/filament/filament/app.css",
     "isEntry": true
   },
-  "resources/css/Filament/activity-map.css": {
-    "file": "assets/activity-map-CLLlcC51.css",
-    "src": "resources/css/Filament/activity-map.css",
-    "isEntry": true
-  },
   "resources/css/app.css": {
     "file": "assets/app-BxyEUwUV.css",
     "src": "resources/css/app.css",
@@ -37,6 +32,11 @@
   "resources/css/filament.css": {
     "file": "assets/filament-tn0RQdqM.css",
     "src": "resources/css/filament.css",
+    "isEntry": true
+  },
+  "resources/css/filament/activity-map.css": {
+    "file": "assets/activity-map-CLLlcC51.css",
+    "src": "resources/css/filament/activity-map.css",
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
