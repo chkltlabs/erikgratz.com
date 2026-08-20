@@ -15,11 +15,12 @@ use Tests\TestCase;
 class LocationPickerTest extends TestCase
 {
     #[Test]
-    public function make_returns_schema_components(): void
+    public function make_returns_location_section(): void
     {
         $components = LocationPicker::make();
 
         $this->assertNotEmpty($components);
+        $this->assertSame('Location', $components[0]->getHeading());
     }
 
     #[Test]

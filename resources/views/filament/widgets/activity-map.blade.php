@@ -9,7 +9,7 @@
         </x-slot>
 
         <x-slot name="description">
-            Activities with saved coordinates, connected chronologically. Route color is the arrival method on the destination activity.
+            Activities with saved coordinates, connected chronologically. Nested vacations that end before their base also draw an automatic return line. Route color is the destination arrival method.
         </x-slot>
 
         <div

@@ -24,6 +24,12 @@ class EditActivity extends EditRecord
 
     public function mutateFormDataBeforeFill(array $data): array
     {
-        return ActivityResource::combineStartEndDate($data);
+        $data = ActivityResource::combineStartEndDate($data);
+
+        if (blank($data['location_name'] ?? null) && filled($data['name'] ?? null)) {
+            $data['location_search'] = $data['name'];
+        }
+
+        return $data;
     }
 }
