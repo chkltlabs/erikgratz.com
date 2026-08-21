@@ -141,25 +141,17 @@ class SpentPayingSaving extends BaseWidget
 
         $todayDay = now()->day;
 
-        $futureDue = $cards->filter(fn (Card $card): bool => (int) $card->due_date >= $todayDay);
-        $pastDue = $cards->filter(fn (Card $card): bool => (int) $card->due_date < $todayDay);
-
-        // This month: ISB for cards not yet paid this cycle
-        $thisMonthSpent = (float) $futureDue->sum('interest_saving_balance');
-        $loansDue = (float) LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
-
-        // Second month card stock: unpaid-this-month leftovers + no-ISB full stock
-        // + overdue ISB still on past-due cards (missed ZeroISB)
+        $thisMonthSpent = 0.0;
         $nextMonthCardSpent = 0.0;
-        foreach ($futureDue as $card) {
-            $isb = (float) $card->interest_saving_balance;
-            if ($isb != 0.0) {
-                $nextMonthCardSpent += $card->stockBalance() - $isb;
-            } elseif ((float) $card->balance > 0) {
-                $nextMonthCardSpent += $card->stockBalance();
-            }
+        $thirdMonthCardSpent = 0.0;
+        foreach ($cards as $card) {
+            $dues = self::allocateCardDues($card, $todayDay);
+            $thisMonthSpent += $dues['this'];
+            $nextMonthCardSpent += $dues['next'];
+            $thirdMonthCardSpent += $dues['third'];
         }
-        $nextMonthCardSpent += (float) $pastDue->sum('interest_saving_balance');
+
+        $loansDue = (float) LoanAgainstSavings::unpaid()->thisMonth()->sum('balance');
         $nextMonthLoans = (float) LoanAgainstSavings::unpaid()->nextMonth()->sum('balance');
         $nextMonthSpent = $nextMonthCardSpent + $nextMonthLoans;
 
@@ -171,14 +163,6 @@ class SpentPayingSaving extends BaseWidget
         $thirdPlanned = $thirdPlannedSummary['total'];
         $thirdPlannedItems = $thirdPlannedSummary['items'];
 
-        // Third month: past-due cards with ISB → stock leftover after ISB
-        $thirdMonthCardSpent = 0.0;
-        foreach ($pastDue as $card) {
-            $isb = (float) $card->interest_saving_balance;
-            if ($isb != 0.0) {
-                $thirdMonthCardSpent += $card->stockBalance() - $isb;
-            }
-        }
         $thirdMonthLoans = (float) LoanAgainstSavings::unpaid()->thirdMonth()->sum('balance');
         $thirdMonthSpent = $thirdMonthCardSpent + $thirdMonthLoans;
 
@@ -202,6 +186,102 @@ class SpentPayingSaving extends BaseWidget
                 'potential' => $totalMonthIncome - $thirdMonthSpent - $thirdPlanned,
             ],
         ];
+    }
+
+    /**
+     * Allocate one card's revolving dollars across this / next / third month.
+     *
+     * Stack(ifb) = balance + pending - ifb + (ifb > 0 && ifbp > 0 ? ifbp : 0)
+     *
+     * After any month whose due includes IFBP (via ISB or via Stack/IFBP line),
+     * project: ifb = max(0, ifb - ifbp). IFBP is assumed to be paid inside any ISB.
+     *
+     * | State         | This month | Next month            | Third month            |
+     * |---------------|------------|-----------------------|------------------------|
+     * | Future, ISB≠0 | ISB        | Stack(ifb') - ISB     | IFBP only if ifb'' > 0 |
+     * | Future, ISB=0 | Stack(ifb) | IFBP only if ifb' > 0 | IFBP only if ifb'' > 0 |
+     * | Past, ISB≠0   | 0*         | ISB                   | Stack(ifb') - ISB      |
+     * | Past, ISB=0   | 0          | Stack(ifb)            | IFBP only if ifb' > 0  |
+     *
+     * * Past + ISB≠0: this month already paid; still apply one IFBP to projected ifb
+     *   before next/third (IFBP was inside that ISB payment). Past + ISB≠0 third month
+     *   is leftover after next month's ISB (apply IFBP after that ISB before Stack).
+     *
+     * @return array{this: float, next: float, third: float}
+     */
+    public static function allocateCardDues(Card $card, int $todayDay): array
+    {
+        $balance = (float) $card->balance;
+        $pending = (float) $card->pending;
+        $isb = (float) $card->interest_saving_balance;
+        $ifb = (float) $card->interest_free_balance;
+        $ifbp = (float) $card->interest_free_balance_payment;
+        $past = (int) $card->due_date < $todayDay;
+
+        $thisDue = 0.0;
+        $nextDue = 0.0;
+        $thirdDue = 0.0;
+
+        if (! $past) {
+            if ($isb != 0.0) {
+                $thisDue = $isb;
+                self::applyIfbp($ifb, $ifbp);
+
+                $nextDue = max(0.0, self::stackAt($ifb, $ifbp, $balance, $pending) - $isb);
+                if ($nextDue > 0.0 && $ifb > 0.0 && $ifbp > 0.0) {
+                    self::applyIfbp($ifb, $ifbp);
+                }
+
+                $thirdDue = self::trailingIfbp($ifb, $ifbp);            } else {
+                $thisDue = self::stackAt($ifb, $ifbp, $balance, $pending);
+                self::applyIfbp($ifb, $ifbp);
+
+                $nextDue = self::trailingIfbp($ifb, $ifbp);
+                if ($nextDue > 0.0) {
+                    self::applyIfbp($ifb, $ifbp);
+                }
+
+                $thirdDue = self::trailingIfbp($ifb, $ifbp);
+            }
+        } elseif ($isb != 0.0) {
+            // Already paid this cycle; IFBP was inside that ISB payment.
+            self::applyIfbp($ifb, $ifbp);
+
+            $nextDue = $isb;
+            self::applyIfbp($ifb, $ifbp);
+
+            $thirdDue = max(0.0, self::stackAt($ifb, $ifbp, $balance, $pending) - $isb);
+        } else {
+            $nextDue = self::stackAt($ifb, $ifbp, $balance, $pending);
+            self::applyIfbp($ifb, $ifbp);
+
+            $thirdDue = self::trailingIfbp($ifb, $ifbp);
+        }
+
+        return [
+            'this' => $thisDue,
+            'next' => $nextDue,
+            'third' => $thirdDue,
+        ];
+    }
+
+    protected static function stackAt(float $ifb, float $ifbp, float $balance, float $pending): float
+    {
+        $ifbpComponent = ($ifb > 0.0 && $ifbp > 0.0) ? $ifbp : 0.0;
+
+        return $balance + $pending - $ifb + $ifbpComponent;
+    }
+
+    protected static function trailingIfbp(float $ifb, float $ifbp): float
+    {
+        return ($ifb > 0.0 && $ifbp > 0.0) ? $ifbp : 0.0;
+    }
+
+    protected static function applyIfbp(float &$ifb, float $ifbp): void
+    {
+        if ($ifbp > 0.0 && $ifb > 0.0) {
+            $ifb = max(0.0, $ifb - $ifbp);
+        }
     }
 
     /**
