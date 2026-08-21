@@ -6,13 +6,18 @@ namespace App\Filament\Resources\ActivityResource\Widgets;
 
 use App\Enums\TravelMethod;
 use App\Filament\Resources\ActivityResource;
+use App\Filament\Resources\ActivityResource\Pages\ListActivities;
 use App\Models\Activity;
 use Carbon\Carbon;
+use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\Widget;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class ActivityMap extends Widget
 {
+    use InteractsWithPageTable;
+
     protected static bool $isLazy = true;
 
     protected static ?string $heading = 'Travel map';
@@ -29,23 +34,56 @@ class ActivityMap extends Widget
 
     public const KIND_RETURN = 'return';
 
+    protected function getTablePage(): string
+    {
+        return ListActivities::class;
+    }
+
     /**
-     * @return array{points: list<array<string, mixed>>, routes: list<array<string, mixed>>, legend: list<array{label: string, color: string, value: string}>}
+     * @return array{points: list<array<string, mixed>>, routes: list<array<string, mixed>>, legend: list<array{label: string, color: string, value: string}>, mapKey: string}
      */
     protected function getViewData(): array
     {
-        $activities = Activity::query()
-            ->whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->orderBy('start_date')
-            ->orderBy('id')
-            ->get(['id', 'name', 'location_name', 'latitude', 'longitude', 'start_date', 'end_date', 'travel_method']);
+        $activities = $this->getMappedActivities();
 
         return [
             'points' => $this->formatPoints($activities),
             'routes' => $this->buildRoutes($activities),
             'legend' => $this->legend(),
+            'mapKey' => $this->mapRevisionKey(),
         ];
+    }
+
+    /**
+     * Activities for the map: same filters/search as ListActivities, plus coordinates.
+     * Always ordered chronologically so travel legs stay correct regardless of table sort.
+     *
+     * @return Collection<int, Activity>
+     */
+    protected function getMappedActivities(): Collection
+    {
+        return $this->mappedActivitiesQuery()
+            ->reorder('activities.start_date')
+            ->orderBy('activities.id')
+            ->get();
+    }
+
+    protected function mappedActivitiesQuery(): Builder
+    {
+        return $this->getPageTableQuery()
+            ->whereNotNull('activities.latitude')
+            ->whereNotNull('activities.longitude');
+    }
+
+    protected function mapRevisionKey(): string
+    {
+        return md5(json_encode([
+            $this->tableFilters,
+            $this->tableSearch,
+            $this->tableColumnSearches,
+            $this->tableSort,
+            $this->activeTab,
+        ], JSON_THROW_ON_ERROR));
     }
 
     /**
