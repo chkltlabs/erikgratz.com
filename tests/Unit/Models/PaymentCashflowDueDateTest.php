@@ -11,6 +11,19 @@ use Tests\TestCase;
 class PaymentCashflowDueDateTest extends TestCase
 {
     #[Test]
+    public function null_paid_on_has_no_cashflow_due_date(): void
+    {
+        $payment = Payment::factory()->make([
+            'card_id' => null,
+            'paid_on' => null,
+        ]);
+        $payment->setRelation('card', null);
+
+        $this->assertNull($payment->cashflowDueDate());
+        $this->assertFalse($payment->cashflowDueFallsInMonth(now()->addMonth()->startOfMonth()));
+    }
+
+    #[Test]
     public function null_card_floats_one_month_from_paid_on(): void
     {
         Carbon::setTestNow('2026-05-15');
