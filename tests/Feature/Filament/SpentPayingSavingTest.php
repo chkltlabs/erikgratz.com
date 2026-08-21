@@ -675,6 +675,124 @@ class SpentPayingSavingTest extends TestCase
         $this->assertSame([], $stat->getExtraAttributes());
     }
 
+    #[Test]
+    public function null_paid_on_one_time_spends_are_excluded_from_unspent(): void
+    {
+        Carbon::setTestNow('2026-08-20');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        foreach (['Fancy Food', 'Other Food', 'Amy New Bag'] as $name) {
+            $spend = Spend::factory()->bare()->noPayments()->create([
+                'name' => $name,
+                'is_income' => false,
+            ]);
+
+            Payment::factory()->create([
+                'spend_type' => getMorphAliasForClass(Spend::class),
+                'spend_id' => $spend->id,
+                'amount' => 200,
+                'is_paid' => false,
+                'paid_on' => null,
+                'card_id' => null,
+            ]);
+        }
+
+        $income = Spend::factory()->bare()->noPayments()->create([
+            'name' => 'Moms Half Repaid',
+            'is_income' => true,
+        ]);
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $income->id,
+            'amount' => 198.24,
+            'is_paid' => false,
+            'paid_on' => null,
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertSame([], $money['Sep']['planned_items']);
+        $this->assertSame(0.0, $money['Sep']['planned']);
+        $this->assertSame([], $money['Oct']['planned_items']);
+    }
+
+    #[Test]
+    public function monthly_recurring_appears_in_second_month_when_day_is_future_and_always_in_third(): void
+    {
+        Carbon::setTestNow('2026-08-20');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        $futureDay = PeriodicSpend::factory()->create([
+            'name' => 'Future Day Monthly',
+            'period' => Period::Monthly,
+            'is_income' => false,
+        ]);
+        $pastDay = PeriodicSpend::factory()->create([
+            'name' => 'Past Day Monthly',
+            'period' => Period::Monthly,
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $futureDay->id,
+            'amount' => 75,
+            'is_paid' => false,
+            'paid_on' => now()->setDay(25),
+            'card_id' => null,
+        ]);
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $pastDay->id,
+            'amount' => 40,
+            'is_paid' => false,
+            'paid_on' => now()->setDay(5),
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+        $sepNames = collect($money['Sep']['planned_items'])->pluck('name')->all();
+        $octNames = collect($money['Oct']['planned_items'])->pluck('name')->all();
+
+        $this->assertContains('Future Day Monthly', $sepNames);
+        $this->assertNotContains('Past Day Monthly', $sepNames);
+        $this->assertContains('Future Day Monthly', $octNames);
+        $this->assertContains('Past Day Monthly', $octNames);
+        $this->assertEqualsWithDelta(75.0, $money['Sep']['planned'], 0.01);
+        $this->assertEqualsWithDelta(115.0, $money['Oct']['planned'], 0.01);
+    }
+
+    #[Test]
+    public function null_paid_on_monthly_is_excluded_from_unspent(): void
+    {
+        Carbon::setTestNow('2026-08-20');
+
+        $this->ensureErikUser(['monthly_pay' => 0]);
+
+        $spend = PeriodicSpend::factory()->create([
+            'name' => 'Null Date Monthly',
+            'period' => Period::Monthly,
+            'is_income' => false,
+        ]);
+
+        Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(PeriodicSpend::class),
+            'spend_id' => $spend->id,
+            'amount' => 50,
+            'is_paid' => false,
+            'paid_on' => null,
+            'card_id' => null,
+        ]);
+
+        $money = SpentPayingSaving::getMoneyData();
+
+        $this->assertSame([], $money['Sep']['planned_items']);
+        $this->assertSame([], $money['Oct']['planned_items']);
+    }
+
     /**
      * @param  array<string, mixed>  $attributes
      */
