@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use Livewire\Attributes\Title;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -74,29 +73,28 @@ new class extends Component
 >
     <span class="font-mono" x-text="currentSentenceJson"></span>
     <span class="input-cursor"></span>
-</div>
-
-<style>
-    @keyframes blink {
-        0% { opacity: 1; }
-        45% { opacity: 1; }
-        55% { opacity: 0; }
-        100% { opacity: 0; }
-    }
-
-    .input-cursor {
-        display: inline-block;
-        width: 2px;
-        height: 42px;
-        background-color: white;
-        margin-left: 4px;
-        animation: blink .6s linear infinite alternate;
-    }
-
-    @media (min-width: 768px) {
-        .input-cursor {
-            height: 74px;
+    <style>
+        @keyframes blink {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; }
+            100% { opacity: 0; }
         }
-    }
-</style>
+
+        .input-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 42px;
+            background-color: white;
+            margin-left: 4px;
+            animation: blink .6s linear infinite alternate;
+        }
+
+        @media (min-width: 768px) {
+            .input-cursor {
+                height: 74px;
+            }
+        }
+    </style>
+</div>
 

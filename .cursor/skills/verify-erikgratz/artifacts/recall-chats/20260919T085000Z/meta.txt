@@ -1,0 +1,5 @@
+feature: recall-chats
+run-id: 20260919T085000Z
+entry: GET http://127.0.0.1:2080/admin/recall-chats
+action: Asked "What did we say about Pocketnest?" after importing Convention verify chat (1 MySQL chunk + 1 pgsql embedding).
+result: Transcript schema showed You + Recall turns. Answer: "We said that Pocketnest is a Laravel home-buying platform that Erik led from MVP to acquisition." Citations: Convention verify chat messages 1-2. Livewire update 14.29s, no 419.

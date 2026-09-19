@@ -41,7 +41,7 @@
                         <p class="text-gray-400 text-sm mb-3">{{ $photo['description'] }}</p>
                         <div class="flex flex-wrap gap-2">
                             @foreach($photo['tags'] as $tag)
-                                <span class="inline-block px-2 py-1 bg-purple-900 bg-opacity-30 text-purple-300 text-xs rounded-md border border-purple-700">
+                                <span class="inline-block px-2 py-1 bg-purple-900/30 text-purple-300 text-xs rounded-md border border-purple-700">
                                     {{ ucfirst($tag) }}
                                 </span>
                             @endforeach

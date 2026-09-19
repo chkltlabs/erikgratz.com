@@ -1,0 +1,2 @@
+GET http://127.0.0.1:2080/ => 200 (http://127.0.0.1:2080/home)
+<!DOCTYPE html> <html lang="en">     <head>         <meta charset="utf-8">         <meta name="viewport" content="width=device-width, initial-scale=1.0">          <link rel="preload" as="style" href="http://127.0.0.1:2080/build/assets/app-BxyEUwUV.css" /><link rel="preload" as="style" href="http://127.0.0.1:2080/build/assets/app-CEDur2tV.css" /><link rel="modulepreload" as="script" href="http://127.0.0.1:2080/build/assets/livewire-Dqzh41zJ.js" /><link rel="stylesheet" href="http://127.0.0.1:2080

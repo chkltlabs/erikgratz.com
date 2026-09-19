@@ -1,4 +1,4 @@
-<div class="w-full min-h-screen font-sans bg-cover bg-landscape">
+<div class="w-full min-h-screen font-sans">
     <div class="w-full flex flex-row flex-wrap gap-4 justify-center my-8 px-4">
         <a href="{{ $resumeUrl }}" target="_blank" rel="noopener noreferrer"
            class="px-4 py-2 rounded-lg bg-purple-600/80 text-white hover:bg-purple-500 transition text-center text-sm md:text-base">

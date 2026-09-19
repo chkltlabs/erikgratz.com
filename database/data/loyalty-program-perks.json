@@ -1,0 +1,80 @@
+{
+    "hilton": [
+        {
+            "name": "Complimentary breakfast for two",
+            "decision_value": 40,
+            "min_tier": "Gold",
+            "applies_to": "hotel",
+            "award_only": false
+        },
+        {
+            "name": "Late checkout",
+            "decision_value": 20,
+            "min_tier": "Gold",
+            "applies_to": "hotel",
+            "award_only": false
+        },
+        {
+            "name": "Space-available upgrade",
+            "decision_value": 30,
+            "min_tier": "Gold",
+            "applies_to": "hotel",
+            "award_only": false
+        }
+    ],
+    "marriott": [
+        {
+            "name": "Space-available room upgrade",
+            "decision_value": 25,
+            "min_tier": "Gold",
+            "applies_to": "hotel",
+            "award_only": false
+        },
+        {
+            "name": "Late checkout",
+            "decision_value": 20,
+            "min_tier": "Gold",
+            "applies_to": "hotel",
+            "award_only": false
+        }
+    ],
+    "ihg": [
+        {
+            "name": "Space-available room upgrade",
+            "decision_value": 25,
+            "min_tier": "Platinum Elite",
+            "applies_to": "hotel",
+            "award_only": false
+        },
+        {
+            "name": "Late checkout",
+            "decision_value": 20,
+            "min_tier": "Platinum Elite",
+            "applies_to": "hotel",
+            "award_only": false
+        },
+        {
+            "name": "Welcome amenity",
+            "decision_value": 15,
+            "min_tier": "Platinum Elite",
+            "applies_to": "hotel",
+            "award_only": false
+        }
+    ],
+    "aeroplan": [
+        {
+            "name": "Zone 2 boarding",
+            "decision_value": 10,
+            "min_tier": "25K",
+            "applies_to": "flight",
+            "award_only": false
+        },
+        {
+            "name": "Star Alliance Silver",
+            "decision_value": 10,
+            "min_tier": "25K",
+            "applies_to": "flight",
+            "award_only": false
+        }
+    ]
+}

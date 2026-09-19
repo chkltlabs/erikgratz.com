@@ -1,0 +1,3 @@
+feature: book-travel
+entry: /admin/book-travel
+verified: Cabin select present (Economy default; PE/Business/First options). Rank not exercised on live data — cards=0 benefits=0. Ranking + caps covered by BookingAdvisorTest / BookTravelPageTest.

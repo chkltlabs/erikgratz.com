@@ -1,2 +1,3 @@
-SELECT 'CREATE DATABASE testing'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'testing')\gexec
+CREATE DATABASE testing;
+GRANT ALL PRIVILEGES ON DATABASE testing TO sail;
+ALTER USER sail CREATEDB;

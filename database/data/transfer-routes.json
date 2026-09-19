@@ -1,0 +1,142 @@
+[
+    {
+        "from": "chaseUltimateRewards",
+        "to": "united"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "southwest"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "ba"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "flyingblue"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "virgin"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "hyatt"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "marriott"
+    },
+    {
+        "from": "chaseUltimateRewards",
+        "to": "ihg"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "delta"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "ba"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "aeroplan"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "flyingblue"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "virgin"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "hilton"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "marriott"
+    },
+    {
+        "from": "amExMemberRewards",
+        "to": "choice"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "aa"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "jetblue"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "flyingblue"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "virgin"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "choice"
+    },
+    {
+        "from": "citiThankYou",
+        "to": "wyndham"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "united"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "ba"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "aeroplan"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "flyingblue"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "virgin"
+    },
+    {
+        "from": "capitalOneMiles",
+        "to": "wyndham"
+    },
+    {
+        "from": "bilt",
+        "to": "united"
+    },
+    {
+        "from": "bilt",
+        "to": "aa"
+    },
+    {
+        "from": "bilt",
+        "to": "hyatt"
+    },
+    {
+        "from": "bilt",
+        "to": "hilton"
+    },
+    {
+        "from": "bilt",
+        "to": "ihg"
+    },
+    {
+        "from": "avios",
+        "to": "ba"
+    },
+    {
+        "from": "aeroplan",
+        "to": "aeroplan"
+    }
+]

@@ -1,0 +1,5 @@
+feature: book-travel
+entry: /admin/book-travel
+action: Rank options for Flight / United / $400
+result: Top combos RepeatableEntry showed headline, value badge, channel badge, card, credits, earn, and a visible 3-item perk list (no textarea)
+run-id: 20260919T132215Z

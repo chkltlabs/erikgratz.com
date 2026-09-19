@@ -7,9 +7,6 @@ use App\Filament\Resources\CardResource;
 use App\Models\Activity;
 use App\Models\Card;
 use Carbon\Carbon;
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
-use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
@@ -239,7 +236,7 @@ class ActivityTimelineChart extends ApexChartWidget
     {
         [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
             ...self::formatForDataArray(Activity::all()->filter(fn ($act) => ! $act->archived)),
-            //            ...self::formatCardsForDataArray(Card::all())
+            ...self::formatCardsForDataArray(Card::all()),
         ]));
 
         $todayColor = '#FFFFFF';

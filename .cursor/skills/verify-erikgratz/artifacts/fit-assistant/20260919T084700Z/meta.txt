@@ -1,0 +1,7 @@
+feature: fit-assistant
+run-id: 20260919T084700Z
+entry: GET http://127.0.0.1:2080/fit
+action: filled YOUR QUESTION with "What did you build at Pocketnest?" then clicked Ask
+result: answer card heading matched the question; body referenced Pocketnest backend work (MVP to acquisition, AWS to GCP, analytics API)
+GEMINI_API_KEY: present in running app (live answer, not known-fail)
+note: doctor /home is HTTP 500 due to pre-existing Livewire multi-root on components.title-box; /fit 200

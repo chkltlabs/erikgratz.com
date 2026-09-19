@@ -73,7 +73,7 @@ new class extends Component {
             <h4 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wide">Technologies</h4>
             <div class="flex flex-wrap gap-2">
                 @foreach($technologies as $tech)
-                    <span class="bg-purple-900 bg-opacity-30 text-purple-300 px-2 py-1 rounded-md text-xs md:text-sm font-medium border border-purple-700">
+                    <span class="bg-purple-900/30 text-purple-300 px-2 py-1 rounded-md text-xs md:text-sm font-medium border border-purple-700">
                         {{ $tech }}
                     </span>
                 @endforeach

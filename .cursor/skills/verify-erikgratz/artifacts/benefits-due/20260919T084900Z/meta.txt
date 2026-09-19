@@ -1,0 +1,5 @@
+feature: benefits-due
+run-id: 20260919T084900Z
+entry: GET http://127.0.0.1:2080/admin/benefits-due
+action: Due tab showed Use fully / Use partial / Ignore (21 results). Clicked Assumed captured (?tab=auto).
+result: Auto heading "Assumed captured when charged to the right card"; Credit this period on rows; 17 results; no expired-page dialog.

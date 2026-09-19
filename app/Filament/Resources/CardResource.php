@@ -2,26 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\SimpleFin\SimpleFinAccount;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Fieldset;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\CardResource\Pages\ListCards;
-use App\Filament\Resources\CardResource\Pages\CreateCard;
-use App\Filament\Resources\CardResource\Pages\EditCard;
 use App\Enums\PointsProgram;
 use App\Filament\Resources\CardResource\Pages;
+use App\Filament\Resources\CardResource\Pages\CreateCard;
+use App\Filament\Resources\CardResource\Pages\EditCard;
+use App\Filament\Resources\CardResource\Pages\ListCards;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
+use App\Filament\Resources\CardResource\RelationManagers\BookingPerksRelationManager;
+use App\Filament\Resources\CardResource\RelationManagers\EarningRatesRelationManager;
 use App\Models\Card;
+use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\User;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -31,7 +33,7 @@ class CardResource extends Resource
 {
     protected static ?string $model = Card::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -126,34 +128,35 @@ class CardResource extends Resource
                     ->columnSpanFull()
                     ->columns(5)
                     ->schema([
-                    TextInput::make('points_balance')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                    TextInput::make('points_bonus')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                    TextInput::make('points_bonus_spend')
-                        ->required()
-                        ->numeric()
-                        ->default(0),
-                    TextInput::make('points_bonus_period'),
-                    Select::make('points_program')
-                        ->options(PointsProgram::asSelectArray()),
-                ]),
+                        TextInput::make('points_balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('points_bonus')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('points_bonus_spend')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        TextInput::make('points_bonus_period'),
+                        Select::make('points_program')
+                            ->options(PointsProgram::asSelectArray()),
+                    ]),
                 Select::make('simple_fin_account_id')
                     ->label('SimpleFIN Account')
-                    ->options(function (Card $record = null) {
+                    ->options(function (?Card $record = null) {
                         $query = SimpleFinAccount::query();
                         if ($record && $record->user_id) {
                             $query->where('user_id', $record->user_id);
                         }
+
                         return $query->pluck('name', 'id');
                     })
                     ->searchable()
                     ->dehydrated(false)
-                    ->formatStateUsing(fn (Card $record = null) => $record?->simpleFinAccount?->id)
+                    ->formatStateUsing(fn (?Card $record = null) => $record?->simpleFinAccount?->id)
                     ->afterStateUpdated(function ($state, Card $record) {
                         // Unset previous association
                         SimpleFinAccount::where('associated_type', 'card')
@@ -253,6 +256,8 @@ class CardResource extends Resource
     {
         return [
             BenefitsRelationManager::class,
+            EarningRatesRelationManager::class,
+            BookingPerksRelationManager::class,
         ];
     }
 }

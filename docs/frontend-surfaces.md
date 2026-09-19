@@ -3,6 +3,7 @@
 ## Livewire Volt (public site)
 
 - **Classes:** `app/Livewire/Page/*.php` (`Home`, `Work`, `Experience`, `Photo`, `Contact`, `Portfolio`, `Play`).
+- **Fit:** Volt SFC at `resources/views/livewire/page/fit.blade.php` (`Volt::route('/fit', 'page.fit')`).
 - **Views:** `resources/views/livewire/page/*.blade.php` (Portfolio reuses `work.blade.php`).
 - **Layout:** `resources/views/livewire/components/layouts/app.blade.php` — header, Livewire, Alpine (bundled with Livewire 3).
 - **Vite entry:** `resources/js/livewire.js` imports `resources/css/app.css` and `resources/sass/app.scss` only (no Vue/Inertia).

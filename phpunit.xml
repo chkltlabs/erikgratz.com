@@ -19,6 +19,14 @@
     <env name="SESSION_DRIVER" value="array"/>
     <env name="TELESCOPE_ENABLED" value="false"/>
     <env name="PLAYGROUND_ENABLED" value="true"/>
+    <env name="CHATBOT_PROVIDER" value="gemini"/>
+    <env name="CHATBOT_EMBEDDING_MODEL" value="text-embedding-004"/>
+    <env name="CHATBOT_EMBEDDING_DIMENSIONS" value="768"/>
+    <env name="PG_HOST" value="pgsql"/>
+    <env name="PG_PORT" value="5432"/>
+    <env name="PG_DATABASE" value="testing"/>
+    <env name="PG_USERNAME" value="sail"/>
+    <env name="PG_PASSWORD" value="password"/>
   </php>
   <source>
     <include>

@@ -1,0 +1,2 @@
+Ask schema: Question textarea, Ask, Reset.
+After ask: region Transcript; You "What did we say about Pocketnest?"; Recall "We said that Pocketnest is a Laravel home-buying platform that Erik led from MVP to acquisition."; Citations "Convention verify chat messages 1-2".
