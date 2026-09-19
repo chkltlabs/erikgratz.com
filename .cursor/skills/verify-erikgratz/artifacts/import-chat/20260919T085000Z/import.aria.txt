@@ -1,0 +1,3 @@
+List: heading Imported Chats, header button Import chat, empty state No Imported chats.
+Modal: Source Google Gemini, Title override, Paste transcript, Submit.
+After: View Imported Chat; Title Convention verify chat; Transcript USER What is Pocketnest? ASSISTANT A Laravel home-buying platform...

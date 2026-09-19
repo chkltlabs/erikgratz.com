@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Ai\Retrieval\EmbeddingSpec;
+use App\Database\PgsqlMigrationHooks;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\LoanAgainstSavings;
@@ -12,6 +14,7 @@ use App\Services\Currency\FrankfurterExchangeRateProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Pgvector\Laravel\Schema as PgvectorSchema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ExchangeRateProvider::class, FrankfurterExchangeRateProvider::class);
+        $this->app->singleton(EmbeddingSpec::class, fn () => EmbeddingSpec::fromConfig());
 
         Schema::defaultStringLength(191);
 
@@ -40,5 +44,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot() {}
+    public function boot()
+    {
+        PgvectorSchema::register();
+        $this->loadMigrationsFrom(database_path('migrations/pgsql'));
+        PgsqlMigrationHooks::register();
+    }
 }

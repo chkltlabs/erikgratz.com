@@ -46,20 +46,20 @@ new class extends Component {
     #[Computed]
     public function navItems(): array
     {
-        $a = [
-            Page\Home::class,
-            Page\Work::class,
-            Page\Experience::class,
-            Page\Photo::class,
-            Page\Portfolio::class,
-            Page\Contact::class,
+        $items = [
+            ['title' => Page\Home::TITLE, 'slug' => 'home'],
+            ['title' => Page\Work::TITLE, 'slug' => 'work'],
+            ['title' => Page\Experience::TITLE, 'slug' => 'experience'],
+            ['title' => 'Fit', 'slug' => 'fit'],
+            ['title' => Page\Photo::TITLE, 'slug' => 'photo'],
+            ['title' => Page\Portfolio::TITLE, 'slug' => 'portfolio'],
+            ['title' => Page\Contact::TITLE, 'slug' => 'contact'],
         ];
 
-        return array_map(fn($item) => [
-            'link' => $this->routePrefix . '' . strtolower($item::TITLE),
-            'class' => $item,
-            'title' => ucwords($item::TITLE),
-        ], $a);
+        return array_map(fn (array $item): array => [
+            'link' => $this->routePrefix.strtolower($item['slug']),
+            'title' => ucwords($item['title']),
+        ], $items);
     }
 
 }

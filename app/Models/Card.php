@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PointsProgram;
+use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\Traits\BelongsToUser;
 use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Card extends Model
 {
@@ -36,6 +38,26 @@ class Card extends Model
     public function benefits(): HasMany
     {
         return $this->hasMany(CardBenefit::class);
+    }
+
+    public function loyaltyMemberships(): HasMany
+    {
+        return $this->hasMany(LoyaltyMembership::class, 'conferred_by_card_id');
+    }
+
+    public function earningPromotions(): HasMany
+    {
+        return $this->hasMany(EarningPromotion::class);
+    }
+
+    public function earningRates(): HasMany
+    {
+        return $this->hasMany(CardEarningRate::class);
+    }
+
+    public function bookingPerks(): HasMany
+    {
+        return $this->hasMany(BookingPerk::class);
     }
 
     public function payments()
@@ -117,8 +139,52 @@ class Card extends Model
             ->where('interest_saving_balance', 0);
     }
 
-    public function simpleFinAccount(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function scopeHasIsb($query)
     {
-        return $this->morphOne(\App\Models\SimpleFin\SimpleFinAccount::class, 'associated');
+        return $query->where('interest_saving_balance', '!=', 0);
+    }
+
+    /**
+     * SumCard-style stock: balance + pending - IFB + IFBP.
+     */
+    public function stockBalance(): float
+    {
+        return (float) $this->balance
+            + (float) $this->pending
+            - (float) $this->interest_free_balance
+            + (float) $this->interest_free_balance_payment;
+    }
+
+    /**
+     * When a spend on this card becomes cash-flow due, from statement close → due date.
+     */
+    public function cashflowDueDateForSpendDate(Carbon $spendDate): Carbon
+    {
+        $statementDay = max(1, (int) $this->statement_date);
+        $dueDay = max(1, (int) $this->due_date);
+
+        if ($spendDate->day <= $statementDay) {
+            $statementClose = self::dateOnDay($spendDate, $statementDay);
+        } else {
+            $statementClose = self::dateOnDay($spendDate->copy()->addMonthNoOverflow(), $statementDay);
+        }
+
+        if ($dueDay > $statementDay) {
+            return self::dateOnDay($statementClose, $dueDay);
+        }
+
+        return self::dateOnDay($statementClose->copy()->addMonthNoOverflow(), $dueDay);
+    }
+
+    public static function dateOnDay(Carbon $base, int $day): Carbon
+    {
+        $date = $base->copy()->startOfMonth()->startOfDay();
+
+        return $date->day(min($day, $date->daysInMonth));
+    }
+
+    public function simpleFinAccount(): MorphOne
+    {
+        return $this->morphOne(SimpleFinAccount::class, 'associated');
     }
 }

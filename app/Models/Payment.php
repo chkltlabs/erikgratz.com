@@ -65,6 +65,39 @@ class Payment extends Model
         return app(ExchangeRateService::class)->convertToUsd($amount, $this->currency);
     }
 
+    /**
+     * Calendar date when this unpaid spend becomes CC cash-flow due.
+     * Uses the card statement close → due cycle; null card floats +1 month from paid_on.
+     * Returns null when paid_on is missing — those payments are excluded from unspent.
+     */
+    public function cashflowDueDate(): ?Carbon
+    {
+        if ($this->paid_on === null) {
+            return null;
+        }
+
+        $paidOn = Carbon::parse($this->paid_on)->startOfDay();
+
+        $card = $this->relationLoaded('card') ? $this->card : $this->card()->first();
+
+        if ($card === null) {
+            return $paidOn->copy()->addMonthNoOverflow();
+        }
+
+        return $card->cashflowDueDateForSpendDate($paidOn);
+    }
+
+    public function cashflowDueFallsInMonth(Carbon $month): bool
+    {
+        $due = $this->cashflowDueDate();
+
+        if ($due === null) {
+            return false;
+        }
+
+        return $due->month === $month->month && $due->year === $month->year;
+    }
+
     public function shouldSettleToUsd(): bool
     {
         if ($this->currency->isUsd() || ! $this->is_paid) {
@@ -139,13 +172,25 @@ class Payment extends Model
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Monthly)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on')
             ->whereDay('paid_on', '>=', now()->day);
+    }
+
+    public function scopeMonthlyAllUnpaid($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Monthly)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on');
     }
 
     public function scopeYearlyUnpaid($query)
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on')
             ->whereDay('paid_on', '>=', now()->day)
             ->whereMonth('paid_on', '>=', now()->month);
     }
@@ -154,6 +199,8 @@ class Payment extends Model
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on')
             ->whereDay('paid_on', '>=', now()->day)
             ->whereMonth('paid_on', '=', now()->month);
     }
@@ -162,13 +209,31 @@ class Payment extends Model
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
+            ->whereNotNull('paid_on')
             ->whereMonth('paid_on', '=', now()->addMonth()->month);
+    }
+
+    public function scopeYearlyUnpaidAll($query)
+    {
+        return $query
+            ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on');
+    }
+
+    public function scopeOneTimeUnpaid($query)
+    {
+        return $query
+            ->whereMorphedTo('spend', Spend::class)
+            ->where('is_paid', false)
+            ->whereNotNull('paid_on');
     }
 
     public function scopeYearlyDueThisMonth($query)
     {
         return $query
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
+            ->whereNotNull('paid_on')
             ->whereMonth('paid_on', '=', now()->month);
     }
 }

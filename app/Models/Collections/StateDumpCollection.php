@@ -27,7 +27,8 @@ class StateDumpCollection extends Collection
         if (is_null($model)) {
             return [];
         }
-        $models = $model::class::all();
+
+        $models = $model::query()->get();
         $rtn = [];
         foreach ($models as $specificModel) {
             $modelRtn = $this->getStatArrayForModel($specificModel, $col, $since);
@@ -35,6 +36,25 @@ class StateDumpCollection extends Collection
         }
 
         return $rtn;
+    }
+
+    /**
+     * Index dump rows by model id once for faster chart aggregation.
+     *
+     * @param  array<int, array<string, mixed>>  $rows
+     * @return array<int|string, array<string, mixed>>
+     */
+    public static function indexRowsById(array $rows): array
+    {
+        $indexed = [];
+        foreach ($rows as $row) {
+            if (! is_array($row) || ! array_key_exists('id', $row)) {
+                continue;
+            }
+            $indexed[$row['id']] = $row;
+        }
+
+        return $indexed;
     }
 
     public static function combineArrs(array $one = [], array $two = []): array

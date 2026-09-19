@@ -2,11 +2,7 @@
 
 namespace App\Models\Scopes;
 
-use App\Models\PeriodicSpend;
-use App\Models\Spend;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 
 class SumCard
 {
@@ -17,10 +13,11 @@ class SumCard
 
     public function __invoke(Builder $query): int|float
     {
-        return $query->sum('balance')
-            + $query->sum('pending')
-            - $query->sum('interest_free_balance')
-            + $query->sum('interest_free_balance_payment');
-
+        return (float) $query->clone()
+            ->toBase()
+            ->selectRaw(
+                'COALESCE(SUM(balance + pending - interest_free_balance + interest_free_balance_payment), 0) as aggregate'
+            )
+            ->value('aggregate');
     }
 }

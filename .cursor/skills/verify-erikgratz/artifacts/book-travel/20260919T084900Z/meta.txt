@@ -1,0 +1,5 @@
+feature: book-travel
+run-id: 20260919T084900Z
+entry: GET http://127.0.0.1:2080/admin/book-travel
+action: Hotel $400 SFO, empty vendor, Rank options; then selected Marriott Bonvoy Gold
+result: Loyalty program Select visible (Marriott / Hilton / IHG). Top combos schema Repeater populated. After Marriott, loyalty perks = "Space-available room upgrade ($25) / Late checkout ($20)" and combo values increased (590 -> 635 on top row).

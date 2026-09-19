@@ -5,6 +5,7 @@ namespace Tests\Feature\Livewire;
 use App\Livewire\Page\Photo;
 use App\Models\Photo as PhotoModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -13,21 +14,19 @@ class PhotoTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
 
     private function createPhotos(): void
     {
-        PhotoModel::truncate();
-        // Create test photos with different tags
         PhotoModel::factory()->create([
             'title' => 'Nature Photo',
             'tags' => ['nature', 'landscape'],
             'url' => 'https://example.com/nature.jpg',
             'path' => 'photos/nature.jpg',
-            'description' => 'Beautiful nature scene'
+            'description' => 'Beautiful nature scene',
         ]);
 
         PhotoModel::factory()->create([
@@ -35,7 +34,7 @@ class PhotoTest extends TestCase
             'tags' => ['portrait', 'people'],
             'url' => 'https://example.com/portrait.jpg',
             'path' => 'photos/portrait.jpg',
-            'description' => 'Portrait photography'
+            'description' => 'Portrait photography',
         ]);
 
         PhotoModel::factory()->create([
@@ -43,7 +42,7 @@ class PhotoTest extends TestCase
             'tags' => ['nature', 'people'],
             'url' => 'https://example.com/mixed.jpg',
             'path' => 'photos/mixed.jpg',
-            'description' => 'Mixed scene'
+            'description' => 'Mixed scene',
         ]);
     }
 
@@ -119,8 +118,8 @@ class PhotoTest extends TestCase
         $this->assertEquals('all', $tags[0]);
 
         // Empty case
-        PhotoModel::truncate();
-        \Illuminate\Support\Facades\Cache::forget('photos.all');
+        PhotoModel::query()->delete();
+        Cache::forget('photos.all');
         $component = Livewire::test(Photo::class);
         $this->assertEquals(['all'], $component->get('tags'));
     }

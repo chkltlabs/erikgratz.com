@@ -1,0 +1,5 @@
+url: http://127.0.0.1:2080/admin/book-travel
+Trip schema: Category Hotel, Vendor empty, Destination SFO, Cash 400
+Loyalty program: combobox Selected loyalty membership id = Marriott Bonvoy Gold
+Top combos: Chase Travel + Sapphire Reserve (Amy) + $500 The Edit credit, Value 635
+Loyalty perks: Space-available room upgrade ($25); Late checkout ($20)
