@@ -8,6 +8,7 @@
 | GET | `/home` | `home` | Volt `page.home` → `App\Livewire\Page\Home` |
 | GET | `/work` | — | Volt `page.work` → `App\Livewire\Page\Work` |
 | GET | `/experience` | — | Volt `page.experience` → `App\Livewire\Page\Experience` |
+| GET | `/fit` | `fit` | Volt SFC `page.fit` (`resources/views/livewire/page/fit.blade.php`; work-history / JD fit; throttled) |
 | GET | `/photo` | — | Volt `page.photo` → `App\Livewire\Page\Photo` |
 | GET | `/contact` | `contact` | Volt `page.contact` → `App\Livewire\Page\Contact` |
 | GET | `/portfolio` | — | Volt `page.portfolio` → `App\Livewire\Page\Portfolio` (reuses work view) |

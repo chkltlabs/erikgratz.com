@@ -1,0 +1,7 @@
+feature: public-home-nav
+entry: /home
+base: http://127.0.0.1:2080
+run_id: 20260906T184500Z
+
+nav_click: Experience -> /experience (MCP confirmed)
+screenshot: MCP attachment (filePath writes blocked by browser MCP sandbox); aria+http proofs in this dir

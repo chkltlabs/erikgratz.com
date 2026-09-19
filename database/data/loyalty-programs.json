@@ -1,0 +1,342 @@
+[
+    {
+        "kind": "airline",
+        "name": "United MileagePlus",
+        "code": "united"
+    },
+    {
+        "kind": "airline",
+        "name": "American AAdvantage",
+        "code": "aa"
+    },
+    {
+        "kind": "airline",
+        "name": "Delta SkyMiles",
+        "code": "delta"
+    },
+    {
+        "kind": "airline",
+        "name": "British Airways Executive Club",
+        "code": "ba"
+    },
+    {
+        "kind": "airline",
+        "name": "Aeroplan",
+        "code": "aeroplan"
+    },
+    {
+        "kind": "airline",
+        "name": "Aer Lingus AerClub",
+        "code": "aerlingus"
+    },
+    {
+        "kind": "airline",
+        "name": "Southwest Rapid Rewards",
+        "code": "southwest"
+    },
+    {
+        "kind": "airline",
+        "name": "JetBlue TrueBlue",
+        "code": "jetblue"
+    },
+    {
+        "kind": "airline",
+        "name": "Virgin Atlantic Flying Club",
+        "code": "virgin"
+    },
+    {
+        "kind": "airline",
+        "name": "Air France-KLM Flying Blue",
+        "code": "flyingblue"
+    },
+    {
+        "kind": "airline",
+        "name": "China Southern Sky Pearl Club",
+        "code": "chinasouthern"
+    },
+    {
+        "kind": "airline",
+        "name": "Air China PhoenixMiles",
+        "code": "airchina"
+    },
+    {
+        "kind": "airline",
+        "name": "China Eastern Eastern Miles",
+        "code": "chinaeastern"
+    },
+    {
+        "kind": "airline",
+        "name": "Lufthansa Miles & More",
+        "code": "lufthansa"
+    },
+    {
+        "kind": "airline",
+        "name": "IndiGo BluChip",
+        "code": "indigo"
+    },
+    {
+        "kind": "airline",
+        "name": "Iberia Plus",
+        "code": "iberia"
+    },
+    {
+        "kind": "airline",
+        "name": "Vueling Club",
+        "code": "vueling"
+    },
+    {
+        "kind": "airline",
+        "name": "Turkish Airlines Miles&Smiles",
+        "code": "turkish"
+    },
+    {
+        "kind": "airline",
+        "name": "LATAM Pass",
+        "code": "latam"
+    },
+    {
+        "kind": "airline",
+        "name": "Air India Maharaja Club",
+        "code": "airindia"
+    },
+    {
+        "kind": "airline",
+        "name": "AirAsia Rewards",
+        "code": "airasia"
+    },
+    {
+        "kind": "airline",
+        "name": "Alaska Mileage Plan",
+        "code": "alaska"
+    },
+    {
+        "kind": "airline",
+        "name": "Qantas Frequent Flyer",
+        "code": "qantas"
+    },
+    {
+        "kind": "airline",
+        "name": "Emirates Skywards",
+        "code": "emirates"
+    },
+    {
+        "kind": "airline",
+        "name": "Aeroflot Bonus",
+        "code": "aeroflot"
+    },
+    {
+        "kind": "airline",
+        "name": "Qatar Privilege Club",
+        "code": "qatar"
+    },
+    {
+        "kind": "airline",
+        "name": "Finnair Plus",
+        "code": "finnair"
+    },
+    {
+        "kind": "airline",
+        "name": "Hainan Fortune Wings Club",
+        "code": "hainan"
+    },
+    {
+        "kind": "airline",
+        "name": "JAL Mileage Bank",
+        "code": "jal"
+    },
+    {
+        "kind": "airline",
+        "name": "Pegasus BolBol",
+        "code": "pegasus"
+    },
+    {
+        "kind": "airline",
+        "name": "XiamenAir Egret Club",
+        "code": "xiamen"
+    },
+    {
+        "kind": "airline",
+        "name": "Singapore KrisFlyer",
+        "code": "singapore"
+    },
+    {
+        "kind": "airline",
+        "name": "Avianca LifeMiles",
+        "code": "avianca"
+    },
+    {
+        "kind": "airline",
+        "name": "Saudia Alfursan",
+        "code": "saudia"
+    },
+    {
+        "kind": "airline",
+        "name": "Cathay",
+        "code": "cathay"
+    },
+    {
+        "kind": "airline",
+        "name": "ANA Mileage Club",
+        "code": "ana"
+    },
+    {
+        "kind": "airline",
+        "name": "GOL Smiles",
+        "code": "gol"
+    },
+    {
+        "kind": "airline",
+        "name": "Frontier Miles",
+        "code": "frontier"
+    },
+    {
+        "kind": "airline",
+        "name": "Azul TudoAzul",
+        "code": "azul"
+    },
+    {
+        "kind": "airline",
+        "name": "Norwegian Reward",
+        "code": "norwegian"
+    },
+    {
+        "kind": "airline",
+        "name": "VietJet SkyJoy",
+        "code": "vietjet"
+    },
+    {
+        "kind": "airline",
+        "name": "Aeroméxico Club Premier",
+        "code": "aeromexico"
+    },
+    {
+        "kind": "airline",
+        "name": "Cebu Pacific Go Rewards",
+        "code": "cebu"
+    },
+    {
+        "kind": "airline",
+        "name": "GarudaMiles",
+        "code": "garuda"
+    },
+    {
+        "kind": "airline",
+        "name": "Korean Air SKYPASS",
+        "code": "korean"
+    },
+    {
+        "kind": "airline",
+        "name": "Vietnam Airlines Lotusmiles",
+        "code": "vietnam"
+    },
+    {
+        "kind": "airline",
+        "name": "Etihad Guest",
+        "code": "etihad"
+    },
+    {
+        "kind": "airline",
+        "name": "SAS EuroBonus",
+        "code": "sas"
+    },
+    {
+        "kind": "airline",
+        "name": "Virgin Australia Velocity",
+        "code": "velocity"
+    },
+    {
+        "kind": "airline",
+        "name": "Ethiopian ShebaMiles",
+        "code": "ethiopian"
+    },
+    {
+        "kind": "airline",
+        "name": "Air Arabia AirRewards",
+        "code": "airarabia"
+    },
+    {
+        "kind": "airline",
+        "name": "Allegiant Allways Rewards",
+        "code": "allegiant"
+    },
+    {
+        "kind": "airline",
+        "name": "Aegean Miles+Bonus",
+        "code": "aegean"
+    },
+    {
+        "kind": "airline",
+        "name": "TAP Miles&Go",
+        "code": "tap"
+    },
+    {
+        "kind": "airline",
+        "name": "Malaysia Airlines Enrich",
+        "code": "malaysia"
+    },
+    {
+        "kind": "airline",
+        "name": "ITA Airways Volare",
+        "code": "ita"
+    },
+    {
+        "kind": "airline",
+        "name": "Air New Zealand Airpoints",
+        "code": "airnz"
+    },
+    {
+        "kind": "airline",
+        "name": "Thai Royal Orchid Plus",
+        "code": "thai"
+    },
+    {
+        "kind": "hotel",
+        "name": "Marriott Bonvoy",
+        "code": "marriott"
+    },
+    {
+        "kind": "hotel",
+        "name": "Hilton Honors",
+        "code": "hilton"
+    },
+    {
+        "kind": "hotel",
+        "name": "World of Hyatt",
+        "code": "hyatt"
+    },
+    {
+        "kind": "hotel",
+        "name": "IHG One Rewards",
+        "code": "ihg"
+    },
+    {
+        "kind": "hotel",
+        "name": "Wyndham Rewards",
+        "code": "wyndham"
+    },
+    {
+        "kind": "hotel",
+        "name": "Choice Privileges",
+        "code": "choice"
+    },
+    {
+        "kind": "car",
+        "name": "Hertz Gold Plus Rewards",
+        "code": "hertz"
+    },
+    {
+        "kind": "car",
+        "name": "National Emerald Club",
+        "code": "national"
+    },
+    {
+        "kind": "car",
+        "name": "Avis Preferred",
+        "code": "avis"
+    },
+    {
+        "kind": "car",
+        "name": "Enterprise Plus",
+        "code": "enterprise"
+    }
+]

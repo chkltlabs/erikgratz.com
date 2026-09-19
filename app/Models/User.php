@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -50,17 +51,22 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(BlogPost::class);
     }
 
+    public function loyaltyMemberships(): HasMany
+    {
+        return $this->hasMany(LoyaltyMembership::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }
 
-    public static function erik(): self
+    public static function erik(): ?self
     {
         return User::whereEmail('erik@erikgratz.com')->first();
     }
 
-    public static function amy(): self
+    public static function amy(): ?self
     {
         return User::whereEmail('hudgins.a8@gmail.com')->first();
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PointsProgram;
+use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\Traits\BelongsToUser;
 use App\Models\Traits\GetsDumped;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Card extends Model
 {
@@ -36,6 +38,26 @@ class Card extends Model
     public function benefits(): HasMany
     {
         return $this->hasMany(CardBenefit::class);
+    }
+
+    public function loyaltyMemberships(): HasMany
+    {
+        return $this->hasMany(LoyaltyMembership::class, 'conferred_by_card_id');
+    }
+
+    public function earningPromotions(): HasMany
+    {
+        return $this->hasMany(EarningPromotion::class);
+    }
+
+    public function earningRates(): HasMany
+    {
+        return $this->hasMany(CardEarningRate::class);
+    }
+
+    public function bookingPerks(): HasMany
+    {
+        return $this->hasMany(BookingPerk::class);
     }
 
     public function payments()
@@ -161,8 +183,8 @@ class Card extends Model
         return $date->day(min($day, $date->daysInMonth));
     }
 
-    public function simpleFinAccount(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function simpleFinAccount(): MorphOne
     {
-        return $this->morphOne(\App\Models\SimpleFin\SimpleFinAccount::class, 'associated');
+        return $this->morphOne(SimpleFinAccount::class, 'associated');
     }
 }

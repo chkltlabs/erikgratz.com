@@ -1,0 +1,889 @@
+{
+    "csr": {
+        "memberships": [
+            {
+                "code": "ihg",
+                "tier": "Platinum Elite"
+            }
+        ],
+        "benefits": [
+            {
+                "benefit": "$300 travel credit",
+                "value": 300,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "renewal_yearly",
+                "reset_anchor": "card_anniversary",
+                "applies_to": "any",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Automatic statement credit on travel-category spend. Resets on card anniversary. Qualifying spend does not earn points."
+            },
+            {
+                "benefit": "$500 The Edit credit",
+                "value": 500,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "hotel",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to $250 per prepaid 2-night The Edit stay, $500 max per calendar year.",
+                "required_channel": "chase_travel",
+                "quantity_total": 2,
+                "max_apply_per_use": {
+                    "default": 250
+                },
+                "perks": [
+                    {
+                        "name": "On-property credit",
+                        "description": "On-property credit during the prepaid stay.",
+                        "decision_value": 100,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Early / late checkout",
+                        "description": "Flexible checkout when available.",
+                        "decision_value": 40,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Space-available upgrade",
+                        "description": "Room upgrade at check-in when available.",
+                        "decision_value": 50,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    }
+                ]
+            },
+            {
+                "benefit": "$250 select Chase Travel hotels",
+                "value": 250,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "hotel",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Prepaid Chase Travel stays at IHG, Montage, Pendry, Omni, Virgin, Minor, Pan Pacific through 2026-12-31. 2-night minimum.",
+                "required_channel": "chase_travel",
+                "allowed_vendors": ["ihg", "montage", "pendry", "omni", "virgin", "minor", "pan pacific"],
+                "perks": [
+                    {
+                        "name": "On-property credit",
+                        "description": "On-property credit during the prepaid stay.",
+                        "decision_value": 100,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Early / late checkout",
+                        "description": "Flexible checkout when available.",
+                        "decision_value": 40,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Space-available upgrade",
+                        "description": "Room upgrade at check-in when available.",
+                        "decision_value": 50,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    }
+                ]
+            },
+            {
+                "benefit": "$150 Exclusive Tables dining",
+                "value": 150,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "semi_annual",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$150 at Sapphire Reserve Exclusive Tables restaurants. Renews January 1 and July 1."
+            },
+            {
+                "benefit": "$150 StubHub / viagogo",
+                "value": 150,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "semi_annual",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$150 on StubHub.com and viagogo.com. Renews January 1 and July 1. Activation required."
+            },
+            {
+                "benefit": "Apple TV + Apple Music",
+                "value": 300,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Complimentary subscriptions through 2027-06-22 after linking Apple ID in Chase benefits."
+            },
+            {
+                "benefit": "DoorDash monthly promos",
+                "value": 25,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "monthly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$25/month in DoorDash promos ($5 dining + two $10 grocery/retail). Renews on the 1st."
+            },
+            {
+                "benefit": "DashPass membership",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Complimentary DashPass. Activate by 2027-12-31."
+            },
+            {
+                "benefit": "$120 Lyft credit",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Annual Lyft statement credit; also 5x points on Lyft rides."
+            },
+            {
+                "benefit": "$120 Peloton membership",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Statement credit toward Peloton All-Access, App, Guide, or Strength+. Activation required."
+            },
+            {
+                "benefit": "Global Entry / TSA PreCheck / NEXUS",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to $120 application-fee credit. Membership lasts several years and is rarely used; tracked as an annual credit."
+            },
+            {
+                "benefit": "Priority Pass Select",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Unlimited lounge visits for cardmember plus up to two guests."
+            },
+            {
+                "benefit": "Chase Sapphire Lounge by The Club",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Complimentary access with up to two guests."
+            }
+        ],
+        "rates": [
+            {
+                "category": "flight",
+                "channel": "chase_travel",
+                "multiplier": 8,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "chase_travel",
+                "multiplier": 8,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "chase_travel",
+                "multiplier": 3,
+                "vendor": ""
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "direct",
+                "multiplier": 3,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "direct",
+                "multiplier": 3,
+                "vendor": ""
+            }
+        ]
+    },
+    "csp": {
+        "memberships": [],
+        "benefits": [
+            {
+                "benefit": "$100 Chase Travel hotel credit",
+                "value": 100,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "renewal_yearly",
+                "reset_anchor": "card_anniversary",
+                "applies_to": "hotel",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Prepaid Chase Travel hotel bookings. Resets on card anniversary.",
+                "required_channel": "chase_travel",
+                "perks": [
+                    {
+                        "name": "On-property credit",
+                        "description": "On-property credit during the prepaid stay.",
+                        "decision_value": 50,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Early / late checkout",
+                        "description": "Flexible checkout when available.",
+                        "decision_value": 25,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Space-available upgrade",
+                        "description": "Room upgrade at check-in when available.",
+                        "decision_value": 25,
+                        "applies_to": "hotel",
+                        "channel": "chase_travel",
+                        "award_only": false
+                    }
+                ]
+            },
+            {
+                "benefit": "Global Entry / TSA PreCheck / NEXUS",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to $120 application-fee credit. Membership lasts several years and is rarely used; tracked as an annual credit."
+            },
+            {
+                "benefit": "DashPass membership",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Complimentary DashPass. Activate by 2027-12-31."
+            },
+            {
+                "benefit": "DoorDash $10 monthly",
+                "value": 10,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "monthly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$10 off one eligible non-restaurant DoorDash order. Renews on the 1st."
+            }
+        ],
+        "rates": [
+            {
+                "category": "flight",
+                "channel": "chase_travel",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "chase_travel",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "chase_travel",
+                "multiplier": 1,
+                "vendor": ""
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "direct",
+                "multiplier": 1,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "direct",
+                "multiplier": 1,
+                "vendor": ""
+            }
+        ]
+    },
+    "vx": {
+        "memberships": [],
+        "benefits": [
+            {
+                "benefit": "$300 Capital One Travel credit",
+                "value": 300,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "renewal_yearly",
+                "reset_anchor": "card_anniversary",
+                "applies_to": "any",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Automatic credit on Capital One Travel bookings. Resets on card anniversary.",
+                "required_channel": "capital_one_travel"
+            },
+            {
+                "benefit": "10,000 anniversary miles",
+                "value": 100,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "renewal_yearly",
+                "reset_anchor": "card_anniversary",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "10,000 miles posted on each card anniversary (~$100 at 1\u00a2/mile)."
+            },
+            {
+                "benefit": "Global Entry / TSA PreCheck",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to $120 application-fee credit. Membership lasts several years and is rarely used; tracked as an annual credit."
+            },
+            {
+                "benefit": "Priority Pass Select",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Primary cardmember lounge access after enrollment. Guests extra as of 2026."
+            },
+            {
+                "benefit": "Capital One Lounge / Landing",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Primary cardmember access. Present the physical card or in-app lounge pass."
+            }
+        ],
+        "rates": [
+            {
+                "category": "flight",
+                "channel": "capital_one_travel",
+                "multiplier": 10,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "capital_one_travel",
+                "multiplier": 10,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "capital_one_travel",
+                "multiplier": 10,
+                "vendor": ""
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 2,
+                "vendor": ""
+            },
+            {
+                "category": "hotel",
+                "channel": "direct",
+                "multiplier": 2,
+                "vendor": ""
+            },
+            {
+                "category": "car",
+                "channel": "direct",
+                "multiplier": 2,
+                "vendor": ""
+            }
+        ]
+    },
+    "plat": {
+        "memberships": [
+            {
+                "code": "hilton",
+                "tier": "Gold"
+            },
+            {
+                "code": "marriott",
+                "tier": "Gold"
+            }
+        ],
+        "benefits": [
+            {
+                "benefit": "$300 FHR / Hotel Collection",
+                "value": 300,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "semi_annual",
+                "reset_anchor": "calendar",
+                "applies_to": "hotel",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$300 on prepaid Fine Hotels + Resorts or The Hotel Collection via Amex Travel. Renews January 1 and July 1.",
+                "required_channel": "amex_travel",
+                "perks": [
+                    {
+                        "name": "On-property credit",
+                        "description": "On-property credit during the prepaid stay.",
+                        "decision_value": 100,
+                        "applies_to": "hotel",
+                        "channel": "amex_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Early / late checkout",
+                        "description": "Flexible checkout when available.",
+                        "decision_value": 40,
+                        "applies_to": "hotel",
+                        "channel": "amex_travel",
+                        "award_only": false
+                    },
+                    {
+                        "name": "Space-available upgrade",
+                        "description": "Room upgrade at check-in when available.",
+                        "decision_value": 50,
+                        "applies_to": "hotel",
+                        "channel": "amex_travel",
+                        "award_only": false
+                    }
+                ]
+            },
+            {
+                "benefit": "$100 Resy credit",
+                "value": 100,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "quarterly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$100 at eligible Resy restaurants. Renews January 1, April 1, July 1, and October 1. Enrollment required."
+            },
+            {
+                "benefit": "$25 digital entertainment",
+                "value": 25,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "monthly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$25/month for Disney+, Hulu, Paramount+, Peacock, YouTube Premium/TV, NYT, WSJ, ESPN. Enrollment required. Renews on the 1st."
+            },
+            {
+                "benefit": "$300 Equinox credit",
+                "value": 300,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Equinox club or Equinox+ charged to the Platinum. Enrollment required."
+            },
+            {
+                "benefit": "$75 lululemon credit",
+                "value": 75,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "quarterly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$75 at U.S. lululemon stores (not outlets) and lululemon.com. Renews January 1, April 1, July 1, and October 1. Enrollment required."
+            },
+            {
+                "benefit": "$219 CLEAR+",
+                "value": 219,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "CLEAR+ membership fee when charged to the Platinum."
+            },
+            {
+                "benefit": "$15 Uber Cash",
+                "value": 15,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "monthly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$15 Uber Cash each month ($35 in December) after adding the Platinum to Uber."
+            },
+            {
+                "benefit": "$200 airline fee credit",
+                "value": 200,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Incidentals (bags, seats, onboard) on one selected airline per calendar year."
+            },
+            {
+                "benefit": "$200 Oura credit",
+                "value": 200,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Eligible Oura Ring hardware or membership. Enrollment required."
+            },
+            {
+                "benefit": "Walmart+ membership",
+                "value": 12.95,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "monthly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$12.95/month Walmart+ (not annual plans) when charged to the Platinum. Renews on the 1st."
+            },
+            {
+                "benefit": "$120 Uber One",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Auto-renewing Uber One membership charged to the Platinum."
+            },
+            {
+                "benefit": "Centurion Lounge",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Global Lounge Collection access including Centurion Lounges."
+            },
+            {
+                "benefit": "Priority Pass Select",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Amex Global Lounge Collection Priority Pass membership."
+            },
+            {
+                "benefit": "Delta Sky Club (when flying Delta)",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Sky Club access with a same-day Delta boarding pass."
+            }
+        ],
+        "rates": [
+            {
+                "category": "flight",
+                "channel": "amex_travel",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 5,
+                "vendor": ""
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 1,
+                "vendor": "expedia"
+            },
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 1,
+                "vendor": "priceline"
+            }
+        ]
+    },
+    "green": {
+        "memberships": [],
+        "benefits": [
+            {
+                "benefit": "$219 CLEAR+",
+                "value": 219,
+                "value_kind": "currency",
+                "tracking_mode": "auto",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "CLEAR+ membership fee when charged to the Green Card."
+            }
+        ]
+    },
+    "ba": {
+        "memberships": [
+            {
+                "code": "ba",
+                "tier": null
+            }
+        ],
+        "benefits": [
+            {
+                "benefit": "$600 reward-flight credits",
+                "value": 600,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to three statement credits per year: $100 Economy/Premium Economy or $200 Business/First when Avios taxes/fees post to the card.",
+                "program": "ba",
+                "allowed_vendors": ["british airways", "ba"],
+                "quantity_total": 3,
+                "award_only": true,
+                "max_apply_per_use": {
+                    "economy": 100,
+                    "premium_economy": 100,
+                    "business": 200,
+                    "first": 200
+                }
+            },
+            {
+                "benefit": "Travel Together Ticket",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "After $30,000 calendar-year spend: companion on a BA Avios award pays taxes/fees only, or 50% off a solo award.",
+                "program": "ba"
+            }
+        ],
+        "card_perks": [
+            {
+                "name": "10% off BA flights from the US",
+                "description": "Discount on British Airways flights originating in the United States.",
+                "decision_value": 40,
+                "applies_to": "flight",
+                "award_only": false
+            }
+        ]
+    },
+    "aerlingus": {
+        "memberships": [
+            {
+                "code": "aerlingus",
+                "tier": null
+            }
+        ],
+        "benefits": [
+            {
+                "benefit": "Economy companion ticket",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "After $30,000 calendar-year spend: economy companion on an Aer Lingus US\u2013Ireland flight. Valid 12 months.",
+                "location_country": "Ireland",
+                "program": "aerlingus"
+            },
+            {
+                "benefit": "Aer Lingus priority boarding",
+                "value": 0,
+                "value_kind": "flag",
+                "tracking_mode": "ignore",
+                "reset_period": "no_reset",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Primary cardmember and authorized users on Aer Lingus-operated US\u2013Ireland flights. Show the card at the gate.",
+                "location_country": "Ireland",
+                "program": "aerlingus"
+            }
+        ]
+    },
+    "aeroplan": {
+        "memberships": [
+            {
+                "code": "aeroplan",
+                "tier": "25K"
+            }
+        ],
+        "benefits": [
+            {
+                "benefit": "$50 Air Canada credit",
+                "value": 50,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "semi_annual",
+                "reset_anchor": "calendar",
+                "applies_to": "flight",
+                "is_useable": true,
+                "is_used": false,
+                "description": "$50 on direct Air Canada purchases. Renews January 1 and July 1.",
+                "program": "aeroplan",
+                "required_channel": "direct",
+                "allowed_vendors": ["air canada", "aeroplan"]
+            },
+            {
+                "benefit": "Global Entry / TSA PreCheck / NEXUS",
+                "value": 120,
+                "value_kind": "currency",
+                "tracking_mode": "track",
+                "reset_period": "calendar_yearly",
+                "reset_anchor": "calendar",
+                "applies_to": "other",
+                "is_useable": true,
+                "is_used": false,
+                "description": "Up to $120 application-fee credit. Membership lasts several years and is rarely used; tracked as an annual credit."
+            }
+        ],
+        "rates": [
+            {
+                "category": "flight",
+                "channel": "direct",
+                "multiplier": 3,
+                "vendor": "air canada"
+            }
+        ],
+        "card_perks": [
+            {
+                "name": "15% off Air Canada awards",
+                "description": "Discount on eligible award itineraries that include an Air Canada segment (FLY15OFF).",
+                "decision_value": 0,
+                "applies_to": "flight",
+                "award_only": true
+            },
+            {
+                "name": "Free first checked bag",
+                "description": "First checked bag for the cardmember plus up to eight companions on the same Air Canada reservation.",
+                "decision_value": 35,
+                "applies_to": "flight",
+                "award_only": false
+            },
+            {
+                "name": "10% extra transfer bonus",
+                "description": "Extra 10% on transfers that already have a live bonus.",
+                "decision_value": 0,
+                "applies_to": "flight",
+                "award_only": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,5 @@
+feature: import-chat
+run-id: 20260919T085000Z
+entry: GET http://127.0.0.1:2080/admin/ai-imported-conversations
+action: Header action Import chat; title Convention verify chat; pasted User/Assistant Pocketnest transcript; Submit
+result: Redirected to view /admin/ai-imported-conversations/9; notification Import queued; status ready; 2 messages; 1 RAG chunk

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Payment;
+use App\Services\TravelWallet\BenefitRefresher;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,6 +28,8 @@ class DailyUpkeep implements ShouldQueue
             ->each(fn (Payment $payment) => $payment->update(['is_paid' => true]));
 
         Artisan::call('fx:refresh');
+
+        app(BenefitRefresher::class)->refreshAll();
 
         Artisan::call('app:simple-fin-intake', ['--start-date' => now()->subDays(14)->toDateString()]);
 

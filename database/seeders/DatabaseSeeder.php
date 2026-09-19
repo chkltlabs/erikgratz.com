@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-//        $this->call(UserSeeder::class);
-//        $this->call(BlogPostSeeder::class);
-//        $this->callSilent(ContactSeeder::class);
-//        Activity::factory(4)->create();
+        // $this->call(UserSeeder::class);
+        // $this->call(BlogPostSeeder::class);
+        // $this->callSilent(ContactSeeder::class);
+        // Activity::factory(4)->create();
         $this->call(ActivitySpendSeeder::class);
+        $this->call(LocalCardsSeeder::class);
+        $this->call(TravelWalletCatalogSeeder::class);
         $this->call(SimpleFinDataSeeder::class);
         // $this->call(FriendSeeder::class);
         // $this->call(FriendPlaceRecommendationSeeder::class);

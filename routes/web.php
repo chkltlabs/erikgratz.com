@@ -15,6 +15,7 @@ Route::get('/', fn () => redirect('/home'));
 Volt::route('/home', 'page.home')->name('home');
 Volt::route('/work', 'page.work');
 Volt::route('/experience', 'page.experience');
+Volt::route('/fit', 'page.fit')->middleware('throttle:20,1')->name('fit');
 Volt::route('/photo', 'page.photo');
 Volt::route('/contact', 'page.contact')->name('contact');
 Volt::route('/portfolio', 'page.portfolio');

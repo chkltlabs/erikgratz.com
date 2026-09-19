@@ -2,8 +2,9 @@
 #version: '3'
 services:
     laravel.test:
-        # extra_hosts:
-        #     - 'host.docker.internal:192.168.2.193'
+        # Reach Ollama (or other host services) from Sail on Linux.
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         build:
             context: ./docker/8.4
             dockerfile: Dockerfile
@@ -28,6 +29,7 @@ services:
             - sail
         depends_on:
             - mysql
+            - pgsql
             - redis
 #            - selenium
     mysql:
@@ -51,6 +53,24 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
+    pgsql:
+        image: 'pgvector/pgvector:pg16'
+        ports:
+            - '${FORWARD_PG_PORT:-5432}:5432'
+        environment:
+            PGPASSWORD: '${PG_PASSWORD:-secret}'
+            POSTGRES_DB: '${PG_DATABASE}'
+            POSTGRES_USER: '${PG_USERNAME}'
+            POSTGRES_PASSWORD: '${PG_PASSWORD:-secret}'
+        volumes:
+            - 'sailpgsql:/var/lib/postgresql/data'
+            - './docker/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-d", "${PG_DATABASE}", "-U", "${PG_USERNAME}"]
+            retries: 3
+            timeout: 5s
     redis:
         image: 'redis:alpine'
         ports:
@@ -72,6 +92,8 @@ networks:
         driver: bridge
 volumes:
     sailmysql:
+        driver: local
+    sailpgsql:
         driver: local
     sailredis:
         driver: local

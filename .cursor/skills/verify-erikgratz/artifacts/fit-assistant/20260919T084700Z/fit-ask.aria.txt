@@ -1,0 +1,8 @@
+url: http://127.0.0.1:2080/fit
+heading: Fit
+nav includes: Home, Work, Experience, Fit, Photo, Portfolio, Contact
+form: JOB DESCRIPTION (optional), YOUR QUESTION (required), Ask, Clear
+after Ask:
+  heading: What did you build at Pocketnest?
+  body: At Pocketnest, I led backend development from MVP to acquisition...
+  roles mentioned: Pocketnest

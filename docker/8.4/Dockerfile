@@ -1,5 +1,5 @@
 # Minimal Laravel dev runtime vs upstream Sail (docker/8.4 layout kept for parity with start-container / supervisor).
-# Omits: Playwright system deps, Mongo/PG stacks, extra JS runtimes (pnpm/bun/yarn installers), FFmpeg, etc.
+# Omits: Playwright system deps, Mongo, extra JS runtimes (pnpm/bun/yarn installers), FFmpeg, etc.
 
 FROM php:8.4-cli-bookworm
 
@@ -38,6 +38,8 @@ RUN apt-get update \
         supervisor \
         unzip \
         default-mysql-client \
+        libpq-dev \
+        postgresql-client \
         xz-utils \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" \
@@ -46,6 +48,7 @@ RUN apt-get update \
         bcmath \
         pcntl \
         pdo_mysql \
+        pdo_pgsql \
         pdo_sqlite \
         zip \
     && pecl install redis pcov \

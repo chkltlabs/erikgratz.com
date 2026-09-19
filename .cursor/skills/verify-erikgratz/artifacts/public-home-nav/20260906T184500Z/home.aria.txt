@@ -1,0 +1,3 @@
+Desktop 1280px snapshot at /home then navigated to /experience via nav link "Experience".
+Nav present: Home, Work, Experience, Fit, Photo, Portfolio, Contact.
+Home showed Erik V Gratz and Pocketnest. After click, URL http://127.0.0.1:2080/experience with Experience heading and Pocketnest role card.
