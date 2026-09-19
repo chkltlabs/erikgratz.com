@@ -9,10 +9,11 @@
         </x-slot>
 
         <x-slot name="description">
-            Activities with saved coordinates. Nested vacations draw outbound, continue-between-stops, and return-to-base lines. Route color is the destination arrival method.
+            Activities with saved coordinates, matching the table filters above. Nested vacations draw outbound, continue-between-stops, and return-to-base lines. Route color is the destination arrival method.
         </x-slot>
 
         <div
+            wire:key="activity-map-{{ $mapKey }}"
             wire:ignore
             class="space-y-3"
             x-data="activityTravelMap(@js([
@@ -24,7 +25,7 @@
         >
             @if (count($points) === 0)
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    No activities have locations yet. Edit an activity and search for a city to plot it here.
+                    No matching activities have locations. Adjust the table filters, or edit an activity and search for a city to plot it here.
                 </p>
             @else
                 <div
