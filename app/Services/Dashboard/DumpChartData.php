@@ -18,12 +18,13 @@ class DumpChartData
 
     public const BENEFIT_USAGE_CACHE = 'stateDumpBenefitUsageCharts';
 
-    public const REDEMPTIONS_CACHE = 'stateDumpRedemptionCharts';
+    public const REDEMPTIONS_CACHE = 'stateDumpRedemptionCharts:paid-on';
 
     public static function forgetCaches(): void
     {
         Cache::forget(self::PAST_STATS_CACHE);
         Cache::forget(self::BENEFIT_USAGE_CACHE);
+        Cache::forget('stateDumpRedemptionCharts');
         Cache::forget(self::REDEMPTIONS_CACHE);
     }
 
@@ -107,10 +108,15 @@ class DumpChartData
             $moneySaved = [];
             $centsPerPoint = [];
             $breakdown = [];
+            $liveRedemptions = self::liveRedemptionsForBackfill();
 
             foreach (self::dumpsInWindow() as $dump) {
                 $timestamp = $dump->created_at->timestamp;
-                $totals = self::redemptionTotals($dump->data[PointRedemption::class] ?? []);
+                $data = $dump->data ?? [];
+                $rows = array_key_exists(PointRedemption::class, $data)
+                    ? ($data[PointRedemption::class] ?? [])
+                    : self::redemptionsPaidOnOrBefore($liveRedemptions, $dump->created_at);
+                $totals = self::redemptionTotals($rows);
                 $saved = $totals['cash_value'] - $totals['money_spent'];
                 $cpp = $totals['points_spent'] > 0
                     ? ($saved / $totals['points_spent']) * 100
@@ -242,6 +248,40 @@ class DumpChartData
         }
 
         return $captured;
+    }
+
+    /**
+     * @return Collection<int, PointRedemption>
+     */
+    protected static function liveRedemptionsForBackfill(): Collection
+    {
+        return PointRedemption::query()
+            ->get(['id', 'paid_on', 'created_at', 'cash_value', 'money_spent', 'points_spent']);
+    }
+
+    /**
+     * @param  Collection<int, PointRedemption>  $redemptions
+     * @return list<array<string, mixed>>
+     */
+    protected static function redemptionsPaidOnOrBefore(Collection $redemptions, Carbon $asOf): array
+    {
+        return $redemptions
+            ->filter(function (PointRedemption $redemption) use ($asOf): bool {
+                $on = filled($redemption->paid_on)
+                    ? Carbon::parse((string) $redemption->paid_on)->startOfDay()
+                    : $redemption->created_at->copy();
+
+                return $on->lte($asOf);
+            })
+            ->map(fn (PointRedemption $redemption): array => [
+                'id' => $redemption->id,
+                'cash_value' => (float) $redemption->cash_value,
+                'money_spent' => (float) $redemption->money_spent,
+                'points_spent' => (float) $redemption->points_spent,
+                'paid_on' => $redemption->paid_on,
+            ])
+            ->values()
+            ->all();
     }
 
     /**

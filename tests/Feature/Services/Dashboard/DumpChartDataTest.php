@@ -142,6 +142,69 @@ class DumpChartDataTest extends TestCase
     }
 
     #[Test]
+    public function redemption_value_backfills_missing_dump_rows_from_paid_on(): void
+    {
+        PointRedemption::factory()->create([
+            'paid_on' => '2026-03-01',
+            'points_spent' => 40000,
+            'money_spent' => 50,
+            'cash_value' => 600,
+        ]);
+        PointRedemption::factory()->create([
+            'paid_on' => '2026-04-10',
+            'points_spent' => 20000,
+            'money_spent' => 70,
+            'cash_value' => 300,
+        ]);
+        PointRedemption::factory()->create([
+            'paid_on' => '2026-05-20',
+            'points_spent' => 99999,
+            'money_spent' => 999,
+            'cash_value' => 9999,
+        ]);
+
+        $march = $this->dumpAt('2026-03-15 23:50:00', []);
+        $april = $this->dumpAt('2026-04-15 23:50:00', []);
+
+        $chart = DumpChartData::redemptionValue();
+
+        $this->assertSame(600.0, $chart['cash_value'][$march->created_at->timestamp]);
+        $this->assertSame(50.0, $chart['money_spent'][$march->created_at->timestamp]);
+        $this->assertSame(40000.0, $chart['points_spent'][$march->created_at->timestamp]);
+
+        $this->assertSame(900.0, $chart['cash_value'][$april->created_at->timestamp]);
+        $this->assertSame(120.0, $chart['money_spent'][$april->created_at->timestamp]);
+        $this->assertSame(60000.0, $chart['points_spent'][$april->created_at->timestamp]);
+        $this->assertSame('60,000 pts / $780.00 saved = 1.30¢/pt', $chart['breakdown'][1]['label']);
+    }
+
+    #[Test]
+    public function redemption_value_uses_dump_snapshot_when_present(): void
+    {
+        PointRedemption::factory()->create([
+            'paid_on' => '2026-03-01',
+            'points_spent' => 40000,
+            'money_spent' => 50,
+            'cash_value' => 600,
+        ]);
+
+        $dump = $this->dumpAt('2026-04-01 23:50:00', [
+            PointRedemption::class => [[
+                'id' => 1,
+                'points_spent' => 1000,
+                'money_spent' => 10,
+                'cash_value' => 20,
+            ]],
+        ]);
+
+        $chart = DumpChartData::redemptionValue();
+
+        $this->assertSame(20.0, $chart['cash_value'][$dump->created_at->timestamp]);
+        $this->assertSame(10.0, $chart['money_spent'][$dump->created_at->timestamp]);
+        $this->assertSame(1000.0, $chart['points_spent'][$dump->created_at->timestamp]);
+    }
+
+    #[Test]
     public function annual_fees_through_counts_open_and_anniversaries(): void
     {
         $this->assertSame(550.0, DumpChartData::annualFeesThrough('2024-03-15', 550, Carbon::parse('2025-03-14')));
