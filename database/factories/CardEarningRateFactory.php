@@ -19,7 +19,7 @@ class CardEarningRateFactory extends Factory
             'card_id' => Card::factory(),
             'category' => BookingCategory::Hotel,
             'channel' => BookingChannel::Direct,
-            'vendor' => '',
+            'vendor' => null,
             'multiplier' => 3,
         ];
     }

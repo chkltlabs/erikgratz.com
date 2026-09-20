@@ -150,12 +150,12 @@ class HeldCardBenefitsSeederTest extends TestCase
             ->get();
         $this->assertTrue(
             $platRates->contains(
-                fn (CardEarningRate $rate): bool => $rate->channel->is(BookingChannel::AmexTravel) && $rate->multiplier === 5.0 && $rate->vendor === ''
+                fn (CardEarningRate $rate): bool => $rate->channel->is(BookingChannel::AmexTravel) && $rate->multiplier === 5.0 && $rate->vendor === null
             )
         );
         $this->assertTrue(
             $platRates->contains(
-                fn (CardEarningRate $rate): bool => $rate->channel->is(BookingChannel::Direct) && $rate->multiplier === 5.0 && $rate->vendor === ''
+                fn (CardEarningRate $rate): bool => $rate->channel->is(BookingChannel::Direct) && $rate->multiplier === 5.0 && $rate->vendor === null
             )
         );
         $this->assertTrue(

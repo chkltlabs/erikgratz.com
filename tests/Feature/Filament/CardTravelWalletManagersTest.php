@@ -85,6 +85,31 @@ class CardTravelWalletManagersTest extends TestCase
     }
 
     #[Test]
+    public function earning_rates_relation_manager_stores_a_blank_vendor_as_null(): void
+    {
+        $card = Card::factory()->create();
+        $rate = CardEarningRate::factory()->create([
+            'card_id' => $card->id,
+            'vendor' => 'Hyatt',
+            'multiplier' => 4,
+        ]);
+
+        Livewire::test(EarningRatesRelationManager::class, [
+            'ownerRecord' => $card,
+            'pageClass' => EditCard::class,
+        ])
+            ->callTableAction('edit', $rate, data: [
+                'category' => BookingCategory::Hotel,
+                'channel' => BookingChannel::Direct,
+                'vendor' => null,
+                'multiplier' => 4,
+            ])
+            ->assertHasNoTableActionErrors();
+
+        $this->assertNull($rate->fresh()->vendor);
+    }
+
+    #[Test]
     public function fee_roi_widget_shows_captured_value_against_the_annual_fee(): void
     {
         $card = Card::factory()->create([
