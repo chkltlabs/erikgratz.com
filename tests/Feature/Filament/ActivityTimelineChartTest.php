@@ -142,11 +142,12 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertNotContains('Expired SUB', $paidNames);
         $this->assertNotContains('Satisfied SUB', $paidNames);
         $this->assertSame(['Open SUB'], $cardPoints->pluck('name')->all());
-        $this->assertSame(['Open SUB'], $cardPoints->pluck('x')->all());
+        $this->assertSame(['cards'], $cardPoints->pluck('x')->all());
         $this->assertSame(
             [ActivityTimelineChart::darkenHex('#126bc5')],
             $cardPoints->pluck('fillColor')->all(),
         );
+        $this->assertTrue($cardPoints->first()['showLabel']);
         $this->assertTrue($options['yaxis']['labels']['show']);
         $this->assertApexRangeBarSeriesAreJsonArrays($options);
     }
@@ -172,6 +173,9 @@ class ActivityTimelineChartTest extends TestCase
 
         $this->assertCount(2, $cardPoints);
         $this->assertSame(['Halfway SUB', 'Halfway SUB'], $cardPoints->pluck('name')->all());
+        $this->assertSame(['cards', 'cards'], $cardPoints->pluck('x')->all());
+        $this->assertTrue($cardPoints[0]['showLabel']);
+        $this->assertFalse($cardPoints[1]['showLabel']);
         $this->assertSame('#126bc5', $cardPoints[0]['fillColor']);
         $this->assertSame(ActivityTimelineChart::darkenHex('#126bc5'), $cardPoints[1]['fillColor']);
         $this->assertSame($cardPoints[0]['y'][1], $cardPoints[1]['y'][0]);
@@ -202,7 +206,26 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame(Activity::class, $formatted[0]['class']);
         $this->assertIsNumeric($formatted[0]['y'][0]);
         $this->assertIsNumeric($formatted[0]['y'][1]);
+        $this->assertSame('#32cd32', $formatted[0]['fillColor']);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#32cd32'), $formatted[0]['unpaidFillColor']);
         $this->assertStringContainsString((string) $activity->id, $formatted[0]['link']);
+    }
+
+    #[Test]
+    public function format_for_data_array_uses_activity_color_when_set(): void
+    {
+        $activity = Activity::factory()->create([
+            'name' => 'Colored Activity',
+            'start_date' => '2026-01-01',
+            'end_date' => '2026-01-10',
+            'color' => '#ff9900',
+        ]);
+
+        $method = new ReflectionMethod(ActivityTimelineChart::class, 'formatForDataArray');
+        $formatted = $method->invoke(null, new Collection([$activity]));
+
+        $this->assertSame('#ff9900', $formatted[0]['fillColor']);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#ff9900'), $formatted[0]['unpaidFillColor']);
     }
 
     #[Test]
@@ -223,7 +246,7 @@ class ActivityTimelineChartTest extends TestCase
 
         $this->assertTrue(array_is_list($formatted));
         $this->assertCount(1, $formatted);
-        $this->assertSame('Travel Card', $formatted[0]['x']);
+        $this->assertSame('cards', $formatted[0]['x']);
         $this->assertSame('Travel Card', $formatted[0]['name']);
         $this->assertSame('#ff9900', $formatted[0]['fillColor']);
         $this->assertSame(ActivityTimelineChart::darkenHex('#ff9900'), $formatted[0]['unpaidFillColor']);
@@ -242,7 +265,7 @@ class ActivityTimelineChartTest extends TestCase
 
         $extraJs = (new ReflectionMethod($widget, 'extraJsOptions'))->invoke($widget);
         $this->assertInstanceOf(RawJs::class, $extraJs);
-        $this->assertStringContainsString('seriesIndex === 2', (string) $extraJs);
+        $this->assertStringContainsString('data.showLabel', (string) $extraJs);
 
         $formSchema = (new ReflectionMethod($widget, 'getFormSchema'))->invoke($widget);
         $this->assertSame([], $formSchema);

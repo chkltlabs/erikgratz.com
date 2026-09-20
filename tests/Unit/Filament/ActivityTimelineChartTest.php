@@ -131,8 +131,10 @@ class ActivityTimelineChartTest extends TestCase
 
         $this->assertSame(50, $paid[0]['y'][1]);
         $this->assertSame(0, $paid[0]['y'][0]);
+        $this->assertTrue($paid[0]['showLabel']);
         $this->assertSame(10000050, $unpaid[0]['y'][0]);
         $this->assertSame(100, $unpaid[0]['y'][1]);
+        $this->assertFalse($unpaid[0]['showLabel']);
     }
 
     #[Test]
@@ -149,6 +151,7 @@ class ActivityTimelineChartTest extends TestCase
         ]);
 
         $this->assertSame(100, $paidFullyPaid[0]['y'][1]);
+        $this->assertTrue($paidFullyPaid[0]['showLabel']);
         $this->assertSame([], $unpaidFullyPaid);
         $this->assertTrue(array_is_list($unpaidFullyPaid));
 
@@ -165,6 +168,24 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame([], $paidFullyUnpaid);
         $this->assertTrue(array_is_list($paidFullyUnpaid));
         $this->assertNotSame([], $unpaidFullyUnpaid[0]);
+        $this->assertTrue($unpaidFullyUnpaid[0]['showLabel']);
+    }
+
+    #[Test]
+    public function split_paid_unpaid_puts_name_on_the_larger_unpaid_half(): void
+    {
+        [$paid, $unpaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [0, 100],
+                'name' => 'mostly_unpaid',
+                'paid' => 25.0,
+                'unpaid' => 75.0,
+            ],
+        ]);
+
+        $this->assertFalse($paid[0]['showLabel']);
+        $this->assertTrue($unpaid[0]['showLabel']);
     }
 
     #[Test]
@@ -232,9 +253,11 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame(0, $completed[0]['y'][0]);
         $this->assertSame(50, $completed[0]['y'][1]);
         $this->assertSame('#126bc5', $completed[0]['fillColor']);
+        $this->assertTrue($completed[0]['showLabel']);
         $this->assertSame(50, $remaining[0]['y'][0]);
         $this->assertSame(100, $remaining[0]['y'][1]);
         $this->assertSame(ActivityTimelineChart::darkenHex('#126bc5'), $remaining[0]['fillColor']);
+        $this->assertFalse($remaining[0]['showLabel']);
     }
 
     #[Test]
@@ -254,6 +277,7 @@ class ActivityTimelineChartTest extends TestCase
 
         $this->assertSame([], $completed);
         $this->assertCount(1, $remaining);
+        $this->assertTrue($remaining[0]['showLabel']);
         $this->assertSame(ActivityTimelineChart::darkenHex('#ff9900'), $remaining[0]['fillColor']);
     }
 

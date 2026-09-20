@@ -45,8 +45,12 @@ class ActivityTest extends TestCase
         $this->assertSame(10, (int) $activity->total_days);
         $this->assertArrayHasKey('Jan', $activity->days_by_month);
         $this->assertTrue($activity->hasCoordinates());
+        $this->assertNull($activity->color);
         $this->assertTrue($activity->spends()->exists());
         $this->assertInstanceOf(HasMany::class, $activity->redemptions());
+
+        $activity->update(['color' => '#32cd32']);
+        $this->assertSame('#32cd32', $activity->fresh()->color);
     }
 
     #[Test]

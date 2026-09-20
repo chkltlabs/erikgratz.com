@@ -23,6 +23,7 @@ class Activity extends Model
         'latitude',
         'longitude',
         'travel_method',
+        'color',
     ];
 
     protected $casts = [

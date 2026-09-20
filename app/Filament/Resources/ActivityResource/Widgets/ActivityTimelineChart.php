@@ -20,6 +20,10 @@ class ActivityTimelineChart extends ApexChartWidget
 {
     private const MAX_ROWS = 11;
 
+    public const DEFAULT_PAID_COLOR = '#32cd32';
+
+    public const CARDS_AXIS_LABEL = 'cards';
+
     /**
      * Chart Id
      */
@@ -52,7 +56,7 @@ class ActivityTimelineChart extends ApexChartWidget
             $remaining = max(0.0, $requirement - $completed);
 
             return [
-                'x' => $model->name,
+                'x' => self::CARDS_AXIS_LABEL,
                 'y' => [
                     Carbon::parse($model->date_opened)->valueOf(),
                     Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
@@ -76,24 +80,30 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function formatForDataArray(Collection $models): array
     {
-        return $models->values()->map(fn ($model) => [
-            'x' => null,
-            'y' => [
-                Carbon::parse($model->start_date ?? $model->spend_for)->valueOf(),
-                Carbon::parse($model->end_date ?? $model->spend_for)->valueOf(),
-            ],
-            'name' => $model->name,
-            'amount' => $model->total_spend ?? $model->amount,
-            'class' => get_class($model),
-            'lo' => $model->start_date ?? $model->spend_for,
-            'hi' => $model->end_date ?? $model->spend_for,
-            'paid' => $model->paid,
-            'unpaid' => $model->unpaid,
-            'total_spend' => $model->total_spend,
-            'link' => ActivityResource::getUrl('edit', [
-                'record' => $model,
-            ]),
-        ])->all();
+        return $models->values()->map(function ($model) {
+            $color = $model->color ?: self::DEFAULT_PAID_COLOR;
+
+            return [
+                'x' => null,
+                'y' => [
+                    Carbon::parse($model->start_date ?? $model->spend_for)->valueOf(),
+                    Carbon::parse($model->end_date ?? $model->spend_for)->valueOf(),
+                ],
+                'name' => $model->name,
+                'amount' => $model->total_spend ?? $model->amount,
+                'class' => get_class($model),
+                'lo' => $model->start_date ?? $model->spend_for,
+                'hi' => $model->end_date ?? $model->spend_for,
+                'paid' => $model->paid,
+                'unpaid' => $model->unpaid,
+                'total_spend' => $model->total_spend,
+                'fillColor' => $color,
+                'unpaidFillColor' => self::darkenHex($color),
+                'link' => ActivityResource::getUrl('edit', [
+                    'record' => $model,
+                ]),
+            ];
+        })->all();
     }
 
     protected static function setX(array $data): array
@@ -212,29 +222,39 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function splitPaidUnpaid(array $data): array
     {
-        $dataCopy = $data;
+        $paid = [];
+        $unpaid = [];
+
+        foreach ($data as $entry) {
+            $split = self::calcSplit($entry);
+            $start = $entry['y'][0];
+            $end = $entry['y'][1];
+            $color = $entry['fillColor'] ?? self::DEFAULT_PAID_COLOR;
+            $dark = $entry['unpaidFillColor'] ?? self::darkenHex((string) $color);
+            $paidExists = $split > $start;
+            $unpaidExists = $split < $end;
+            $labelOnPaid = $paidExists && (! $unpaidExists || self::paidWinsLabel($entry));
+
+            if ($paidExists) {
+                $done = $entry;
+                $done['y'] = [$start, $split];
+                $done['fillColor'] = $color;
+                $done['showLabel'] = $labelOnPaid;
+                $paid[] = $done;
+            }
+
+            if ($unpaidExists) {
+                $rest = $entry;
+                $rest['y'] = [$split + 10000000, $end];
+                $rest['fillColor'] = $dark;
+                $rest['showLabel'] = ! $labelOnPaid;
+                $unpaid[] = $rest;
+            }
+        }
 
         return [
-            self::asApexSeriesData(array_map(function ($entry) {
-                $entry['y'][1] = self::calcSplit($entry);
-
-                if ($entry['y'][1] === $entry['y'][0]) {
-                    return [];
-                }
-
-                return $entry;
-            }, $data)),
-            self::asApexSeriesData(array_map(function ($entry) {
-                $entry['y'][0] = self::calcSplit($entry);
-
-                if ($entry['y'][1] === $entry['y'][0]) {
-                    return [];
-                }
-
-                $entry['y'][0] += 10000000; // avoids visual collisions, 166.667 minutes
-
-                return $entry;
-            }, $dataCopy)),
+            self::asApexSeriesData($paid),
+            self::asApexSeriesData($unpaid),
         ];
     }
 
@@ -256,18 +276,23 @@ class ActivityTimelineChart extends ApexChartWidget
             $end = $entry['y'][1];
             $color = $entry['fillColor'] ?? '#6b7280';
             $dark = $entry['unpaidFillColor'] ?? self::darkenHex((string) $color);
+            $paidExists = $split > $start;
+            $unpaidExists = $split < $end;
+            $labelOnPaid = $paidExists && (! $unpaidExists || self::paidWinsLabel($entry));
 
-            if ($split > $start) {
+            if ($paidExists) {
                 $done = $entry;
                 $done['y'] = [$start, $split];
                 $done['fillColor'] = $color;
+                $done['showLabel'] = $labelOnPaid;
                 $completed[] = $done;
             }
 
-            if ($split < $end) {
+            if ($unpaidExists) {
                 $rest = $entry;
                 $rest['y'] = [$split, $end];
                 $rest['fillColor'] = $dark;
+                $rest['showLabel'] = ! $labelOnPaid;
                 $remaining[] = $rest;
             }
         }
@@ -293,6 +318,16 @@ class ActivityTimelineChart extends ApexChartWidget
         $blue = (int) round(hexdec(substr($hex, 4, 2)) * $factor);
 
         return sprintf('#%02x%02x%02x', min(255, $red), min(255, $green), min(255, $blue));
+    }
+
+    /**
+     * Paid half gets the name on a tie so only one label is drawn.
+     *
+     * @param  array<string, mixed>  $entry
+     */
+    private static function paidWinsLabel(array $entry): bool
+    {
+        return (float) ($entry['paid'] ?? 0) >= (float) ($entry['unpaid'] ?? 0);
     }
 
     /**
@@ -400,8 +435,8 @@ class ActivityTimelineChart extends ApexChartWidget
                 ],
             ],
             'colors' => [
-                '#32cd32',
-                '#b22222',
+                self::DEFAULT_PAID_COLOR,
+                self::darkenHex(self::DEFAULT_PAID_COLOR),
             ],
             'plotOptions' => [
                 'bar' => [
@@ -430,11 +465,8 @@ class ActivityTimelineChart extends ApexChartWidget
             dataLabels: {
                 enabled: true,
                 formatter: function (val, opt) {
-                    if (opt.seriesIndex === 2) {
-                        return '';
-                    }
                     let data = opt.w.globals.initialSeries[opt.seriesIndex].data[opt.dataPointIndex];
-                    return data && data.name ? data.name : '';
+                    return data && data.showLabel && data.name ? data.name : '';
                 },
             },
             yaxis: {
