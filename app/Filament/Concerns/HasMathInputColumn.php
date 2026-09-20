@@ -12,7 +12,7 @@ trait HasMathInputColumn
     {
         return TextInputColumn::make($field)
             ->width('9rem')
-            ->extraAttributes(['class' => '!min-w-0'])
+            ->extraAttributes(['class' => '!min-w-6'])
             ->rules([new ValidMathExpression])
             ->updateStateUsing(function ($record, $state) use ($field, $asInteger) {
                 $resolved = MathExpression::resolve($state);
