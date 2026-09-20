@@ -12,10 +12,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Cache;
 
 class Card extends Model
 {
     use BelongsToUser, GetsDumped, HasFactory;
+
+    public const SUB_DUMP_SPEND_CACHE_PREFIX = 'card-sub-dump-isb-spend:';
 
     protected $fillable = [
         'name', 'user_id', 'limit',
@@ -92,14 +95,107 @@ class Card extends Model
     public function hasSatisfiedSub(): Attribute
     {
         return Attribute::make(
-            get: fn (): bool => now()->gt($this->points_bonus_deadline) ||
-                $this->balance
-                + $this->pending
-                + $this->planned_payments
-                    ->where('paid_on', '<=', $this->points_bonus_deadline)
-                    ->sum('amount')
-                > $this->points_bonus_spend,
+            get: function (): bool {
+                if (now()->gt($this->points_bonus_deadline)) {
+                    return true;
+                }
+
+                $requirement = (float) $this->points_bonus_spend;
+
+                return $requirement > 0 && $this->subSpendProgress() >= $requirement;
+            },
         );
+    }
+
+    /**
+     * SUB spend: ISB payment events from StateDumps, current outstanding since the last
+     * payoff, and planned charges still due inside the bonus window.
+     */
+    public function subSpendProgress(): float
+    {
+        return $this->postedSubSpendFromDumpsAndCurrent()
+            + $this->plannedSubSpend();
+    }
+
+    /**
+     * Cached dump spend is completed ISB payoffs only. Live balance+pending is spend
+     * since the last payoff and is not read from dumps.
+     */
+    private function postedSubSpendFromDumpsAndCurrent(): float
+    {
+        return $this->cachedDumpSubSpend()
+            + (float) $this->balance
+            + (float) $this->pending;
+    }
+
+    private function cachedDumpSubSpend(): float
+    {
+        return (float) Cache::remember(
+            $this->subDumpSpendCacheKey(),
+            $this->subDumpCacheExpiresAt(),
+            fn (): float => $this->computeDumpSubSpend(),
+        );
+    }
+
+    public function subDumpSpendCacheKey(): string
+    {
+        return self::SUB_DUMP_SPEND_CACHE_PREFIX.$this->getKey();
+    }
+
+    public function refreshDumpSubSpendCache(): void
+    {
+        Cache::forget($this->subDumpSpendCacheKey());
+        $this->cachedDumpSubSpend();
+    }
+
+    public function subDumpCacheExpiresAt(): Carbon
+    {
+        $dueDay = max(1, (int) $this->due_date);
+        $thisMonthDue = self::dateOnDay(now(), $dueDay)->endOfDay();
+
+        if ($thisMonthDue->gt(now())) {
+            return $thisMonthDue;
+        }
+
+        return self::dateOnDay(now()->copy()->addMonthNoOverflow(), $dueDay)->endOfDay();
+    }
+
+    /**
+     * A dump where ISB drops to 0 is a payment event; count the preceding dump's ISB.
+     * Ignore dump balance and Payment rows — those move with spend and credits.
+     */
+    private function computeDumpSubSpend(): float
+    {
+        $opened = Carbon::parse($this->date_opened)->startOfDay();
+        $deadline = $this->points_bonus_deadline;
+
+        $dumps = StateDump::query()
+            ->where('created_at', '>=', $opened)
+            ->where('created_at', '<=', $deadline->copy()->endOfDay())
+            ->orderBy('created_at')
+            ->get();
+
+        $spend = 0.0;
+        $previousIsb = null;
+
+        foreach ($dumps as $dump) {
+            $isb = (float) $dump->getStatForModel($this, 'interest_saving_balance');
+
+            if ($previousIsb !== null && $isb <= 0.0 && $previousIsb > 0) {
+                $spend += $previousIsb;
+            }
+
+            $previousIsb = $isb;
+        }
+
+        return $spend;
+    }
+
+    private function plannedSubSpend(): float
+    {
+        return (float) $this->planned_payments
+            ->where('paid_on', '<=', $this->points_bonus_deadline)
+            ->sum('amount');
     }
 
     public function pointsBonusDeadline(): Attribute

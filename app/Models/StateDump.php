@@ -59,7 +59,23 @@ class StateDump extends Model
             ];
         }
 
-        return self::create(['data' => $data]);
+        $dump = self::create(['data' => $data]);
+        self::prefillDumpSubSpendForCardsDueYesterday();
+
+        return $dump;
+    }
+
+    /**
+     * After a dump, recompute dump-derived SUB spend only for cards whose due date
+     * was yesterday (typically the first dump after ZeroISB). Other cards keep cache.
+     */
+    public static function prefillDumpSubSpendForCardsDueYesterday(): void
+    {
+        $dueDay = now()->subDay()->day;
+
+        Card::query()
+            ->where('due_date', $dueDay)
+            ->each(fn (Card $card) => $card->refreshDumpSubSpendCache());
     }
 
     /**

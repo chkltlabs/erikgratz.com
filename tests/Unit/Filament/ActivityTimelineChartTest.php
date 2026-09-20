@@ -214,6 +214,56 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame([0], array_keys($unpaid));
     }
 
+    #[Test]
+    public function split_card_sub_progress_splits_at_completion_and_darkens_remaining(): void
+    {
+        [$completed, $remaining] = $this->splitCardSubProgress([
+            [
+                'x' => 'C1',
+                'y' => [0, 100],
+                'name' => 'C1',
+                'paid' => 50.0,
+                'unpaid' => 50.0,
+                'fillColor' => '#126bc5',
+                'unpaidFillColor' => ActivityTimelineChart::darkenHex('#126bc5'),
+            ],
+        ]);
+
+        $this->assertSame(0, $completed[0]['y'][0]);
+        $this->assertSame(50, $completed[0]['y'][1]);
+        $this->assertSame('#126bc5', $completed[0]['fillColor']);
+        $this->assertSame(50, $remaining[0]['y'][0]);
+        $this->assertSame(100, $remaining[0]['y'][1]);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#126bc5'), $remaining[0]['fillColor']);
+    }
+
+    #[Test]
+    public function split_card_sub_progress_omits_completed_segment_when_sub_is_untouched(): void
+    {
+        [$completed, $remaining] = $this->splitCardSubProgress([
+            [
+                'x' => 'C1',
+                'y' => [0, 100],
+                'name' => 'C1',
+                'paid' => 0.0,
+                'unpaid' => 4000.0,
+                'fillColor' => '#ff9900',
+                'unpaidFillColor' => ActivityTimelineChart::darkenHex('#ff9900'),
+            ],
+        ]);
+
+        $this->assertSame([], $completed);
+        $this->assertCount(1, $remaining);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#ff9900'), $remaining[0]['fillColor']);
+    }
+
+    #[Test]
+    public function darken_hex_keeps_hue_and_falls_back_for_invalid_colors(): void
+    {
+        $this->assertSame('#0a3b6c', ActivityTimelineChart::darkenHex('#126bc5'));
+        $this->assertSame('#374151', ActivityTimelineChart::darkenHex('not-a-color'));
+    }
+
     /**
      * @param  list<array<string, mixed>>  $data
      * @return list<array<string, mixed>>
@@ -232,6 +282,17 @@ class ActivityTimelineChartTest extends TestCase
     private function splitPaidUnpaid(array $data): array
     {
         $method = new ReflectionMethod(ActivityTimelineChart::class, 'splitPaidUnpaid');
+
+        return $method->invoke(null, $data);
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $data
+     * @return array{0: list<array<string, mixed>>, 1: list<array<string, mixed>>}
+     */
+    private function splitCardSubProgress(array $data): array
+    {
+        $method = new ReflectionMethod(ActivityTimelineChart::class, 'splitCardSubProgress');
 
         return $method->invoke(null, $data);
     }
