@@ -77,8 +77,23 @@ class RedemptionValueChartTest extends TestCase
         $this->assertSame('line', $options['series'][1]['type']);
         $this->assertSame('line', $options['series'][2]['type']);
         $this->assertSame('40,000 pts / $550.00 saved = 1.38¢/pt', $options['series'][1]['data'][0]['label']);
+        $this->assertTrue($options['series'][1]['data'][0]['showLabel']);
         $this->assertInstanceOf(RawJs::class, $extraJs);
         $this->assertStringContainsString('initialSeries[1].data', (string) $extraJs);
+        $this->assertStringContainsString('data.showLabel', (string) $extraJs);
         $this->assertStringNotContainsString('"', (string) $extraJs);
+    }
+
+    #[Test]
+    public function line_labels_only_appear_when_the_amount_changes(): void
+    {
+        $this->assertSame(
+            [true, false, true],
+            array_column(RedemptionValueChart::labelWhenAmountChanges([
+                ['y' => 600.0],
+                ['y' => 600.0],
+                ['y' => 900.0],
+            ]), 'showLabel'),
+        );
     }
 }
