@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets\Concerns;
+namespace App\Filament\Concerns;
 
 use App\Rules\ValidMathExpression;
 use App\Support\MathExpression;
@@ -8,9 +8,11 @@ use Filament\Tables\Columns\TextInputColumn;
 
 trait HasMathInputColumn
 {
-    private function mathInputColumn(string $field, bool $asInteger = false): TextInputColumn
+    private static function mathInputColumn(string $field, bool $asInteger = false): TextInputColumn
     {
         return TextInputColumn::make($field)
+            ->width('9rem')
+            ->extraAttributes(['class' => '!min-w-0'])
             ->rules([new ValidMathExpression])
             ->updateStateUsing(function ($record, $state) use ($field, $asInteger) {
                 $resolved = MathExpression::resolve($state);

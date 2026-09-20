@@ -77,6 +77,15 @@ class LoyaltyMembershipResourceTest extends TestCase
     }
 
     #[Test]
+    public function points_column_drops_the_filament_min_width_floor(): void
+    {
+        LoyaltyMembership::factory()->create();
+
+        Livewire::test(ListLoyaltyMemberships::class)
+            ->assertSee('!min-w-0', false);
+    }
+
+    #[Test]
     public function create_form_has_member_and_loyalty_number_fields(): void
     {
         Livewire::test(CreateLoyaltyMembership::class)

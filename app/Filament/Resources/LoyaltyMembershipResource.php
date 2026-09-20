@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\HasMathInputColumn;
 use App\Filament\Resources\LoyaltyMembershipResource\Pages\CreateLoyaltyMembership;
 use App\Filament\Resources\LoyaltyMembershipResource\Pages\EditLoyaltyMembership;
 use App\Filament\Resources\LoyaltyMembershipResource\Pages\ListLoyaltyMemberships;
@@ -9,8 +10,6 @@ use App\Filament\Resources\LoyaltyMembershipResource\RelationManagers\InheritedP
 use App\Filament\Resources\LoyaltyMembershipResource\RelationManagers\PerksRelationManager;
 use App\Models\LoyaltyMembership;
 use App\Models\User;
-use App\Rules\ValidMathExpression;
-use App\Support\MathExpression;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -22,7 +21,6 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rule;
@@ -31,6 +29,8 @@ use UnitEnum;
 
 class LoyaltyMembershipResource extends Resource
 {
+    use HasMathInputColumn;
+
     protected static ?string $model = LoyaltyMembership::class;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
@@ -97,15 +97,8 @@ class LoyaltyMembershipResource extends Resource
                     ->copyMessage('Loyalty number copied')
                     ->placeholder('—'),
                 TextColumn::make('conferredByCard.name')->label('Card'),
-                TextInputColumn::make('points_balance')
-                    ->label('Points')
-                    ->rules([new ValidMathExpression])
-                    ->updateStateUsing(function (LoyaltyMembership $record, mixed $state): int {
-                        $value = (int) round(MathExpression::resolve($state));
-                        $record->update(['points_balance' => $value]);
-
-                        return $value;
-                    }),
+                static::mathInputColumn('points_balance', asInteger: true)
+                    ->label('Points'),
             ])
             ->filters([
                 SelectFilter::make('user')

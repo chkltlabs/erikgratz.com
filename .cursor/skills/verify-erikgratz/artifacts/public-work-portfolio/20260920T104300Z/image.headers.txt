@@ -1,0 +1,7 @@
+HTTP/1.1 200 OK
+Host: 127.0.0.1:2080
+Date: Sun, 20 Sep 2026 10:43:05 GMT
+Connection: close
+Content-Type: image/webp
+Content-Length: 12796
+

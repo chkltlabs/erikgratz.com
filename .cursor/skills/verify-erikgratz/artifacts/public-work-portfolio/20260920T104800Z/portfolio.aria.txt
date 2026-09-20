@@ -1,0 +1,3 @@
+RootWebArea "Erik Gratz" url="http://127.0.0.1:2080/portfolio"
+  heading "Net worth over time" level="3"
+  image "Net worth over time" url="http://127.0.0.1:2080/images/webp/net-worth.webp"
