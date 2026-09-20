@@ -82,7 +82,7 @@ class LoyaltyMembershipResourceTest extends TestCase
         LoyaltyMembership::factory()->create();
 
         Livewire::test(ListLoyaltyMemberships::class)
-            ->assertSee('!min-w-6', false);
+            ->assertSee('min-width: 6rem', false);
     }
 
     #[Test]

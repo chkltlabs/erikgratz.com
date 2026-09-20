@@ -55,7 +55,7 @@ class AccountWidgetTest extends TestCase
         Account::factory()->create();
 
         Livewire::test(AccountWidget::class)
-            ->assertSee('!min-w-6', false);
+            ->assertSee('min-width: 6rem', false);
     }
 
     #[Test]
