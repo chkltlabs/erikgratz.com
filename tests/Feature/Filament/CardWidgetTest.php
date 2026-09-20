@@ -44,6 +44,15 @@ class CardWidgetTest extends TestCase
     }
 
     #[Test]
+    public function math_input_columns_drop_the_filament_min_width_floor(): void
+    {
+        Card::factory()->create();
+
+        Livewire::test(CardWidget::class)
+            ->assertSee('!min-w-0', false);
+    }
+
+    #[Test]
     public function it_rejects_invalid_expression_without_updating_balance(): void
     {
         $card = Card::factory()->create(['balance' => 1500]);

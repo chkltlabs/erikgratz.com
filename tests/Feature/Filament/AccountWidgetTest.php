@@ -50,6 +50,15 @@ class AccountWidgetTest extends TestCase
     }
 
     #[Test]
+    public function math_input_columns_drop_the_filament_min_width_floor(): void
+    {
+        Account::factory()->create();
+
+        Livewire::test(AccountWidget::class)
+            ->assertSee('!min-w-0', false);
+    }
+
+    #[Test]
     public function it_renders_widget_table_with_mixed_currency_accounts(): void
     {
         Http::fake([
