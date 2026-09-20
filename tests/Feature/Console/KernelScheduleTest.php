@@ -6,6 +6,7 @@ namespace Tests\Feature\Console;
 
 use App\Console\Kernel;
 use App\Jobs\DailyUpkeep;
+use App\Jobs\DumpState;
 use App\Jobs\HourlyUpkeep;
 use App\Jobs\IngestTravelPromos;
 use Illuminate\Console\Scheduling\Event;
@@ -32,6 +33,7 @@ class KernelScheduleTest extends TestCase
         $this->assertStringContainsString(HourlyUpkeep::class, $descriptions);
         $this->assertStringContainsString(DailyUpkeep::class, $descriptions);
         $this->assertStringContainsString(IngestTravelPromos::class, $descriptions);
+        $this->assertStringContainsString(DumpState::class, $descriptions);
         $this->assertStringContainsString('fx:refresh', $descriptions);
         $this->assertStringContainsString('cache:prune-stale-tags', $descriptions);
     }

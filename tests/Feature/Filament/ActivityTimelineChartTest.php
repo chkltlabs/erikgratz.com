@@ -6,6 +6,7 @@ use App\Filament\Resources\ActivityResource\Widgets\ActivityTimelineChart;
 use App\Models\Activity;
 use App\Models\Card;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
@@ -142,8 +143,43 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertNotContains('Satisfied SUB', $paidNames);
         $this->assertSame(['Open SUB'], $cardPoints->pluck('name')->all());
         $this->assertSame(['Open SUB'], $cardPoints->pluck('x')->all());
-        $this->assertSame(['#126bc5'], $cardPoints->pluck('fillColor')->all());
+        $this->assertSame(
+            [ActivityTimelineChart::darkenHex('#126bc5')],
+            $cardPoints->pluck('fillColor')->all(),
+        );
         $this->assertTrue($options['yaxis']['labels']['show']);
+        $this->assertApexRangeBarSeriesAreJsonArrays($options);
+    }
+
+    #[Test]
+    public function get_options_splits_card_bars_at_sub_completion_with_darker_remaining(): void
+    {
+        Activity::query()->delete();
+        Card::query()->delete();
+
+        $card = Card::factory()->create([
+            'name' => 'Halfway SUB',
+            'date_opened' => now()->toDateString(),
+            'points_bonus_period' => '+3 months',
+            'points_bonus_spend' => 4000,
+            'balance' => 2000,
+            'pending' => 0,
+            'color' => '#126bc5',
+        ]);
+
+        $options = $this->invokeGetOptions();
+        $cardPoints = collect($options['series'][2]['data'])->values();
+
+        $this->assertCount(2, $cardPoints);
+        $this->assertSame(['Halfway SUB', 'Halfway SUB'], $cardPoints->pluck('name')->all());
+        $this->assertSame('#126bc5', $cardPoints[0]['fillColor']);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#126bc5'), $cardPoints[1]['fillColor']);
+        $this->assertSame($cardPoints[0]['y'][1], $cardPoints[1]['y'][0]);
+
+        $opened = Carbon::parse($card->date_opened)->valueOf();
+        $deadline = Carbon::parse($card->date_opened)->modify('+3 months')->valueOf();
+        $mid = $opened + (($deadline - $opened) * 0.5);
+        $this->assertEqualsWithDelta($mid, $cardPoints[0]['y'][1], 1);
         $this->assertApexRangeBarSeriesAreJsonArrays($options);
     }
 
@@ -177,6 +213,8 @@ class ActivityTimelineChartTest extends TestCase
             'date_opened' => '2026-02-01',
             'points_bonus_period' => '+1 month',
             'points_bonus_spend' => 3000,
+            'balance' => 0,
+            'pending' => 0,
             'color' => '#ff9900',
         ]);
 
@@ -188,6 +226,9 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame('Travel Card', $formatted[0]['x']);
         $this->assertSame('Travel Card', $formatted[0]['name']);
         $this->assertSame('#ff9900', $formatted[0]['fillColor']);
+        $this->assertSame(ActivityTimelineChart::darkenHex('#ff9900'), $formatted[0]['unpaidFillColor']);
+        $this->assertSame(0.0, $formatted[0]['paid']);
+        $this->assertSame(3000.0, $formatted[0]['unpaid']);
         $this->assertSame(Card::class, $formatted[0]['class']);
         $this->assertEquals(3000, $formatted[0]['amount']);
         $this->assertIsNumeric($formatted[0]['y'][0]);

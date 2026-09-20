@@ -44,25 +44,34 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function formatCardsForDataArray(Collection $models): array
     {
-        return $models->values()->map(fn ($model) => [
-            'x' => $model->name,
-            'y' => [
-                Carbon::parse($model->date_opened)->valueOf(),
-                Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
-            ],
-            'name' => $model->name,
-            'amount' => $model->points_bonus_spend,
-            'class' => get_class($model),
-            'lo' => Carbon::parse($model->date_opened)->valueOf(),
-            'hi' => Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
-            'paid' => $model->balance + $model->pending + $model->paidPaymentTotal,
-            'unpaid' => $model->plannedPaymentTotal,
-            'total_spend' => $model->points_bonus_spend,
-            'fillColor' => $model->color ?: '#6b7280',
-            'link' => CardResource::getUrl('index', [
-                'record' => $model,
-            ]),
-        ])->all();
+        return $models->values()->map(function ($model) {
+            $color = $model->color ?: '#6b7280';
+            $requirement = (float) $model->points_bonus_spend;
+            $progress = $model->subSpendProgress();
+            $completed = $requirement > 0 ? min($progress, $requirement) : 0.0;
+            $remaining = max(0.0, $requirement - $completed);
+
+            return [
+                'x' => $model->name,
+                'y' => [
+                    Carbon::parse($model->date_opened)->valueOf(),
+                    Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
+                ],
+                'name' => $model->name,
+                'amount' => $model->points_bonus_spend,
+                'class' => get_class($model),
+                'lo' => Carbon::parse($model->date_opened)->valueOf(),
+                'hi' => Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
+                'paid' => $completed,
+                'unpaid' => $remaining,
+                'total_spend' => $requirement,
+                'fillColor' => $color,
+                'unpaidFillColor' => self::darkenHex($color),
+                'link' => CardResource::getUrl('index', [
+                    'record' => $model,
+                ]),
+            ];
+        })->all();
     }
 
     protected static function formatForDataArray(Collection $models): array
@@ -230,6 +239,63 @@ class ActivityTimelineChart extends ApexChartWidget
     }
 
     /**
+     * Split a card SUB bar at completion percentage. Remaining uses a darker shade.
+     * Adjacent segments share the split timestamp so they read as one bar.
+     *
+     * @param  list<array<string, mixed>>  $data
+     * @return array{0: list<array<string, mixed>>, 1: list<array<string, mixed>>}
+     */
+    protected static function splitCardSubProgress(array $data): array
+    {
+        $completed = [];
+        $remaining = [];
+
+        foreach ($data as $entry) {
+            $split = self::calcSplit($entry);
+            $start = $entry['y'][0];
+            $end = $entry['y'][1];
+            $color = $entry['fillColor'] ?? '#6b7280';
+            $dark = $entry['unpaidFillColor'] ?? self::darkenHex((string) $color);
+
+            if ($split > $start) {
+                $done = $entry;
+                $done['y'] = [$start, $split];
+                $done['fillColor'] = $color;
+                $completed[] = $done;
+            }
+
+            if ($split < $end) {
+                $rest = $entry;
+                $rest['y'] = [$split, $end];
+                $rest['fillColor'] = $dark;
+                $remaining[] = $rest;
+            }
+        }
+
+        return [
+            self::asApexSeriesData($completed),
+            self::asApexSeriesData($remaining),
+        ];
+    }
+
+    public static function darkenHex(string $hex, float $factor = 0.55): string
+    {
+        $hex = ltrim($hex, '#');
+        if (strlen($hex) === 3) {
+            $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+        }
+        if (! preg_match('/^[0-9a-fA-F]{6}$/', $hex)) {
+            return '#374151';
+        }
+
+        $red = (int) round(hexdec(substr($hex, 0, 2)) * $factor);
+        $green = (int) round(hexdec(substr($hex, 2, 2)) * $factor);
+        $blue = (int) round(hexdec(substr($hex, 4, 2)) * $factor);
+
+        return sprintf('#%02x%02x%02x', min(255, $red), min(255, $green), min(255, $blue));
+    }
+
+    /**
      * ApexCharts calls `series[i].data.filter`. PHP arrays with holes JSON-encode as
      * objects, which have no `.filter`. Empty `[]` placeholders are also invalid points.
      *
@@ -258,7 +324,11 @@ class ActivityTimelineChart extends ApexChartWidget
                 Activity::all()->filter(fn ($act) => ! $act->archived)->values(),
             ),
         ));
-        $cards = self::asApexSeriesData(self::formatCardsForDataArray($this->openSubCards()));
+        $openCards = $this->openSubCards();
+        [$cardCompleted, $cardRemaining] = self::splitCardSubProgress(
+            self::formatCardsForDataArray($openCards),
+        );
+        $cards = self::asApexSeriesData([...$cardCompleted, ...$cardRemaining]);
 
         $todayColor = '#FFFFFF';
 
@@ -292,7 +362,7 @@ class ActivityTimelineChart extends ApexChartWidget
                     'allowMouseWheelZoom' => false,
                 ],
                 'type' => 'rangeBar',
-                'height' => 250 + (count($cards) * 32),
+                'height' => 250 + ($openCards->count() * 32),
             ],
             'tooltip' => [
                 'style' => [

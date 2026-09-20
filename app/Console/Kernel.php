@@ -3,9 +3,9 @@
 namespace App\Console;
 
 use App\Jobs\DailyUpkeep;
+use App\Jobs\DumpState;
 use App\Jobs\HourlyUpkeep;
 use App\Jobs\IngestTravelPromos;
-use App\Models\StateDump;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(DailyUpkeep::class)->dailyAt('20:00');
         $schedule->job(IngestTravelPromos::class)->dailyAt('06:30');
         $schedule->command('fx:refresh')->dailyAt('17:30');
-        $schedule->call(fn () => StateDump::checkShouldDump())->dailyAt('23:50');
+        $schedule->job(DumpState::class)->dailyAt('23:50');
     }
 
     /**
