@@ -49,7 +49,7 @@ class CardWidgetTest extends TestCase
         Card::factory()->create();
 
         Livewire::test(CardWidget::class)
-            ->assertSee('!min-w-6', false);
+            ->assertSee('min-width: 6rem', false);
     }
 
     #[Test]
