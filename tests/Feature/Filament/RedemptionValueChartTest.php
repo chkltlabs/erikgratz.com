@@ -76,9 +76,9 @@ class RedemptionValueChartTest extends TestCase
         $this->assertSame('rangeArea', $options['series'][0]['type']);
         $this->assertSame('line', $options['series'][1]['type']);
         $this->assertSame('line', $options['series'][2]['type']);
+        $this->assertSame('40,000 pts / $550.00 saved = 1.38¢/pt', $options['series'][1]['data'][0]['label']);
         $this->assertInstanceOf(RawJs::class, $extraJs);
-        $this->assertStringContainsString('40,000 pts', (string) $extraJs);
-        $this->assertStringContainsString('550.00 saved', (string) $extraJs);
-        $this->assertStringContainsString('1.38', (string) $extraJs);
+        $this->assertStringContainsString('initialSeries[1].data', (string) $extraJs);
+        $this->assertStringNotContainsString('"', (string) $extraJs);
     }
 }

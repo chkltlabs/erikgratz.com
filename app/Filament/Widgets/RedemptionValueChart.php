@@ -22,6 +22,11 @@ class RedemptionValueChart extends ApexChartWidget
     {
         $data = DumpChartData::redemptionValue();
 
+        $cashValuePoints = [];
+        foreach (DumpChartData::toXy($data['cash_value']) as $index => $point) {
+            $cashValuePoints[] = array_merge($point, $data['breakdown'][$index] ?? []);
+        }
+
         return [
             'chart' => [
                 'type' => 'rangeArea',
@@ -39,7 +44,7 @@ class RedemptionValueChart extends ApexChartWidget
                 [
                     'name' => 'Cash value',
                     'type' => 'line',
-                    'data' => DumpChartData::toXy($data['cash_value']),
+                    'data' => $cashValuePoints,
                 ],
                 [
                     'name' => 'Cash spent',
@@ -78,26 +83,21 @@ class RedemptionValueChart extends ApexChartWidget
 
     protected function extraJsOptions(): ?RawJs
     {
-        $breakdown = json_encode(
-            DumpChartData::redemptionValue()['breakdown'],
-            JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-        );
-
-        return RawJs::make(<<<JS
+        return RawJs::make(<<<'JS'
         {
             tooltip: {
                 shared: true,
-                custom: function ({ dataPointIndex }) {
-                    const point = {$breakdown}[dataPointIndex];
+                custom: function({ dataPointIndex, w }) {
+                    var point = w.globals.initialSeries[1].data[dataPointIndex];
                     if (!point) {
                         return '';
                     }
 
-                    return '<div class="p-2 text-sm">' +
-                        '<div>Cash value: $' + Number(point.cash_value).toFixed(2) + '</div>' +
-                        '<div>Cash spent: $' + Number(point.money_spent).toFixed(2) + '</div>' +
-                        '<div>' + point.label + '</div>' +
-                        '</div>';
+                    return `<div class='p-2 text-sm'>
+                        <div>Cash value: $${Number(point.cash_value).toFixed(2)}</div>
+                        <div>Cash spent: $${Number(point.money_spent).toFixed(2)}</div>
+                        <div>${point.label}</div>
+                    </div>`;
                 }
             }
         }
