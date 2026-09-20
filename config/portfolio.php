@@ -14,12 +14,12 @@ return [
         'text' => 'Spreadsheets know a card exists. They do not know what is due next month after interest-saving vs interest-free buckets, or whether the $300 travel credit is still unused. The Filament admin tracks household cards, statement windows, and benefits with real tracking modes: manual, auto-assumed statement credits, or ignored (hidden by default, greyed at the bottom when I ask to see them). Annual-fee ROI is captured value against the fee. A Points widget rolls up card and loyalty balances — Avios displays as one pool even when the programs stay separate for booking.',
     ],
     [
-        'imgUrl' => null,
+        'imgUrl' => '/images/webp/book-travel.webp',
         'title' => 'Book Travel',
         'text' => 'The question is never "do we have a credit." It is which card, portal, and perk actually apply to this vendor, cabin, and channel. Book Travel ranks household wallet combos against a trip, using per-person loyalty memberships, transfer routes, and earning rates as first-class data. Unused credits show up as Benefits Due vs Assumed captured. Activities are the trip timeline — map, dates, spends, redemptions — so a booking decision and a trip plan live in the same system.',
     ],
     [
-        'imgUrl' => null,
+        'imgUrl' => '/images/webp/net-worth.webp',
         'title' => 'Net worth over time',
         'text' => 'Accounts, spends, periodic bills, and loans against savings are the ledger. A daily state dump snapshots balances so a Past Stats chart can plot net worth, cash, card debt, and points — including foreign-currency accounts converted to USD. SimpleFIN pulls bank transactions; categorization rules keep me from typing every coffee. The dashboard is the unsentimental version of "are we actually saving."',
     ],
