@@ -7,16 +7,20 @@ return [
         'title' => 'Senior Software Engineer, Backend',
         'timeframe' => '2022-{year}',
         'bullets' => [
+            'Led development of Birdie, the AI assistant capable of turning user chats into app interactions, creating account integrations through plaid, analyzing user financial data, advising on how to achieve goals, and more.',
+            'Maintained AI-ready infrastructure for Birdie, including server and database management, deployment scripts, image management, vectorizing data for contextual recall, ensuring the system is scalable and efficient.',
+            'Became primary staff resource for AI integration, training, and troubleshooting.',
             'Led server development from MVP to acquisition by new parent company, managing server and database load to engage with 40x user count, at acquisition resulting in a 36.6x stock evaluation increase.',
             'Implemented dashboard for application configuration, including snapshots of database state, analytics and configuration transfer between staging and prod, resulting in faster iteration of content, version control of app configuration, and enabling non-technical staff to meet stakeholder demands more often.',
             'Rewrote application core to solve redundancy and database bloat, while easing maintenance.',
             'Implemented separate API for client-facing analytics, including key management, permissions, email invitation system',
             'Traced existing application routes and optimized 20x speed in first month.',
             'Migrated entire platform to Google Cloud from AWS.',
+            'Named on original Patent for Pocketnest',
         ],
         'technologies' => [
-            'PHP', 'MySQL', 'FilamentPHP', 'Livewire', 'Docker',
-            'Laravel (Flare, Forge, Horizon, Pint, Passport, Sanctum, Sail, Telescope)',
+            'PHP', 'MySQL', 'FilamentPHP', 'Livewire', 'Docker', 'Postgres', 'pgvector', 'MongoDB', 'Github Actions',
+            'Laravel (Flare, Forge, Horizon, Pint, Passport, Sanctum, Sail, Telescope, Nightwatch, Boost, AI)',
         ],
     ],
     [

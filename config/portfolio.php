@@ -2,6 +2,28 @@
 
 return [
     [
+        'imgUrl' => '/images/webp/openbrain.webp',
+        'title' => 'OpenBrain SaaS',
+        'text' => 'Agents forget the chat the moment it ends. OpenBrain is a semantic memory service I rebuilt in Laravel so any MCP client — or a plain REST API — can ingest, search, and update durable thoughts in Postgres with pgvector. The first version was a personal Node stack; this greenfield SaaS adds organizations, Sanctum API keys, a Filament dashboard, and local Ollama embeddings so remembering decisions does not require a cloud LLM bill. Billing is still on the roadmap. I already use it as shared memory across Cursor and other MCP tools: capture a fact once, retrieve it from the next session.',
+        'link' => 'https://openbrain.erikgratz.com',
+        'linkText' => 'Visit OpenBrain',
+    ],
+    [
+        'imgUrl' => '/images/webp/card-benefits.webp',
+        'title' => 'Household card wallet',
+        'text' => 'Spreadsheets know a card exists. They do not know what is due next month after interest-saving vs interest-free buckets, or whether the $300 travel credit is still unused. The Filament admin tracks household cards, statement windows, and benefits with real tracking modes: manual, auto-assumed statement credits, or ignored (hidden by default, greyed at the bottom when I ask to see them). Annual-fee ROI is captured value against the fee. A Points widget rolls up card and loyalty balances — Avios displays as one pool even when the programs stay separate for booking.',
+    ],
+    [
+        'imgUrl' => null,
+        'title' => 'Book Travel',
+        'text' => 'The question is never "do we have a credit." It is which card, portal, and perk actually apply to this vendor, cabin, and channel. Book Travel ranks household wallet combos against a trip, using per-person loyalty memberships, transfer routes, and earning rates as first-class data. Unused credits show up as Benefits Due vs Assumed captured. Activities are the trip timeline — map, dates, spends, redemptions — so a booking decision and a trip plan live in the same system.',
+    ],
+    [
+        'imgUrl' => null,
+        'title' => 'Net worth over time',
+        'text' => 'Accounts, spends, periodic bills, and loans against savings are the ledger. A daily state dump snapshots balances so a Past Stats chart can plot net worth, cash, card debt, and points — including foreign-currency accounts converted to USD. SimpleFIN pulls bank transactions; categorization rules keep me from typing every coffee. The dashboard is the unsentimental version of "are we actually saving."',
+    ],
+    [
         'imgUrl' => '/images/webp/CCCOutput.webp',
         'text' => 'A Github Action to analyze a cobertura.xml code coverage file and add a comment to the pull request summarizing covered files. This is a fork of work by Irongut, whose original always posted and analyzed the entire codebase. My fork extends this by allowing targeted analysis of only files present in the changes for the PR. (This was also my first time working with C#, and it was a lot of fun!)',
         'title' => 'Code Coverage Summary Github Action',

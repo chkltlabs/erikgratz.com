@@ -42,7 +42,16 @@ class ExperienceAndWorkTest extends TestCase
     #[Test]
     public function work_and_experience_routes_return_ok(): void
     {
-        $this->get('/work')->assertOk();
+        $this->get('/work')
+            ->assertOk()
+            ->assertSee('OpenBrain SaaS')
+            ->assertSee('https://openbrain.erikgratz.com', false)
+            ->assertSee('Household card wallet')
+            ->assertSee('Book Travel')
+            ->assertSee('Net worth over time');
+        $this->get('/portfolio')
+            ->assertOk()
+            ->assertSee('OpenBrain SaaS');
         $this->get('/experience')->assertOk();
     }
 }

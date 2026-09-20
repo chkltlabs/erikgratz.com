@@ -45,7 +45,7 @@ class ActivityTimelineChart extends ApexChartWidget
     protected static function formatCardsForDataArray(Collection $models): array
     {
         return $models->map(fn ($model) => [
-            'x' => 'card',
+            'x' => $model->name,
             'y' => [
                 Carbon::parse($model->date_opened)->valueOf(),
                 Carbon::parse($model->date_opened)->modify($model->points_bonus_period ?? '+1 Day')->valueOf(),
@@ -58,6 +58,7 @@ class ActivityTimelineChart extends ApexChartWidget
             'paid' => $model->balance + $model->pending + $model->paidPaymentTotal,
             'unpaid' => $model->plannedPaymentTotal,
             'total_spend' => $model->points_bonus_spend,
+            'fillColor' => $model->color ?: '#6b7280',
             'link' => CardResource::getUrl('index', [
                 'record' => $model,
             ]),
@@ -234,10 +235,10 @@ class ActivityTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        [$paid, $unpaid] = self::splitPaidUnpaid(self::setX([
-            ...self::formatForDataArray(Activity::all()->filter(fn ($act) => ! $act->archived)),
-            ...self::formatCardsForDataArray(Card::all()),
-        ]));
+        [$paid, $unpaid] = self::splitPaidUnpaid(self::setX(
+            self::formatForDataArray(Activity::all()->filter(fn ($act) => ! $act->archived)),
+        ));
+        $cards = self::formatCardsForDataArray($this->openSubCards());
 
         $todayColor = '#FFFFFF';
 
@@ -271,8 +272,7 @@ class ActivityTimelineChart extends ApexChartWidget
                     'allowMouseWheelZoom' => false,
                 ],
                 'type' => 'rangeBar',
-                'height' => 250,
-                //                'stacked' => true,
+                'height' => 250 + (count($cards) * 32),
             ],
             'tooltip' => [
                 'style' => [
@@ -288,10 +288,10 @@ class ActivityTimelineChart extends ApexChartWidget
                     'name' => 'Unpaid',
                     'data' => $unpaid,
                 ],
-                //                [
-                //                    'name' => 'Cards',
-                //                    'data' => $cards,
-                //                ],
+                [
+                    'name' => 'Cards',
+                    'data' => $cards,
+                ],
             ],
             'xaxis' => [
                 'type' => 'datetime',
@@ -303,11 +303,10 @@ class ActivityTimelineChart extends ApexChartWidget
             ],
             'yaxis' => [
                 'labels' => [
-                    'show' => false,
+                    'show' => true,
                     'style' => [
                         'fontFamily' => 'inherit',
                     ],
-
                 ],
             ],
             'colors' => [
@@ -341,10 +340,19 @@ class ActivityTimelineChart extends ApexChartWidget
             dataLabels: {
                 enabled: true,
                 formatter: function (val, opt) {
-                    let index = opt.dataPointIndex
-                    let data = opt.w.globals.initialSeries[0].data[index]
-                    return data.name;
+                    if (opt.seriesIndex === 2) {
+                        return '';
+                    }
+                    let data = opt.w.globals.initialSeries[opt.seriesIndex].data[opt.dataPointIndex];
+                    return data && data.name ? data.name : '';
                 },
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (val) {
+                        return /^\d+$/.test(String(val)) ? '' : val;
+                    }
+                }
             },
             tooltip: {
                 style: {
@@ -380,6 +388,18 @@ class ActivityTimelineChart extends ApexChartWidget
 
         }
         JS);
+    }
+
+    /**
+     * @return Collection<int, Card>
+     */
+    private function openSubCards(): Collection
+    {
+        return Card::query()
+            ->with('planned_payments')
+            ->get()
+            ->reject(fn (Card $card): bool => $card->has_satisfied_sub)
+            ->values();
     }
 
     public function getOldSchemaState(string $statePath): mixed

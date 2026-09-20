@@ -43,7 +43,7 @@ class ActivityTimelineChartTest extends TestCase
         $options = $this->invokeGetOptions();
 
         $this->assertSame('rangeBar', $options['chart']['type']);
-        $this->assertSame(['Paid', 'Unpaid'], array_column($options['series'], 'name'));
+        $this->assertSame(['Paid', 'Unpaid', 'Cards'], array_column($options['series'], 'name'));
 
         $paidNames = collect($options['series'][0]['data'])
             ->pluck('name')
@@ -54,6 +54,55 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertContains('Active Trip', $paidNames);
         $this->assertNotContains('Archived Trip', $paidNames);
         $this->assertNotNull($active->id);
+    }
+
+    #[Test]
+    public function get_options_omits_cards_with_expired_or_satisfied_subs(): void
+    {
+        Activity::query()->delete();
+        Card::query()->delete();
+
+        Card::factory()->create([
+            'name' => 'Open SUB',
+            'date_opened' => now()->toDateString(),
+            'points_bonus_period' => '+3 months',
+            'points_bonus_spend' => 4000,
+            'balance' => 0,
+            'pending' => 0,
+            'color' => '#126bc5',
+        ]);
+        Card::factory()->create([
+            'name' => 'Expired SUB',
+            'date_opened' => now()->subYear()->toDateString(),
+            'points_bonus_period' => '+3 months',
+            'points_bonus_spend' => 4000,
+            'balance' => 0,
+            'pending' => 0,
+        ]);
+        Card::factory()->create([
+            'name' => 'Satisfied SUB',
+            'date_opened' => now()->toDateString(),
+            'points_bonus_period' => '+3 months',
+            'points_bonus_spend' => 100,
+            'balance' => 150,
+            'pending' => 0,
+        ]);
+
+        $options = $this->invokeGetOptions();
+        $paidNames = collect($options['series'][0]['data'])
+            ->pluck('name')
+            ->filter()
+            ->values()
+            ->all();
+        $cardPoints = collect($options['series'][2]['data']);
+
+        $this->assertNotContains('Open SUB', $paidNames);
+        $this->assertNotContains('Expired SUB', $paidNames);
+        $this->assertNotContains('Satisfied SUB', $paidNames);
+        $this->assertSame(['Open SUB'], $cardPoints->pluck('name')->all());
+        $this->assertSame(['Open SUB'], $cardPoints->pluck('x')->all());
+        $this->assertSame(['#126bc5'], $cardPoints->pluck('fillColor')->all());
+        $this->assertTrue($options['yaxis']['labels']['show']);
     }
 
     #[Test]
@@ -85,14 +134,16 @@ class ActivityTimelineChartTest extends TestCase
             'date_opened' => '2026-02-01',
             'points_bonus_period' => '+1 month',
             'points_bonus_spend' => 3000,
+            'color' => '#ff9900',
         ]);
 
         $method = new ReflectionMethod(ActivityTimelineChart::class, 'formatCardsForDataArray');
         $formatted = $method->invoke(null, new Collection([$card]));
 
         $this->assertCount(1, $formatted);
-        $this->assertSame('card', $formatted[0]['x']);
+        $this->assertSame('Travel Card', $formatted[0]['x']);
         $this->assertSame('Travel Card', $formatted[0]['name']);
+        $this->assertSame('#ff9900', $formatted[0]['fillColor']);
         $this->assertSame(Card::class, $formatted[0]['class']);
         $this->assertEquals(3000, $formatted[0]['amount']);
         $this->assertIsNumeric($formatted[0]['y'][0]);
@@ -106,6 +157,7 @@ class ActivityTimelineChartTest extends TestCase
 
         $extraJs = (new ReflectionMethod($widget, 'extraJsOptions'))->invoke($widget);
         $this->assertInstanceOf(RawJs::class, $extraJs);
+        $this->assertStringContainsString('seriesIndex === 2', (string) $extraJs);
 
         $formSchema = (new ReflectionMethod($widget, 'getFormSchema'))->invoke($widget);
         $this->assertSame([], $formSchema);
