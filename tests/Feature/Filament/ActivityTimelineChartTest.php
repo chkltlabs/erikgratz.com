@@ -9,6 +9,7 @@ use App\Models\User;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionMethod;
 use Tests\TestCase;
@@ -45,15 +46,55 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame('rangeBar', $options['chart']['type']);
         $this->assertSame(['Paid', 'Unpaid', 'Cards'], array_column($options['series'], 'name'));
 
-        $paidNames = collect($options['series'][0]['data'])
-            ->pluck('name')
+        $seriesNames = collect($options['series'])
+            ->flatMap(fn (array $series) => collect($series['data'])->pluck('name'))
             ->filter()
             ->values()
             ->all();
 
-        $this->assertContains('Active Trip', $paidNames);
-        $this->assertNotContains('Archived Trip', $paidNames);
+        $this->assertContains('Active Trip', $seriesNames);
+        $this->assertNotContains('Archived Trip', $seriesNames);
         $this->assertNotNull($active->id);
+        $this->assertApexRangeBarSeriesAreJsonArrays($options);
+    }
+
+    #[Test]
+    public function series_data_json_encodes_as_arrays_when_archived_rows_leave_collection_holes(): void
+    {
+        Activity::query()->delete();
+        Card::query()->delete();
+
+        Activity::factory()->create([
+            'name' => 'Old Archived Trip',
+            'start_date' => now()->subMonths(6)->toDateString(),
+            'end_date' => now()->subDays(Activity::ARCHIVE_DAY_GRACE + 20)->toDateString(),
+        ]);
+        Activity::factory()->create([
+            'name' => 'Also Archived',
+            'start_date' => now()->subMonths(4)->toDateString(),
+            'end_date' => now()->subDays(Activity::ARCHIVE_DAY_GRACE + 5)->toDateString(),
+        ]);
+        Activity::factory()->create([
+            'name' => 'Current Trip',
+            'start_date' => now()->subDays(2)->toDateString(),
+            'end_date' => now()->addDays(8)->toDateString(),
+        ]);
+
+        $component = Livewire::test(ActivityTimelineChart::class)->assertSuccessful();
+        $options = $component->get('options');
+
+        $this->assertIsArray($options);
+        $this->assertApexRangeBarSeriesAreJsonArrays($options);
+
+        $seriesNames = collect($options['series'])
+            ->flatMap(fn (array $series) => collect($series['data'])->pluck('name'))
+            ->filter()
+            ->values()
+            ->all();
+
+        $this->assertContains('Current Trip', $seriesNames);
+        $this->assertNotContains('Old Archived Trip', $seriesNames);
+        $this->assertNotContains('Also Archived', $seriesNames);
     }
 
     #[Test]
@@ -103,6 +144,7 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertSame(['Open SUB'], $cardPoints->pluck('x')->all());
         $this->assertSame(['#126bc5'], $cardPoints->pluck('fillColor')->all());
         $this->assertTrue($options['yaxis']['labels']['show']);
+        $this->assertApexRangeBarSeriesAreJsonArrays($options);
     }
 
     #[Test]
@@ -115,8 +157,9 @@ class ActivityTimelineChartTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(ActivityTimelineChart::class, 'formatForDataArray');
-        $formatted = $method->invoke(null, new Collection([$activity]));
+        $formatted = $method->invoke(null, new Collection([7 => $activity]));
 
+        $this->assertTrue(array_is_list($formatted));
         $this->assertCount(1, $formatted);
         $this->assertNull($formatted[0]['x']);
         $this->assertSame('Mapped Activity', $formatted[0]['name']);
@@ -138,8 +181,9 @@ class ActivityTimelineChartTest extends TestCase
         ]);
 
         $method = new ReflectionMethod(ActivityTimelineChart::class, 'formatCardsForDataArray');
-        $formatted = $method->invoke(null, new Collection([$card]));
+        $formatted = $method->invoke(null, new Collection([12 => $card]));
 
+        $this->assertTrue(array_is_list($formatted));
         $this->assertCount(1, $formatted);
         $this->assertSame('Travel Card', $formatted[0]['x']);
         $this->assertSame('Travel Card', $formatted[0]['name']);
@@ -193,5 +237,35 @@ class ActivityTimelineChartTest extends TestCase
         $method = new ReflectionMethod($widget, 'getOptions');
 
         return $method->invoke($widget);
+    }
+
+    /**
+     * ApexCharts calls `series[i].data.filter`. Livewire JSON-encodes options; PHP arrays
+     * with holes become objects, which throw TypeError in the browser.
+     *
+     * @param  array<string, mixed>  $options
+     */
+    private function assertApexRangeBarSeriesAreJsonArrays(array $options): void
+    {
+        $this->assertArrayHasKey('series', $options);
+
+        $decoded = json_decode(json_encode($options, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($decoded['series'] as $series) {
+            $this->assertIsArray($series['data'], $series['name'].' data must decode as a JSON array');
+            $this->assertTrue(
+                array_is_list($series['data']),
+                $series['name'].' data must be a JSON array, not an object with collection holes',
+            );
+
+            foreach ($series['data'] as $index => $point) {
+                $this->assertIsArray($point, $series['name']."[{$index}] must be a point");
+                $this->assertNotSame([], $point, $series['name']."[{$index}] must not be an empty placeholder");
+                $this->assertArrayHasKey('x', $point);
+                $this->assertArrayHasKey('y', $point);
+                $this->assertTrue(array_is_list($point['y']), $series['name']."[{$index}].y must be a list");
+                $this->assertCount(2, $point['y']);
+            }
+        }
     }
 }

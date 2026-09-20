@@ -149,7 +149,8 @@ class ActivityTimelineChartTest extends TestCase
         ]);
 
         $this->assertSame(100, $paidFullyPaid[0]['y'][1]);
-        $this->assertSame([], $unpaidFullyPaid[0]);
+        $this->assertSame([], $unpaidFullyPaid);
+        $this->assertTrue(array_is_list($unpaidFullyPaid));
 
         [$paidFullyUnpaid, $unpaidFullyUnpaid] = $this->splitPaidUnpaid([
             [
@@ -161,7 +162,8 @@ class ActivityTimelineChartTest extends TestCase
             ],
         ]);
 
-        $this->assertSame([], $paidFullyUnpaid[0]);
+        $this->assertSame([], $paidFullyUnpaid);
+        $this->assertTrue(array_is_list($paidFullyUnpaid));
         $this->assertNotSame([], $unpaidFullyUnpaid[0]);
     }
 
@@ -178,9 +180,38 @@ class ActivityTimelineChartTest extends TestCase
             ],
         ]);
 
-        $this->assertSame([], $paid[0]);
+        $this->assertSame([], $paid);
+        $this->assertTrue(array_is_list($paid));
         $this->assertNotSame([], $unpaid[0]);
         $this->assertSame(10000010, $unpaid[0]['y'][0]);
+    }
+
+    #[Test]
+    public function split_paid_unpaid_reindexes_after_dropping_invisible_segments(): void
+    {
+        [$paid, $unpaid] = $this->splitPaidUnpaid([
+            [
+                'x' => '0',
+                'y' => [0, 100],
+                'name' => 'all_unpaid',
+                'paid' => 0.0,
+                'unpaid' => 100.0,
+            ],
+            [
+                'x' => '1',
+                'y' => [0, 100],
+                'name' => 'all_paid',
+                'paid' => 100.0,
+                'unpaid' => 0.0,
+            ],
+        ]);
+
+        $this->assertTrue(array_is_list($paid));
+        $this->assertTrue(array_is_list($unpaid));
+        $this->assertSame(['all_paid'], array_column($paid, 'name'));
+        $this->assertSame(['all_unpaid'], array_column($unpaid, 'name'));
+        $this->assertSame([0], array_keys($paid));
+        $this->assertSame([0], array_keys($unpaid));
     }
 
     /**

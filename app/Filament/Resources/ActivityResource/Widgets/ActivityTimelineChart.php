@@ -44,7 +44,7 @@ class ActivityTimelineChart extends ApexChartWidget
 
     protected static function formatCardsForDataArray(Collection $models): array
     {
-        return $models->map(fn ($model) => [
+        return $models->values()->map(fn ($model) => [
             'x' => $model->name,
             'y' => [
                 Carbon::parse($model->date_opened)->valueOf(),
@@ -62,12 +62,12 @@ class ActivityTimelineChart extends ApexChartWidget
             'link' => CardResource::getUrl('index', [
                 'record' => $model,
             ]),
-        ])->toArray();
+        ])->all();
     }
 
     protected static function formatForDataArray(Collection $models): array
     {
-        return $models->map(fn ($model) => [
+        return $models->values()->map(fn ($model) => [
             'x' => null,
             'y' => [
                 Carbon::parse($model->start_date ?? $model->spend_for)->valueOf(),
@@ -84,7 +84,7 @@ class ActivityTimelineChart extends ApexChartWidget
             'link' => ActivityResource::getUrl('edit', [
                 'record' => $model,
             ]),
-        ])->toArray();
+        ])->all();
     }
 
     protected static function setX(array $data): array
@@ -206,27 +206,45 @@ class ActivityTimelineChart extends ApexChartWidget
         $dataCopy = $data;
 
         return [
-            array_map(function ($entry) {
+            self::asApexSeriesData(array_map(function ($entry) {
                 $entry['y'][1] = self::calcSplit($entry);
 
-                if ($entry['y'][1] === $entry['y'][0]) { // removes entry when should be invisible
+                if ($entry['y'][1] === $entry['y'][0]) {
                     return [];
                 }
 
                 return $entry;
-            }, $data),
-            array_map(function ($entry) {
+            }, $data)),
+            self::asApexSeriesData(array_map(function ($entry) {
                 $entry['y'][0] = self::calcSplit($entry);
 
-                if ($entry['y'][1] === $entry['y'][0]) { // removes entry when should be invisible
+                if ($entry['y'][1] === $entry['y'][0]) {
                     return [];
                 }
 
                 $entry['y'][0] += 10000000; // avoids visual collisions, 166.667 minutes
 
                 return $entry;
-            }, $dataCopy),
+            }, $dataCopy)),
         ];
+    }
+
+    /**
+     * ApexCharts calls `series[i].data.filter`. PHP arrays with holes JSON-encode as
+     * objects, which have no `.filter`. Empty `[]` placeholders are also invalid points.
+     *
+     * @param  array<int, array<string, mixed>|list<empty>>  $points
+     * @return list<array<string, mixed>>
+     */
+    private static function asApexSeriesData(array $points): array
+    {
+        return array_values(array_filter(
+            $points,
+            fn (mixed $point): bool => is_array($point)
+                && $point !== []
+                && array_key_exists('x', $point)
+                && isset($point['y'][0], $point['y'][1]),
+        ));
     }
 
     /**
@@ -236,9 +254,11 @@ class ActivityTimelineChart extends ApexChartWidget
     protected function getOptions(): array
     {
         [$paid, $unpaid] = self::splitPaidUnpaid(self::setX(
-            self::formatForDataArray(Activity::all()->filter(fn ($act) => ! $act->archived)),
+            self::formatForDataArray(
+                Activity::all()->filter(fn ($act) => ! $act->archived)->values(),
+            ),
         ));
-        $cards = self::formatCardsForDataArray($this->openSubCards());
+        $cards = self::asApexSeriesData(self::formatCardsForDataArray($this->openSubCards()));
 
         $todayColor = '#FFFFFF';
 
