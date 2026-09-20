@@ -48,8 +48,10 @@ class CardWidgetTest extends TestCase
     {
         Card::factory()->create();
 
-        Livewire::test(CardWidget::class)
-            ->assertSee('min-width: 6rem', false);
+        $html = Livewire::test(CardWidget::class)->html();
+
+        $this->assertStringContainsString('min-width: 6rem', $html);
+        $this->assertDoesNotMatchRegularExpression('/(?<!min-)width:\s*6rem/', $html);
     }
 
     #[Test]

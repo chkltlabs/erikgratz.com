@@ -8,7 +8,9 @@ use App\Enums\Period;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Account;
 use App\Models\Card;
+use App\Models\Collections\StateDumpCollection;
 use App\Models\LoanAgainstSavings;
+use App\Models\LoyaltyMembership;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
@@ -653,13 +655,51 @@ class SpentPayingSavingTest extends TestCase
     }
 
     #[Test]
+    public function get_points_and_chart_data_sums_card_and_loyalty_points(): void
+    {
+        Cache::forget('stateDumps');
+
+        Card::factory()->create(['points_balance' => 1500]);
+        LoyaltyMembership::factory()->create(['points_balance' => 40000]);
+
+        [$totalPoints] = SpentPayingSaving::getPointsAndChartData();
+
+        $this->assertSame(41500, $totalPoints);
+    }
+
+    #[Test]
+    public function get_state_dump_charts_includes_loyalty_membership_points(): void
+    {
+        Carbon::setTestNow('2026-05-15');
+        Cache::forget('stateDumps');
+
+        $card = Card::factory()->create();
+        $membership = LoyaltyMembership::factory()->create(['points_balance' => 40000]);
+
+        $dump = StateDump::factory()->create([
+            'data' => [
+                Card::class => [
+                    ['id' => $card->id, 'balance' => 0, 'pending' => 0, 'points_balance' => 1000],
+                ],
+                LoyaltyMembership::class => [
+                    ['id' => $membership->id, 'points_balance' => 40000],
+                ],
+            ],
+        ]);
+
+        [, , , , $pointsChart] = SpentPayingSaving::getStateDumpCharts();
+
+        $this->assertSame(41000.0, $pointsChart[$dump->created_at->timestamp]);
+    }
+
+    #[Test]
     public function state_dump_uses_custom_collection(): void
     {
         $dump = StateDump::factory()->create(['data' => []]);
 
         $collection = StateDump::query()->whereKey($dump->id)->get();
 
-        $this->assertInstanceOf(\App\Models\Collections\StateDumpCollection::class, $collection);
+        $this->assertInstanceOf(StateDumpCollection::class, $collection);
     }
 
     #[Test]

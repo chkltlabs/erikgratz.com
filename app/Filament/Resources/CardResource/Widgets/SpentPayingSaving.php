@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
 use App\Models\LoanAgainstSavings;
+use App\Models\LoyaltyMembership;
 use App\Models\Payment;
 use App\Models\StateDump;
 use App\Models\User;
@@ -108,7 +109,7 @@ class SpentPayingSaving extends BaseWidget
 
     public static function getPointsAndChartData(): array
     {
-        $totalPoints = Card::sum('points_balance');
+        $totalPoints = (int) Card::sum('points_balance') + (int) LoyaltyMembership::sum('points_balance');
         $netWorth = Account::sumBalanceInUsd() - Card::sum('balance') - Card::sum('pending');
 
         [$netWorthChart, $cardBalanceChart, $cardPendingChart, $cashPositionChart, $pointsChart] = self::getStateDumpCharts();
@@ -232,7 +233,8 @@ class SpentPayingSaving extends BaseWidget
                     self::applyIfbp($ifb, $ifbp);
                 }
 
-                $thirdDue = self::trailingIfbp($ifb, $ifbp);            } else {
+                $thirdDue = self::trailingIfbp($ifb, $ifbp);
+            } else {
                 $thisDue = self::stackAt($ifb, $ifbp, $balance, $pending);
                 self::applyIfbp($ifb, $ifbp);
 
@@ -366,6 +368,7 @@ class SpentPayingSaving extends BaseWidget
                 ->get();
 
             $cards = Card::query()->get(['id']);
+            $memberships = LoyaltyMembership::query()->get(['id']);
             $accounts = Account::query()->get(['id', 'balance', 'currency']);
 
             $pointsChart = [];
@@ -378,6 +381,7 @@ class SpentPayingSaving extends BaseWidget
                 $data = $stateDump->data ?? [];
 
                 $cardRowsById = self::indexDumpRowsById($data[Card::class] ?? []);
+                $membershipRowsById = self::indexDumpRowsById($data[LoyaltyMembership::class] ?? []);
                 $accountRowsById = self::indexDumpRowsById($data[Account::class] ?? []);
 
                 $points = 0.0;
@@ -391,6 +395,13 @@ class SpentPayingSaving extends BaseWidget
                     $points += (float) ($row['points_balance'] ?? 0);
                     $balances += (float) ($row['balance'] ?? 0);
                     $pending += (float) ($row['pending'] ?? 0);
+                }
+                foreach ($memberships as $membership) {
+                    $row = $membershipRowsById[$membership->id] ?? null;
+                    if ($row === null) {
+                        continue;
+                    }
+                    $points += (float) ($row['points_balance'] ?? 0);
                 }
 
                 $cash = 0.0;

@@ -46,4 +46,31 @@ class BenefitUsage extends Model
     {
         return $this->belongsTo(Payment::class);
     }
+
+    public function capturedAmount(): float
+    {
+        if ($this->amount !== null) {
+            return (float) $this->amount;
+        }
+
+        $quantity = (int) ($this->quantity ?? 0);
+
+        return $quantity > 0 ? (float) ($this->benefit?->value ?? 0) : 0.0;
+    }
+
+    public static function getDump(): array
+    {
+        return static::query()
+            ->with('benefit:id,card_id,value')
+            ->get()
+            ->map(function (self $usage): array {
+                $row = $usage->toArray();
+                unset($row['benefit']);
+                $row['card_id'] = $usage->benefit?->card_id;
+                $row['captured'] = $usage->capturedAmount();
+
+                return $row;
+            })
+            ->all();
+    }
 }

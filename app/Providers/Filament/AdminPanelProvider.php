@@ -2,30 +2,28 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Widgets\IncomeReconciliation;
-use App\Filament\Widgets\MonthlyBudgetStatus;
-use App\Filament\Widgets\PendingReviewTransactions;
-use App\Filament\Widgets\SpendingCategoryChart;
-use App\Filament\Widgets\SpendingTrendsChart;
-use App\Filament\Widgets\UncategorizedTransactions;
-use App\Filament\Widgets\PointsByProgram;
-use Filament\Pages\Dashboard;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Filament\Resources\LoanAgainstSavingsResource\Widgets\LoansDue;
 use App\Filament\Widgets\AccountWidget;
+use App\Filament\Widgets\BenefitUsageChart;
 use App\Filament\Widgets\CardWidget;
-use App\Filament\Widgets\NetWorthStats;
+use App\Filament\Widgets\IncomeReconciliation;
+use App\Filament\Widgets\MonthlyBudgetStatus;
 use App\Filament\Widgets\PastStatsChart;
+use App\Filament\Widgets\PendingReviewTransactions;
+use App\Filament\Widgets\PointsByProgram;
+use App\Filament\Widgets\RedemptionValueChart;
+use App\Filament\Widgets\SpendingCategoryChart;
+use App\Filament\Widgets\SpendingTrendsChart;
 use App\Filament\Widgets\SpendsThisMonth;
-use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\UncategorizedTransactions;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -62,12 +60,14 @@ class AdminPanelProvider extends PanelProvider
                 PointsByProgram::class,
                 SpendsThisMonth::class,
                 PastStatsChart::class,
-//                IncomeReconciliation::class,
-//                PendingReviewTransactions::class,
-//                UncategorizedTransactions::class,
-//                MonthlyBudgetStatus::class,
-//                SpendingCategoryChart::class,
-//                SpendingTrendsChart::class,
+                BenefitUsageChart::class,
+                RedemptionValueChart::class,
+                //                IncomeReconciliation::class,
+                //                PendingReviewTransactions::class,
+                //                UncategorizedTransactions::class,
+                //                MonthlyBudgetStatus::class,
+                //                SpendingCategoryChart::class,
+                //                SpendingTrendsChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

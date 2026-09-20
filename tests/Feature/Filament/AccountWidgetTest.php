@@ -54,8 +54,10 @@ class AccountWidgetTest extends TestCase
     {
         Account::factory()->create();
 
-        Livewire::test(AccountWidget::class)
-            ->assertSee('min-width: 6rem', false);
+        $html = Livewire::test(AccountWidget::class)->html();
+
+        $this->assertStringContainsString('min-width: 6rem', $html);
+        $this->assertDoesNotMatchRegularExpression('/(?<!min-)width:\s*6rem/', $html);
     }
 
     #[Test]

@@ -11,7 +11,6 @@ trait HasMathInputColumn
     private static function mathInputColumn(string $field, bool $asInteger = false): TextInputColumn
     {
         return TextInputColumn::make($field)
-            ->width('6rem')
             ->extraAttributes([
                 'style' => 'min-width: 6rem !important;',
             ])

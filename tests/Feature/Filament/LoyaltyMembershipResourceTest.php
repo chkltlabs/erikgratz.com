@@ -64,6 +64,27 @@ class LoyaltyMembershipResourceTest extends TestCase
     }
 
     #[Test]
+    public function list_defaults_to_program_name_sort(): void
+    {
+        $amy = User::factory()->create(['name' => 'Amy']);
+        $erik = User::factory()->create(['name' => 'Erik']);
+        $united = LoyaltyProgram::factory()->create(['name' => 'United MileagePlus']);
+        $aeroplan = LoyaltyProgram::factory()->create(['name' => 'Air Canada Aeroplan']);
+
+        $unitedMembership = LoyaltyMembership::factory()->create([
+            'user_id' => $amy->id,
+            'loyalty_program_id' => $united->id,
+        ]);
+        $aeroplanMembership = LoyaltyMembership::factory()->create([
+            'user_id' => $erik->id,
+            'loyalty_program_id' => $aeroplan->id,
+        ]);
+
+        Livewire::test(ListLoyaltyMemberships::class)
+            ->assertCanSeeTableRecords([$aeroplanMembership, $unitedMembership], inOrder: true);
+    }
+
+    #[Test]
     public function points_balance_can_be_updated_from_the_table(): void
     {
         $membership = LoyaltyMembership::factory()->create([
@@ -81,8 +102,10 @@ class LoyaltyMembershipResourceTest extends TestCase
     {
         LoyaltyMembership::factory()->create();
 
-        Livewire::test(ListLoyaltyMemberships::class)
-            ->assertSee('min-width: 6rem', false);
+        $html = Livewire::test(ListLoyaltyMemberships::class)->html();
+
+        $this->assertStringContainsString('min-width: 6rem', $html);
+        $this->assertDoesNotMatchRegularExpression('/(?<!min-)width:\s*6rem/', $html);
     }
 
     #[Test]
@@ -93,6 +116,26 @@ class LoyaltyMembershipResourceTest extends TestCase
             ->assertFormFieldExists('loyalty_number')
             ->assertSee('Member')
             ->assertSee('Loyalty number');
+    }
+
+    #[Test]
+    public function cannot_create_the_same_member_and_program_twice(): void
+    {
+        $membership = LoyaltyMembership::factory()->create();
+
+        Livewire::test(CreateLoyaltyMembership::class)
+            ->fillForm([
+                'user_id' => $membership->user_id,
+                'loyalty_program_id' => $membership->loyalty_program_id,
+                'points_balance' => 0,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['loyalty_program_id']);
+
+        $this->assertSame(1, LoyaltyMembership::query()
+            ->where('user_id', $membership->user_id)
+            ->where('loyalty_program_id', $membership->loyalty_program_id)
+            ->count());
     }
 
     #[Test]
