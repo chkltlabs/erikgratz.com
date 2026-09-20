@@ -82,7 +82,7 @@ class LoyaltyMembershipResourceTest extends TestCase
         LoyaltyMembership::factory()->create();
 
         Livewire::test(ListLoyaltyMemberships::class)
-            ->assertSee('!min-w-0', false);
+            ->assertSee('!min-w-6', false);
     }
 
     #[Test]
