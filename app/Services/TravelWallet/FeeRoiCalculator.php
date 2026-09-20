@@ -22,17 +22,9 @@ class FeeRoiCalculator
             ->whereHas('benefit', fn ($query) => $query->where('card_id', $card->id))
             ->whereDate('used_on', '>=', $start)
             ->whereDate('used_on', '<', $end)
+            ->with('benefit')
             ->get()
-            ->sum(function (BenefitUsage $usage): float {
-                if ($usage->amount !== null) {
-                    return (float) $usage->amount;
-                }
-
-                $value = (float) ($usage->benefit?->value ?? 0);
-                $qty = (int) ($usage->quantity ?? 0);
-
-                return $qty > 0 ? $value : 0.0;
-            });
+            ->sum(fn (BenefitUsage $usage): float => $usage->capturedAmount());
 
         $fee = (float) ($card->annual_fee ?? 0);
 

@@ -4,9 +4,14 @@ namespace Tests\Feature\Models;
 
 use App\Enums\CurrencyCode;
 use App\Models\Account;
+use App\Models\BenefitUsage;
+use App\Models\CardBenefit;
+use App\Models\LoyaltyMembership;
+use App\Models\PointRedemption;
 use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\StateDump;
 use App\Models\User;
+use App\Services\Dashboard\DumpChartData;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -28,6 +33,71 @@ class StateDumpTest extends TestCase
         $this->assertIsArray($dump->data);
         $this->assertArrayHasKey(SimpleFinAccount::class, $dump->data);
         $this->assertNotEmpty($dump->data[SimpleFinAccount::class]);
+    }
+
+    public function test_dump_stores_loyalty_membership_points(): void
+    {
+        $membership = LoyaltyMembership::factory()->create(['points_balance' => 25000]);
+
+        $dump = StateDump::dump();
+
+        $this->assertArrayHasKey(LoyaltyMembership::class, $dump->data);
+
+        $row = collect($dump->data[LoyaltyMembership::class])->firstWhere('id', $membership->id);
+
+        $this->assertNotNull($row);
+        $this->assertSame(25000, $row['points_balance']);
+    }
+
+    public function test_dump_stores_benefit_usage_with_card_and_captured_value(): void
+    {
+        $benefit = CardBenefit::factory()->create(['value' => 300]);
+        $usage = BenefitUsage::factory()->create([
+            'card_benefit_id' => $benefit->id,
+            'amount' => 80,
+        ]);
+
+        $dump = StateDump::dump();
+
+        $this->assertArrayHasKey(BenefitUsage::class, $dump->data);
+        $row = collect($dump->data[BenefitUsage::class])->firstWhere('id', $usage->id);
+
+        $this->assertNotNull($row);
+        $this->assertSame($benefit->card_id, $row['card_id']);
+        $this->assertEquals(80.0, $row['captured']);
+        $this->assertArrayNotHasKey('benefit', $row);
+    }
+
+    public function test_dump_stores_point_redemptions(): void
+    {
+        $redemption = PointRedemption::factory()->create([
+            'points_spent' => 50000,
+            'money_spent' => 100,
+            'cash_value' => 750,
+        ]);
+
+        $dump = StateDump::dump();
+
+        $this->assertArrayHasKey(PointRedemption::class, $dump->data);
+        $row = collect($dump->data[PointRedemption::class])->firstWhere('id', $redemption->id);
+
+        $this->assertNotNull($row);
+        $this->assertEquals(50000, $row['points_spent']);
+        $this->assertEquals(100.0, (float) $row['money_spent']);
+        $this->assertEquals(750.0, (float) $row['cash_value']);
+    }
+
+    public function test_dump_forgets_chart_caches(): void
+    {
+        Cache::put(DumpChartData::PAST_STATS_CACHE, ['stale'], now()->endOfDay());
+        Cache::put(DumpChartData::BENEFIT_USAGE_CACHE, ['stale'], now()->endOfDay());
+        Cache::put(DumpChartData::REDEMPTIONS_CACHE, ['stale'], now()->endOfDay());
+
+        StateDump::dump();
+
+        $this->assertFalse(Cache::has(DumpChartData::PAST_STATS_CACHE));
+        $this->assertFalse(Cache::has(DumpChartData::BENEFIT_USAGE_CACHE));
+        $this->assertFalse(Cache::has(DumpChartData::REDEMPTIONS_CACHE));
     }
 
     public function test_cache_flags_trigger_dump(): void

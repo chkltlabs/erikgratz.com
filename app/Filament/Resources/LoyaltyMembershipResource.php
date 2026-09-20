@@ -63,8 +63,14 @@ class LoyaltyMembershipResource extends Resource
                 ->label('Program')
                 ->relationship('program', 'name')
                 ->searchable()
+                ->searchDebounce(0)
                 ->preload()
-                ->required(),
+                ->required()
+                ->rules([
+                    fn (Get $get, ?LoyaltyMembership $record): Unique => Rule::unique('loyalty_memberships', 'loyalty_program_id')
+                        ->where('user_id', $get('user_id'))
+                        ->ignore($record),
+                ]),
             TextInput::make('tier')
                 ->maxLength(64),
             TextInput::make('loyalty_number')
@@ -87,7 +93,7 @@ class LoyaltyMembershipResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')->label('Member')->searchable()->sortable(),
-                TextColumn::make('program.name')->searchable(),
+                TextColumn::make('program.name')->searchable()->sortable(),
                 TextColumn::make('program.kind')->badge(),
                 TextColumn::make('tier'),
                 TextColumn::make('loyalty_number')
@@ -100,6 +106,7 @@ class LoyaltyMembershipResource extends Resource
                 static::mathInputColumn('points_balance', asInteger: true)
                     ->label('Points'),
             ])
+            ->defaultSort('program.name')
             ->filters([
                 SelectFilter::make('user')
                     ->label('Member')

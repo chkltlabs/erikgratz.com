@@ -6,6 +6,7 @@ use App\Enums\CurrencyCode;
 use App\Models\Collections\StateDumpCollection;
 use App\Models\SimpleFin\SimpleFinAccount;
 use App\Services\Currency\ExchangeRateService;
+use App\Services\Dashboard\DumpChartData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -32,6 +33,9 @@ class StateDump extends Model
         Account::class,
         Activity::class,
         Card::class,
+        LoyaltyMembership::class,
+        BenefitUsage::class,
+        PointRedemption::class,
         Payment::class,
         Spend::class,
         PeriodicSpend::class,
@@ -61,6 +65,7 @@ class StateDump extends Model
 
         $dump = self::create(['data' => $data]);
         self::prefillDumpSubSpendForCardsDueYesterday();
+        DumpChartData::forgetCaches();
 
         return $dump;
     }
