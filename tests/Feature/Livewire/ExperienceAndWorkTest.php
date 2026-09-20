@@ -48,10 +48,16 @@ class ExperienceAndWorkTest extends TestCase
             ->assertSee('https://openbrain.erikgratz.com', false)
             ->assertSee('Household card wallet')
             ->assertSee('Book Travel')
-            ->assertSee('Net worth over time');
+            ->assertSee('/images/webp/book-travel.webp', false)
+            ->assertSee('Net worth over time')
+            ->assertSee('/images/webp/net-worth.webp', false);
         $this->get('/portfolio')
             ->assertOk()
-            ->assertSee('OpenBrain SaaS');
+            ->assertSee('OpenBrain SaaS')
+            ->assertSee('Book Travel')
+            ->assertSee('/images/webp/book-travel.webp', false)
+            ->assertSee('Net worth over time')
+            ->assertSee('/images/webp/net-worth.webp', false);
         $this->get('/experience')->assertOk();
     }
 }
