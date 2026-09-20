@@ -18,5 +18,10 @@ class WorkHistoryKnowledgePackTest extends TestCase
         $this->assertStringContainsString('Pocketnest', $markdown);
         $this->assertStringContainsString('Professional experience', $markdown);
         $this->assertStringContainsString('Code Coverage Summary', $markdown);
+        $this->assertStringContainsString('OpenBrain SaaS', $markdown);
+        $this->assertStringContainsString('https://openbrain.erikgratz.com', $markdown);
+        $this->assertStringContainsString('Household card wallet', $markdown);
+        $this->assertStringContainsString('Book Travel', $markdown);
+        $this->assertStringContainsString('Net worth over time', $markdown);
     }
 }
