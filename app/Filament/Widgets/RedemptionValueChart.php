@@ -44,12 +44,12 @@ class RedemptionValueChart extends ApexChartWidget
                 [
                     'name' => 'Cash value',
                     'type' => 'line',
-                    'data' => $cashValuePoints,
+                    'data' => self::labelWhenAmountChanges($cashValuePoints),
                 ],
                 [
                     'name' => 'Cash spent',
                     'type' => 'line',
-                    'data' => DumpChartData::toXy($data['money_spent']),
+                    'data' => self::labelWhenAmountChanges(DumpChartData::toXy($data['money_spent'])),
                 ],
             ],
             'stroke' => [
@@ -85,6 +85,14 @@ class RedemptionValueChart extends ApexChartWidget
     {
         return RawJs::make(<<<'JS'
         {
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [1, 2],
+                formatter: function(val, opt) {
+                    var data = opt.w.globals.initialSeries[opt.seriesIndex].data[opt.dataPointIndex];
+                    return data && data.showLabel ? val : '';
+                }
+            },
             tooltip: {
                 shared: true,
                 custom: function({ dataPointIndex, w }) {
@@ -102,5 +110,22 @@ class RedemptionValueChart extends ApexChartWidget
             }
         }
         JS);
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $points
+     * @return list<array<string, mixed>>
+     */
+    public static function labelWhenAmountChanges(array $points): array
+    {
+        $previous = null;
+
+        foreach ($points as $index => $point) {
+            $amount = $point['y'] ?? null;
+            $points[$index]['showLabel'] = $previous === null || $amount != $previous;
+            $previous = $amount;
+        }
+
+        return $points;
     }
 }
