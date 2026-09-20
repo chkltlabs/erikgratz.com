@@ -152,7 +152,7 @@ class HeldCardBenefitsSeeder extends Seeder
                     'card_id' => $card->id,
                     'category' => $rate['category'],
                     'channel' => $rate['channel'],
-                    'vendor' => $rate['vendor'] ?? '',
+                    'vendor' => filled($rate['vendor'] ?? null) ? $rate['vendor'] : null,
                 ],
                 [
                     'multiplier' => $rate['multiplier'],

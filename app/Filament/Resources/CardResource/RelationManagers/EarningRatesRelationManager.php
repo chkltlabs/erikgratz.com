@@ -33,7 +33,8 @@ class EarningRatesRelationManager extends RelationManager
                     ->options(BookingChannel::asSelectArray())
                     ->required(),
                 TextInput::make('vendor')
-                    ->maxLength(64),
+                    ->maxLength(64)
+                    ->placeholder('Any'),
                 TextInput::make('multiplier')
                     ->numeric()
                     ->required()

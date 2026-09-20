@@ -82,7 +82,7 @@ Memberships are not login-scoped — one admin manages the whole household.
 
 Membership `points_balance` feeds the dashboard Points widget together with card `points_balance`. Card and loyalty amounts are shown separately on each stat. Avios-family memberships (`ba`, `qatar`, `aerlingus`, `iberia`, `finnair` in `travel-wallet.avios_program_codes`) plus cards with `points_program: avios` display as one Avios total. Book Travel still treats those programs as separate accounts. Do not store the same Avios pot on both a cobrand card and a membership — the widget adds them.
 
-**Rates** — `{ "category": flight\|hotel\|car, "channel": <BookingChannel>, "multiplier": number, "vendor": "" | needle }`. Empty `vendor` = any vendor on that channel. A filled `vendor` wins over the empty-vendor row on the same channel (Plat: 5x `direct` for airlines, 1x `direct` + `expedia` / `priceline`). Unmatched channels fall back to `travel-wallet.default_earning_rate` (1x).
+**Rates** — `{ "category": flight\|hotel\|car, "channel": <BookingChannel>, "multiplier": number, "vendor": null | needle }`. Null/`""` `vendor` = any vendor on that channel. A filled `vendor` wins over the empty-vendor row on the same channel (Plat: 5x `direct` for airlines, 1x `direct` + `expedia` / `priceline`). Unmatched channels fall back to `travel-wallet.default_earning_rate` (1x).
 
 **Perks** (`perks` / `card_perks`) — `name` (upsert key), `description`, `decision_value` (dollar-equivalent score), `applies_to`, `channel` (nullable), `award_only`. Card-level perks may omit `channel`.
 
