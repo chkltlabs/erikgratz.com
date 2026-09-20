@@ -26,6 +26,7 @@ class ActivityFactory extends Factory
             'latitude' => null,
             'longitude' => null,
             'travel_method' => null,
+            'color' => null,
         ];
     }
 

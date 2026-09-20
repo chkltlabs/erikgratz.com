@@ -13,6 +13,7 @@ use App\Models\Activity;
 use Carbon\Carbon;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -59,6 +60,7 @@ class ActivityResource extends Resource
                     Textarea::make('description')
                         ->rows(5)
                         ->columnSpanFull(),
+                    ColorPicker::make('color'),
                 ]),
             LocationPicker::section(),
         ]);
