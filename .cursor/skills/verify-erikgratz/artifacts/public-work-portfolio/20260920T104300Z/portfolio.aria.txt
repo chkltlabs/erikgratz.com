@@ -1,0 +1,4 @@
+RootWebArea "Erik Gratz" url="http://127.0.0.1:2080/portfolio"
+  heading "Book Travel" level="3"
+  image "Book Travel" url="http://127.0.0.1:2080/images/webp/book-travel.webp"
+  heading "Net worth over time" level="3"

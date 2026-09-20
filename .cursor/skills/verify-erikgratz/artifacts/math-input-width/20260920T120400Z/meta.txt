@@ -1,0 +1,4 @@
+feature-id: math-input-width
+entry-point: /admin then Loyalty
+base: http://127.0.0.1:2080
+notes: Local admin DB had no cards, accounts, or loyalty rows. Points header style is width: 9rem. !min-w-0 asserted in PHPUnit HTML with factory rows.
