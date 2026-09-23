@@ -94,6 +94,7 @@ class ActivityTimelineChart extends ApexChartWidget
                 'class' => get_class($model),
                 'lo' => $model->start_date ?? $model->spend_for,
                 'hi' => $model->end_date ?? $model->spend_for,
+                'days' => (int) $model->total_days,
                 'paid' => $model->paid,
                 'unpaid' => $model->unpaid,
                 'total_spend' => $model->total_spend,
@@ -491,9 +492,13 @@ class ActivityTimelineChart extends ApexChartWidget
                     let totalSpend = data.paid + data.unpaid
                     let paidPercent = (totalSpend === 0 ? 0 : (paid / totalSpend * 100)).toFixed(2);
                     let unpaidPercent = (totalSpend === 0 ? 0 : (unpaid / totalSpend * 100)).toFixed(2);
+                    let daysHtml = data.days
+                        ? `<br><span>${data.days} day${data.days === 1 ? '' : 's'}</span>`
+                        : '';
 
                     return `<div>
                         <span><span style='color: white'>${name}</span></span>
+                        ${daysHtml}
                         <br>
                         <span>
                             <span style='color: #32cd32;'>$${paid}</span> /

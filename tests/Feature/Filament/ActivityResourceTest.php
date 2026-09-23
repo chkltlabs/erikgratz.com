@@ -102,6 +102,24 @@ class ActivityResourceTest extends TestCase
         $this->assertDatabaseMissing($model->getTable(), $model->toArray());
     }
 
+    public function test_activity_edit_shows_inclusive_day_count_near_dates()
+    {
+        $model = Activity::factory()->create([
+            'start_date' => '2026-01-01',
+            'end_date' => '2026-01-10',
+        ]);
+
+        $this->assertSame('10 days', ActivityResource::dayCountLabel('01/01/2026 - 10/01/2026'));
+        $this->assertSame('1 day', ActivityResource::dayCountLabel('01/01/2026 - 01/01/2026'));
+        $this->assertNull(ActivityResource::dayCountLabel(null));
+
+        Livewire::test(ActivityResource\Pages\EditActivity::class, [
+            'record' => $model->id,
+        ])
+            ->assertSee('10 days')
+            ->assertSee('inclusive of the first and last day');
+    }
+
     public function test_activity_edit_has_adjacent_navigation()
     {
         Activity::query()->delete();

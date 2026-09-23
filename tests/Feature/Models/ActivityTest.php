@@ -43,6 +43,11 @@ class ActivityTest extends TestCase
         $this->assertSame(TravelMethod::Ferry, $activity->travel_method->value);
         $this->assertTrue($activity->archived);
         $this->assertSame(10, (int) $activity->total_days);
+        $this->assertSame(1, Activity::inclusiveDayCount('2023-01-01', '2023-01-01'));
+        $this->assertSame(2, Activity::inclusiveDayCount('2023-01-01', '2023-01-02'));
+        $this->assertSame(10, Activity::inclusiveDayCount('2023-01-01', '2023-01-10'));
+        $this->assertSame('1 day', Activity::formatInclusiveDayCount(1));
+        $this->assertSame('10 days', Activity::formatInclusiveDayCount(10));
         $this->assertArrayHasKey('Jan', $activity->days_by_month);
         $this->assertTrue($activity->hasCoordinates());
         $this->assertNull($activity->color);
