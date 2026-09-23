@@ -56,7 +56,19 @@ class ActivityResource extends Resource
                         }),
                     DateRangePicker::make('start_end_date')
                         ->alwaysShowCalendar()
-                        ->required(),
+                        ->required()
+                        ->live()
+                        ->hint(fn (Get $get): ?string => self::dayCountLabel($get('start_end_date')))
+                        ->hintIcon(
+                            'heroicon-o-information-circle',
+                            tooltip: function (Get $get): ?string {
+                                $label = self::dayCountLabel($get('start_end_date'));
+
+                                return $label === null
+                                    ? null
+                                    : $label.' (inclusive of the first and last day)';
+                            },
+                        ),
                     Textarea::make('description')
                         ->rows(5)
                         ->columnSpanFull(),
@@ -83,6 +95,23 @@ class ActivityResource extends Resource
         $data['start_end_date'] = $start_date.' - '.$end_date;
 
         return $data;
+    }
+
+    public static function dayCountLabel(?string $range): ?string
+    {
+        if (blank($range) || ! str_contains($range, ' - ')) {
+            return null;
+        }
+
+        try {
+            $dates = self::splitStartEndDate(['start_end_date' => $range]);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return Activity::formatInclusiveDayCount(
+            Activity::inclusiveDayCount($dates['start_date'], $dates['end_date']),
+        );
     }
 
     public static function table(Table $table): Table

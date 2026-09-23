@@ -208,6 +208,7 @@ class ActivityTimelineChartTest extends TestCase
         $this->assertIsNumeric($formatted[0]['y'][1]);
         $this->assertSame('#32cd32', $formatted[0]['fillColor']);
         $this->assertSame(ActivityTimelineChart::darkenHex('#32cd32'), $formatted[0]['unpaidFillColor']);
+        $this->assertSame(10, $formatted[0]['days']);
         $this->assertStringContainsString((string) $activity->id, $formatted[0]['link']);
     }
 
@@ -266,6 +267,7 @@ class ActivityTimelineChartTest extends TestCase
         $extraJs = (new ReflectionMethod($widget, 'extraJsOptions'))->invoke($widget);
         $this->assertInstanceOf(RawJs::class, $extraJs);
         $this->assertStringContainsString('data.showLabel', (string) $extraJs);
+        $this->assertStringContainsString('data.days', (string) $extraJs);
 
         $formSchema = (new ReflectionMethod($widget, 'getFormSchema'))->invoke($widget);
         $this->assertSame([], $formSchema);

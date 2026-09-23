@@ -68,10 +68,26 @@ class Activity extends Model
         );
     }
 
+    /**
+     * Visa-style stay length: first and last calendar days both count.
+     */
+    public static function inclusiveDayCount(\DateTimeInterface|string $start, \DateTimeInterface|string $end): int
+    {
+        return (int) Carbon::parse($start)->startOfDay()->diffInDays(
+            Carbon::parse($end)->startOfDay(),
+            absolute: true,
+        ) + 1;
+    }
+
+    public static function formatInclusiveDayCount(int $days): string
+    {
+        return $days === 1 ? '1 day' : $days.' days';
+    }
+
     public function totalDays(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::parse($this->start_date)->diffInDays($this->end_date) + 1 // add 1, otherwise the first day doesn't count
+            get: fn () => self::inclusiveDayCount($this->start_date, $this->end_date)
         );
     }
 
