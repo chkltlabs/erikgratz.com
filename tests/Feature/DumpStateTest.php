@@ -104,6 +104,7 @@ class DumpStateTest extends TestCase
             'date_opened' => '2026-04-01',
             'points_bonus_period' => '+3 months',
             'points_bonus_spend' => 4000,
+            'annual_fee' => 0,
             'due_date' => $dueDate,
             'balance' => $balance,
             'pending' => 0,

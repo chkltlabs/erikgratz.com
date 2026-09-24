@@ -523,8 +523,9 @@ class ActivityTimelineChart extends ApexChartWidget
     private function openSubCards(): Collection
     {
         return Card::query()
-            ->with('planned_payments')
             ->get()
+            ->reject(fn (Card $card): bool => $card->subBonusPeriodHasEnded())
+            ->load('planned_payments')
             ->reject(fn (Card $card): bool => $card->has_satisfied_sub)
             ->values();
     }
