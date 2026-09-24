@@ -96,7 +96,7 @@ class Card extends Model
     {
         return Attribute::make(
             get: function (): bool {
-                if (now()->gt($this->points_bonus_deadline)) {
+                if ($this->subBonusPeriodHasEnded()) {
                     return true;
                 }
 
@@ -108,13 +108,32 @@ class Card extends Model
     }
 
     /**
-     * SUB spend: ISB payment events from StateDumps, current outstanding since the last
-     * payoff, and planned charges still due inside the bonus window.
+     * True once the bonus window is over. Callers must use this (or has_satisfied_sub)
+     * before subSpendProgress() so expired cards never load dumps or planned payments.
+     */
+    public function subBonusPeriodHasEnded(): bool
+    {
+        return now()->gt($this->points_bonus_deadline);
+    }
+
+    /**
+     * SUB spend during an open window: ISB payment events from StateDumps, current
+     * outstanding since the last payoff, and planned charges still due inside the
+     * bonus window, minus the annual fee (it posts in balance / dump payoffs).
+     * Expired windows skip this work; satisfaction is already true.
      */
     public function subSpendProgress(): float
     {
-        return $this->postedSubSpendFromDumpsAndCurrent()
-            + $this->plannedSubSpend();
+        if ($this->subBonusPeriodHasEnded()) {
+            return 0.0;
+        }
+
+        return max(
+            0.0,
+            $this->postedSubSpendFromDumpsAndCurrent()
+                + $this->plannedSubSpend()
+                - (float) $this->annual_fee,
+        );
     }
 
     /**

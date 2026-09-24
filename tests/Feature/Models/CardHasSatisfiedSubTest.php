@@ -168,11 +168,33 @@ class CardHasSatisfiedSubTest extends TestCase
             'date_opened' => '2025-01-01',
             'points_bonus_period' => '+3 months',
             'points_bonus_spend' => 4000,
+            'annual_fee' => 895,
             'balance' => 0,
             'pending' => 0,
         ]);
 
+        $this->assertTrue($card->subBonusPeriodHasEnded());
         $this->assertTrue($card->has_satisfied_sub);
+        $this->assertSame(0.0, $card->subSpendProgress());
+        $this->assertFalse(Cache::has($card->subDumpSpendCacheKey()));
+    }
+
+    #[Test]
+    public function annual_fee_is_subtracted_from_open_window_progress(): void
+    {
+        $card = $this->openSubCard(requirement: 4000, balance: 4500, pending: 0, annualFee: 550);
+
+        $this->assertSame(3950.0, $card->subSpendProgress());
+        $this->assertFalse($card->has_satisfied_sub);
+    }
+
+    #[Test]
+    public function annual_fee_does_not_drop_progress_below_zero(): void
+    {
+        $card = $this->openSubCard(requirement: 4000, balance: 100, pending: 0, annualFee: 550);
+
+        $this->assertSame(0.0, $card->subSpendProgress());
+        $this->assertFalse($card->has_satisfied_sub);
     }
 
     #[Test]
@@ -228,7 +250,7 @@ class CardHasSatisfiedSubTest extends TestCase
         $this->assertSame(0.0, $card->subSpendProgress());
     }
 
-    private function openSubCard(int|float $requirement, float $balance, float $pending, int $dueDate = 28): Card
+    private function openSubCard(int|float $requirement, float $balance, float $pending, int $dueDate = 28, float $annualFee = 0): Card
     {
         Carbon::setTestNow('2026-06-15 12:00:00');
 
@@ -236,6 +258,7 @@ class CardHasSatisfiedSubTest extends TestCase
             'date_opened' => '2026-04-01',
             'points_bonus_period' => '+3 months',
             'points_bonus_spend' => $requirement,
+            'annual_fee' => $annualFee,
             'balance' => $balance,
             'pending' => $pending,
             'due_date' => $dueDate,
