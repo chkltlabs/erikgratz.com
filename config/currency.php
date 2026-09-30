@@ -24,6 +24,15 @@ return [
         'DKK',
         'SGD',
         'HKD',
+        'THB',
+        // VND is not published by Frankfurter (ECB). A request that includes it
+        // fails that provider and converts through ExchangeRate-API instead.
+        'VND',
+        'PHP',
+        'MYR',
+        'IDR',
+        'CNY',
+        'KRW',
     ],
 
     'frankfurter' => [

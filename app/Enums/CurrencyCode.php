@@ -20,6 +20,13 @@ enum CurrencyCode: string
     case DKK = 'DKK';
     case SGD = 'SGD';
     case HKD = 'HKD';
+    case THB = 'THB';
+    case VND = 'VND';
+    case PHP = 'PHP';
+    case MYR = 'MYR';
+    case IDR = 'IDR';
+    case CNY = 'CNY';
+    case KRW = 'KRW';
 
     public static function default(): self
     {

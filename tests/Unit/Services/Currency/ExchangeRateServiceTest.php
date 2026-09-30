@@ -78,4 +78,34 @@ class ExchangeRateServiceTest extends TestCase
 
         $this->assertEqualsWithDelta(50.0, $service->convertToUsd(100, CurrencyCode::CAD), 0.01);
     }
+
+    #[Test]
+    public function vnd_converts_via_failover_when_frankfurter_omits_it(): void
+    {
+        Http::fake([
+            'api.frankfurter.dev/*' => Http::response([
+                'amount' => 1,
+                'base' => 'USD',
+                'date' => now()->toDateString(),
+                'rates' => ['THB' => 33.0],
+            ]),
+            'open.er-api.com/*' => Http::response([
+                'result' => 'success',
+                'rates' => [
+                    'USD' => 1,
+                    'VND' => 25000,
+                ],
+            ]),
+        ]);
+
+        Account::factory()->create([
+            'currency' => CurrencyCode::VND,
+            'balance' => 25000,
+        ]);
+
+        $service = app(ExchangeRateService::class);
+        $service->refreshRatesForAccounts();
+
+        $this->assertEqualsWithDelta(1.0, $service->convertToUsd(25000, CurrencyCode::VND), 0.01);
+    }
 }
