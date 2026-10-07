@@ -16,6 +16,8 @@ class Payment extends Model
 {
     use GetsDumped, HasFactory;
 
+    public const RECENTLY_PAID_WITHIN_DAYS = 90;
+
     protected $fillable = ['spend_id', 'spend_type', 'amount', 'currency', 'is_paid', 'paid_on', 'card_id'];
 
     protected function casts(): array
@@ -235,5 +237,28 @@ class Payment extends Model
             ->whereMorphRelation('spend', PeriodicSpend::class, 'period', '=', Period::Yearly)
             ->whereNotNull('paid_on')
             ->whereMonth('paid_on', '=', now()->month);
+    }
+
+    public function scopeUpcoming($query)
+    {
+        return $query->where('is_paid', false);
+    }
+
+    public function scopeRecentlyPaid($query, ?int $days = null)
+    {
+        $days ??= self::RECENTLY_PAID_WITHIN_DAYS;
+
+        return $query
+            ->where('is_paid', true)
+            ->whereNotNull('paid_on')
+            ->whereDate('paid_on', '>=', now()->subDays($days)->toDateString());
+    }
+
+    public function scopeUpcomingOrRecentlyPaid($query, ?int $days = null)
+    {
+        return $query->where(function ($visible) use ($days) {
+            $visible->upcoming()
+                ->orWhere(fn ($paid) => $paid->recentlyPaid($days));
+        });
     }
 }
