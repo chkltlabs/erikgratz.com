@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Enums\Period;
+use App\Models\Card;
 use App\Models\Payment;
 use App\Models\PeriodicSpend;
 use App\Models\Spend;
@@ -144,7 +145,7 @@ class PaymentScopeTest extends TestCase
     {
         Carbon::setTestNow('2026-08-20');
 
-        $card = \App\Models\Card::factory()->create([
+        $card = Card::factory()->create([
             'statement_date' => 15,
             'due_date' => 5,
         ]);
@@ -163,5 +164,52 @@ class PaymentScopeTest extends TestCase
         $this->assertSame('2026-09-05', $due->toDateString());
         $this->assertTrue($payment->cashflowDueFallsInMonth(Carbon::parse('2026-09-01')));
         $this->assertFalse($payment->cashflowDueFallsInMonth(Carbon::parse('2026-08-01')));
+    }
+
+    #[Test]
+    public function upcoming_and_recently_paid_scopes_split_card_charges(): void
+    {
+        Carbon::setTestNow('2026-08-20');
+
+        $spend = Spend::factory()->bare()->noPayments()->create();
+
+        $upcoming = Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'paid_on' => '2026-09-01',
+            'is_paid' => false,
+            'card_id' => null,
+        ]);
+        $recent = Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'paid_on' => now()->subDays(3)->toDateString(),
+            'is_paid' => true,
+            'card_id' => null,
+        ]);
+        $boundary = Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'paid_on' => now()->subDays(Payment::RECENTLY_PAID_WITHIN_DAYS)->toDateString(),
+            'is_paid' => true,
+            'card_id' => null,
+        ]);
+        $old = Payment::factory()->create([
+            'spend_type' => getMorphAliasForClass(Spend::class),
+            'spend_id' => $spend->id,
+            'paid_on' => now()->subDays(Payment::RECENTLY_PAID_WITHIN_DAYS + 1)->toDateString(),
+            'is_paid' => true,
+            'card_id' => null,
+        ]);
+
+        $this->assertTrue(Payment::upcoming()->whereKey($upcoming)->exists());
+        $this->assertFalse(Payment::upcoming()->whereKey($recent)->exists());
+        $this->assertTrue(Payment::recentlyPaid()->whereKey($recent)->exists());
+        $this->assertTrue(Payment::recentlyPaid()->whereKey($boundary)->exists());
+        $this->assertFalse(Payment::recentlyPaid()->whereKey($old)->exists());
+        $this->assertFalse(Payment::recentlyPaid()->whereKey($upcoming)->exists());
+        $this->assertTrue(Payment::upcomingOrRecentlyPaid()->whereKey($upcoming)->exists());
+        $this->assertTrue(Payment::upcomingOrRecentlyPaid()->whereKey($recent)->exists());
+        $this->assertFalse(Payment::upcomingOrRecentlyPaid()->whereKey($old)->exists());
     }
 }

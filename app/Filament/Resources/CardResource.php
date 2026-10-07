@@ -10,6 +10,7 @@ use App\Filament\Resources\CardResource\Pages\ListCards;
 use App\Filament\Resources\CardResource\RelationManagers\BenefitsRelationManager;
 use App\Filament\Resources\CardResource\RelationManagers\BookingPerksRelationManager;
 use App\Filament\Resources\CardResource\RelationManagers\EarningRatesRelationManager;
+use App\Filament\Resources\CardResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Card;
 use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\User;
@@ -258,6 +259,7 @@ class CardResource extends Resource
             BenefitsRelationManager::class,
             EarningRatesRelationManager::class,
             BookingPerksRelationManager::class,
+            PaymentsRelationManager::class,
         ];
     }
 }
