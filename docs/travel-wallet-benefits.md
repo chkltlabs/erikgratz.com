@@ -8,18 +8,20 @@ Airline programs in `loyalty-programs.json` cover the top 60% (ranks 1–60) of 
 
 ## Product keys
 
-Top-level JSON keys are product nicknames matched from `cards.name` (substring, case-insensitive):
+When opening a card in Filament, pick a **Benefit set** (or use **Apply benefit set** on Edit Card) to copy that product's unused credits, rates, and perks from this catalog. Name matching still seeds held cards.
 
-| Key | Card name contains |
-|-----|--------------------|
-| `csr` | Sapphire Reserve |
-| `csp` | Sapphire Preferred |
-| `vx` | Venture X or C1 V X |
-| `plat` | Amex Plat |
-| `green` | Amex Green |
-| `aerlingus` | Aer Lingus |
-| `aeroplan` | Aeroplan |
-| `ba` | Chase BA or British Airways |
+Top-level JSON keys are product nicknames. `name` is the Filament label. Matching still uses `cards.name` (substring, case-insensitive):
+
+| Key | Name | Card name contains |
+|-----|------|--------------------|
+| `csr` | Chase Sapphire Reserve | Sapphire Reserve |
+| `csp` | Chase Sapphire Preferred | Sapphire Preferred |
+| `vx` | Capital One Venture X | Venture X or C1 V X |
+| `amex_plat` | Amex Plat | Amex Plat |
+| `amex_green` | Amex Green | Amex Green |
+| `chase_aerlingus` | Chase Aer Lingus | Aer Lingus |
+| `chase_aeroplan` | Chase Aeroplan | Aeroplan |
+| `ba` | Chase British Airways | Chase BA or British Airways |
 
 Benefit upsert key is `(card_id, benefit)` — renaming a benefit creates a new row and leaves the old one. Membership `code` must exist in `loyalty-programs.json`.
 
