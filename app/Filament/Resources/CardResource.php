@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\CardProduct;
 use App\Enums\PointsProgram;
 use App\Filament\Resources\CardResource\Pages;
 use App\Filament\Resources\CardResource\Pages\CreateCard;
@@ -14,6 +15,7 @@ use App\Filament\Resources\CardResource\RelationManagers\PaymentsRelationManager
 use App\Models\Card;
 use App\Models\SimpleFin\SimpleFinAccount;
 use App\Models\User;
+use App\Services\TravelWallet\CardProductCatalog;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -24,6 +26,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -45,7 +49,18 @@ class CardResource extends Resource
                     ->schema([
                         TextInput::make('name')
                             ->required()
-                            ->maxLength(191),
+                            ->maxLength(191)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (?string $state, Set $set, Get $get): void {
+                                if (filled($get('benefit_set'))) {
+                                    return;
+                                }
+
+                                $product = CardProduct::fromCardName((string) $state);
+                                if ($product !== null) {
+                                    $set('benefit_set', $product->value);
+                                }
+                            }),
                         Select::make('user_id')
                             ->label('Cardholder')
                             ->options(
@@ -54,6 +69,15 @@ class CardResource extends Resource
                             ),
                         ColorPicker::make('color'),
                     ])->columnSpanFull(),
+                Select::make('benefit_set')
+                    ->label('Benefit set')
+                    ->helperText('Copies this product\'s unused official credits, earning rates, and perks onto the new card.')
+                    ->options(fn (): array => app(CardProductCatalog::class)->options())
+                    ->searchable()
+                    ->nullable()
+                    ->dehydrated(false)
+                    ->hiddenOn('edit')
+                    ->columnSpanFull(),
                 Fieldset::make('Important Numbers')
                     ->columns(5)
                     ->columnSpanFull()

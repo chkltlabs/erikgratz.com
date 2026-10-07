@@ -1,5 +1,6 @@
 {
     "csr": {
+        "name": "Chase Sapphire Reserve",
         "memberships": [
             {
                 "code": "ihg",
@@ -261,6 +262,7 @@
         ]
     },
     "csp": {
+        "name": "Chase Sapphire Preferred",
         "memberships": [],
         "benefits": [
             {
@@ -379,6 +381,7 @@
         ]
     },
     "vx": {
+        "name": "Capital One Venture X",
         "memberships": [],
         "benefits": [
             {
@@ -480,7 +483,8 @@
             }
         ]
     },
-    "plat": {
+    "amex_plat": {
+        "name": "Amex Plat",
         "memberships": [
             {
                 "code": "hilton",
@@ -712,7 +716,8 @@
             }
         ]
     },
-    "green": {
+    "amex_green": {
+        "name": "Amex Green",
         "memberships": [],
         "benefits": [
             {
@@ -730,6 +735,7 @@
         ]
     },
     "ba": {
+        "name": "Chase British Airways",
         "memberships": [
             {
                 "code": "ba",
@@ -782,7 +788,8 @@
             }
         ]
     },
-    "aerlingus": {
+    "chase_aerlingus": {
+        "name": "Chase Aer Lingus",
         "memberships": [
             {
                 "code": "aerlingus",
@@ -818,7 +825,8 @@
             }
         ]
     },
-    "aeroplan": {
+    "chase_aeroplan": {
+        "name": "Chase Aeroplan",
         "memberships": [
             {
                 "code": "aeroplan",
