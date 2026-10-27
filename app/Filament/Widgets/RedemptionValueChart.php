@@ -2,12 +2,15 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Services\Dashboard\DumpChartData;
 use Filament\Support\RawJs;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class RedemptionValueChart extends ApexChartWidget
 {
+    use LoadsOnPageLoad;
+
     protected static ?string $chartId = 'RedemptionValueChart';
 
     protected static ?string $heading = 'Redemption value';

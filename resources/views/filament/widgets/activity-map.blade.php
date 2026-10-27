@@ -2,6 +2,17 @@
     $mapId = 'activity-map-'.uniqid();
 @endphp
 
+@assets
+    <link
+        rel="stylesheet"
+        href="{{ Vite::asset('resources/css/filament/activity-map.css') }}"
+    />
+    <script
+        type="module"
+        src="{{ Vite::asset('resources/js/Filament/activity-map.js') }}"
+    ></script>
+@endassets
+
 <x-filament-widgets::widget>
     <x-filament::section>
         <x-slot name="heading">

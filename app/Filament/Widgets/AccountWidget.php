@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\HasMathInputColumn;
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Models\Account;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\Summarizers\Summarizer;
@@ -15,6 +16,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 class AccountWidget extends BaseWidget
 {
     use HasMathInputColumn;
+    use LoadsOnPageLoad;
 
     protected int|string|array $columnSpan = 'full';
 

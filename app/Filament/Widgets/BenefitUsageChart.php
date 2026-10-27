@@ -2,11 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Services\Dashboard\DumpChartData;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BenefitUsageChart extends ApexChartWidget
 {
+    use LoadsOnPageLoad;
+
     protected static ?string $chartId = 'BenefitUsageChart';
 
     protected static ?string $heading = 'Benefit usage vs fees';

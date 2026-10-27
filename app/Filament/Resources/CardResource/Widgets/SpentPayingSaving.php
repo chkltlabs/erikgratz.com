@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CardResource\Widgets;
 
 use App\Enums\AccountType;
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Collections\StateDumpCollection as SDC;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Cache;
 
 class SpentPayingSaving extends BaseWidget
 {
+    use LoadsOnPageLoad;
+
     /**
      * @var int | array<string, ?int> | null
      */

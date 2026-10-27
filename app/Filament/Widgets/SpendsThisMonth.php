@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Models\Payment;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpendsThisMonth extends BaseWidget
 {
+    use LoadsOnPageLoad;
+
     protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table

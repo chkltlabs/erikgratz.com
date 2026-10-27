@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Services\TravelWallet\PointsByProgramTotals;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
@@ -10,6 +11,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class PointsByProgram extends StatsOverviewWidget
 {
+    use LoadsOnPageLoad;
+
     public string $household = 'total';
 
     protected ?string $heading = 'Points';

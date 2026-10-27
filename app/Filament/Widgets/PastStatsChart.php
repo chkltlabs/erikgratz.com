@@ -2,12 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Filament\Resources\CardResource\Widgets\SpentPayingSaving;
 use App\Models\Collections\StateDumpCollection;
 use Carbon\Carbon;
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
-use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -17,6 +15,8 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
  */
 class PastStatsChart extends ApexChartWidget
 {
+    use LoadsOnPageLoad;
+
     /**
      * Chart Id
      */
