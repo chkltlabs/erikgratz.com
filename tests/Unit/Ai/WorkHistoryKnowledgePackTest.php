@@ -19,6 +19,8 @@ class WorkHistoryKnowledgePackTest extends TestCase
         $this->assertStringContainsString('Professional experience', $markdown);
         $this->assertStringContainsString('Code Coverage Summary', $markdown);
         $this->assertStringContainsString('OpenBrain SaaS', $markdown);
+        $this->assertStringContainsString('Laravel Porthole', $markdown);
+        $this->assertStringContainsString('https://github.com/chkltlabs/laravel-porthole', $markdown);
         $this->assertStringContainsString('https://openbrain.erikgratz.com', $markdown);
         $this->assertStringContainsString('Household card wallet', $markdown);
         $this->assertStringContainsString('Book Travel', $markdown);

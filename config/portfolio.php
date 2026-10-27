@@ -2,6 +2,13 @@
 
 return [
     [
+        'imgUrl' => '/images/webp/laravel-porthole.webp',
+        'title' => 'Laravel Porthole',
+        'text' => 'Horizon, Pulse, and Telescope already know what the app is doing. They still want a browser tab. Laravel Porthole is an authenticated MCP server, built on laravel/mcp, so an agent can read queue health, slow queries, and a Telescope entry over HTTP or local stdio. Read tools register when those packages are installed. Pause, resume, retry, and Telescope prune stay off the tool list until you opt in, and a retry only runs when the job name is allowlisted. Every caller needs viewPorthole and the gate for that source. If the gate is missing, the call is denied. SQL literals and secrets are masked before the payload leaves the app.',
+        'link' => 'https://github.com/chkltlabs/laravel-porthole',
+        'linkText' => 'Check it out on Github',
+    ],
+    [
         'imgUrl' => '/images/webp/openbrain.webp',
         'title' => 'OpenBrain SaaS',
         'text' => 'Agents forget the chat the moment it ends. OpenBrain is a semantic memory service I rebuilt in Laravel so any MCP client — or a plain REST API — can ingest, search, and update durable thoughts in Postgres with pgvector. The first version was a personal Node stack; this greenfield SaaS adds organizations, Sanctum API keys, a Filament dashboard, and local Ollama embeddings so remembering decisions does not require a cloud LLM bill. Billing is still on the roadmap. I already use it as shared memory across Cursor and other MCP tools: capture a fact once, retrieve it from the next session.',
