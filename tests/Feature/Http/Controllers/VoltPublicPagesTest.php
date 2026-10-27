@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Livewire\Page\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,6 +28,22 @@ class VoltPublicPagesTest extends TestCase
     public function portfolio_returns_ok(): void
     {
         $this->get('/portfolio')->assertOk();
+    }
+
+    #[Test]
+    public function header_places_portfolio_where_work_was(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSeeInOrder([
+                'href="/home"',
+                'href="/portfolio"',
+                'href="/experience"',
+                'href="/fit"',
+                'href="/photo"',
+                'href="/contact"',
+            ], false)
+            ->assertDontSee('href="/work"', false);
     }
 
     #[Test]
@@ -53,7 +71,7 @@ class VoltPublicPagesTest extends TestCase
             'message' => 'Hello from the test suite.',
         ];
 
-        \Livewire\Livewire::test(\App\Livewire\Page\Contact::class)
+        Livewire::test(Contact::class)
             ->set($data)
             ->call('submit')
             ->assertHasNoErrors();
