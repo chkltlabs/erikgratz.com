@@ -4,26 +4,28 @@ namespace App\Filament\Resources\Photos\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Storage;
 
 class PhotoForm
 {
+    /**
+     * Kilobytes. Matches Livewire's default temporary upload cap (12MB).
+     */
+    public const MAX_UPLOAD_KILOBYTES = 12288;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('title')
                     ->required(),
-//                TextInput::make('url')
-//                    ->url()
-//                    ->required(),
                 FileUpload::make('path')
                     ->disk('public')
                     ->directory('form-attachments')
                     ->visibility('public')
+                    ->maxSize(self::MAX_UPLOAD_KILOBYTES)
                     ->hiddenOn('edit')
                     ->reactive(),
                 TextInput::make('url')
