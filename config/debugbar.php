@@ -18,6 +18,9 @@ return [
     'except' => [
         'telescope*',
         'horizon*',
+        // The panel head already pulls a large theme. Debugbar's stylesheet and
+        // blocking script in that head are what flash unstyled on a cold load.
+        'admin*',
     ],
 
     /*

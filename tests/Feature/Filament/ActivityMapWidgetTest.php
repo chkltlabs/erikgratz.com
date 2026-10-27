@@ -8,7 +8,11 @@ use App\Filament\Resources\ActivityResource\Widgets\ActivityMap;
 use App\Models\Activity;
 use App\Models\User;
 use Carbon\Carbon;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Vite;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -34,7 +38,7 @@ class ActivityMapWidgetTest extends TestCase
         $this->assertSame([ActivityMap::class], $method->invoke($page));
         $this->assertTrue(ActivityMap::isLazy());
         $this->assertContains(
-            \Filament\Pages\Concerns\ExposesTableToWidgets::class,
+            ExposesTableToWidgets::class,
             class_uses_recursive(ListActivities::class),
         );
     }
@@ -57,6 +61,19 @@ class ActivityMapWidgetTest extends TestCase
             ->assertSuccessful()
             ->assertSee('Travel map')
             ->assertSee('Toronto');
+
+        Route::middleware('web')->get('/testing/activity-map-assets', fn () => Blade::render(<<<'HTML'
+            <!DOCTYPE html>
+            <html>
+                <head></head>
+                <body>@livewire(\App\Filament\Resources\ActivityResource\Widgets\ActivityMap::class)</body>
+            </html>
+        HTML));
+
+        $this->get('/testing/activity-map-assets')
+            ->assertOk()
+            ->assertSee(Vite::asset('resources/js/Filament/activity-map.js'), false)
+            ->assertSee(Vite::asset('resources/css/filament/activity-map.css'), false);
     }
 
     #[Test]

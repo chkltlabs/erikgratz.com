@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\HasMathInputColumn;
+use App\Filament\Concerns\LoadsOnPageLoad;
 use App\Models\Card;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -14,6 +15,7 @@ use Illuminate\Database\Query\Builder;
 class CardWidget extends BaseWidget
 {
     use HasMathInputColumn;
+    use LoadsOnPageLoad;
 
     protected int|string|array $columnSpan = 'full';
 

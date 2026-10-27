@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources\LoanAgainstSavingsResource\Widgets;
 
+use App\Filament\Concerns\LoadsOnPageLoad;
+use App\Models\LoanAgainstSavings;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use App\Models\LoanAgainstSavings;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class LoansDue extends BaseWidget
 {
+    use LoadsOnPageLoad;
+
     protected int|string|array $columnSpan = 'full';
+
     public function table(Table $table): Table
     {
         return $table
@@ -26,9 +29,8 @@ class LoansDue extends BaseWidget
                 TextColumn::make('paid_on')
                     ->date()
                     ->sortable(),
-                ToggleColumn::make('is_paid')
+                ToggleColumn::make('is_paid'),
             ])
-            ->paginated(false)
-            ;
+            ->paginated(false);
     }
 }
