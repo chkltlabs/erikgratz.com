@@ -48,11 +48,10 @@ new class extends Component {
     {
         $items = [
             ['title' => Page\Home::TITLE, 'slug' => 'home'],
-            ['title' => Page\Work::TITLE, 'slug' => 'work'],
+            ['title' => Page\Portfolio::TITLE, 'slug' => 'portfolio'],
             ['title' => Page\Experience::TITLE, 'slug' => 'experience'],
             ['title' => 'Fit', 'slug' => 'fit'],
             ['title' => Page\Photo::TITLE, 'slug' => 'photo'],
-            ['title' => Page\Portfolio::TITLE, 'slug' => 'portfolio'],
             ['title' => Page\Contact::TITLE, 'slug' => 'contact'],
         ];
 
