@@ -12,6 +12,8 @@ new class extends Component {
     public mixed $link = null;
     public mixed $linkText = null;
 
+    /** @var list<array{href?: string, text?: string}> */
+    public array $extraLinks = [];
 
     public function mount(
         $title,
@@ -20,6 +22,7 @@ new class extends Component {
         $index,
         $link,
         $linkText,
+        array $extraLinks = [],
     ){
         $this->title = $title;
         $this->text = $text;
@@ -27,6 +30,37 @@ new class extends Component {
         $this->index = $index;
         $this->link = $link;
         $this->linkText = $linkText;
+        $this->extraLinks = $extraLinks;
+    }
+
+    /**
+     * @return list<array{href: string, text: string}>
+     */
+    #[Computed]
+    public function entryLinks(): array
+    {
+        $links = [];
+
+        if (is_string($this->link) && $this->link !== '' && is_string($this->linkText) && $this->linkText !== '') {
+            $links[] = ['href' => $this->link, 'text' => $this->linkText];
+        }
+
+        foreach ($this->extraLinks as $extraLink) {
+            if (! is_array($extraLink)) {
+                continue;
+            }
+
+            $href = $extraLink['href'] ?? null;
+            $text = $extraLink['text'] ?? null;
+
+            if (! is_string($href) || $href === '' || ! is_string($text) || $text === '') {
+                continue;
+            }
+
+            $links[] = ['href' => $href, 'text' => $text];
+        }
+
+        return $links;
     }
 }
 ?>
@@ -55,16 +89,19 @@ new class extends Component {
             <!-- Description text -->
             <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-4">{{ $text }}</p>
 
-            <!-- Link -->
-            @if($link && $linkText)
-                <a href="{{ $link }}"
-                   class="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium text-sm md:text-base transition-colors duration-200 group">
-                    {{ $linkText }}
-                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200"
-                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                    </svg>
-                </a>
+            @if($this->entryLinks !== [])
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                    @foreach($this->entryLinks as $entryLink)
+                        <a href="{{ $entryLink['href'] }}"
+                           class="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium text-sm md:text-base transition-colors duration-200 group">
+                            {{ $entryLink['text'] }}
+                            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    @endforeach
+                </div>
             @endif
         </div>
 

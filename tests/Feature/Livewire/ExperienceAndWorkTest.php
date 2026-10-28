@@ -45,7 +45,14 @@ class ExperienceAndWorkTest extends TestCase
         $this->get('/work')
             ->assertOk()
             ->assertSee('Laravel Porthole')
-            ->assertSee('https://github.com/chkltlabs/laravel-porthole', false)
+            ->assertSeeInOrder([
+                'Laravel Porthole',
+                'https://github.com/chkltlabs/laravel-porthole',
+                'Check it out on Github',
+                'https://porthole.erikgratz.com',
+                'Visit Porthole',
+                'OpenBrain SaaS',
+            ], false)
             ->assertSee('/images/webp/laravel-porthole.webp', false)
             ->assertSee('OpenBrain SaaS')
             ->assertSee('https://openbrain.erikgratz.com', false)
@@ -57,7 +64,14 @@ class ExperienceAndWorkTest extends TestCase
         $this->get('/portfolio')
             ->assertOk()
             ->assertSee('Laravel Porthole')
-            ->assertSee('https://github.com/chkltlabs/laravel-porthole', false)
+            ->assertSeeInOrder([
+                'Laravel Porthole',
+                'https://github.com/chkltlabs/laravel-porthole',
+                'Check it out on Github',
+                'https://porthole.erikgratz.com',
+                'Visit Porthole',
+                'OpenBrain SaaS',
+            ], false)
             ->assertSee('/images/webp/laravel-porthole.webp', false)
             ->assertSee('OpenBrain SaaS')
             ->assertSee('Book Travel')
