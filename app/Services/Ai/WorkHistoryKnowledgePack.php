@@ -24,10 +24,11 @@ class WorkHistoryKnowledgePack
     {
         return [
             'experience' => $this->workHistory->roles(),
-            'portfolio' => array_map(static fn (array $item): array => [
+            'portfolio' => array_map(fn (array $item): array => [
                 'title' => $item['title'] ?? '',
                 'text' => $item['text'] ?? '',
                 'link' => $item['link'] ?? null,
+                'links' => $this->projectLinks($item),
             ], config('portfolio', [])),
             'identity' => [
                 'Erik Gratz',
@@ -73,12 +74,45 @@ class WorkHistoryKnowledgePack
             $lines[] = '';
             $lines[] = '### '.($project['title'] ?: 'Project');
             $lines[] = $project['text'] ?? '';
-            if (! empty($project['link'])) {
-                $lines[] = 'Link: '.$project['link'];
+            foreach ($project['links'] ?? [] as $link) {
+                $lines[] = 'Link: '.$link;
             }
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return list<string>
+     */
+    protected function projectLinks(array $item): array
+    {
+        $links = [];
+
+        if (is_string($item['link'] ?? null) && $item['link'] !== '') {
+            $links[] = $item['link'];
+        }
+
+        $extraLinks = $item['extraLinks'] ?? [];
+
+        if (! is_array($extraLinks)) {
+            return $links;
+        }
+
+        foreach ($extraLinks as $extraLink) {
+            if (! is_array($extraLink)) {
+                continue;
+            }
+
+            $href = $extraLink['href'] ?? null;
+
+            if (is_string($href) && $href !== '') {
+                $links[] = $href;
+            }
+        }
+
+        return $links;
     }
 
     public function systemInstructions(): string
