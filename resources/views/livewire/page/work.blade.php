@@ -17,6 +17,7 @@
             :index="$index"
             :link="$portfolio['link'] ?? null"
             :linkText="$portfolio['linkText'] ?? null"
+            :extraLinks="$portfolio['extraLinks'] ?? []"
         />
     @endforeach
 </div>
