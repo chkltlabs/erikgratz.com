@@ -90,7 +90,7 @@ new class extends Component {
             <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-4">{{ $text }}</p>
 
             @if($this->entryLinks !== [])
-                <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                <div class="flex flex-wrap items-center gap-4">
                     @foreach($this->entryLinks as $entryLink)
                         <a href="{{ $entryLink['href'] }}"
                            class="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium text-sm md:text-base transition-colors duration-200 group">
