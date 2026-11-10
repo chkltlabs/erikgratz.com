@@ -45,6 +45,12 @@ type Project struct {
 	Title string `json:"title"`
 	Text  string `json:"text"`
 	Link  string `json:"link"`
+	Links []Link `json:"links"`
+}
+
+type Link struct {
+	Text string `json:"text"`
+	Href string `json:"href"`
 }
 
 type Photo struct {

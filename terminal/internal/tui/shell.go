@@ -51,11 +51,12 @@ func (s *Shell) Banner() string {
 	if name == "" {
 		name = "Erik V Gratz"
 	}
-	headline := s.Snap.Identity.Headline
-	if headline == "" {
-		headline = "I build small, useful tools for the web."
+	lines := []string{name}
+	if headline := strings.TrimSpace(s.Snap.Identity.Headline); headline != "" && !retiredHeadline(headline) {
+		lines = append(lines, headline)
 	}
-	return strings.TrimRight(fmt.Sprintf("%s\n%s\n\n%s\n", name, headline, s.help()), "\n") + "\n"
+	lines = append(lines, "", s.help())
+	return strings.TrimRight(strings.Join(lines, "\n"), "\n") + "\n"
 }
 
 func (s *Shell) Prompt() string {
@@ -354,7 +355,11 @@ func (s *Shell) artisan(line string) string {
 		return "production is not a playground.\n"
 	}
 	if args[0] == "inspire" {
-		return "I build small, useful tools for the web.\n"
+		sub := strings.TrimSpace(s.Snap.Identity.Sub)
+		if sub == "" {
+			sub = "I have a passion for computers. I create solutions to modern web problems."
+		}
+		return sub + "\n"
 	}
 	if args[0] == "bingo:play" {
 		return s.playBingo()

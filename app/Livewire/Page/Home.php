@@ -16,8 +16,6 @@ class Home extends Component
 
     public $siteTitle = 'Erik Gratz';
 
-    public $heroHeadline = 'I build small, useful tools for the web.';
-
     public $heroSub = 'I have a passion for computers. I create solutions to modern web problems.';
 
     public $cta = 'Schedule a Call';
