@@ -44,11 +44,16 @@ class TerminalSnapshotTest extends TestCase
     #[Test]
     public function snapshot_returns_the_public_site_only(): void
     {
-        Photo::factory()->create([
+        $photo = Photo::factory()->create([
             'title' => 'Dock at dusk',
+            'path' => 'photos/dock.jpg',
             'description' => 'A long exposure.',
             'tags' => ['water'],
-            'url' => '/storage/photos/dock.jpg',
+        ]);
+        $photo->forceFill(['url' => 'https://cdn.example/dock.jpg'])->save();
+        Photo::factory()->create([
+            'title' => 'Storage path',
+            'path' => 'photos/storage.jpg',
         ]);
 
         $response = $this->withHeader('X-Terminal-Token', 'test-terminal-token')
@@ -60,7 +65,9 @@ class TerminalSnapshotTest extends TestCase
             ->assertJsonPath('experience.1.title', 'Developer')
             ->assertJsonPath('portfolio.0.title', 'Laravel Porthole')
             ->assertJsonPath('photos.0.title', 'Dock at dusk')
+            ->assertJsonPath('photos.0.url', 'https://cdn.example/dock.jpg')
             ->assertJsonPath('photos.0.tags.0', 'water')
+            ->assertJsonPath('photos.1.url', url('/storage/photos/storage.jpg'))
             ->assertJsonPath('contact.email', config('contact.email'));
 
         $payload = $response->json();
@@ -125,5 +132,20 @@ class TerminalSnapshotTest extends TestCase
             ->assertJsonPath('answer', 'Pocketnest is the closest match.');
 
         PublicFitAgent::assertPrompted(fn ($prompt) => $prompt->contains('What did you build at Pocketnest?'));
+    }
+
+    #[Test]
+    public function fit_failures_stay_json(): void
+    {
+        PublicFitAgent::fake(function (): never {
+            throw new \RuntimeException('provider down');
+        });
+
+        $this->withHeader('X-Terminal-Token', 'test-terminal-token')
+            ->postJson('/api/terminal/fit', [
+                'question' => 'What did you build at Pocketnest?',
+            ])
+            ->assertStatus(500)
+            ->assertJsonPath('message', 'Something went wrong answering that. Please try again.');
     }
 }

@@ -37,11 +37,11 @@ class SiteSnapshot
                 'text' => (string) ($item['text'] ?? ''),
                 'link' => isset($item['link']) ? (string) $item['link'] : null,
             ], config('portfolio', [])),
-            'photos' => Photo::query()->orderBy('id')->get()->map(static fn (Photo $photo): array => [
+            'photos' => Photo::query()->orderBy('id')->get()->map(fn (Photo $photo): array => [
                 'title' => (string) $photo->title,
                 'description' => (string) ($photo->description ?? ''),
                 'tags' => array_values($photo->tags ?? []),
-                'url' => $photo->url !== null ? (string) $photo->url : null,
+                'url' => $this->publicUrl($photo->url),
             ])->all(),
             'contact' => [
                 'email' => (string) config('contact.email'),
@@ -49,5 +49,17 @@ class SiteSnapshot
                 'resume_url' => (string) config('contact.resumeUrl'),
             ],
         ];
+    }
+
+    private function publicUrl(?string $url): ?string
+    {
+        if ($url === null || $url === '') {
+            return null;
+        }
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            return $url;
+        }
+
+        return url($url);
     }
 }

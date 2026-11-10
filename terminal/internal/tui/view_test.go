@@ -67,10 +67,129 @@ func sampleSnap() site.Snapshot {
 			Bullets:   []string{"Named on original Patent for Pocketnest"},
 		}},
 		Portfolio: []site.Project{{Title: "Laravel Porthole", Text: "A window into the framework."}},
+		Photos: []site.Photo{{
+			Title: "Dock at dusk",
+			URL:   "https://cdn.example/dock.jpg",
+		}},
 		Contact: struct {
 			Email     string `json:"email"`
 			Phone     string `json:"phone"`
 			ResumeURL string `json:"resume_url"`
-		}{Email: "Erik@ErikGratz.com", Phone: "937-218-2673"},
+		}{
+			Email:     "Erik@ErikGratz.com",
+			Phone:     "937-218-2673",
+			ResumeURL: "https://docs.google.com/document/d/resume",
+		},
 	}
+}
+
+func TestPhotoShowsThePublicLink(t *testing.T) {
+	screen := wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionPhoto
+	if !strings.Contains(screen.View(), "https://cdn.example/dock.jpg") {
+		t.Fatalf("view: %s", screen.View())
+	}
+}
+
+func TestEnterOpensMailAndResume(t *testing.T) {
+	screen := wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionContact
+	mail, _ := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if !strings.Contains(mail.View(), "mailto:Erik@ErikGratz.com") || !strings.Contains(mail.View(), "1337;OpenURL=:") {
+		t.Fatalf("mail: %s", mail.View())
+	}
+	screen.cursor = 2
+	resume, _ := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if !strings.Contains(resume.View(), "https://docs.google.com/document/d/resume") || !strings.Contains(resume.View(), "1337;OpenURL=:") {
+		t.Fatalf("resume: %s", resume.View())
+	}
+}
+
+func TestNotePageIsAContactForm(t *testing.T) {
+	api := &recordingAPI{}
+	screen := wide(NewShell(sampleSnap(), api))
+	screen.section = sectionContact
+	screen.cursor = 3
+	view := screen.View()
+	if !strings.Contains(view, "Name") || !strings.Contains(view, "Email or phone") || !strings.Contains(view, "Message") {
+		t.Fatalf("form: %s", view)
+	}
+	var model tea.Model = screen
+	var cmd tea.Cmd
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("Ada")})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("ada@example.com")})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("Hello from the terminal.")})
+	model, cmd = model.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil {
+		t.Fatal("expected a send")
+	}
+	model, _ = model.Update(cmd())
+	if !strings.Contains(model.View(), "contact request sent!") {
+		t.Fatalf("sent: %s", model.View())
+	}
+	if api.name != "Ada" || api.contact != "ada@example.com" || api.message != "Hello from the terminal." {
+		t.Fatalf("note: %+v", api)
+	}
+}
+
+func TestFitAsksWithBothFieldsAndShowsTheAnswer(t *testing.T) {
+	api := &recordingAPI{answer: "Pocketnest is the closest match."}
+	screen := wide(NewShell(sampleSnap(), api))
+	screen.section = sectionFit
+	var model tea.Model = screen
+	var cmd tea.Cmd
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("Go services")})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyDown})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("How well do I fit?")})
+	if !strings.Contains(model.View(), "Job description") || !strings.Contains(model.View(), "Your question") {
+		t.Fatalf("fields: %s", model.View())
+	}
+	model, cmd = model.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !strings.Contains(model.View(), "asking") {
+		t.Fatalf("asking: %s", model.View())
+	}
+	model, _ = model.Update(cmd())
+	if !strings.Contains(model.View(), "Pocketnest is the closest match.") {
+		t.Fatalf("answer: %s", model.View())
+	}
+	if api.question != "How well do I fit?" || api.job != "Go services" {
+		t.Fatalf("asked %q %q", api.question, api.job)
+	}
+}
+
+func TestFitErrorStaysOnThePage(t *testing.T) {
+	screen := wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionFit
+	next, _ := screen.Update(fitMsg{err: errString("too many requests")})
+	if !strings.Contains(next.View(), "too many requests") {
+		t.Fatalf("error: %s", next.View())
+	}
+}
+
+type errString string
+
+func (e errString) Error() string { return string(e) }
+
+type recordingAPI struct {
+	question string
+	job      string
+	name     string
+	contact  string
+	message  string
+	answer   string
+}
+
+func (f *recordingAPI) Fit(question, job string) (string, error) {
+	f.question = question
+	f.job = job
+	return f.answer, nil
+}
+
+func (f *recordingAPI) Contact(name, contact, message string) (string, error) {
+	f.name = name
+	f.contact = contact
+	f.message = message
+	return "contact request sent!", nil
 }

@@ -105,7 +105,10 @@ func (c Client) Fit(question, job string) (string, error) {
 		return "", err
 	}
 	if parsed.Answer == "" {
-		return parsed.Message, nil
+		if parsed.Message != "" {
+			return "", errors.New(parsed.Message)
+		}
+		return "", errors.New("the site returned an empty answer")
 	}
 	return parsed.Answer, nil
 }
@@ -163,7 +166,7 @@ func (c Client) httpClient() *http.Client {
 		return dialer.DialContext(ctx, network, c.dialAddr(addr))
 	}
 	return &http.Client{
-		Timeout:   30 * time.Second,
+		Timeout:   90 * time.Second,
 		Transport: transport,
 		CheckRedirect: func(*http.Request, []*http.Request) error {
 			return http.ErrUseLastResponse
@@ -224,7 +227,13 @@ func (c Client) do(method, rawURL string, body []byte, followed bool) ([]byte, e
 		}
 		_ = json.Unmarshal(responseBody, &parsed)
 		if parsed.Message == "" {
+			parsed.Message = strings.TrimSpace(string(responseBody))
+		}
+		if parsed.Message == "" {
 			parsed.Message = response.Status
+		}
+		if len(parsed.Message) > 300 {
+			parsed.Message = parsed.Message[:300]
 		}
 		return nil, fmt.Errorf("%s", parsed.Message)
 	}

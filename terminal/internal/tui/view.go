@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -8,6 +9,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/ansi"
 	"github.com/muesli/termenv"
 )
 
@@ -34,20 +36,26 @@ const (
 var sectionNames = []string{"home", "experience", "portfolio", "photo", "contact", "fit"}
 
 type screenModel struct {
-	shell    *Shell
-	renderer *lipgloss.Renderer
-	width    int
-	height   int
-	section  section
-	cursor   int
-	overlay  string
-	notice   string
-	step     int
-	entry    string
-	draft    contactDraft
-	fitText  string
-	fitReply string
-	busy     bool
+	shell       *Shell
+	renderer    *lipgloss.Renderer
+	width       int
+	height      int
+	section     section
+	cursor      int
+	overlay     string
+	notice      string
+	pendingOpen string
+	noteField   int
+	noteName    string
+	noteContact string
+	noteMessage string
+	noteStatus  string
+	fitField    int
+	fitJob      string
+	fitText     string
+	fitReply    string
+	fitErr      string
+	busy        bool
 }
 
 func newScreen(shell *Shell, out io.Writer) screenModel {
@@ -71,16 +79,18 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case fitMsg:
 		m.busy = false
 		if msg.err != nil {
-			m.notice = msg.err.Error()
+			m.fitErr = msg.err.Error()
 			return m, nil
 		}
 		m.fitReply = msg.answer
-		m.notice = ""
+		m.fitErr = ""
 	case noteMsg:
-		m.notice = string(msg)
-		m.step = 0
-		m.entry = ""
-		m.draft = contactDraft{}
+		m.noteStatus = string(msg)
+		m.notice = m.noteStatus
+		if strings.Contains(m.noteStatus, "sent") {
+			m.noteName, m.noteContact, m.noteMessage = "", "", ""
+			m.noteField = 0
+		}
 	case tea.KeyMsg:
 		return m.key(msg)
 	}
@@ -88,6 +98,7 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	m.pendingOpen = ""
 	if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyCtrlD {
 		return m, tea.Quit
 	}
@@ -116,26 +127,33 @@ func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m screenModel) capturing() bool {
-	return m.section == sectionFit || m.step > 0
+	if m.section == sectionFit {
+		return true
+	}
+	return m.section == sectionContact && m.cursor == 3
 }
 
 func (m screenModel) typeKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.Type {
 	case tea.KeyLeft:
 		m = m.bump(-1)
-	case tea.KeyRight, tea.KeyTab:
+	case tea.KeyRight:
 		m = m.bump(1)
+	case tea.KeyTab:
+		m = m.moveField(1)
+	case tea.KeyUp:
+		m = m.moveField(-1)
+	case tea.KeyDown:
+		m = m.moveField(1)
 	case tea.KeyEsc:
-		m.step = 0
-		m.entry = ""
-		m.fitText = ""
+		m.fitJob, m.fitText, m.fitReply, m.fitErr = "", "", "", ""
+		m.noteName, m.noteContact, m.noteMessage, m.noteStatus = "", "", "", ""
+		m.noteField = 0
+		m.fitField = 0
 	case tea.KeyEnter:
 		return m.submit()
 	case tea.KeyBackspace:
-		m.entry = dropLast(m.entry)
-		if m.section == sectionFit {
-			m.fitText = dropLast(m.fitText)
-		}
+		m = m.backspace()
 	case tea.KeySpace:
 		m = m.append(" ")
 	case tea.KeyRunes:
@@ -162,7 +180,6 @@ func (m screenModel) runeKey(value string) (tea.Model, tea.Cmd) {
 	case "1", "2", "3", "4", "5", "6":
 		m.section = section(value[0] - '1')
 		m.cursor = 0
-		m.step = 0
 	}
 	return m, nil
 }
@@ -171,8 +188,6 @@ func (m screenModel) bump(delta int) screenModel {
 	count := len(sectionNames)
 	m.section = section((int(m.section) + delta + count) % count)
 	m.cursor = 0
-	m.step = 0
-	m.entry = ""
 	m.overlay = ""
 	return m
 }
@@ -193,60 +208,151 @@ func (m screenModel) move(delta int) screenModel {
 }
 
 func (m screenModel) append(value string) screenModel {
-	if m.section == sectionFit {
+	switch {
+	case m.section == sectionFit && m.fitField == 0:
+		m.fitJob += value
+	case m.section == sectionFit:
 		m.fitText += value
+	case m.noteField == 0:
+		m.noteName += value
+	case m.noteField == 1:
+		m.noteContact += value
+	default:
+		m.noteMessage += value
+	}
+	return m
+}
+
+func (m screenModel) noteValue() string {
+	switch m.noteField {
+	case 0:
+		return m.noteName
+	case 1:
+		return m.noteContact
+	default:
+		return m.noteMessage
+	}
+}
+
+func (m screenModel) backspace() screenModel {
+	switch {
+	case m.section == sectionFit && m.fitField == 0:
+		m.fitJob = dropLast(m.fitJob)
+	case m.section == sectionFit:
+		m.fitText = dropLast(m.fitText)
+	case m.noteField == 0:
+		m.noteName = dropLast(m.noteName)
+	case m.noteField == 1:
+		m.noteContact = dropLast(m.noteContact)
+	default:
+		m.noteMessage = dropLast(m.noteMessage)
+	}
+	return m
+}
+
+func (m screenModel) moveField(delta int) screenModel {
+	if m.section == sectionFit {
+		m.fitField += delta
+		if m.fitField < 0 {
+			m.fitField = 0
+		}
+		if m.fitField > 1 {
+			m.fitField = 1
+		}
+		m.cursor = m.fitField
 		return m
 	}
-	m.entry += value
+	next := m.noteField + delta
+	if next < 0 {
+		m.cursor = 2
+		return m
+	}
+	if next > 2 {
+		m.noteField = 2
+		return m
+	}
+	m.noteField = next
 	return m
 }
 
 func (m screenModel) activate() (tea.Model, tea.Cmd) {
-	if m.section == sectionContact && m.cursor == 3 {
-		m.step = 1
-		m.entry = ""
+	switch m.section {
+	case sectionContact:
+		switch m.cursor {
+		case 0:
+			return m.open("mailto:" + m.shell.Snap.Contact.Email)
+		case 2:
+			return m.open(m.shell.Snap.Contact.ResumeURL)
+		case 3:
+			m.noteField = 0
+		}
+	case sectionPhoto:
+		photos := m.shell.Snap.Photos
+		if len(photos) == 0 {
+			return m, nil
+		}
+		return m.open(photos[clamp(m.cursor, len(photos))].URL)
+	case sectionPortfolio:
+		projects := m.shell.Snap.Portfolio
+		if len(projects) == 0 {
+			return m, nil
+		}
+		return m.open(projects[clamp(m.cursor, len(projects))].Link)
 	}
+	return m, nil
+}
+
+func (m screenModel) open(target string) (tea.Model, tea.Cmd) {
+	if strings.TrimSpace(target) == "" || target == "mailto:" {
+		m.notice = "Nothing to open."
+		return m, nil
+	}
+	m.pendingOpen = target
+	m.notice = "Opening " + target
 	return m, nil
 }
 
 func (m screenModel) submit() (tea.Model, tea.Cmd) {
 	if m.section == sectionFit {
 		question := strings.TrimSpace(m.fitText)
-		if question == "" || m.busy {
+		if m.busy {
+			return m, nil
+		}
+		if question == "" {
+			m.fitErr = "A question is required."
+			m.fitField = 1
+			m.cursor = 1
 			return m, nil
 		}
 		m.busy = true
-		m.notice = "asking…"
-		return m, askFit(m.shell.API, question)
+		m.fitErr = ""
+		m.fitReply = ""
+		return m, askFit(m.shell.API, question, strings.TrimSpace(m.fitJob))
 	}
-	line := strings.TrimSpace(m.entry)
-	if line == "" {
+	if m.noteField < 2 {
+		if strings.TrimSpace(m.noteValue()) == "" {
+			return m, nil
+		}
+		m.noteField++
 		return m, nil
 	}
-	switch m.step {
-	case 1:
-		m.draft.name = line
-		m.step = 2
-		m.entry = ""
-	case 2:
-		m.draft.contact = line
-		m.step = 3
-		m.entry = ""
-	case 3:
-		name, contact, message := m.draft.name, m.draft.contact, line
-		m.step = 0
-		m.entry = ""
-		return m, sendNote(m.shell.API, name, contact, message)
+	name := strings.TrimSpace(m.noteName)
+	contact := strings.TrimSpace(m.noteContact)
+	message := strings.TrimSpace(m.noteMessage)
+	if name == "" || contact == "" || message == "" {
+		m.noteStatus = "Name, email or phone, and a message are required."
+		return m, nil
 	}
-	return m, nil
+	m.noteStatus = "sending…"
+	return m, sendNote(m.shell.API, name, contact, message)
 }
 
-func askFit(api Backend, question string) tea.Cmd {
+func askFit(api Backend, question, job string) tea.Cmd {
 	return func() tea.Msg {
 		if api == nil {
 			return fitMsg{err: errors.New("fit is offline")}
 		}
-		answer, err := api.Fit(question, "")
+		answer, err := api.Fit(question, job)
 		return fitMsg{answer: answer, err: err}
 	}
 }
@@ -296,12 +402,16 @@ func (m screenModel) View() string {
 		rightInner = 20
 	}
 	right := box.Width(rightInner).Height(bodyHeight - frameH).Render(m.detail(rightInner))
-	return lipgloss.JoinVertical(lipgloss.Left,
+	frame := lipgloss.JoinVertical(lipgloss.Left,
 		m.tabs(),
 		m.rule(),
 		lipgloss.JoinHorizontal(lipgloss.Top, left, right),
 		m.footer(),
 	)
+	if m.pendingOpen != "" {
+		frame = openSequence(m.pendingOpen) + frame
+	}
+	return frame
 }
 
 func (m screenModel) box() lipgloss.Style {
@@ -366,12 +476,12 @@ func (m screenModel) rule() string {
 }
 
 func (m screenModel) footer() string {
-	hint := "←/→ sections    ↑/↓ items    1-6 jump    q quit    b bingo"
+	hint := "←/→ sections    ↑/↓ items    enter opens    1-6 jump    q quit    b bingo"
 	switch {
 	case m.section == sectionFit:
-		hint = "type a question    enter ask    esc clear    ctrl-c quit"
-	case m.step > 0:
-		hint = "enter continues    esc cancel    ctrl-c quit"
+		hint = "↑/↓ fields    type    enter ask    esc clear"
+	case m.section == sectionContact && m.cursor == 3:
+		hint = "↑/↓ fields    type    enter next    enter sends    esc clear"
 	case m.notice != "":
 		hint = m.notice
 	}
@@ -406,10 +516,6 @@ func (m screenModel) detail(width int) string {
 func (m screenModel) detailText() string {
 	if m.overlay != "" {
 		return strings.TrimRight(m.overlay, "\n")
-	}
-	if m.step > 0 {
-		prompts := []string{"Name", "Email or phone", "Message"}
-		return prompts[m.step-1] + "\n\n" + m.entry + "█"
 	}
 	switch m.section {
 	case sectionHome:
@@ -499,7 +605,7 @@ func (m screenModel) projectText() string {
 	project := projects[clamp(m.cursor, len(projects))]
 	text := project.Title + "\n\n" + project.Text
 	if project.Link != "" {
-		text += "\n\n" + project.Link
+		text += "\n\n" + hyperlink(project.Link, project.Link)
 	}
 	return text
 }
@@ -522,7 +628,7 @@ func (m screenModel) photoText() string {
 		fmt.Fprintf(&b, "\n\n%s", strings.Join(photo.Tags, "   "))
 	}
 	if photo.URL != "" {
-		fmt.Fprintf(&b, "\n\n%s", photo.URL)
+		fmt.Fprintf(&b, "\n\n%s", hyperlink(photo.URL, photo.URL))
 	}
 	return b.String()
 }
@@ -536,26 +642,62 @@ func (m screenModel) contactText() string {
 	case 1:
 		return "Phone\n\n" + contact.Phone
 	case 2:
-		return "Resume\n\n" + contact.ResumeURL
+		return "Resume\n\n" + hyperlink(contact.ResumeURL, contact.ResumeURL) + "\n\nenter opens it"
 	case 3:
-		return "Leave a note. It goes to the same inbox as the website."
+		return m.noteForm()
 	default:
-		return "Email\n\n" + contact.Email
+		return "Email\n\n" + hyperlink(contact.Email, "mailto:"+contact.Email) + "\n\nenter opens it"
 	}
 }
 
+func (m screenModel) noteForm() string {
+	fields := []struct {
+		label string
+		value string
+	}{
+		{"Name", m.noteName},
+		{"Email or phone", m.noteContact},
+		{"Message", m.noteMessage},
+	}
+	var b strings.Builder
+	b.WriteString("Same inbox as the website.")
+	for i, field := range fields {
+		fmt.Fprintf(&b, "\n\n%s\n%s", field.label, m.fieldLine(field.value, i == m.noteField))
+	}
+	if m.noteStatus != "" {
+		fmt.Fprintf(&b, "\n\n%s", m.noteStatus)
+	}
+	return b.String()
+}
+
 func (m screenModel) fitTextView() string {
-	text := "Same assistant as the website.\n\n" + m.fitText + "█"
-	if m.busy {
-		text += "\n\nasking…"
+	var b strings.Builder
+	switch {
+	case m.busy:
+		b.WriteString("asking…\n\n")
+	case m.fitErr != "":
+		b.WriteString(m.fitErr + "\n\n")
+	case m.fitReply != "":
+		b.WriteString(m.fitReply + "\n\n")
 	}
-	if m.fitReply != "" {
-		text += "\n\n" + m.fitReply
-	}
+	b.WriteString("Job description (optional)\n")
+	b.WriteString(m.fieldLine(m.fitJob, m.fitField == 0))
+	b.WriteString("\n\nYour question\n")
+	b.WriteString(m.fieldLine(m.fitText, m.fitField == 1))
 	if !m.loaded() && m.shell.Problem != "" {
-		text += "\n\n" + m.shell.Problem
+		fmt.Fprintf(&b, "\n\n%s", m.shell.Problem)
 	}
-	return text
+	return b.String()
+}
+
+func (m screenModel) fieldLine(value string, active bool) string {
+	if active {
+		return value + "█"
+	}
+	if value == "" {
+		return " "
+	}
+	return value
 }
 
 func (m screenModel) blocked() string {
@@ -598,7 +740,7 @@ func (m screenModel) items() []string {
 	case sectionContact:
 		return []string{"Email", "Phone", "Resume", "Write a note"}
 	case sectionFit:
-		return []string{"Ask"}
+		return []string{"Job description", "Question"}
 	default:
 		return nil
 	}
@@ -619,6 +761,18 @@ func clamp(index, length int) int {
 		return length - 1
 	}
 	return index
+}
+
+func hyperlink(label, href string) string {
+	if label == "" || href == "" {
+		return label
+	}
+	return ansi.SetHyperlink(href) + label + ansi.ResetHyperlink()
+}
+
+func openSequence(target string) string {
+	encoded := base64.StdEncoding.EncodeToString([]byte(target))
+	return "\x1b]1337;OpenURL=:" + encoded + "\x07"
 }
 
 func dropLast(value string) string {
