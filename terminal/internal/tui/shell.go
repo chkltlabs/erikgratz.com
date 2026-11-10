@@ -2,6 +2,7 @@ package tui
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -387,6 +388,24 @@ func (s *Shell) playBingo() string {
 		text += "\n"
 	}
 	return text
+}
+
+func (s *Shell) bingoCommand() (*exec.Cmd, error) {
+	script := locateBingo(s.BingoPHP)
+	if script == "" {
+		return nil, errors.New("auto-bingo is not installed")
+	}
+	phpBin, err := exec.LookPath("php")
+	if err != nil {
+		return nil, errors.New("php is not installed")
+	}
+	absolute, err := filepath.Abs(script)
+	if err != nil {
+		return nil, err
+	}
+	command := exec.Command(phpBin, absolute)
+	command.Dir = filepath.Dir(absolute)
+	return command, nil
 }
 
 func locateBingo(explicit string) string {

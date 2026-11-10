@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -77,6 +78,23 @@ func TestBingoFinishes(t *testing.T) {
 	got, _ := shell.Execute("bingo")
 	if !strings.Contains(got, "BINGO") || !strings.Contains(got, "b, i, n, g, o") {
 		t.Fatalf("bingo: %q", got)
+	}
+}
+
+func TestBingoCommandRunsTheOriginalScriptFromItsDirectory(t *testing.T) {
+	shell := NewShell(site.Snapshot{}, nil)
+	command, err := shell.bingoCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if filepath.Base(command.Path) != "php" {
+		t.Fatalf("binary: %s", command.Path)
+	}
+	if len(command.Args) != 2 || filepath.Base(command.Args[1]) != "go.php" {
+		t.Fatalf("args: %v", command.Args)
+	}
+	if filepath.Base(command.Dir) != "bingo" {
+		t.Fatalf("dir: %s", command.Dir)
 	}
 }
 
