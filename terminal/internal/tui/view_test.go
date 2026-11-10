@@ -8,6 +8,7 @@ import (
 
 	"erikgratz.com/terminal/internal/site"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 func TestExperienceShowsTheRole(t *testing.T) {
@@ -96,18 +97,22 @@ func TestEnterOpensMailAndResume(t *testing.T) {
 	screen := wide(NewShell(sampleSnap(), nil))
 	screen.section = sectionContact
 	mail, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if cmd == nil || !strings.Contains(mail.View(), "mailto:Erik@ErikGratz.com") {
+	if cmd != nil || !strings.Contains(mail.View(), "OPEN LINK") || !strings.Contains(mail.View(), "mailto:Erik@ErikGratz.com") {
 		t.Fatalf("mail: %s", mail.View())
 	}
-	if !sequenceOpens("mailto:Erik@ErikGratz.com") {
+	mail, cmd = mail.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !sequenceOpens("mailto:Erik@ErikGratz.com") || !sequenceCopies("mailto:Erik@ErikGratz.com") {
 		t.Fatal("mail sequence")
 	}
+	screen = wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionContact
 	screen.cursor = 2
 	resume, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if cmd == nil || !strings.Contains(resume.View(), "https://docs.google.com/document/d/resume") {
+	if cmd != nil || !strings.Contains(resume.View(), "OPEN LINK") || !strings.Contains(resume.View(), "https://docs.google.com/document/d/resume") {
 		t.Fatalf("resume: %s", resume.View())
 	}
-	if !sequenceOpens("https://docs.google.com/document/d/resume") {
+	resume, cmd = resume.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !sequenceOpens("https://docs.google.com/document/d/resume") || !sequenceCopies("https://docs.google.com/document/d/resume") {
 		t.Fatal("resume sequence")
 	}
 }
@@ -132,13 +137,24 @@ func sequenceOpens(targets ...string) bool {
 	return len(targets) > 0
 }
 
+func sequenceCopies(target string) bool {
+	var buf strings.Builder
+	writer := &ttyWrite{seq: copySequence(target)}
+	writer.SetStdout(&buf)
+	if err := writer.Run(); err != nil {
+		return false
+	}
+	encoded := base64.StdEncoding.EncodeToString([]byte(target))
+	return buf.String() == "\x1b]52;c;"+encoded+"\x07"
+}
+
 func TestNotePageIsAContactForm(t *testing.T) {
 	api := &recordingAPI{}
 	screen := wide(NewShell(sampleSnap(), api))
 	screen.section = sectionContact
 	screen.cursor = 3
 	view := screen.View()
-	if !strings.Contains(view, "Name") || !strings.Contains(view, "Email or phone") || !strings.Contains(view, "Message") {
+	if !strings.Contains(view, "NAME") || !strings.Contains(view, "EMAIL OR PHONE") || !strings.Contains(view, "MESSAGE") {
 		t.Fatalf("form: %s", view)
 	}
 	var model tea.Model = screen
@@ -170,11 +186,11 @@ func TestFitAsksWithBothFieldsAndShowsTheAnswer(t *testing.T) {
 	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("Go services")})
 	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyDown})
 	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("How well do I fit?")})
-	if !strings.Contains(model.View(), "Job description") || !strings.Contains(model.View(), "Your question") {
+	if !strings.Contains(model.View(), "JOB DESCRIPTION") || !strings.Contains(model.View(), "YOUR QUESTION") {
 		t.Fatalf("fields: %s", model.View())
 	}
 	model, cmd = model.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if cmd == nil || !strings.Contains(model.View(), "asking") {
+	if cmd == nil || !strings.Contains(model.View(), "ASKING") {
 		t.Fatalf("asking: %s", model.View())
 	}
 	model, _ = model.Update(cmd())
@@ -197,18 +213,23 @@ func TestFooterReturnsToTheControls(t *testing.T) {
 	screen := wide(NewShell(sampleSnap(), nil))
 	screen.section = sectionContact
 	next, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if cmd == nil || !strings.Contains(next.View(), "Opening") {
-		t.Fatalf("opening: %s", next.View())
+	if cmd != nil || !strings.Contains(next.View(), "⌘-click") {
+		t.Fatalf("launcher: %s", next.View())
 	}
 	shown := next.(screenModel)
+	copied, cmd := shown.requestLink(shown.linkTargets(), false)
+	if cmd == nil || !strings.Contains(copied.View(), "Copied") {
+		t.Fatalf("copied: %s", copied.View())
+	}
+	shown = copied.(screenModel)
 	cleared, _ := shown.Update(clearNoticeMsg{id: shown.noticeID})
 	view := cleared.View()
-	if strings.Contains(view, "Opening") || !strings.Contains(view, "enter opens") {
+	if strings.Contains(view, "Copied") || !strings.Contains(view, "⌘-click") {
 		t.Fatalf("restored: %s", view)
 	}
 }
 
-func TestPortfolioEnterOpensEveryLink(t *testing.T) {
+func TestPortfolioLinksCanBeOpenedIndividually(t *testing.T) {
 	snap := sampleSnap()
 	snap.Portfolio[0].Link = "https://github.com/chkltlabs/laravel-porthole"
 	snap.Portfolio[0].Links = []site.Link{
@@ -218,20 +239,42 @@ func TestPortfolioEnterOpensEveryLink(t *testing.T) {
 	screen := wide(NewShell(snap, nil))
 	screen.section = sectionPortfolio
 	view := screen.View()
-	if !strings.Contains(view, "\x1b]8;;https://porthole.erikgratz.com\x1b\\Visit Porthole") {
+	if !strings.Contains(view, "\x1b]8;;https://porthole.erikgratz.com\x1b\\↗ Visit Porthole") {
 		t.Fatalf("view: %s", view)
 	}
 	if !strings.Contains(view, "\x1b]8;;https://github.com/chkltlabs/laravel-porthole\x1b\\") {
 		t.Fatalf("github: %s", view)
 	}
-	links := screen.linkTargets()
-	hrefs := make([]string, 0, len(links))
-	for _, link := range links {
-		hrefs = append(hrefs, link.Href)
+	launcher, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd != nil || !strings.Contains(launcher.View(), "Check it out on Github") {
+		t.Fatalf("launcher: %s", launcher.View())
 	}
-	_, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if cmd == nil || !sequenceOpens(hrefs...) {
-		t.Fatalf("links: %+v", links)
+	launcher, _ = launcher.Update(tea.KeyMsg{Type: tea.KeyDown})
+	if !strings.Contains(launcher.View(), "https://porthole.erikgratz.com") {
+		t.Fatalf("second link: %s", launcher.View())
+	}
+	_, cmd = launcher.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !sequenceOpens("https://porthole.erikgratz.com") || !sequenceCopies("https://porthole.erikgratz.com") {
+		t.Fatal("second link sequence")
+	}
+}
+
+func TestPolishedLayoutFitsTheTerminal(t *testing.T) {
+	sizes := [][2]int{{120, 36}, {80, 24}, {48, 16}}
+	for _, size := range sizes {
+		screen := newScreen(NewShell(sampleSnap(), nil), io.Discard)
+		screen.width = size[0]
+		screen.height = size[1]
+		for current := sectionHome; current <= sectionFit; current++ {
+			screen.section = current
+			view := screen.View()
+			if got := lipgloss.Width(view); got > screen.width {
+				t.Fatalf("%dx%d %s width: %d", screen.width, screen.height, sectionNames[current], got)
+			}
+			if got := lipgloss.Height(view); got > screen.height {
+				t.Fatalf("%dx%d %s height: %d", screen.width, screen.height, sectionNames[current], got)
+			}
+		}
 	}
 }
 
