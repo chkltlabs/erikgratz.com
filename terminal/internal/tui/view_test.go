@@ -41,10 +41,13 @@ func TestRightArrowOpensExperience(t *testing.T) {
 	}
 }
 
-func TestBingoFillsTheDetail(t *testing.T) {
-	next, _ := wide(NewShell(sampleSnap(), nil)).Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'b'}})
-	if !strings.Contains(next.View(), "BINGO") {
+func TestBingoLaunchesTheInteractivePHPCLI(t *testing.T) {
+	next, cmd := wide(NewShell(sampleSnap(), nil)).Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'b'}})
+	if cmd == nil || !strings.Contains(next.View(), "Launching the original Auto-Bingo CLI") {
 		t.Fatalf("view: %s", next.View())
+	}
+	if strings.Contains(next.View(), "BINGO!") {
+		t.Fatal("the TUI should not pre-play the game")
 	}
 }
 

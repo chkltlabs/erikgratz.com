@@ -123,6 +123,11 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.cursor = 2
 		m.syncFitViewport()
 		m.showFitResponse()
+	case bingoFinishedMsg:
+		if msg.err != nil {
+			return m.showNotice("Bingo stopped: " + msg.err.Error())
+		}
+		return m.showNotice("Bingo finished. Welcome back.")
 	case noteMsg:
 		m.noteStatus = string(msg)
 		if strings.Contains(m.noteStatus, "sent") {
@@ -150,6 +155,8 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 type startNoticeTimerMsg struct{ id int }
 
 type clearNoticeMsg struct{ id int }
+
+type bingoFinishedMsg struct{ err error }
 
 func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyCtrlD {
@@ -284,8 +291,14 @@ func (m screenModel) runeKey(value string) (tea.Model, tea.Cmd) {
 	case "q":
 		return m, tea.Quit
 	case "b":
-		text, _ := m.shell.Execute("bingo")
-		m.overlay = text
+		command, err := m.shell.bingoCommand()
+		if err != nil {
+			return m.showNotice(err.Error())
+		}
+		m.notice = "Launching the original Auto-Bingo CLI…"
+		return m, tea.ExecProcess(command, func(err error) tea.Msg {
+			return bingoFinishedMsg{err: err}
+		})
 	case "h":
 		m = m.bump(-1)
 	case "l":
