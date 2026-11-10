@@ -60,3 +60,32 @@ if ! find "$BINGO_DST" -mindepth 1 -delete; then
 fi
 cp -R "$BINGO_SRC/." "$BINGO_DST/"
 chmod -R a+rX "$BINGO_DST"
+
+site_token() {
+	file=$1
+	[ -f "$file" ] || return 0
+	awk '
+		/^[[:space:]]*(export[[:space:]]+)?TERMINAL_TOKEN=/ {
+			sub(/^[^=]*=/, "")
+			gsub(/\r/, "")
+			gsub(/^["'\'']|["'\'']$/, "")
+			print
+			exit
+		}
+	' "$file"
+}
+
+SITE=$(CDPATH= cd -- "$TERMINAL/.." && pwd)
+token=$(site_token "$SITE/.env")
+if [ -z "$token" ]; then
+	echo "TERMINAL_TOKEN is missing from $SITE/.env, so the SSH terminal gets 401." >&2
+	echo "Copy the daemon token into that file, then run: php artisan config:cache" >&2
+	exit 1
+fi
+runtime=$(mktemp)
+printf 'TERMINAL_TOKEN=%s\n' "$token" > "$runtime"
+install -m 640 "$runtime" "$PREFIX/env"
+rm -f "$runtime"
+if [ -f "$SITE/artisan" ]; then
+	(cd "$SITE" && php artisan config:cache --no-interaction)
+fi

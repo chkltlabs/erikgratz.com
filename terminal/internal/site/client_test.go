@@ -49,6 +49,18 @@ func TestPublicHostDialsLoopback(t *testing.T) {
 	}
 }
 
+func TestRejectedTokenNamesTheCause(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	}))
+	defer server.Close()
+
+	_, err := (Client{SnapshotURL: server.URL, Token: "secret"}).Fetch()
+	if err == nil || !strings.Contains(err.Error(), "TERMINAL_TOKEN") {
+		t.Fatal(err)
+	}
+}
+
 func TestEmptyTokenIsTheVisibleFailure(t *testing.T) {
 	_, err := (Client{SnapshotURL: "http://127.0.0.1/api/terminal/snapshot", SnapshotHost: "erikgratz.com"}).Fetch()
 	if err == nil || !strings.Contains(err.Error(), "TERMINAL_TOKEN") {

@@ -5,6 +5,15 @@ import (
 	"strings"
 )
 
+func FirstToken(paths ...string) string {
+	for _, path := range paths {
+		if token := Token(path); token != "" {
+			return token
+		}
+	}
+	return ""
+}
+
 func Token(path string) string {
 	raw, err := os.ReadFile(path)
 	if err != nil {
