@@ -52,6 +52,11 @@ go build -o "$built" ./cmd/erikgratz-terminal
 install -m 755 "$built" "$BIN_DIR/erikgratz-terminal"
 rm -f "$built"
 
-find "$BINGO_DST" -mindepth 1 -delete
+if ! find "$BINGO_DST" -mindepth 1 -delete; then
+	echo "Bingo files are owned by root. From an SSH session, run:" >&2
+	echo "  sudo chown -R $(id -un):terminal $BIN_DIR $BINGO_DST" >&2
+	echo "  bash terminal/deploy/on-deploy.sh" >&2
+	exit 1
+fi
 cp -R "$BINGO_SRC/." "$BINGO_DST/"
 chmod -R a+rX "$BINGO_DST"

@@ -29,5 +29,12 @@ fi
 
 if [ ! -f "$PREFIX/bingo/go.php" ] && [ -f "$HERE/../bingo/go.php" ]; then
 	cp -R "$HERE/../bingo/." "$PREFIX/bingo/"
-	chmod -R a+rX "$PREFIX/bingo"
+fi
+
+# cp above runs as root, so the site user could not replace those files.
+chown -R "$owner:terminal" "$PREFIX/bin" "$PREFIX/bingo"
+find "$PREFIX/bin" "$PREFIX/bingo" -type d -exec chmod 2775 {} +
+find "$PREFIX/bin" "$PREFIX/bingo" -type f -exec chmod 644 {} +
+if [ -f "$PREFIX/bin/erikgratz-terminal" ]; then
+	chmod 755 "$PREFIX/bin/erikgratz-terminal"
 fi
