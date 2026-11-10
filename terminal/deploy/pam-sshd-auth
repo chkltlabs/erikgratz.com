@@ -1,0 +1,11 @@
+# Replace the two auth lines added earlier. One line in each section.
+# forge and root fall through these lines and keep the normal stacks.
+
+# Above @include common-auth:
+auth sufficient pam_terminal.so
+
+# Above "account required pam_nologin.so":
+account sufficient pam_terminal.so
+
+# Above the first session line:
+session sufficient pam_terminal.so

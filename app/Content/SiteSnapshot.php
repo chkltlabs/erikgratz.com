@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Content;
+
+use App\Models\Photo;
+
+class SiteSnapshot
+{
+    public function __construct(
+        protected WorkHistory $workHistory,
+    ) {}
+
+    /**
+     * Public site facts the terminal renders. Same sources as the website.
+     *
+     * @return array{
+     *     identity: array{name: string, headline: string, sub: string},
+     *     experience: list<array{company: string, location: string, title: string, timeframe: string, bullets: list<string>, technologies: list<string>}>,
+     *     portfolio: list<array{title: string, text: string, link: string|null}>,
+     *     photos: list<array{title: string, description: string, tags: list<string>, url: string|null}>,
+     *     contact: array{email: string, phone: string, resume_url: string}
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'identity' => [
+                'name' => 'Erik V Gratz',
+                'headline' => 'I build small, useful tools for the web.',
+                'sub' => 'I have a passion for computers. I create solutions to modern web problems.',
+            ],
+            'experience' => $this->workHistory->roles(),
+            'portfolio' => array_map(static fn (array $item): array => [
+                'title' => (string) ($item['title'] ?? ''),
+                'text' => (string) ($item['text'] ?? ''),
+                'link' => isset($item['link']) ? (string) $item['link'] : null,
+            ], config('portfolio', [])),
+            'photos' => Photo::query()->orderBy('id')->get()->map(static fn (Photo $photo): array => [
+                'title' => (string) $photo->title,
+                'description' => (string) ($photo->description ?? ''),
+                'tags' => array_values($photo->tags ?? []),
+                'url' => $photo->url !== null ? (string) $photo->url : null,
+            ])->all(),
+            'contact' => [
+                'email' => (string) config('contact.email'),
+                'phone' => (string) config('contact.phone'),
+                'resume_url' => (string) config('contact.resumeUrl'),
+            ],
+        ];
+    }
+}
