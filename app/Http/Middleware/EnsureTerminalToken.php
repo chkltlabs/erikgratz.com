@@ -16,7 +16,7 @@ class EnsureTerminalToken
         $given = (string) $request->header('X-Terminal-Token', '');
 
         if ($configured === '' || ! hash_equals($configured, $given)) {
-            abort(401);
+            abort(401, 'The terminal token was rejected.');
         }
 
         return $next($request);

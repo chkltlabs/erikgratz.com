@@ -31,7 +31,8 @@ class TerminalSnapshotTest extends TestCase
 
         $this->withHeader('X-Terminal-Token', 'nope')
             ->getJson('/api/terminal/snapshot')
-            ->assertUnauthorized();
+            ->assertUnauthorized()
+            ->assertJsonPath('message', 'The terminal token was rejected.');
 
         config(['terminal.token' => '']);
 

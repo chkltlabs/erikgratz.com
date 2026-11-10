@@ -209,6 +209,9 @@ func (c Client) do(method, rawURL string, body []byte, followed bool) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
+	if response.StatusCode == http.StatusUnauthorized {
+		return nil, errors.New("the site rejected the terminal token; set TERMINAL_TOKEN in the site .env and run php artisan config:cache")
+	}
 	if response.StatusCode >= 300 && response.StatusCode < 400 && !followed {
 		next, ok := c.replay(rawURL, response)
 		if ok {

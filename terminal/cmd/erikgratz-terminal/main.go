@@ -31,7 +31,7 @@ func main() {
 	flag.Parse()
 
 	if *token == "" {
-		*token = envfile.Token(*envPath)
+		*token = envfile.FirstToken("/var/lib/erikgratz-terminal/env", *envPath)
 	}
 
 	if *stdio {
