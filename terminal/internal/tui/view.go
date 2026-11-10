@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 	"strings"
 	"time"
 
@@ -46,6 +45,8 @@ type screenModel struct {
 	section     section
 	cursor      int
 	overlay     string
+	linkMode    bool
+	linkCursor  int
 	notice      string
 	noticeID    int
 	noteField   int
@@ -119,6 +120,9 @@ func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyCtrlD {
 		return m, tea.Quit
 	}
+	if m.linkMode {
+		return m.linkKey(msg)
+	}
 	if m.overlay != "" {
 		m.overlay = ""
 		return m, nil
@@ -139,6 +143,32 @@ func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.activate()
 	case tea.KeyRunes:
 		return m.runeKey(string(msg.Runes))
+	}
+	return m, nil
+}
+
+func (m screenModel) linkKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	links := m.linkTargets()
+	switch msg.Type {
+	case tea.KeyEsc, tea.KeyLeft:
+		m.linkMode = false
+		m.linkCursor = 0
+	case tea.KeyUp:
+		m.linkCursor = clamp(m.linkCursor-1, len(links))
+	case tea.KeyDown:
+		m.linkCursor = clamp(m.linkCursor+1, len(links))
+	case tea.KeyEnter:
+		return m.requestLink(links, true)
+	case tea.KeyRunes:
+		switch string(msg.Runes) {
+		case "c":
+			return m.requestLink(links, false)
+		case "o":
+			return m.requestLink(links, true)
+		case "q":
+			m.linkMode = false
+			m.linkCursor = 0
+		}
 	}
 	return m, nil
 }
@@ -206,6 +236,8 @@ func (m screenModel) bump(delta int) screenModel {
 	m.section = section((int(m.section) + delta + count) % count)
 	m.cursor = 0
 	m.overlay = ""
+	m.linkMode = false
+	m.linkCursor = 0
 	return m
 }
 
@@ -305,29 +337,45 @@ func (m screenModel) activate() (tea.Model, tea.Cmd) {
 	case sectionHome, sectionExperience, sectionFit:
 		return m, nil
 	}
-	return m.open(m.linkTargets())
+	links := m.linkTargets()
+	if len(links) == 0 {
+		return m.showNotice("No link is published for this item.")
+	}
+	m.linkMode = true
+	m.linkCursor = 0
+	m.notice = ""
+	return m, nil
 }
 
-func (m screenModel) open(links []linkRef) (tea.Model, tea.Cmd) {
-	hrefs := make([]string, 0, len(links))
-	for _, link := range links {
-		href := strings.TrimSpace(link.Href)
-		if href == "" || href == "mailto:" {
-			continue
-		}
-		hrefs = append(hrefs, href)
+func (m screenModel) requestLink(links []linkRef, requestOpen bool) (tea.Model, tea.Cmd) {
+	if len(links) == 0 {
+		return m.showNotice("No link is published for this item.")
+	}
+	link := links[clamp(m.linkCursor, len(links))]
+	href := strings.TrimSpace(link.Href)
+	if href == "" || href == "mailto:" {
+		return m.showNotice("No link is published for this item.")
 	}
 	m.noticeID++
 	id := m.noticeID
-	if len(hrefs) == 0 {
-		m.notice = "Nothing to open."
-		return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg {
-			return clearNoticeMsg{id: id}
-		})
+	sequence := copySequence(href)
+	if requestOpen {
+		sequence += openSequence(href)
+		m.notice = "Copied. iTerm also received an open request."
+	} else {
+		m.notice = "Copied to your clipboard."
 	}
-	m.notice = "Opening…"
-	return m, tea.Exec(&ttyWrite{seq: openSequence(hrefs...), live: true, pause: 200 * time.Millisecond}, func(error) tea.Msg {
+	return m, tea.Exec(&ttyWrite{seq: sequence}, func(error) tea.Msg {
 		return startNoticeTimerMsg{id: id}
+	})
+}
+
+func (m screenModel) showNotice(notice string) (tea.Model, tea.Cmd) {
+	m.noticeID++
+	id := m.noticeID
+	m.notice = notice
+	return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg {
+		return clearNoticeMsg{id: id}
 	})
 }
 
@@ -398,18 +446,18 @@ type noteMsg string
 
 func (m screenModel) View() string {
 	if m.width < 48 || m.height < 12 {
-		return "Make the terminal a little wider.\n"
+		return "This profile needs a terminal at least 48 columns wide.\n"
 	}
-	links := m.linkBlock()
-	linkLines := 0
-	if links != "" {
-		linkLines = strings.Count(links, "\n") + 1
+	header := m.header()
+	actions := m.actionBar()
+	bodyHeight := m.height - lipgloss.Height(header) - lipgloss.Height(m.footer())
+	if actions != "" {
+		bodyHeight -= lipgloss.Height(actions)
 	}
-	bodyHeight := m.height - lipgloss.Height(m.tabs()) - 2 - linkLines
 	if bodyHeight < 6 {
 		bodyHeight = 6
 	}
-	leftWidth := 32
+	leftWidth := 30
 	if leftWidth > m.width/2 {
 		leftWidth = m.width / 3
 	}
@@ -421,95 +469,101 @@ func (m screenModel) View() string {
 		leftInner = 16
 	}
 	left := box.Width(leftInner).Height(bodyHeight - frameH).Render(m.list(leftInner))
-	rightInner := m.width - lipgloss.Width(left) - frameW
+	rightInner := m.width - lipgloss.Width(left) - frameW - 1
 	if rightInner < 20 {
 		rightInner = 20
 	}
 	right := box.Width(rightInner).Height(bodyHeight - frameH).Render(m.detail(rightInner))
 	parts := []string{
-		m.tabs(),
-		m.rule(),
-		lipgloss.JoinHorizontal(lipgloss.Top, left, right),
-		m.footer(),
+		header,
+		lipgloss.JoinHorizontal(lipgloss.Top, left, " ", right),
 	}
-	if links != "" {
-		parts = append(parts, links)
+	if actions != "" {
+		parts = append(parts, actions)
 	}
+	parts = append(parts, m.footer())
 	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 
 func (m screenModel) box() lipgloss.Style {
 	return m.renderer.NewStyle().
-		Border(lipgloss.NormalBorder()).
+		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(colorLine)).
 		Padding(0, 1)
 }
 
-func (m screenModel) tabs() string {
-	boxed := m.boxedTabs()
-	if lipgloss.Width(boxed) <= m.width {
-		return boxed
-	}
-	return m.compactTabs()
-}
-
-func (m screenModel) compactTabs() string {
-	gap := m.renderer.NewStyle().Foreground(lipgloss.Color(colorLine)).Render(" │ ")
-	parts := make([]string, len(sectionNames))
-	for i, name := range sectionNames {
-		label := fmt.Sprintf("%d %s", i+1, name)
-		style := m.renderer.NewStyle().Foreground(lipgloss.Color(colorText))
-		if section(i) == m.section {
-			style = style.Foreground(lipgloss.Color(colorOnPurple)).Background(lipgloss.Color(colorPurple)).Bold(true)
-		}
-		parts[i] = style.Render(" " + label + " ")
-	}
-	brand := m.renderer.NewStyle().Foreground(lipgloss.Color(colorPurpleText)).Bold(true).Render("erikgratz.com")
-	return brand + gap + strings.Join(parts, gap)
-}
-
-func (m screenModel) boxedTabs() string {
+func (m screenModel) header() string {
 	brand := m.renderer.NewStyle().
-		Border(lipgloss.NormalBorder()).
-		BorderForeground(lipgloss.Color(colorLine)).
-		Padding(0, 1).
 		Foreground(lipgloss.Color(colorPurpleText)).
 		Bold(true).
-		Render("erikgratz.com")
-	parts := []string{brand}
-	for i, name := range sectionNames {
+		Render("ERIKGRATZ.COM")
+	mode := m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorDim)).
+		Render("  /  SSH PROFILE")
+	title := brand + mode
+	labels := sectionNames
+	if m.width < 74 {
+		labels = []string{"home", "work", "code", "photo", "mail", "fit"}
+	}
+	nav := make([]string, 0, len(sectionNames))
+	for i, name := range labels {
 		style := m.renderer.NewStyle().
-			Border(lipgloss.NormalBorder()).
-			BorderForeground(lipgloss.Color(colorLine)).
-			Padding(0, 1).
-			Foreground(lipgloss.Color(colorText))
+			Foreground(lipgloss.Color(colorDim))
 		if section(i) == m.section {
 			style = style.
 				Foreground(lipgloss.Color(colorOnPurple)).
 				Background(lipgloss.Color(colorPurple)).
-				BorderForeground(lipgloss.Color(colorPurple)).
 				Bold(true)
 		}
-		parts = append(parts, style.Render(fmt.Sprintf("%d %s", i+1, name)))
+		nav = append(nav, style.Render(fmt.Sprintf(" %d %s ", i+1, strings.ToUpper(name))))
 	}
-	return lipgloss.JoinHorizontal(lipgloss.Bottom, parts...)
-}
-
-func (m screenModel) rule() string {
-	return m.renderer.NewStyle().Foreground(lipgloss.Color(colorLine)).Render(strings.Repeat("─", m.width))
+	navigation := strings.Join(nav, " ")
+	if lipgloss.Width(navigation) > m.width {
+		nav = nav[:0]
+		for i := range sectionNames {
+			label := fmt.Sprintf(" %d ", i+1)
+			style := m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim))
+			if section(i) == m.section {
+				style = style.
+					Foreground(lipgloss.Color(colorOnPurple)).
+					Background(lipgloss.Color(colorPurple)).
+					Bold(true)
+			}
+			nav = append(nav, style.Render(label))
+		}
+		navigation = strings.Join(nav, " ")
+	}
+	rule := m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorPurple)).
+		Render(strings.Repeat("━", m.width))
+	return lipgloss.JoinVertical(lipgloss.Left, title, navigation, rule)
 }
 
 func (m screenModel) footer() string {
-	hint := "←/→ sections    ↑/↓ items    enter opens    1-6 jump    q quit    b bingo"
+	hint := "←/→ sections  ·  ↑/↓ items  ·  1–6 jump  ·  q quit  ·  b bingo"
 	switch {
-	case m.section == sectionFit:
-		hint = "↑/↓ fields    type    enter ask    esc clear"
-	case m.section == sectionContact && m.cursor == 3:
-		hint = "↑/↓ fields    type    enter next    enter sends    esc clear"
 	case m.notice != "":
 		hint = m.notice
+	case m.linkMode:
+		hint = "↑/↓ choose  ·  enter copy + open in iTerm  ·  c copy  ·  ⌘-click link  ·  esc back"
+		if m.width < 96 {
+			hint = "↑/↓ choose  ·  enter open/copy  ·  c copy  ·  ⌘-click  ·  esc back"
+		}
+	case m.section == sectionFit:
+		hint = "↑/↓ fields  ·  type  ·  enter ask  ·  esc clear"
+	case m.section == sectionContact && m.cursor == 3:
+		hint = "↑/↓ fields  ·  type  ·  enter next/send  ·  esc clear"
+	case len(m.linkTargets()) > 0:
+		hint = "enter link launcher  ·  ⌘-click a link above  ·  ←/→ sections  ·  ↑/↓ items"
+		if m.width < 96 {
+			hint = "enter links  ·  ⌘-click above  ·  ←/→ sections  ·  ↑/↓ items"
+		}
 	}
-	return m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render(hint)
+	return m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorOnPurple)).
+		Background(lipgloss.Color(colorPurple)).
+		Width(m.width).
+		Render(" " + hint)
 }
 
 type linkRef struct {
@@ -570,38 +624,42 @@ func projectLinks(project site.Project) []linkRef {
 		}
 		refs = append(refs, linkRef{Text: text, Href: href})
 	}
-	add("Open", project.Link)
 	for _, link := range project.Links {
 		add(link.Text, link.Href)
 	}
+	add("Open", project.Link)
 	return refs
 }
 
-func (m screenModel) linkBlock() string {
+func (m screenModel) actionBar() string {
 	refs := m.linkTargets()
 	if len(refs) == 0 {
 		return ""
 	}
 	lines := make([]string, 0, len(refs))
-	for _, ref := range refs {
-		lines = append(lines, m.oneLink(ref))
+	for i, ref := range refs {
+		label := "↗ " + ref.Text
+		if m.linkMode && i == m.linkCursor {
+			label = "› " + label
+		}
+		lines = append(lines, hyperlink(label, ref.Href))
 	}
-	return strings.Join(lines, "\n")
-}
-
-func (m screenModel) oneLink(ref linkRef) string {
-	visible := ref.Text
-	candidate := ref.Text + "  " + ref.Href
-	if ansi.StringWidth(candidate) <= m.width {
-		visible = candidate
-	} else if ansi.StringWidth(visible) > m.width {
-		visible = ansi.Truncate(ref.Text, m.width, "")
+	prefix := m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorDim)).
+		Bold(true).
+		Render(" LINKS  ")
+	line := prefix + strings.Join(lines, "   ")
+	if ansi.StringWidth(line) <= m.width {
+		return line
 	}
-	return hyperlink(visible, ref.Href)
+	return lipgloss.JoinVertical(lipgloss.Left, append([]string{prefix}, lines...)...)
 }
 
 func (m screenModel) list(width int) string {
-	label := m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render("~ " + sectionNames[m.section] + " ~")
+	label := m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorPurpleText)).
+		Bold(true).
+		Render(strings.ToUpper(sectionNames[m.section]))
 	var b strings.Builder
 	b.WriteString(label)
 	b.WriteString("\n\n")
@@ -611,9 +669,9 @@ func (m screenModel) list(width int) string {
 				Foreground(lipgloss.Color(colorOnPurple)).
 				Background(lipgloss.Color(colorPurple)).
 				Width(width).
-				Render(item))
+				Render("› " + item))
 		} else {
-			b.WriteString(item)
+			b.WriteString("  " + item)
 		}
 		b.WriteString("\n")
 	}
@@ -628,6 +686,9 @@ func (m screenModel) detail(width int) string {
 func (m screenModel) detailText() string {
 	if m.overlay != "" {
 		return strings.TrimRight(m.overlay, "\n")
+	}
+	if m.linkMode {
+		return m.linkLauncher()
 	}
 	switch m.section {
 	case sectionHome:
@@ -647,17 +708,38 @@ func (m screenModel) detailText() string {
 	}
 }
 
+func (m screenModel) linkLauncher() string {
+	links := m.linkTargets()
+	if len(links) == 0 {
+		return m.muted("No link is published for this item.")
+	}
+	link := links[clamp(m.linkCursor, len(links))]
+	title := m.heading("OPEN LINK")
+	name := m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorText)).
+		Bold(true).
+		Render("↗ " + link.Text)
+	target := hyperlink(link.Href, link.Href)
+	instructions := m.muted("⌘-click the URL to open it in this terminal.\nEnter copies it and asks iTerm to open it.\nPress c to copy, or esc to return.")
+	return title + "\n\n" + name + "\n\n" + target + "\n\n" + instructions
+}
+
 func (m screenModel) homeText() string {
 	name, headline, sub := m.identity()
-	text := name
+	text := m.heading(name)
 	if headline != "" {
-		text += "\n\n" + headline
+		text += "\n\n" + m.renderer.NewStyle().
+			Foreground(lipgloss.Color(colorText)).
+			Bold(true).
+			Render(headline)
 	}
 	if sub != "" {
 		text += "\n\n" + sub
 	}
 	if m.shell.Problem != "" && !m.loaded() {
-		text += "\n\n" + m.shell.Problem
+		text += "\n\n" + m.renderer.NewStyle().
+			Foreground(lipgloss.Color("203")).
+			Render(m.shell.Problem)
 	}
 	return text
 }
@@ -698,21 +780,22 @@ func (m screenModel) roleText() string {
 	}
 	role := roles[clamp(m.cursor, len(roles))]
 	var b strings.Builder
-	fmt.Fprintf(&b, "%s\n%s", role.Title, role.Company)
-	if role.Location != "" {
-		fmt.Fprintf(&b, "  ·  %s", role.Location)
-	}
-	if role.Timeframe != "" {
-		fmt.Fprintf(&b, "\n%s", role.Timeframe)
+	b.WriteString(m.heading(role.Title))
+	b.WriteString("\n")
+	b.WriteString(m.renderer.NewStyle().Bold(true).Render(role.Company))
+	meta := strings.Join(nonEmpty(role.Location, role.Timeframe), "  ·  ")
+	if meta != "" {
+		b.WriteString("\n")
+		b.WriteString(m.muted(meta))
 	}
 	if len(role.Bullets) > 0 {
 		b.WriteString("\n")
 	}
 	for _, bullet := range role.Bullets {
-		fmt.Fprintf(&b, "\n• %s", bullet)
+		fmt.Fprintf(&b, "\n%s %s", m.accent("◆"), bullet)
 	}
 	if len(role.Technologies) > 0 {
-		fmt.Fprintf(&b, "\n\n%s", strings.Join(role.Technologies, "   "))
+		fmt.Fprintf(&b, "\n\n%s\n%s", m.muted("TOOLS"), m.accent(strings.Join(role.Technologies, "  ·  ")))
 	}
 	return b.String()
 }
@@ -726,7 +809,7 @@ func (m screenModel) projectText() string {
 		return "No portfolio entries."
 	}
 	project := projects[clamp(m.cursor, len(projects))]
-	return project.Title + "\n\n" + project.Text
+	return m.heading(project.Title) + "\n\n" + project.Text
 }
 
 func (m screenModel) photoText() string {
@@ -739,12 +822,12 @@ func (m screenModel) photoText() string {
 	}
 	photo := photos[clamp(m.cursor, len(photos))]
 	var b strings.Builder
-	b.WriteString(photo.Title)
+	b.WriteString(m.heading(photo.Title))
 	if photo.Description != "" {
 		fmt.Fprintf(&b, "\n\n%s", photo.Description)
 	}
 	if len(photo.Tags) > 0 {
-		fmt.Fprintf(&b, "\n\n%s", strings.Join(photo.Tags, "   "))
+		fmt.Fprintf(&b, "\n\n%s", m.muted("#"+strings.Join(photo.Tags, "  #")))
 	}
 	return b.String()
 }
@@ -756,13 +839,13 @@ func (m screenModel) contactText() string {
 	contact := m.shell.Snap.Contact
 	switch m.cursor {
 	case 1:
-		return "Phone\n\n" + contact.Phone
+		return m.heading("Phone") + "\n\n" + contact.Phone
 	case 2:
-		return "Resume\n\nenter opens it"
+		return m.heading("Resume") + "\n\nOpen the current résumé in Google Docs."
 	case 3:
 		return m.noteForm()
 	default:
-		return "Email\n\n" + contact.Email + "\n\nenter opens it"
+		return m.heading("Email") + "\n\n" + contact.Email
 	}
 }
 
@@ -776,12 +859,14 @@ func (m screenModel) noteForm() string {
 		{"Message", m.noteMessage},
 	}
 	var b strings.Builder
-	b.WriteString("Same inbox as the website.")
+	b.WriteString(m.heading("WRITE A NOTE"))
+	b.WriteString("\n")
+	b.WriteString(m.muted("Same inbox as the website."))
 	for i, field := range fields {
-		fmt.Fprintf(&b, "\n\n%s\n%s", field.label, m.fieldLine(field.value, i == m.noteField))
+		fmt.Fprintf(&b, "\n\n%s\n%s", m.muted(strings.ToUpper(field.label)), m.fieldLine(field.value, i == m.noteField))
 	}
 	if m.noteStatus != "" {
-		fmt.Fprintf(&b, "\n\n%s", m.noteStatus)
+		fmt.Fprintf(&b, "\n\n%s", m.accent(m.noteStatus))
 	}
 	return b.String()
 }
@@ -790,15 +875,17 @@ func (m screenModel) fitTextView() string {
 	var b strings.Builder
 	switch {
 	case m.busy:
-		b.WriteString("asking…\n\n")
+		b.WriteString(m.accent("ASKING…") + "\n\n")
 	case m.fitErr != "":
-		b.WriteString(m.fitErr + "\n\n")
+		b.WriteString(m.renderer.NewStyle().Foreground(lipgloss.Color("203")).Render(m.fitErr) + "\n\n")
 	case m.fitReply != "":
-		b.WriteString(m.fitReply + "\n\n")
+		b.WriteString(m.heading("FIT RESPONSE") + "\n\n" + m.fitReply + "\n\n")
 	}
-	b.WriteString("Job description (optional)\n")
+	b.WriteString(m.heading("ASK ABOUT FIT"))
+	b.WriteString("\n\n")
+	b.WriteString(m.muted("JOB DESCRIPTION · OPTIONAL") + "\n")
 	b.WriteString(m.fieldLine(m.fitJob, m.fitField == 0))
-	b.WriteString("\n\nYour question\n")
+	b.WriteString("\n\n" + m.muted("YOUR QUESTION") + "\n")
 	b.WriteString(m.fieldLine(m.fitText, m.fitField == 1))
 	if !m.loaded() && m.shell.Problem != "" {
 		fmt.Fprintf(&b, "\n\n%s", m.shell.Problem)
@@ -808,12 +895,31 @@ func (m screenModel) fitTextView() string {
 
 func (m screenModel) fieldLine(value string, active bool) string {
 	if active {
-		return value + "█"
+		return m.accent("▏") + value + m.accent("█")
 	}
 	if value == "" {
-		return " "
+		return m.muted("▏")
 	}
-	return value
+	return m.muted("▏") + value
+}
+
+func (m screenModel) heading(value string) string {
+	return m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorPurpleText)).
+		Bold(true).
+		Render(value)
+}
+
+func (m screenModel) accent(value string) string {
+	return m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorPurpleText)).
+		Render(value)
+}
+
+func (m screenModel) muted(value string) string {
+	return m.renderer.NewStyle().
+		Foreground(lipgloss.Color(colorDim)).
+		Render(value)
 }
 
 func (m screenModel) blocked() string {
@@ -833,8 +939,7 @@ func (m screenModel) items() []string {
 	}
 	switch m.section {
 	case sectionHome:
-		name, _, _ := m.identity()
-		return []string{name}
+		return []string{"Overview"}
 	case sectionExperience:
 		items := make([]string, 0, len(m.shell.Snap.Experience))
 		for _, role := range m.shell.Snap.Experience {
@@ -869,6 +974,16 @@ func orNone(items []string) []string {
 	return items
 }
 
+func nonEmpty(values ...string) []string {
+	filtered := make([]string, 0, len(values))
+	for _, value := range values {
+		if value = strings.TrimSpace(value); value != "" {
+			filtered = append(filtered, value)
+		}
+	}
+	return filtered
+}
+
 func clamp(index, length int) int {
 	if index < 0 || length == 0 {
 		return 0
@@ -896,11 +1011,14 @@ func openSequence(targets ...string) string {
 	return b.String()
 }
 
+func copySequence(target string) string {
+	encoded := base64.StdEncoding.EncodeToString([]byte(target))
+	return "\x1b]52;c;" + encoded + "\x07"
+}
+
 type ttyWrite struct {
-	seq   string
-	out   io.Writer
-	live  bool
-	pause time.Duration
+	seq string
+	out io.Writer
 }
 
 func (t *ttyWrite) SetStdin(io.Reader) {}
@@ -914,15 +1032,6 @@ func (t *ttyWrite) Run() error {
 		return errors.New("no terminal")
 	}
 	_, err := io.WriteString(t.out, t.seq)
-	if t.live {
-		if tty, openErr := os.OpenFile("/dev/tty", os.O_WRONLY, 0); openErr == nil {
-			_, _ = io.WriteString(tty, t.seq)
-			_ = tty.Close()
-		}
-		if t.pause > 0 {
-			time.Sleep(t.pause)
-		}
-	}
 	return err
 }
 
