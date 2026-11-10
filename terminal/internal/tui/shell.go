@@ -408,6 +408,36 @@ func (s *Shell) bingoCommand() (*exec.Cmd, error) {
 	return command, nil
 }
 
+type pausedCommand struct {
+	command *exec.Cmd
+	pause   time.Duration
+	sleep   func(time.Duration)
+}
+
+func (c *pausedCommand) SetStdin(reader io.Reader) {
+	c.command.Stdin = reader
+}
+
+func (c *pausedCommand) SetStdout(writer io.Writer) {
+	c.command.Stdout = writer
+}
+
+func (c *pausedCommand) SetStderr(writer io.Writer) {
+	c.command.Stderr = writer
+}
+
+func (c *pausedCommand) Run() error {
+	if err := c.command.Run(); err != nil {
+		return err
+	}
+	sleep := time.Sleep
+	if c.sleep != nil {
+		sleep = c.sleep
+	}
+	sleep(c.pause)
+	return nil
+}
+
 func locateBingo(explicit string) string {
 	candidates := []string{}
 	if explicit != "" {

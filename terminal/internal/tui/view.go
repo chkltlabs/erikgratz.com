@@ -296,7 +296,7 @@ func (m screenModel) runeKey(value string) (tea.Model, tea.Cmd) {
 			return m.showNotice(err.Error())
 		}
 		m.notice = "Launching the original Auto-Bingo CLI…"
-		return m, tea.ExecProcess(command, func(err error) tea.Msg {
+		return m, tea.Exec(&pausedCommand{command: command, pause: 3 * time.Second}, func(err error) tea.Msg {
 			return bingoFinishedMsg{err: err}
 		})
 	case "h":
