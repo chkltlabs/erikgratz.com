@@ -1,9 +1,11 @@
 package tui
 
 import (
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"erikgratz.com/terminal/internal/site"
 )
@@ -95,6 +97,23 @@ func TestBingoCommandRunsTheOriginalScriptFromItsDirectory(t *testing.T) {
 	}
 	if filepath.Base(command.Dir) != "bingo" {
 		t.Fatalf("dir: %s", command.Dir)
+	}
+}
+
+func TestPausedCommandKeepsTheBingoResultVisible(t *testing.T) {
+	var pausedFor time.Duration
+	command := &pausedCommand{
+		command: exec.Command("php", "-r", ""),
+		pause:   3 * time.Second,
+		sleep: func(duration time.Duration) {
+			pausedFor = duration
+		},
+	}
+	if err := command.Run(); err != nil {
+		t.Fatal(err)
+	}
+	if pausedFor != 3*time.Second {
+		t.Fatalf("pause: %s", pausedFor)
 	}
 }
 
