@@ -29,6 +29,12 @@ class TerminalFitController extends Controller
             return response()->json([
                 'message' => $exception->getMessage(),
             ], 422);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response()->json([
+                'message' => 'Something went wrong answering that. Please try again.',
+            ], 500);
         }
 
         return response()->json($result);
