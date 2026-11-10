@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"strings"
+	"time"
 
+	"erikgratz.com/terminal/internal/site"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
@@ -44,6 +47,7 @@ type screenModel struct {
 	cursor      int
 	overlay     string
 	notice      string
+	noticeID    int
 	noteField   int
 	noteName    string
 	noteContact string
@@ -85,16 +89,31 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.fitErr = ""
 	case noteMsg:
 		m.noteStatus = string(msg)
-		m.notice = m.noteStatus
 		if strings.Contains(m.noteStatus, "sent") {
 			m.noteName, m.noteContact, m.noteMessage = "", "", ""
 			m.noteField = 0
+		}
+	case startNoticeTimerMsg:
+		if msg.id != m.noticeID {
+			return m, nil
+		}
+		id := msg.id
+		return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg {
+			return clearNoticeMsg{id: id}
+		})
+	case clearNoticeMsg:
+		if msg.id == m.noticeID {
+			m.notice = ""
 		}
 	case tea.KeyMsg:
 		return m.key(msg)
 	}
 	return m, nil
 }
+
+type startNoticeTimerMsg struct{ id int }
+
+type clearNoticeMsg struct{ id int }
 
 func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyCtrlD {
@@ -276,37 +295,40 @@ func (m screenModel) moveField(delta int) screenModel {
 func (m screenModel) activate() (tea.Model, tea.Cmd) {
 	switch m.section {
 	case sectionContact:
-		switch m.cursor {
-		case 0:
-			return m.open("mailto:" + m.shell.Snap.Contact.Email)
-		case 2:
-			return m.open(m.shell.Snap.Contact.ResumeURL)
-		case 3:
+		if m.cursor == 3 {
 			m.noteField = 0
-		}
-	case sectionPhoto:
-		photos := m.shell.Snap.Photos
-		if len(photos) == 0 {
 			return m, nil
 		}
-		return m.open(photos[clamp(m.cursor, len(photos))].URL)
-	case sectionPortfolio:
-		projects := m.shell.Snap.Portfolio
-		if len(projects) == 0 {
+		if m.cursor != 0 && m.cursor != 2 {
 			return m, nil
 		}
-		return m.open(projects[clamp(m.cursor, len(projects))].Link)
-	}
-	return m, nil
-}
-
-func (m screenModel) open(target string) (tea.Model, tea.Cmd) {
-	if strings.TrimSpace(target) == "" || target == "mailto:" {
-		m.notice = "Nothing to open."
+	case sectionHome, sectionExperience, sectionFit:
 		return m, nil
 	}
-	m.notice = "Opening " + target
-	return m, tea.Exec(&ttyWrite{seq: openSequence(target)}, nil)
+	return m.open(m.linkTargets())
+}
+
+func (m screenModel) open(links []linkRef) (tea.Model, tea.Cmd) {
+	hrefs := make([]string, 0, len(links))
+	for _, link := range links {
+		href := strings.TrimSpace(link.Href)
+		if href == "" || href == "mailto:" {
+			continue
+		}
+		hrefs = append(hrefs, href)
+	}
+	m.noticeID++
+	id := m.noticeID
+	if len(hrefs) == 0 {
+		m.notice = "Nothing to open."
+		return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg {
+			return clearNoticeMsg{id: id}
+		})
+	}
+	m.notice = "Opening…"
+	return m, tea.Exec(&ttyWrite{seq: openSequence(hrefs...), live: true, pause: 200 * time.Millisecond}, func(error) tea.Msg {
+		return startNoticeTimerMsg{id: id}
+	})
 }
 
 func (m screenModel) submit() (tea.Model, tea.Cmd) {
@@ -378,7 +400,12 @@ func (m screenModel) View() string {
 	if m.width < 48 || m.height < 12 {
 		return "Make the terminal a little wider.\n"
 	}
-	bodyHeight := m.height - lipgloss.Height(m.tabs()) - 2
+	links := m.linkBlock()
+	linkLines := 0
+	if links != "" {
+		linkLines = strings.Count(links, "\n") + 1
+	}
+	bodyHeight := m.height - lipgloss.Height(m.tabs()) - 2 - linkLines
 	if bodyHeight < 6 {
 		bodyHeight = 6
 	}
@@ -399,12 +426,16 @@ func (m screenModel) View() string {
 		rightInner = 20
 	}
 	right := box.Width(rightInner).Height(bodyHeight - frameH).Render(m.detail(rightInner))
-	return lipgloss.JoinVertical(lipgloss.Left,
+	parts := []string{
 		m.tabs(),
 		m.rule(),
 		lipgloss.JoinHorizontal(lipgloss.Top, left, right),
 		m.footer(),
-	)
+	}
+	if links != "" {
+		parts = append(parts, links)
+	}
+	return lipgloss.JoinVertical(lipgloss.Left, parts...)
 }
 
 func (m screenModel) box() lipgloss.Style {
@@ -478,38 +509,95 @@ func (m screenModel) footer() string {
 	case m.notice != "":
 		hint = m.notice
 	}
-	line := ""
-	if href := m.linkTarget(); href != "" {
-		line = hyperlink("open", href) + "   "
-	}
-	return line + m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render(hint)
+	return m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render(hint)
 }
 
-func (m screenModel) linkTarget() string {
+type linkRef struct {
+	Text string
+	Href string
+}
+
+func (m screenModel) linkTargets() []linkRef {
 	switch m.section {
 	case sectionContact:
 		switch m.cursor {
 		case 0:
-			if email := m.shell.Snap.Contact.Email; email != "" {
-				return "mailto:" + email
+			if email := strings.TrimSpace(m.shell.Snap.Contact.Email); email != "" {
+				return []linkRef{{Text: "Email", Href: "mailto:" + email}}
 			}
 		case 2:
-			return m.shell.Snap.Contact.ResumeURL
+			if href := strings.TrimSpace(m.shell.Snap.Contact.ResumeURL); href != "" {
+				return []linkRef{{Text: "Resume", Href: href}}
+			}
 		}
 	case sectionPhoto:
 		photos := m.shell.Snap.Photos
 		if len(photos) == 0 {
-			return ""
+			return nil
 		}
-		return photos[clamp(m.cursor, len(photos))].URL
+		photo := photos[clamp(m.cursor, len(photos))]
+		if strings.TrimSpace(photo.URL) == "" {
+			return nil
+		}
+		text := photo.Title
+		if text == "" {
+			text = "Photo"
+		}
+		return []linkRef{{Text: text, Href: photo.URL}}
 	case sectionPortfolio:
 		projects := m.shell.Snap.Portfolio
 		if len(projects) == 0 {
-			return ""
+			return nil
 		}
-		return projects[clamp(m.cursor, len(projects))].Link
+		return projectLinks(projects[clamp(m.cursor, len(projects))])
+	default:
+		return nil
 	}
-	return ""
+	return nil
+}
+
+func projectLinks(project site.Project) []linkRef {
+	seen := map[string]bool{}
+	refs := make([]linkRef, 0, 1+len(project.Links))
+	add := func(text, href string) {
+		href = strings.TrimSpace(href)
+		if href == "" || seen[href] {
+			return
+		}
+		seen[href] = true
+		if strings.TrimSpace(text) == "" {
+			text = "Open"
+		}
+		refs = append(refs, linkRef{Text: text, Href: href})
+	}
+	add("Open", project.Link)
+	for _, link := range project.Links {
+		add(link.Text, link.Href)
+	}
+	return refs
+}
+
+func (m screenModel) linkBlock() string {
+	refs := m.linkTargets()
+	if len(refs) == 0 {
+		return ""
+	}
+	lines := make([]string, 0, len(refs))
+	for _, ref := range refs {
+		lines = append(lines, m.oneLink(ref))
+	}
+	return strings.Join(lines, "\n")
+}
+
+func (m screenModel) oneLink(ref linkRef) string {
+	visible := ref.Text
+	candidate := ref.Text + "  " + ref.Href
+	if ansi.StringWidth(candidate) <= m.width {
+		visible = candidate
+	} else if ansi.StringWidth(visible) > m.width {
+		visible = ansi.Truncate(ref.Text, m.width, "")
+	}
+	return hyperlink(visible, ref.Href)
 }
 
 func (m screenModel) list(width int) string {
@@ -561,7 +649,13 @@ func (m screenModel) detailText() string {
 
 func (m screenModel) homeText() string {
 	name, headline, sub := m.identity()
-	text := name + "\n\n" + headline + "\n\n" + sub
+	text := name
+	if headline != "" {
+		text += "\n\n" + headline
+	}
+	if sub != "" {
+		text += "\n\n" + sub
+	}
 	if m.shell.Problem != "" && !m.loaded() {
 		text += "\n\n" + m.shell.Problem
 	}
@@ -573,15 +667,20 @@ func (m screenModel) identity() (string, string, string) {
 	if name == "" {
 		name = "Erik V Gratz"
 	}
-	headline := m.shell.Snap.Identity.Headline
-	if headline == "" {
-		headline = "I build small, useful tools for the web."
+	headline := strings.TrimSpace(m.shell.Snap.Identity.Headline)
+	if retiredHeadline(headline) {
+		headline = ""
 	}
 	sub := m.shell.Snap.Identity.Sub
 	if sub == "" {
 		sub = "I have a passion for computers. I create solutions to modern web problems."
 	}
 	return name, headline, sub
+}
+
+func retiredHeadline(value string) bool {
+	value = strings.TrimRight(strings.TrimSpace(strings.ToLower(value)), ".")
+	return value == "i build small, useful tools for the web" || value == "i build small useful tools for the web"
 }
 
 func (m screenModel) loaded() bool {
@@ -627,11 +726,7 @@ func (m screenModel) projectText() string {
 		return "No portfolio entries."
 	}
 	project := projects[clamp(m.cursor, len(projects))]
-	text := project.Title + "\n\n" + project.Text
-	if project.Link != "" {
-		text += "\n\n" + hyperlink(project.Link, project.Link)
-	}
-	return text
+	return project.Title + "\n\n" + project.Text
 }
 
 func (m screenModel) photoText() string {
@@ -651,9 +746,6 @@ func (m screenModel) photoText() string {
 	if len(photo.Tags) > 0 {
 		fmt.Fprintf(&b, "\n\n%s", strings.Join(photo.Tags, "   "))
 	}
-	if photo.URL != "" {
-		fmt.Fprintf(&b, "\n\n%s", hyperlink(photo.URL, photo.URL))
-	}
 	return b.String()
 }
 
@@ -666,11 +758,11 @@ func (m screenModel) contactText() string {
 	case 1:
 		return "Phone\n\n" + contact.Phone
 	case 2:
-		return "Resume\n\n" + hyperlink(contact.ResumeURL, contact.ResumeURL) + "\n\nenter opens it"
+		return "Resume\n\nenter opens it"
 	case 3:
 		return m.noteForm()
 	default:
-		return "Email\n\n" + hyperlink(contact.Email, "mailto:"+contact.Email) + "\n\nenter opens it"
+		return "Email\n\n" + contact.Email + "\n\nenter opens it"
 	}
 }
 
@@ -791,17 +883,24 @@ func hyperlink(label, href string) string {
 	if label == "" || href == "" {
 		return label
 	}
-	return ansi.SetHyperlink(href) + label + ansi.ResetHyperlink()
+	return "\x1b]8;;" + href + "\x1b\\" + label + "\x1b]8;;\x1b\\"
 }
 
-func openSequence(target string) string {
-	encoded := base64.StdEncoding.EncodeToString([]byte(target))
-	return "\x1b]1337;OpenURL=:" + encoded + "\x07"
+func openSequence(targets ...string) string {
+	var b strings.Builder
+	for _, target := range targets {
+		encoded := base64.StdEncoding.EncodeToString([]byte(target))
+		b.WriteString("\x1b]1337;OpenURL=:" + encoded + "\x07")
+		b.WriteString("\x1b]1337;OpenURL=:" + encoded + "\x1b\\")
+	}
+	return b.String()
 }
 
 type ttyWrite struct {
-	seq string
-	out io.Writer
+	seq   string
+	out   io.Writer
+	live  bool
+	pause time.Duration
 }
 
 func (t *ttyWrite) SetStdin(io.Reader) {}
@@ -815,6 +914,15 @@ func (t *ttyWrite) Run() error {
 		return errors.New("no terminal")
 	}
 	_, err := io.WriteString(t.out, t.seq)
+	if t.live {
+		if tty, openErr := os.OpenFile("/dev/tty", os.O_WRONLY, 0); openErr == nil {
+			_, _ = io.WriteString(tty, t.seq)
+			_ = tty.Close()
+		}
+		if t.pause > 0 {
+			time.Sleep(t.pause)
+		}
+	}
 	return err
 }
 

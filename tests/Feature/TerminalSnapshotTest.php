@@ -63,7 +63,12 @@ class TerminalSnapshotTest extends TestCase
             ->assertJsonPath('identity.name', 'Erik V Gratz')
             ->assertJsonPath('experience.0.company', 'Pocketnest')
             ->assertJsonPath('experience.1.title', 'Developer')
+            ->assertJsonPath('identity.headline', '')
             ->assertJsonPath('portfolio.0.title', 'Laravel Porthole')
+            ->assertJsonPath('portfolio.0.link', 'https://github.com/chkltlabs/laravel-porthole')
+            ->assertJsonPath('portfolio.0.links.0.href', 'https://github.com/chkltlabs/laravel-porthole')
+            ->assertJsonPath('portfolio.0.links.1.href', 'https://porthole.erikgratz.com')
+            ->assertJsonPath('portfolio.0.links.1.text', 'Visit Porthole')
             ->assertJsonPath('photos.0.title', 'Dock at dusk')
             ->assertJsonPath('photos.0.url', 'https://cdn.example/dock.jpg')
             ->assertJsonPath('photos.0.tags.0', 'water')
@@ -75,7 +80,9 @@ class TerminalSnapshotTest extends TestCase
             ['identity', 'experience', 'portfolio', 'photos', 'contact'],
             array_keys($payload),
         );
-        $this->assertStringNotContainsString('The Media Lab', (string) json_encode($payload));
+        $encoded = (string) json_encode($payload);
+        $this->assertStringNotContainsString('The Media Lab', $encoded);
+        $this->assertStringNotContainsString('I build small, useful tools for the web.', $encoded);
     }
 
     #[Test]

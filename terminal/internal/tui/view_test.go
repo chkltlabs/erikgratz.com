@@ -112,17 +112,24 @@ func TestEnterOpensMailAndResume(t *testing.T) {
 	}
 }
 
-func sequenceOpens(target string) bool {
+func sequenceOpens(targets ...string) bool {
 	var buf strings.Builder
-	writer := &ttyWrite{seq: openSequence(target)}
+	writer := &ttyWrite{seq: openSequence(targets...)}
 	writer.SetStdout(&buf)
 	if err := writer.Run(); err != nil {
 		return false
 	}
-	encoded := strings.TrimPrefix(buf.String(), "\x1b]1337;OpenURL=:")
-	encoded = strings.TrimSuffix(encoded, "\x07")
-	raw, err := base64.StdEncoding.DecodeString(encoded)
-	return err == nil && string(raw) == target
+	raw := buf.String()
+	for _, target := range targets {
+		encoded := base64.StdEncoding.EncodeToString([]byte(target))
+		if !strings.Contains(raw, "\x1b]1337;OpenURL=:"+encoded+"\x07") {
+			return false
+		}
+		if !strings.Contains(raw, "\x1b]1337;OpenURL=:"+encoded+"\x1b\\") {
+			return false
+		}
+	}
+	return len(targets) > 0
 }
 
 func TestNotePageIsAContactForm(t *testing.T) {
@@ -176,6 +183,55 @@ func TestFitAsksWithBothFieldsAndShowsTheAnswer(t *testing.T) {
 	}
 	if api.question != "How well do I fit?" || api.job != "Go services" {
 		t.Fatalf("asked %q %q", api.question, api.job)
+	}
+}
+
+func TestHomeDropsTheRetiredHeadline(t *testing.T) {
+	view := wide(NewShell(sampleSnap(), nil)).View()
+	if strings.Contains(strings.ToLower(view), "useful tools") || !strings.Contains(view, "computers") {
+		t.Fatalf("view: %s", view)
+	}
+}
+
+func TestFooterReturnsToTheControls(t *testing.T) {
+	screen := wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionContact
+	next, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !strings.Contains(next.View(), "Opening") {
+		t.Fatalf("opening: %s", next.View())
+	}
+	shown := next.(screenModel)
+	cleared, _ := shown.Update(clearNoticeMsg{id: shown.noticeID})
+	view := cleared.View()
+	if strings.Contains(view, "Opening") || !strings.Contains(view, "enter opens") {
+		t.Fatalf("restored: %s", view)
+	}
+}
+
+func TestPortfolioEnterOpensEveryLink(t *testing.T) {
+	snap := sampleSnap()
+	snap.Portfolio[0].Link = "https://github.com/chkltlabs/laravel-porthole"
+	snap.Portfolio[0].Links = []site.Link{
+		{Text: "Check it out on Github", Href: "https://github.com/chkltlabs/laravel-porthole"},
+		{Text: "Visit Porthole", Href: "https://porthole.erikgratz.com"},
+	}
+	screen := wide(NewShell(snap, nil))
+	screen.section = sectionPortfolio
+	view := screen.View()
+	if !strings.Contains(view, "\x1b]8;;https://porthole.erikgratz.com\x1b\\Visit Porthole") {
+		t.Fatalf("view: %s", view)
+	}
+	if !strings.Contains(view, "\x1b]8;;https://github.com/chkltlabs/laravel-porthole\x1b\\") {
+		t.Fatalf("github: %s", view)
+	}
+	links := screen.linkTargets()
+	hrefs := make([]string, 0, len(links))
+	for _, link := range links {
+		hrefs = append(hrefs, link.Href)
+	}
+	_, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !sequenceOpens(hrefs...) {
+		t.Fatalf("links: %+v", links)
 	}
 }
 
