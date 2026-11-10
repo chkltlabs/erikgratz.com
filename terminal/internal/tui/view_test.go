@@ -50,9 +50,7 @@ func TestBingoFillsTheDetail(t *testing.T) {
 
 func wide(shell *Shell) screenModel {
 	screen := newScreen(shell, io.Discard)
-	screen.width = 120
-	screen.height = 36
-	return screen
+	return screen.resize(120, 36)
 }
 
 func sampleSnap() site.Snapshot {
@@ -207,7 +205,7 @@ func TestFitAsksWithBothFieldsAndShowsTheAnswer(t *testing.T) {
 	var model tea.Model = screen
 	var cmd tea.Cmd
 	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("Go services")})
-	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyDown})
+	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyTab})
 	model, _ = model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("How well do I fit?")})
 	if !strings.Contains(model.View(), "JOB DESCRIPTION") || !strings.Contains(model.View(), "YOUR QUESTION") {
 		t.Fatalf("fields: %s", model.View())
@@ -222,6 +220,73 @@ func TestFitAsksWithBothFieldsAndShowsTheAnswer(t *testing.T) {
 	}
 	if api.question != "How well do I fit?" || api.job != "Go services" {
 		t.Fatalf("asked %q %q", api.question, api.job)
+	}
+}
+
+func TestFitResponseStartsAtTheTopOfAScrollablePane(t *testing.T) {
+	screen := wide(NewShell(sampleSnap(), nil))
+	screen.section = sectionFit
+	screen.fitJob = strings.Repeat("Long job description with several requirements. ", 70)
+	screen.fitText = "What do you think?"
+	screen.fitField = 1
+	screen.fitPending = screen.fitText
+	screen.syncFitViewport()
+
+	answer := "FIRST RESPONSE LINE\n" + strings.Repeat("Detailed assessment that should remain reachable in the viewport. ", 80) + "\nLAST RESPONSE LINE"
+	next, _ := screen.Update(fitMsg{answer: answer})
+	updated := next.(screenModel)
+	rendered := updated.fitRender(updated.fitViewport.Width)
+
+	if updated.fitViewport.YOffset != rendered.responseStart {
+		t.Fatalf("offset %d, response starts at %d", updated.fitViewport.YOffset, rendered.responseStart)
+	}
+	view := updated.View()
+	if !strings.Contains(view, "FIRST RESPONSE LINE") {
+		t.Fatalf("response start is not visible: %s", view)
+	}
+	if strings.Contains(view, "LAST RESPONSE LINE") {
+		t.Fatalf("response end should require scrolling: %s", view)
+	}
+	if strings.Index(rendered.content, "JOB DESCRIPTION") > strings.Index(rendered.content, "FIT RESPONSE") {
+		t.Fatal("inputs must remain above the response")
+	}
+
+	for !updated.fitViewport.AtBottom() {
+		scrolled, _ := updated.Update(tea.KeyMsg{Type: tea.KeyPgDown})
+		updated = scrolled.(screenModel)
+	}
+	view = updated.View()
+	if !strings.Contains(view, "LAST RESPONSE LINE") || !strings.Contains(view, "ASK FURTHER QUESTION") {
+		t.Fatalf("bottom of viewport: %s", view)
+	}
+}
+
+func TestFitFollowupBecomesTheNextSingleShotQuestion(t *testing.T) {
+	api := &recordingAPI{answer: "Second answer."}
+	screen := wide(NewShell(sampleSnap(), api))
+	screen.section = sectionFit
+	screen.fitJob = "Go services"
+	screen.fitText = "Initial question"
+	screen.fitReply = "Initial answer."
+	screen.fitFollowup = "What about observability?"
+	screen.fitField = 2
+	screen.cursor = 2
+	screen.syncFitViewport()
+
+	model, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil {
+		t.Fatal("expected the follow-up request")
+	}
+	model, _ = model.Update(cmd())
+	updated := model.(screenModel)
+	if api.question != "What about observability?" || api.job != "Go services" {
+		t.Fatalf("asked %q with %q", api.question, api.job)
+	}
+	if updated.fitText != "What about observability?" || updated.fitFollowup != "" {
+		t.Fatalf("question %q, follow-up %q", updated.fitText, updated.fitFollowup)
+	}
+	if !strings.Contains(updated.View(), "Second answer.") {
+		t.Fatalf("answer: %s", updated.View())
 	}
 }
 
@@ -285,9 +350,7 @@ func TestPortfolioLinksCanBeOpenedIndividually(t *testing.T) {
 func TestPolishedLayoutFitsTheTerminal(t *testing.T) {
 	sizes := [][2]int{{120, 36}, {80, 24}, {48, 16}}
 	for _, size := range sizes {
-		screen := newScreen(NewShell(sampleSnap(), nil), io.Discard)
-		screen.width = size[0]
-		screen.height = size[1]
+		screen := newScreen(NewShell(sampleSnap(), nil), io.Discard).resize(size[0], size[1])
 		for current := sectionHome; current <= sectionFit; current++ {
 			screen.section = current
 			view := screen.View()
@@ -302,11 +365,19 @@ func TestPolishedLayoutFitsTheTerminal(t *testing.T) {
 }
 
 func TestFitErrorStaysOnThePage(t *testing.T) {
-	screen := wide(NewShell(sampleSnap(), nil))
+	screen := newScreen(NewShell(sampleSnap(), nil), io.Discard).resize(80, 24)
 	screen.section = sectionFit
+	screen.fitJob = strings.Repeat("Long job description. ", 100)
+	screen.fitText = "What do you think?"
+	screen.fitField = 1
+	screen.fitPending = screen.fitText
+	screen.syncFitViewport()
 	next, _ := screen.Update(fitMsg{err: errString("too many requests")})
 	if !strings.Contains(next.View(), "too many requests") {
 		t.Fatalf("error: %s", next.View())
+	}
+	if !next.(screenModel).fitViewport.AtBottom() {
+		t.Fatal("error should be scrolled into view")
 	}
 }
 

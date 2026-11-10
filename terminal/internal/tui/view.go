@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"erikgratz.com/terminal/internal/site"
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
@@ -57,20 +58,43 @@ type screenModel struct {
 	fitField    int
 	fitJob      string
 	fitText     string
+	fitFollowup string
+	fitPending  string
 	fitReply    string
 	fitErr      string
+	fitViewport viewport.Model
 	busy        bool
 }
 
 func newScreen(shell *Shell, out io.Writer) screenModel {
 	renderer := lipgloss.NewRenderer(out)
 	renderer.SetColorProfile(termenv.ANSI256)
-	return screenModel{
-		shell:    shell,
-		renderer: renderer,
-		width:    80,
-		height:   24,
+	fitViewport := viewport.New(45, 16)
+	fitViewport.MouseWheelEnabled = false
+	model := screenModel{
+		shell:       shell,
+		renderer:    renderer,
+		width:       80,
+		height:      24,
+		fitViewport: fitViewport,
 	}
+	return model.resize(80, 24)
+}
+
+func (m screenModel) resize(width, height int) screenModel {
+	m.width = width
+	m.height = height
+	m.fitViewport.Width, m.fitViewport.Height = m.fitViewportDimensions()
+	m.syncFitViewport()
+	return m
+}
+
+func (m screenModel) fitViewportDimensions() (int, int) {
+	fit := m
+	fit.section = sectionFit
+	fit.cursor = fit.fitField
+	layout := fit.panelLayout()
+	return layout.rightContentWidth, layout.contentHeight
 }
 
 func (m screenModel) Init() tea.Cmd { return nil }
@@ -78,16 +102,27 @@ func (m screenModel) Init() tea.Cmd { return nil }
 func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		m.width = msg.Width
-		m.height = msg.Height
+		m = m.resize(msg.Width, msg.Height)
 	case fitMsg:
 		m.busy = false
 		if msg.err != nil {
 			m.fitErr = msg.err.Error()
+			m.fitPending = ""
+			m.syncFitViewport()
+			m.fitViewport.GotoBottom()
 			return m, nil
 		}
+		if m.fitPending != "" {
+			m.fitText = m.fitPending
+		}
+		m.fitPending = ""
+		m.fitFollowup = ""
 		m.fitReply = msg.answer
 		m.fitErr = ""
+		m.fitField = 2
+		m.cursor = 2
+		m.syncFitViewport()
+		m.showFitResponse()
 	case noteMsg:
 		m.noteStatus = string(msg)
 		if strings.Contains(m.noteStatus, "sent") {
@@ -181,6 +216,9 @@ func (m screenModel) capturing() bool {
 }
 
 func (m screenModel) typeKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	if m.section == sectionFit {
+		return m.fitKey(msg)
+	}
 	switch msg.Type {
 	case tea.KeyLeft:
 		m = m.bump(-1)
@@ -193,10 +231,42 @@ func (m screenModel) typeKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case tea.KeyDown:
 		m = m.moveField(1)
 	case tea.KeyEsc:
-		m.fitJob, m.fitText, m.fitReply, m.fitErr = "", "", "", ""
 		m.noteName, m.noteContact, m.noteMessage, m.noteStatus = "", "", "", ""
 		m.noteField = 0
+	case tea.KeyEnter:
+		return m.submit()
+	case tea.KeyBackspace:
+		m = m.backspace()
+	case tea.KeySpace:
+		m = m.append(" ")
+	case tea.KeyRunes:
+		m = m.append(string(msg.Runes))
+	}
+	return m, nil
+}
+
+func (m screenModel) fitKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.Type {
+	case tea.KeyLeft:
+		return m.bump(-1), nil
+	case tea.KeyRight:
+		return m.bump(1), nil
+	case tea.KeyTab:
+		m = m.moveField(1)
+	case tea.KeyShiftTab:
+		m = m.moveField(-1)
+	case tea.KeyUp, tea.KeyDown, tea.KeyPgUp, tea.KeyPgDown:
+		var cmd tea.Cmd
+		m.fitViewport, cmd = m.fitViewport.Update(msg)
+		return m, cmd
+	case tea.KeyEsc:
+		m.fitJob, m.fitText, m.fitFollowup = "", "", ""
+		m.fitPending, m.fitReply, m.fitErr = "", "", ""
 		m.fitField = 0
+		m.cursor = 0
+		m.busy = false
+		m.syncFitViewport()
+		m.fitViewport.GotoTop()
 	case tea.KeyEnter:
 		return m.submit()
 	case tea.KeyBackspace:
@@ -260,14 +330,20 @@ func (m screenModel) append(value string) screenModel {
 	switch {
 	case m.section == sectionFit && m.fitField == 0:
 		m.fitJob += value
-	case m.section == sectionFit:
+	case m.section == sectionFit && m.fitField == 1:
 		m.fitText += value
+	case m.section == sectionFit:
+		m.fitFollowup += value
 	case m.noteField == 0:
 		m.noteName += value
 	case m.noteField == 1:
 		m.noteContact += value
 	default:
 		m.noteMessage += value
+	}
+	if m.section == sectionFit {
+		m.syncFitViewport()
+		m.showFitField()
 	}
 	return m
 }
@@ -287,14 +363,20 @@ func (m screenModel) backspace() screenModel {
 	switch {
 	case m.section == sectionFit && m.fitField == 0:
 		m.fitJob = dropLast(m.fitJob)
-	case m.section == sectionFit:
+	case m.section == sectionFit && m.fitField == 1:
 		m.fitText = dropLast(m.fitText)
+	case m.section == sectionFit:
+		m.fitFollowup = dropLast(m.fitFollowup)
 	case m.noteField == 0:
 		m.noteName = dropLast(m.noteName)
 	case m.noteField == 1:
 		m.noteContact = dropLast(m.noteContact)
 	default:
 		m.noteMessage = dropLast(m.noteMessage)
+	}
+	if m.section == sectionFit {
+		m.syncFitViewport()
+		m.showFitField()
 	}
 	return m
 }
@@ -305,10 +387,16 @@ func (m screenModel) moveField(delta int) screenModel {
 		if m.fitField < 0 {
 			m.fitField = 0
 		}
-		if m.fitField > 1 {
-			m.fitField = 1
+		maxField := 1
+		if m.fitReply != "" {
+			maxField = 2
+		}
+		if m.fitField > maxField {
+			m.fitField = maxField
 		}
 		m.cursor = m.fitField
+		m.syncFitViewport()
+		m.showFitField()
 		return m
 	}
 	next := m.noteField + delta
@@ -381,19 +469,32 @@ func (m screenModel) showNotice(notice string) (tea.Model, tea.Cmd) {
 
 func (m screenModel) submit() (tea.Model, tea.Cmd) {
 	if m.section == sectionFit {
-		question := strings.TrimSpace(m.fitText)
 		if m.busy {
 			return m, nil
 		}
+		if m.fitField == 0 {
+			m = m.moveField(1)
+			return m, nil
+		}
+		question := strings.TrimSpace(m.fitText)
+		if m.fitField == 2 {
+			question = strings.TrimSpace(m.fitFollowup)
+		}
 		if question == "" {
 			m.fitErr = "A question is required."
-			m.fitField = 1
-			m.cursor = 1
+			m.syncFitViewport()
+			m.fitViewport.GotoBottom()
 			return m, nil
 		}
 		m.busy = true
+		m.fitPending = question
 		m.fitErr = ""
-		m.fitReply = ""
+		m.syncFitViewport()
+		if m.fitField == 2 {
+			m.fitViewport.GotoBottom()
+		} else {
+			m.showFitField()
+		}
 		return m, askFit(m.shell.API, question, strings.TrimSpace(m.fitJob))
 	}
 	if m.noteField < 2 {
@@ -444,36 +545,70 @@ type fitMsg struct {
 
 type noteMsg string
 
+type panelLayout struct {
+	leftBoxWidth      int
+	leftContentWidth  int
+	rightBoxWidth     int
+	rightContentWidth int
+	boxHeight         int
+	contentHeight     int
+}
+
+func (m screenModel) panelLayout() panelLayout {
+	bodyHeight := m.height - lipgloss.Height(m.header()) - lipgloss.Height(m.footer())
+	if actions := m.actionBar(); actions != "" {
+		bodyHeight -= lipgloss.Height(actions)
+	}
+	if bodyHeight < 6 {
+		bodyHeight = 6
+	}
+
+	box := m.box()
+	borderWidth := box.GetHorizontalBorderSize()
+	paddingWidth := box.GetHorizontalPadding()
+	borderHeight := box.GetVerticalBorderSize()
+	paddingHeight := box.GetVerticalPadding()
+
+	leftOuterWidth := 30
+	if leftOuterWidth > m.width/2 {
+		leftOuterWidth = m.width / 3
+	}
+	leftBoxWidth := max(leftOuterWidth-borderWidth, paddingWidth+16)
+	leftContentWidth := leftBoxWidth - paddingWidth
+	actualLeftOuterWidth := leftBoxWidth + borderWidth
+
+	rightOuterWidth := m.width - actualLeftOuterWidth - 1
+	rightBoxWidth := max(rightOuterWidth-borderWidth, paddingWidth+20)
+	rightContentWidth := rightBoxWidth - paddingWidth
+	boxHeight := max(1, bodyHeight-borderHeight)
+	contentHeight := max(1, boxHeight-paddingHeight)
+
+	return panelLayout{
+		leftBoxWidth:      leftBoxWidth,
+		leftContentWidth:  leftContentWidth,
+		rightBoxWidth:     rightBoxWidth,
+		rightContentWidth: rightContentWidth,
+		boxHeight:         boxHeight,
+		contentHeight:     contentHeight,
+	}
+}
+
 func (m screenModel) View() string {
 	if m.width < 48 || m.height < 12 {
 		return "This profile needs a terminal at least 48 columns wide.\n"
 	}
 	header := m.header()
 	actions := m.actionBar()
-	bodyHeight := m.height - lipgloss.Height(header) - lipgloss.Height(m.footer())
-	if actions != "" {
-		bodyHeight -= lipgloss.Height(actions)
-	}
-	if bodyHeight < 6 {
-		bodyHeight = 6
-	}
-	leftWidth := 30
-	if leftWidth > m.width/2 {
-		leftWidth = m.width / 3
-	}
+	layout := m.panelLayout()
 	box := m.box()
-	frameW := box.GetHorizontalFrameSize()
-	frameH := box.GetVerticalFrameSize()
-	leftInner := leftWidth - frameW
-	if leftInner < 16 {
-		leftInner = 16
-	}
-	left := box.Width(leftInner).Height(bodyHeight - frameH).Render(m.list(leftInner))
-	rightInner := m.width - lipgloss.Width(left) - frameW - 1
-	if rightInner < 20 {
-		rightInner = 20
-	}
-	right := box.Width(rightInner).Height(bodyHeight - frameH).Render(m.detail(rightInner))
+	left := box.
+		Width(layout.leftBoxWidth).
+		Height(layout.boxHeight).
+		Render(m.list(layout.leftContentWidth))
+	right := box.
+		Width(layout.rightBoxWidth).
+		Height(layout.boxHeight).
+		Render(m.detail(layout.rightContentWidth, layout.contentHeight))
 	parts := []string{
 		header,
 		lipgloss.JoinHorizontal(lipgloss.Top, left, " ", right),
@@ -550,7 +685,7 @@ func (m screenModel) footer() string {
 			hint = "↑/↓ choose  ·  enter open/copy  ·  c copy  ·  ⌘-click  ·  esc back"
 		}
 	case m.section == sectionFit:
-		hint = "↑/↓ fields  ·  type  ·  enter ask  ·  esc clear"
+		hint = fmt.Sprintf("tab fields  ·  ↑/↓ or pgup/pgdn scroll  ·  enter ask  ·  esc clear  ·  %3.0f%%", m.fitViewport.ScrollPercent()*100)
 	case m.section == sectionContact && m.cursor == 3:
 		hint = "↑/↓ fields  ·  type  ·  enter next/send  ·  esc clear"
 	case len(m.linkTargets()) > 0:
@@ -678,7 +813,15 @@ func (m screenModel) list(width int) string {
 	return b.String()
 }
 
-func (m screenModel) detail(width int) string {
+func (m screenModel) detail(width, height int) string {
+	if m.section == sectionFit && !m.linkMode && m.overlay == "" {
+		fitViewport := m.fitViewport
+		fitViewport.Width = width
+		fitViewport.Height = height
+		rendered := m.fitRender(width)
+		fitViewport.SetContent(rendered.content)
+		return fitViewport.View()
+	}
 	body := m.detailText(width)
 	return m.renderer.NewStyle().Width(width).Foreground(lipgloss.Color(colorText)).Render(body)
 }
@@ -702,7 +845,7 @@ func (m screenModel) detailText(width int) string {
 	case sectionContact:
 		return m.contactText()
 	case sectionFit:
-		return m.fitTextView()
+		return ""
 	default:
 		return ""
 	}
@@ -871,26 +1014,100 @@ func (m screenModel) noteForm() string {
 	return b.String()
 }
 
-func (m screenModel) fitTextView() string {
-	var b strings.Builder
+type fitRendered struct {
+	content       string
+	fieldStarts   [3]int
+	fieldEnds     [3]int
+	responseStart int
+}
+
+func (m screenModel) fitRender(width int) fitRendered {
+	if width < 1 {
+		width = 1
+	}
+	rendered := fitRendered{responseStart: -1}
+	lines := make([]string, 0, 24)
+	appendBlock := func(value string) (int, int) {
+		start := len(lines)
+		block := m.renderer.NewStyle().Width(width).Render(value)
+		lines = append(lines, strings.Split(block, "\n")...)
+		return start, len(lines) - 1
+	}
+	blank := func() {
+		lines = append(lines, "")
+	}
+
+	appendBlock(m.heading("ASK ABOUT FIT"))
+	blank()
+	rendered.fieldStarts[0], rendered.fieldEnds[0] = appendBlock(
+		m.muted("JOB DESCRIPTION · OPTIONAL") + "\n" + m.fieldLine(m.fitJob, m.fitField == 0),
+	)
+	blank()
+	rendered.fieldStarts[1], rendered.fieldEnds[1] = appendBlock(
+		m.muted("YOUR QUESTION") + "\n" + m.fieldLine(m.fitText, m.fitField == 1),
+	)
+
+	if m.fitReply != "" {
+		blank()
+		rendered.responseStart, _ = appendBlock(m.heading("FIT RESPONSE") + "\n\n" + m.fitReply)
+		blank()
+		rendered.fieldStarts[2], rendered.fieldEnds[2] = appendBlock(
+			m.muted("ASK FURTHER QUESTION") + "\n" + m.fieldLine(m.fitFollowup, m.fitField == 2),
+		)
+	} else {
+		rendered.fieldStarts[2] = len(lines)
+		rendered.fieldEnds[2] = len(lines)
+	}
+
 	switch {
 	case m.busy:
-		b.WriteString(m.accent("ASKING…") + "\n\n")
+		blank()
+		appendBlock(m.accent("ASKING…"))
 	case m.fitErr != "":
-		b.WriteString(m.renderer.NewStyle().Foreground(lipgloss.Color("203")).Render(m.fitErr) + "\n\n")
-	case m.fitReply != "":
-		b.WriteString(m.heading("FIT RESPONSE") + "\n\n" + m.fitReply + "\n\n")
+		blank()
+		appendBlock(m.renderer.NewStyle().Foreground(lipgloss.Color("203")).Render(m.fitErr))
 	}
-	b.WriteString(m.heading("ASK ABOUT FIT"))
-	b.WriteString("\n\n")
-	b.WriteString(m.muted("JOB DESCRIPTION · OPTIONAL") + "\n")
-	b.WriteString(m.fieldLine(m.fitJob, m.fitField == 0))
-	b.WriteString("\n\n" + m.muted("YOUR QUESTION") + "\n")
-	b.WriteString(m.fieldLine(m.fitText, m.fitField == 1))
 	if !m.loaded() && m.shell.Problem != "" {
-		fmt.Fprintf(&b, "\n\n%s", m.shell.Problem)
+		blank()
+		appendBlock(m.shell.Problem)
 	}
-	return b.String()
+	rendered.content = strings.Join(lines, "\n")
+	return rendered
+}
+
+func (m *screenModel) syncFitViewport() {
+	rendered := m.fitRender(m.fitViewport.Width)
+	m.fitViewport.SetContent(rendered.content)
+}
+
+func (m *screenModel) showFitField() {
+	rendered := m.fitRender(m.fitViewport.Width)
+	m.fitViewport.SetContent(rendered.content)
+	field := clamp(m.fitField, len(rendered.fieldEnds))
+	m.fitViewport.SetYOffset(visibleOffset(
+		m.fitViewport.YOffset,
+		m.fitViewport.Height,
+		rendered.fieldStarts[field],
+		rendered.fieldEnds[field],
+	))
+}
+
+func (m *screenModel) showFitResponse() {
+	rendered := m.fitRender(m.fitViewport.Width)
+	m.fitViewport.SetContent(rendered.content)
+	if rendered.responseStart >= 0 {
+		m.fitViewport.SetYOffset(rendered.responseStart)
+	}
+}
+
+func visibleOffset(current, height, start, end int) int {
+	if height < 1 || start < current {
+		return start
+	}
+	if end >= current+height {
+		return end - height + 1
+	}
+	return current
 }
 
 func (m screenModel) fieldLine(value string, active bool) string {
@@ -961,7 +1178,11 @@ func (m screenModel) items() []string {
 	case sectionContact:
 		return []string{"Email", "Phone", "Resume", "Write a note"}
 	case sectionFit:
-		return []string{"Job description", "Question"}
+		items := []string{"Job description", "Question"}
+		if m.fitReply != "" {
+			items = append(items, "Ask further question")
+		}
+		return items
 	default:
 		return nil
 	}
