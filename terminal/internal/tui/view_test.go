@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"encoding/base64"
 	"io"
 	"strings"
 	"testing"
@@ -94,15 +95,34 @@ func TestPhotoShowsThePublicLink(t *testing.T) {
 func TestEnterOpensMailAndResume(t *testing.T) {
 	screen := wide(NewShell(sampleSnap(), nil))
 	screen.section = sectionContact
-	mail, _ := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if !strings.Contains(mail.View(), "mailto:Erik@ErikGratz.com") || !strings.Contains(mail.View(), "1337;OpenURL=:") {
+	mail, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !strings.Contains(mail.View(), "mailto:Erik@ErikGratz.com") {
 		t.Fatalf("mail: %s", mail.View())
 	}
+	if !sequenceOpens("mailto:Erik@ErikGratz.com") {
+		t.Fatal("mail sequence")
+	}
 	screen.cursor = 2
-	resume, _ := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
-	if !strings.Contains(resume.View(), "https://docs.google.com/document/d/resume") || !strings.Contains(resume.View(), "1337;OpenURL=:") {
+	resume, cmd := screen.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil || !strings.Contains(resume.View(), "https://docs.google.com/document/d/resume") {
 		t.Fatalf("resume: %s", resume.View())
 	}
+	if !sequenceOpens("https://docs.google.com/document/d/resume") {
+		t.Fatal("resume sequence")
+	}
+}
+
+func sequenceOpens(target string) bool {
+	var buf strings.Builder
+	writer := &ttyWrite{seq: openSequence(target)}
+	writer.SetStdout(&buf)
+	if err := writer.Run(); err != nil {
+		return false
+	}
+	encoded := strings.TrimPrefix(buf.String(), "\x1b]1337;OpenURL=:")
+	encoded = strings.TrimSuffix(encoded, "\x07")
+	raw, err := base64.StdEncoding.DecodeString(encoded)
+	return err == nil && string(raw) == target
 }
 
 func TestNotePageIsAContactForm(t *testing.T) {

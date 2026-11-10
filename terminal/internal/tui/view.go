@@ -44,7 +44,6 @@ type screenModel struct {
 	cursor      int
 	overlay     string
 	notice      string
-	pendingOpen string
 	noteField   int
 	noteName    string
 	noteContact string
@@ -98,7 +97,6 @@ func (m screenModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m screenModel) key(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
-	m.pendingOpen = ""
 	if msg.Type == tea.KeyCtrlC || msg.Type == tea.KeyCtrlD {
 		return m, tea.Quit
 	}
@@ -307,9 +305,8 @@ func (m screenModel) open(target string) (tea.Model, tea.Cmd) {
 		m.notice = "Nothing to open."
 		return m, nil
 	}
-	m.pendingOpen = target
 	m.notice = "Opening " + target
-	return m, nil
+	return m, tea.Exec(&ttyWrite{seq: openSequence(target)}, nil)
 }
 
 func (m screenModel) submit() (tea.Model, tea.Cmd) {
@@ -402,16 +399,12 @@ func (m screenModel) View() string {
 		rightInner = 20
 	}
 	right := box.Width(rightInner).Height(bodyHeight - frameH).Render(m.detail(rightInner))
-	frame := lipgloss.JoinVertical(lipgloss.Left,
+	return lipgloss.JoinVertical(lipgloss.Left,
 		m.tabs(),
 		m.rule(),
 		lipgloss.JoinHorizontal(lipgloss.Top, left, right),
 		m.footer(),
 	)
-	if m.pendingOpen != "" {
-		frame = openSequence(m.pendingOpen) + frame
-	}
-	return frame
 }
 
 func (m screenModel) box() lipgloss.Style {
@@ -485,7 +478,38 @@ func (m screenModel) footer() string {
 	case m.notice != "":
 		hint = m.notice
 	}
-	return m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render(hint)
+	line := ""
+	if href := m.linkTarget(); href != "" {
+		line = hyperlink("open", href) + "   "
+	}
+	return line + m.renderer.NewStyle().Foreground(lipgloss.Color(colorDim)).Render(hint)
+}
+
+func (m screenModel) linkTarget() string {
+	switch m.section {
+	case sectionContact:
+		switch m.cursor {
+		case 0:
+			if email := m.shell.Snap.Contact.Email; email != "" {
+				return "mailto:" + email
+			}
+		case 2:
+			return m.shell.Snap.Contact.ResumeURL
+		}
+	case sectionPhoto:
+		photos := m.shell.Snap.Photos
+		if len(photos) == 0 {
+			return ""
+		}
+		return photos[clamp(m.cursor, len(photos))].URL
+	case sectionPortfolio:
+		projects := m.shell.Snap.Portfolio
+		if len(projects) == 0 {
+			return ""
+		}
+		return projects[clamp(m.cursor, len(projects))].Link
+	}
+	return ""
 }
 
 func (m screenModel) list(width int) string {
@@ -773,6 +797,25 @@ func hyperlink(label, href string) string {
 func openSequence(target string) string {
 	encoded := base64.StdEncoding.EncodeToString([]byte(target))
 	return "\x1b]1337;OpenURL=:" + encoded + "\x07"
+}
+
+type ttyWrite struct {
+	seq string
+	out io.Writer
+}
+
+func (t *ttyWrite) SetStdin(io.Reader) {}
+
+func (t *ttyWrite) SetStdout(w io.Writer) { t.out = w }
+
+func (t *ttyWrite) SetStderr(io.Writer) {}
+
+func (t *ttyWrite) Run() error {
+	if t.out == nil {
+		return errors.New("no terminal")
+	}
+	_, err := io.WriteString(t.out, t.seq)
+	return err
 }
 
 func dropLast(value string) string {
