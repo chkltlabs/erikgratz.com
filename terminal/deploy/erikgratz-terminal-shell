@@ -1,0 +1,5 @@
+#!/bin/sh
+exec /usr/local/bin/erikgratz-terminal --stdio \
+	--snapshot-url https://erikgratz.com/api/terminal/snapshot \
+	--snapshot-host erikgratz.com \
+	--bingo "${BINGO_PHP:-}"

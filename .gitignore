@@ -18,5 +18,8 @@ yarn-error.log
 /public/mix-manifest.json
 /public/js/
 *.DS_Store
+/terminal/host_ed25519
+/terminal/host_ed25519.pub
+/terminal/bin/
 cobertura*.xml
 /.idea
