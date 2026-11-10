@@ -9,6 +9,7 @@ import (
 	"erikgratz.com/terminal/internal/site"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/ansi"
 )
 
 func TestExperienceShowsTheRole(t *testing.T) {
@@ -146,6 +147,28 @@ func sequenceCopies(target string) bool {
 	}
 	encoded := base64.StdEncoding.EncodeToString([]byte(target))
 	return buf.String() == "\x1b]52;c;"+encoded+"\x07"
+}
+
+func TestWrappedLinkKeepsTheFullTargetOnEveryLine(t *testing.T) {
+	target := "https://docs.google.com/document/d/1Ow6s1QOBQPHEGn06V042dchp2wSQ8XfkAA4gcKqa_lg/edit?usp=sharing"
+	wrapped := wrappedHyperlink(target, target, 24)
+	lines := strings.Split(wrapped, "\n")
+	if len(lines) < 2 {
+		t.Fatal("expected the URL to wrap")
+	}
+	var visible strings.Builder
+	for _, line := range lines {
+		if !strings.Contains(line, "\x1b]8;;"+target+"\x1b\\") {
+			t.Fatalf("line lost the full destination: %q", line)
+		}
+		if got := ansi.StringWidth(line); got > 24 {
+			t.Fatalf("line width: %d", got)
+		}
+		visible.WriteString(ansi.Strip(line))
+	}
+	if visible.String() != target {
+		t.Fatalf("visible URL: %q", visible.String())
+	}
 }
 
 func TestNotePageIsAContactForm(t *testing.T) {

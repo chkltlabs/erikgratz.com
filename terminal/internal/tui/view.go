@@ -679,16 +679,16 @@ func (m screenModel) list(width int) string {
 }
 
 func (m screenModel) detail(width int) string {
-	body := m.detailText()
+	body := m.detailText(width)
 	return m.renderer.NewStyle().Width(width).Foreground(lipgloss.Color(colorText)).Render(body)
 }
 
-func (m screenModel) detailText() string {
+func (m screenModel) detailText(width int) string {
 	if m.overlay != "" {
 		return strings.TrimRight(m.overlay, "\n")
 	}
 	if m.linkMode {
-		return m.linkLauncher()
+		return m.linkLauncher(width)
 	}
 	switch m.section {
 	case sectionHome:
@@ -708,7 +708,7 @@ func (m screenModel) detailText() string {
 	}
 }
 
-func (m screenModel) linkLauncher() string {
+func (m screenModel) linkLauncher(width int) string {
 	links := m.linkTargets()
 	if len(links) == 0 {
 		return m.muted("No link is published for this item.")
@@ -719,7 +719,7 @@ func (m screenModel) linkLauncher() string {
 		Foreground(lipgloss.Color(colorText)).
 		Bold(true).
 		Render("↗ " + link.Text)
-	target := hyperlink(link.Href, link.Href)
+	target := wrappedHyperlink(link.Href, link.Href, width)
 	instructions := m.muted("⌘-click the URL to open it in this terminal.\nEnter copies it and asks iTerm to open it.\nPress c to copy, or esc to return.")
 	return title + "\n\n" + name + "\n\n" + target + "\n\n" + instructions
 }
@@ -999,6 +999,17 @@ func hyperlink(label, href string) string {
 		return label
 	}
 	return "\x1b]8;;" + href + "\x1b\\" + label + "\x1b]8;;\x1b\\"
+}
+
+func wrappedHyperlink(label, href string, width int) string {
+	if width < 1 {
+		return hyperlink(label, href)
+	}
+	lines := strings.Split(ansi.Hardwrap(label, width, false), "\n")
+	for i, line := range lines {
+		lines[i] = hyperlink(line, href)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func openSequence(targets ...string) string {
